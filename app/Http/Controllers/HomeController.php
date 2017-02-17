@@ -113,4 +113,15 @@ class HomeController extends Controller
         dd($users);
         #return response()->json(['error' => 'ok.'],403);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ssl()
+    {
+        echo 'ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ.ynLB6A0UvAuObZ0GnSsJH6zVaAeLWMgTEPyhFwkC2TY';
+    }
 }
