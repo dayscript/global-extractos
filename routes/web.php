@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/','HomeController@index');
+Route::get('/report/{id}','HomeController@angular');
+Route::get('/query','HomeController@query');
+
+
+
+Route::group(['prefix' => 'api'], function () {
+    Route::get('pie-report/{id}', 'ServicesController@show');
+    Route::get('variable-report/{id}', 'ServicesController@rentVariable');
+    Route::get('/query','HomeController@query');
+
 });

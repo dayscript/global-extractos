@@ -1,5 +1,74 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+section {
+  margin: 5px 0 5px 0;
+}
+
+.content-wrapper {
+  padding: 0 20px;
+  width: 100%;
+}
+
+.content-align-center {
+  text-align: center;
+}
+
+.border-container {
+  border: 1px solid;
+  border-color: #0082d4;
+  display: inline-block;
+}
+
+.my-app-container {
+  display: inline-block;
+  width: 900px;
+}
+
+.col p {
+  text-align: left;
+}
+
+.text-rigth {
+  float: right;
+  width: 50%;
+  display: inline-block;
+}
+
+.text-left {
+  float: left;
+  width: 50%;
+  display: inline-block;
+}
+
+.diagram-pie {
+  display: initial !important;
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.diagram {
+  margin: 30px;
+}
+
+td {
+  text-align: left;
+  padding: 0 5px !important;
+}
+
+thead {
+  background-color: #3173bd;
+  color: #fff;
+}
+
+table {
+  border: 1px solid;
+}
+
+.wrapper-content {
+  top: 15px;
+  margin-top: 20px;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

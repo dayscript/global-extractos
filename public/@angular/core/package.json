@@ -2,48 +2,48 @@
   "_args": [
     [
       {
-        "raw": "@angular/core@2.0.0",
+        "raw": "@angular/core@2.4.1",
         "scope": "@angular",
         "escapedName": "@angular%2fcore",
         "name": "@angular/core",
-        "rawSpec": "2.0.0",
-        "spec": "2.0.0",
+        "rawSpec": "2.4.1",
+        "spec": "2.4.1",
         "type": "version"
       },
       "/var/www/html/global-extractos"
     ]
   ],
-  "_from": "@angular/core@2.0.0",
-  "_id": "@angular/core@2.0.0",
+  "_from": "@angular/core@2.4.1",
+  "_id": "@angular/core@2.4.1",
   "_inCache": true,
   "_location": "/@angular/core",
-  "_nodeVersion": "5.4.1",
+  "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/core-2.0.0.tgz_1473906742970_0.10008056554943323"
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/core-2.4.1.tgz_1482365937104_0.15595823409967124"
   },
   "_npmUser": {
     "name": "angular",
     "email": "angular-core+npm@google.com"
   },
-  "_npmVersion": "3.9.2",
+  "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@angular/core@2.0.0",
+    "raw": "@angular/core@2.4.1",
     "scope": "@angular",
     "escapedName": "@angular%2fcore",
     "name": "@angular/core",
-    "rawSpec": "2.0.0",
-    "spec": "2.0.0",
+    "rawSpec": "2.4.1",
+    "spec": "2.4.1",
     "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@angular/core/-/core-2.0.0.tgz",
-  "_shasum": "87b5ea4a7ae063d27bcf2332a4aa932d887abe2b",
+  "_resolved": "https://registry.npmjs.org/@angular/core/-/core-2.4.1.tgz",
+  "_shasum": "3a6d2dc7fd86fdebe4febae7eb28abad7d04c76a",
   "_shrinkwrap": null,
-  "_spec": "@angular/core@2.0.0",
+  "_spec": "@angular/core@2.4.1",
   "_where": "/var/www/html/global-extractos",
   "author": {
     "name": "angular"
@@ -56,8 +56,8 @@
   "devDependencies": {},
   "directories": {},
   "dist": {
-    "shasum": "87b5ea4a7ae063d27bcf2332a4aa932d887abe2b",
-    "tarball": "https://registry.npmjs.org/@angular/core/-/core-2.0.0.tgz"
+    "shasum": "3a6d2dc7fd86fdebe4febae7eb28abad7d04c76a",
+    "tarball": "https://registry.npmjs.org/@angular/core/-/core-2.4.1.tgz"
   },
   "homepage": "https://github.com/angular/angular#readme",
   "license": "MIT",
@@ -72,8 +72,8 @@
   "name": "@angular/core",
   "optionalDependencies": {},
   "peerDependencies": {
-    "rxjs": "5.0.0-beta.12",
-    "zone.js": "^0.6.21"
+    "rxjs": "^5.0.1",
+    "zone.js": "^0.7.2"
   },
   "readme": "ERROR: No README data found!",
   "repository": {
@@ -82,5 +82,5 @@
   },
   "scripts": {},
   "typings": "index.d.ts",
-  "version": "2.0.0"
+  "version": "2.4.1"
 }

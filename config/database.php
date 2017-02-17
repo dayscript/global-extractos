@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlsrv'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,6 +65,16 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST', '190.27.201.5'),
+            'database' => env('DB_DATABASE', 'global'),
+            'username' => env('DB_USERNAME', 'global'),
+            'password' => env('DB_PASSWORD', 'global'),
+            'charset' => 'utf8',
+            'prefix' => '',
+],
 
     ],
 

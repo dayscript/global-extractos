@@ -1,0 +1,72 @@
+
+<section class="personal-data">
+  <div class="content-wrapper border-container">
+      <div class="col">
+          <div class="text-left"><strong>Nombre:   </strong><em>{{ products?.personal_data.name }}</em></div>
+      </div>
+      <div class="col">
+          <div class="text-left"><strong>Direccion:   </strong><em> {{ products?.personal_data.address }}</em></div>
+      </div>
+      <div class="col">
+          <div class="text-left"><strong>Ciudad:   </strong><em>{{ products?.personal_data.city }}</em></div>
+      </div>
+      <div class="col">
+          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ products?.personal_data.comercial_adviser }}</em></div>
+      </div>
+      <div class="col">
+          <div class="text-left"><strong>Estado:   </strong><em> {{ products?.personal_data.state }}</em></div>
+      </div>
+  </div>
+</section>
+
+<section class="header">
+  <h3> COMPOSICIÓN DEL PORTAFOLIO </h3>
+  <div class="content-wrapper border-container">
+    <div class="col">
+        <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.variable_rent }} </div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Renta fija:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.static_rent }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Operaciones de liquidez:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.operation_liquidity }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.operation_comply }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.avaluable_balance }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.total_administration_account }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.funds_investment_colective }}</div>
+    </div>
+    <div class="col">
+        <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> $200.000.000</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr><td></td></tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</section>
+<section class="diagram">
+  <div style="display: block">
+    <canvas class="diagram-pie" baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+</section>

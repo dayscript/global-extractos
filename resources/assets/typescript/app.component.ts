@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+
+import 'rxjs/add/operator/map';
+
 @Component({
   selector: 'my-app',
-  template: '<h1>My First Angular App</h1>'
+  templateUrl: '/app/templates/index.html'
 })
-export class AppComponent { }
+export class AppComponent {
+}
