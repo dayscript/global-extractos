@@ -68,10 +68,10 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', '190.27.201.5'),
-            'database' => env('DB_DATABASE', 'global'),
-            'username' => env('DB_USERNAME', 'global'),
-            'password' => env('DB_PASSWORD', 'global'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', 'forge'),
             'charset' => 'utf8',
             'prefix' => '',
 ],
