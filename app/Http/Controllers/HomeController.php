@@ -108,7 +108,9 @@ class HomeController extends Controller
      */
     public function query()
     {
-        $users = DB::table('dbo.Hoja1')->where('lngID','112618567')->get();
+        #$users = DB::table('dbo.Hoja1')->where('lngID','112618567')->get();
+        #$users = DB::table('dbo.Aclientes')->where('strID','LZA')->get();
+        $users = DB::select('select * from Aclientes where strID = :id', ['id' => 'LZA']);
          #$users = DB::select('select * from  where active = ?', [1]);
         dd($users);
         #return response()->json(['error' => 'ok.'],403);
