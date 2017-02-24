@@ -10,13 +10,13 @@ export class ProductsService {
   constructor(private http: Http) { }
 
   get Data(): Observable<any> {
-    return this.http.get('/api/pie-report/1013611324')
+    return this.http.get('/api/pie-report/29539/2016-12-31')
              .map( response => response.json() );
 
   }
 
   get DataRenta(): Observable<any> {
-    return this.http.get('api/variable-report/1013611324')
+    return this.http.get('api/variable-report/29539/2016-12-31')
              .map( response => response.json() );
 
   }

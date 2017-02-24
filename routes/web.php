@@ -12,7 +12,7 @@
 */
 
 Route::get('/','HomeController@index');
-Route::get('/report/{id}','HomeController@angular');
+Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
 Route::get('/query','HomeController@query');
 Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
 
@@ -20,8 +20,8 @@ Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDM
 
 
 Route::group(['prefix' => 'api'], function () {
-    Route::get('pie-report/{id}', 'ServicesController@show');
-    Route::get('variable-report/{id}', 'ServicesController@rentVariable');
+    Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@show');
+    Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
     Route::get('/query','HomeController@query');
 
 });

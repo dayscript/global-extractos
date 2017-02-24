@@ -1,8 +1,13 @@
 
 <section class="personal-data">
-  <div class="content-wrapper border-container">
+  <div *ngIf="products == undefined" class="content-wrapper border-container">
+      <div>
+        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+      </div>
+  </div>
+  <div *ngIf="products != undefined" class="content-wrapper border-container">
       <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ products?.personal_data.name }}</em></div>
+          <div class="text-left"><strong>Nombre:</strong><em>{{ products?.personal_data.name }}</em></div>
       </div>
       <div class="col">
           <div class="text-left"><strong>Direccion:   </strong><em> {{ products?.personal_data.address }}</em></div>
@@ -21,7 +26,12 @@
 
 <section class="header">
   <h3> COMPOSICIÓN DEL PORTAFOLIO </h3>
-  <div class="content-wrapper border-container">
+  <div *ngIf="products == undefined" class="content-wrapper border-container">
+      <div>
+        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+      </div>
+  </div>
+  <div *ngIf="products != undefined" class="content-wrapper border-container">
     <div class="col">
         <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.variable_rent }} </div>
     </div>
@@ -44,7 +54,7 @@
         <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.funds_investment_colective }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> $200.000.000</div>
+        <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.gran_total }}</div>
     </div>
   </div>
   <table>
@@ -59,7 +69,7 @@
   </table>
 </section>
 <section class="diagram">
-  <div style="display: block">
+  <div *ngIf="pieChartData != undefined" style="display: block">
     <canvas class="diagram-pie" baseChart
             [data]="pieChartData"
             [labels]="pieChartLabels"

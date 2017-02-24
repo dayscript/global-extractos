@@ -28,7 +28,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map'], fun
                 }
                 Object.defineProperty(ProductsService.prototype, "Data", {
                     get: function () {
-                        return this.http.get('/api/pie-report/1013611324')
+                        return this.http.get('/api/pie-report/29539/2016-12-31')
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,
@@ -36,7 +36,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map'], fun
                 });
                 Object.defineProperty(ProductsService.prototype, "DataRenta", {
                     get: function () {
-                        return this.http.get('api/variable-report/1013611324')
+                        return this.http.get('api/variable-report/29539/2016-12-31')
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,

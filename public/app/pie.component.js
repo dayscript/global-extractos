@@ -26,8 +26,7 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function PieComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
-                    this.pieChartLabels = ['Renta Fija', 'Renta Variable', 'Fic\'s'];
-                    this.pieChartData = [300, 500, 100];
+                    this.pieChartLabels = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
                     this.pieChartType = 'pie';
                     this.pieChartOptions = {
                         legend: {
@@ -43,8 +42,19 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                         }
                     };
                     productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
+                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
                 }
+                PieComponent.prototype.setParamsPie = function () {
+                    var PieData = [];
+                    for (var item in this.products) {
+                        for (var elem in this.products[item]) {
+                            if (item == 'pie_porcents') {
+                                PieData.push(this.products[item][elem]);
+                            }
+                        }
+                    }
+                    this.pieChartData = PieData;
+                };
                 // events
                 PieComponent.prototype.chartClicked = function (e) {
                     //    console.log(e);

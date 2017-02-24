@@ -11,8 +11,8 @@ import 'rxjs/add/operator/map';
 })
 export class PieComponent {
   products:Observable<Array<string>>;
-  public pieChartLabels:string[] = ['Renta Fija', 'Renta Variable', 'Fic\'s'];
-  public pieChartData:number[] = [300, 500, 100];
+  public pieChartLabels:string[] = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
+  public pieChartData:number[];
   public pieChartType:string = 'pie';
   public pieChartOptions:any = {
           legend: {
@@ -36,8 +36,19 @@ export class PieComponent {
       .subscribe(
         data => { this.products = data},
         error => console.error(`Error: ${error}`),
-        () => console.log(this.products)
+        () => this.setParamsPie()
       );
+  }
+  public setParamsPie(){
+    var PieData = [];
+    for( var item in this.products){
+      for(var elem in this.products[item] ){
+          if(item == 'pie_porcents'){
+            PieData.push(this.products[item][elem]);
+          }
+        }
+    }
+    this.pieChartData = PieData;
   }
 
   // events
