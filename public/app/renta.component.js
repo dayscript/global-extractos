@@ -26,9 +26,6 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function RentaComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
-                    this.path = 'api/variable-report/1013611324';
-                    productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
                     productsService.DataRenta
                         .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
                 }
@@ -47,10 +44,7 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function RentaFijaComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
-                    this.path = 'api/variable-report/1013611324';
-                    productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
-                    productsService.DataRenta
+                    productsService.DataRentaFija
                         .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
                 }
                 RentaFijaComponent = __decorate([
@@ -68,11 +62,8 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function FicsComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
-                    this.path = 'api/variable-report/1013611324';
-                    productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
-                    productsService.DataRenta
-                        .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+                    productsService.DataFics
+                        .subscribe(function (data) { _this.fics = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.fics); });
                 }
                 FicsComponent = __decorate([
                     core_1.Component({
@@ -89,12 +80,15 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function OPCComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
-                    this.path = 'api/variable-report/1013611324';
-                    productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
-                    productsService.DataRenta
-                        .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+                    productsService.DataOPC
+                        .subscribe(function (data) { _this.opc = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.NotFound(); });
                 }
+                OPCComponent.prototype.NotFound = function () {
+                    if (this.opc.hasOwnProperty('Not_found')) {
+                        alert('No se encontraron resultados');
+                    }
+                    console.log(this.opc);
+                };
                 OPCComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',

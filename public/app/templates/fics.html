@@ -1,20 +1,25 @@
 
 <section class="personal-data">
-  <div class="content-wrapper border-container">
+  <div *ngIf="fics == undefined" class="content-wrapper border-container">
+      <div>
+        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+      </div>
+  </div>
+  <div *ngIf="fics != undefined" class="content-wrapper border-container">
       <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ products?.personal_data.name }}</em></div>
+          <div class="text-left"><strong>Nombre:   </strong><em>{{ fics?.personal_data.name }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Direccion:   </strong><em> {{ products?.personal_data.address }}</em></div>
+          <div class="text-left"><strong>Direccion:   </strong><em> {{ fics?.personal_data.address }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Ciudad:   </strong><em>{{ products?.personal_data.city }}</em></div>
+          <div class="text-left"><strong>Ciudad:   </strong><em>{{ fics?.personal_data.city }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ products?.personal_data.comercial_adviser }}</em></div>
+          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ fics?.personal_data.comercial_adviser }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Estado:   </strong><em> {{ products?.personal_data.state }}</em></div>
+          <div class="text-left"><strong>Estado:   </strong><em> {{ fics?.personal_data.state }}</em></div>
       </div>
   </div>
 </section>
@@ -24,18 +29,18 @@
     <thead>
       <th>FONDO</th><th>Encargo</th><th>F. Constitucion</th><th>F. Vncto.</th><th>Vlr. Unidad</th><th>Nro.Unidades</th><th>Saldo Pesos</th>
     </thead>
-      <tr *ngFor="let item of renta?.data">
-        <td>Varl</td>
-        <td>Varl</td>
-        <td>Varl</td>
-        <td>Varl</td>
-        <td>Varl</td>
-        <td>Varl</td>
-        <td>Varl</td>
+      <tr *ngFor="let item of fics?.data">
+        <td>{{ item.FONDO }}</td>
+        <td>{{ item.Encargo }}</td>
+        <td>{{ item.Fecha_Const | date: 'dd-MM-yyyy' }}</td>
+        <td>{{ item.Fecha_vto | date: 'dd-MM-yyyy'}}</td>
+        <td>{{ item.ValorUnidad | currency:'USD':true:'1.2-2' }}</td>
+        <td>{{ item.nro_unidades }}</td>
+        <td>{{ item.SaldoPesos | currency:'USD':true:'1.2-2' }}</td>
       </tr>
       <tr>
        <td colspan="6"><strong>Total Fics</strong></td>
-       <td colspan="1"><strong> $6.000.0000 </strong></td>
+       <td colspan="1"><strong> {{ fics?.total | currency:'USD':true:'1.2-2'}} </strong></td>
       </tr>
   </table>
 </section>

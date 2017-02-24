@@ -11,18 +11,9 @@ import 'rxjs/add/operator/map';
 
 })
 export class RentaComponent {
-	products:Observable<Array<string>>;
 	renta:Observable<Array<string>>;
-	path: string = 'api/variable-report/1013611324';
-
- 	constructor (private productsService: ProductsService){
-		productsService.Data
-      	.subscribe(
-	        data => { this.products = data},
-	        error => console.error(`Error: ${error}`),
-	        () => console.log(this.products)
-      	);
-  	productsService.DataRenta
+	constructor (private productsService: ProductsService){
+		productsService.DataRenta
   	.subscribe(
       data => { this.renta = data},
       error => console.error(`Error: ${error}`),
@@ -38,18 +29,9 @@ export class RentaComponent {
 
 })
 export class RentaFijaComponent {
-	products:Observable<Array<string>>;
 	renta:Observable<Array<string>>;
-	path: string = 'api/variable-report/1013611324';
-
- 	constructor (private productsService: ProductsService){
-		productsService.Data
-      	.subscribe(
-	        data => { this.products = data},
-	        error => console.error(`Error: ${error}`),
-	        () => console.log(this.products)
-      	);
-  	productsService.DataRenta
+	constructor (private productsService: ProductsService){
+		productsService.DataRentaFija
   	.subscribe(
       data => { this.renta = data},
       error => console.error(`Error: ${error}`),
@@ -65,23 +47,14 @@ export class RentaFijaComponent {
 
 })
 export class FicsComponent {
-	products:Observable<Array<string>>;
-	renta:Observable<Array<string>>;
-	path: string = 'api/variable-report/1013611324';
-
- 	constructor (private productsService: ProductsService){
-		productsService.Data
+	fics:Observable<Array<string>>;
+	constructor (private productsService: ProductsService){
+		productsService.DataFics
       	.subscribe(
-	        data => { this.products = data},
+	        data => { this.fics = data},
 	        error => console.error(`Error: ${error}`),
-	        () => console.log(this.products)
+	        () => console.log(this.fics)
       	);
-  	productsService.DataRenta
-  	.subscribe(
-      data => { this.renta = data},
-      error => console.error(`Error: ${error}`),
-      () => console.log(this.renta)
-  	);
 	}
 }
 
@@ -92,24 +65,25 @@ export class FicsComponent {
 
 })
 export class OPCComponent {
-	products:Observable<Array<string>>;
-	renta:Observable<Array<string>>;
-	path: string = 'api/variable-report/1013611324';
-
- 	constructor (private productsService: ProductsService){
-		productsService.Data
+	opc:Observable<Array<string>>;
+	constructor (private productsService: ProductsService){
+		productsService.DataOPC
       	.subscribe(
-	        data => { this.products = data},
+	        data => { this.opc = data},
 	        error => console.error(`Error: ${error}`),
-	        () => console.log(this.products)
+	        () => this.NotFound()
       	);
-  	productsService.DataRenta
-  	.subscribe(
-      data => { this.renta = data},
-      error => console.error(`Error: ${error}`),
-      () => console.log(this.renta)
-  	);
 	}
+
+  public NotFound(){
+    if(this.opc.hasOwnProperty('Not_found')){
+        alert('No se encontraron resultados')
+    }
+    console.log(this.opc)
+  }
+
+
+
 }
 
 @Component({
