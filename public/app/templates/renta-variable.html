@@ -1,20 +1,26 @@
 
 <section class="personal-data">
-  <div class="content-wrapper border-container">
+  <div *ngIf="renta == undefined" class="content-wrapper border-container">
+      <div>
+        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+      </div>
+  </div>
+  <div *ngIf="renta != undefined" class="content-wrapper border-container">
+
       <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ products?.personal_data.name }}</em></div>
+          <div class="text-left"><strong>Nombre:   </strong><em>{{ renta?.personal_data.name }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Direccion:   </strong><em> {{ products?.personal_data.address }}</em></div>
+          <div class="text-left"><strong>Direccion:   </strong><em> {{ renta?.personal_data.address }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Ciudad:   </strong><em>{{ products?.personal_data.city }}</em></div>
+          <div class="text-left"><strong>Ciudad:   </strong><em>{{ renta?.personal_data.city }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ products?.personal_data.comercial_adviser }}</em></div>
+          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ renta?.personal_data.comercial_adviser }}</em></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Estado:   </strong><em> {{ products?.personal_data.state }}</em></div>
+          <div class="text-left"><strong>Estado:   </strong><em> {{ renta?.personal_data.state }}</em></div>
       </div>
   </div>
 </section>
@@ -26,15 +32,15 @@
 			<th>Emisión</th><th>Cantidad</th><th>Fecha Compra</th><th>Precio</th><th>Valoración</th>
 		</thead>
 		  <tr *ngFor="let item of renta?.data">
-		    <td>{{item.emision}} </td>
-		    <td>{{item.cantidad}}</td>
-		    <td>{{item.fecha_de_compra}}</td>
-		    <td>{{item.precio}}</td>
-		    <td>{{item.valoracion}}</td>
+		    <td>{{item.strNombre}} </td>
+		    <td>{{item.dblCantidad}}</td>
+		    <td>{{item.FechaCompra | date: 'dd-MM-yyyy'}}</td>
+		    <td>{{item.Precio | currency:'USD':true:'1.2-2'}}</td>
+		    <td>{{item.Valoracion | currency:'USD':true:'1.2-2' }}</td>
 		  </tr>
 		  <tr>
 		   <td colspan="4"><strong>Total Renta Variable</strong></td>
-		   <td colspan="1"><strong> $6.000.0000 </strong></td>
+		   <td colspan="1"><strong> {{ renta?.total | currency:'USD':true:'1.2-2'}} </strong></td>
 		  </tr>
 	</table>
 </section>

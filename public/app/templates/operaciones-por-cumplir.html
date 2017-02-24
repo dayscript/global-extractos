@@ -1,30 +1,43 @@
 
 <section class="personal-data">
-  <div class="content-wrapper border-container">
-      <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ products?.personal_data.name }}</em></div>
+  <div *ngIf="opc == undefined" class="content-wrapper border-container">
+      <div>
+        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
       </div>
-      <div class="col">
-          <div class="text-left"><strong>Direccion:   </strong><em> {{ products?.personal_data.address }}</em></div>
+  </div>
+  <div *ngIf="opc != undefined" class="content-wrapper border-container">
+      <div *ngIf="!opc?.Not_found">
+        <div class="col">
+            <div class="text-left"><strong>Nombre:   </strong><em>{{ opc?.personal_data.name }}</em></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Direccion:   </strong><em> {{ opc?.personal_data.address }}</em></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Ciudad:   </strong><em>{{ opc?.personal_data.city }}</em></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ opc?.personal_data.comercial_adviser }}</em></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Estado:   </strong><em> {{ opc?.personal_data.state }}</em></div>
+        </div>
       </div>
-      <div class="col">
-          <div class="text-left"><strong>Ciudad:   </strong><em>{{ products?.personal_data.city }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ products?.personal_data.comercial_adviser }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Estado:   </strong><em> {{ products?.personal_data.state }}</em></div>
+      <div *ngIf="opc?.Not_found">
+        <div class="col">
+            <div class="text-left"><strong>{{ opc?.Not_found }}</strong></div>
+        </div>
       </div>
   </div>
 </section>
 
+<div *ngIf="!opc?.Not_found">
 <section class="table">
   <table style="width:100%">
     <thead>
       <th>Emisión</th><th>Tipo</th><th>F. Inicial</th><th>F. Final</th><th>Nominal</th><th>V. Operacion</th>
     </thead>
-      <tr *ngFor="let item of renta?.data">
+      <tr *ngFor="let item of opc?.data">
         <td>Varl</td>
         <td>Varl</td>
         <td>Varl</td>
@@ -34,7 +47,8 @@
       </tr>
       <tr>
         <td colspan="5"><strong>Total Operaciones de Liquidez</strong></td>
-        <td colspan="1"><strong> $6.000.0000 </strong></td>
+        <td colspan="1"><strong> {{ opc?.total }} </strong></td>
       </tr>
   </table>
 </section>
+</div>

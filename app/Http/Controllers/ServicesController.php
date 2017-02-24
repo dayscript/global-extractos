@@ -8,43 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($CodigoOyd,$Fecha)
     {
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
@@ -90,14 +54,11 @@ class ServicesController extends Controller
 
     }
 
-    function calcPorcent($a,$b,$c){
-      return $a*$b/$c;
-    }
-
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
      * @return \Illuminate\Http\Response
      */
     public function rentVariable($CodigoOyd,$Fecha)
@@ -106,153 +67,184 @@ class ServicesController extends Controller
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
+      $data = array();
+      $total = 0;
+      foreach ($stmt as $key => $item) {
+          $data[$key] = $item;
+          $total = $total + $item->Valoracion;
+      }
+
+
       $json = [ $CodigoOyd => [  'personal_data' => [
-                                              'name' => 'Ariel Fernando Acevedo Romero',
-                                              'city' => 'Bogotá',
-                                              'state'=>'Activo',
-                                              'address' => 'Calle 17 No -7-28',
-                                              'comercial_adviser' => 'Dayscript SAS'
+                                              'name' => $stmt[0]->Nombre,
+                                              'city' => $stmt[0]->Ciudad,
+                                              'state'=> $stmt[0]->Estado,
+                                              'address' => $stmt[0]->Direccion,
+                                              'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>[
-                                            0 =>[
-                                                  'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                                ],
-                                            1 =>[
-                                                  'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                            ],
-                                            2 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              3 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              4 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              5 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              6 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              7 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              8 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              9 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              10 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              11 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              12 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                              13 =>[
-                                                'emision' => ' Dayscript SAS',
-                                                  'cantidad'  => '30',
-                                                  'fecha_de_compra' => '02-ago-2016',
-                                                  'precio' => '$37.000',
-                                                  'valoracion' => '$1.000.000',
-                                              ],
-                                          ],
-                                ],
+                                  'data' =>$data,
+                                  'total' => $total,
+                              ],
               ];
-      return response()->json($json[$id]);
+
+      return response()->json($json[$CodigoOyd]);
+
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
+     * @return \Illuminate\Http\Response
+     */
+    public function rentFija($CodigoOyd,$Fecha)
+    {
+
+      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $data = array();
+      $total = 0;
+      foreach ($stmt as $key => $item) {
+          $data[$key] = $item;
+          $total = $total + $item->Valoracion;
+      }
+
+
+      $json = [ $CodigoOyd => [  'personal_data' => [
+                                              'name' => $stmt[0]->Nombre,
+                                              'city' => $stmt[0]->Ciudad,
+                                              'state'=> $stmt[0]->Estado,
+                                              'address' => $stmt[0]->Direccion,
+                                              'comercial_adviser' => $stmt[0]->Comercial
+                                          ],
+
+                                  'data' =>$data,
+                                  'total' => $total,
+                              ],
+              ];
+
+      return response()->json($json[$CodigoOyd]);
 
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
+     * @return \Illuminate\Http\Response
+     */
+    public function fics($CodigoOyd,$Fecha)
+    {
+
+      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $data = array();
+      $total = 0;
+      foreach ($stmt as $key => $item) {
+          $data[$key] = $item;
+          $total = $total + $item->SaldoPesos;
+      }
+
+
+      $json = [ $CodigoOyd => [  'personal_data' => [
+                                              'name' => $stmt[0]->Nombre,
+                                              'city' => $stmt[0]->Ciudad,
+                                              'state'=> $stmt[0]->Estado,
+                                              'address' => $stmt[0]->Direccion,
+                                              'comercial_adviser' => $stmt[0]->Comercial
+                                          ],
+
+                                  'data' =>$data,
+                                  'total' => $total,
+                              ],
+              ];
+
+      return response()->json($json[$CodigoOyd]);
+
+    }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function OPC($CodigoOyd,$Fecha)
     {
-        //
+
+      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+      if(count($stmt) == 0)
+        return response()->json(array('Not_found' => 'No se ha encontrado informacón'));
+      $data = array();
+      $total = 0;
+      foreach ($stmt as $key => $item) {
+          $data[$key] = $item;
+          $total = $total + $item->Valoracion;
+      }
+
+      $json = [ $CodigoOyd => [  'personal_data' => [
+                                              'name' => $stmt[0]->Nombre,
+                                              'city' => $stmt[0]->Ciudad,
+                                              'state'=> $stmt[0]->Estado,
+                                              'address' => $stmt[0]->Direccion,
+                                              'comercial_adviser' => $stmt[0]->Comercial
+                                          ],
+
+                                  'data' =>$data,
+                                  'total' => $total,
+                              ],
+              ];
+
+      return response()->json($json[$CodigoOyd]);
+
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function OPL($CodigoOyd,$Fecha)
     {
-        //
+
+      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+      if(count($stmt) == 0)
+        return response()->json(['No se ha encotrado información']);
+      $data = array();
+      $total = 0;
+      foreach ($stmt as $key => $item) {
+          $data[$key] = $item;
+          $total = $total + $item->Valoracion;
+      }
+
+      $json = [ $CodigoOyd => [  'personal_data' => [
+                                              'name' => $stmt[0]->Nombre,
+                                              'city' => $stmt[0]->Ciudad,
+                                              'state'=> $stmt[0]->Estado,
+                                              'address' => $stmt[0]->Direccion,
+                                              'comercial_adviser' => $stmt[0]->Comercial
+                                          ],
+
+                                  'data' =>$data,
+                                  'total' => $total,
+                              ],
+              ];
+
+      return response()->json($json[$CodigoOyd]);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+  function calcPorcent($a,$b,$c){
+    return $a*$b/$c;
+  }
+
+
 }

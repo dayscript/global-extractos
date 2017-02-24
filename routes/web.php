@@ -17,11 +17,16 @@ Route::get('/query','HomeController@query');
 Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
 
 
-
-
 Route::group(['prefix' => 'api'], function () {
     Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@show');
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
+    Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentFija');
+    Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@fics');
+    Route::get('opc-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPC');
+    Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
+
+
+
     Route::get('/query','HomeController@query');
 
 });

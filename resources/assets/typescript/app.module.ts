@@ -17,7 +17,7 @@ const appRoutes: Routes = [
     { path: 'report/:id',   redirectTo: 'report/:id/pie', pathMatch: 'full' },
     { path:'report/:id/pie', component:PieComponent },
     { path:'report/:id/renta-varible', component:RentaComponent },
-    { path:'report/1013611324/renta-fija', component:RentaFijaComponent },
+    { path:'report/:id/renta-fija', component:RentaFijaComponent },
     { path:'report/:id/fics', component:FicsComponent },
     { path:'report/:id/operaciones-por-cumplir', component:OPCComponent },
     { path:'report/:id/operaciones-de-liquidez', component:ODLComponent },
