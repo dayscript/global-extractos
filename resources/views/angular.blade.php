@@ -28,7 +28,6 @@
     <body class="container">
       <div class="content-wrapper content-align-center container">
         <my-app class="my-app-container">{{ HTML::image('/images/loading.webp', 'alt', array( 'width' => 250, 'height' => 250, 'text-aling'=>'center' )) }}
-
         </my-app>
       <div>
     </body>

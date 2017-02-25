@@ -26,6 +26,8 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                 function PieComponent(productsService) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
                     this.pieChartLabels = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
                     this.pieChartType = 'pie';
                     this.pieChartOptions = {

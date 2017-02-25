@@ -25,10 +25,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function angular($id = NULL)
+    public function angular($id = NULL,$date=NULL)
     {
       if(!is_null($id)){
-            return view('angular');
+            return view('angular',compact('id','date'));
       }
       return response()->json(['error' => 'Not authorized.'],403);
     }

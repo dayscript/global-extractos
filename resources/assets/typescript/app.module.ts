@@ -14,13 +14,13 @@ import { NotFoundPageComponent }   from './notfound.component';
 import { ChartsModule } from 'ng2-charts';
 
 const appRoutes: Routes = [
-    { path: 'report/:id',   redirectTo: 'report/:id/pie', pathMatch: 'full' },
-    { path:'report/:id/pie', component:PieComponent },
-    { path:'report/:id/renta-varible', component:RentaComponent },
-    { path:'report/:id/renta-fija', component:RentaFijaComponent },
-    { path:'report/:id/fics', component:FicsComponent },
-    { path:'report/:id/operaciones-por-cumplir', component:OPCComponent },
-    { path:'report/:id/operaciones-de-liquidez', component:ODLComponent },
+    { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/pie', pathMatch: 'full' },
+    { path:'report/:id/:date/pie', component:PieComponent },
+    { path:'report/:id/:date/renta-varible', component:RentaComponent },
+    { path:'report/:id/:date/renta-fija', component:RentaFijaComponent },
+    { path:'report/:id//:date/fics', component:FicsComponent },
+    { path:'report/:id/:date/operaciones-por-cumplir', component:OPCComponent },
+    { path:'report/:id/:date/operaciones-de-liquidez', component:ODLComponent },
  ];
 
 @Pipe({

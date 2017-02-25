@@ -44,13 +44,13 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
             }],
         execute: function() {
             appRoutes = [
-                { path: 'report/:id', redirectTo: 'report/:id/pie', pathMatch: 'full' },
-                { path: 'report/:id/pie', component: pie_component_1.PieComponent },
-                { path: 'report/:id/renta-varible', component: renta_component_1.RentaComponent },
-                { path: 'report/:id/renta-fija', component: renta_component_1.RentaFijaComponent },
-                { path: 'report/:id/fics', component: renta_component_1.FicsComponent },
-                { path: 'report/:id/operaciones-por-cumplir', component: renta_component_1.OPCComponent },
-                { path: 'report/:id/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
+                { path: 'report/:id/:date', redirectTo: 'report/:id/:date/pie', pathMatch: 'full' },
+                { path: 'report/:id/:date/pie', component: pie_component_1.PieComponent },
+                { path: 'report/:id/:date/renta-varible', component: renta_component_1.RentaComponent },
+                { path: 'report/:id/:date/renta-fija', component: renta_component_1.RentaFijaComponent },
+                { path: 'report/:id//:date/fics', component: renta_component_1.FicsComponent },
+                { path: 'report/:id/:date/operaciones-por-cumplir', component: renta_component_1.OPCComponent },
+                { path: 'report/:id/:date/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
             ];
             AsyncPipe = (function () {
                 function AsyncPipe() {
