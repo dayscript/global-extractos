@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
+import { ActivatedRoute  } from '@angular/router';
+
 
 import 'rxjs/add/operator/map';
 
@@ -10,6 +12,8 @@ import 'rxjs/add/operator/map';
   providers: [ProductsService],
 })
 export class PieComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
   products:Observable<Array<string>>;
   public pieChartLabels:string[] = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
   public pieChartData:number[];

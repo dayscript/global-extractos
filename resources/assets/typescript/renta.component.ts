@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ProductsService } from './personal.service';
 import { Observable }     from 'rxjs/Observable';
+import { ActivatedRoute  } from '@angular/router';
+
 
 import 'rxjs/add/operator/map';
 
@@ -66,8 +68,9 @@ export class FicsComponent {
 })
 export class OPCComponent {
 	opc:Observable<Array<string>>;
-	constructor (private productsService: ProductsService){
-		productsService.DataOPC
+  id:number;
+	constructor (private productsService: ProductsService, private activatedRoute: ActivatedRoute){
+    productsService.DataOPC
       	.subscribe(
 	        data => { this.opc = data},
 	        error => console.error(`Error: ${error}`),
@@ -75,7 +78,10 @@ export class OPCComponent {
       	);
 	}
 
+
+
   public NotFound(){
+
     if(this.opc.hasOwnProperty('Not_found')){
         alert('No se encontraron resultados')
     }
