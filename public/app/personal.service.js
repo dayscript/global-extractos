@@ -34,10 +34,21 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                         _this.id = +params['id'],
                             _this.date = params['date'];
                     });
+                    var regex = /^[0-9]+$/g;
+                    var date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
+                    if (date.exec(this.date) == null) {
+                        alert('El fecha no es valida');
+                    }
+                    if (regex.exec(this.id) == null) {
+                        alert('El codigo no es valido');
+                    }
+                    if (this.id == 0) {
+                        alert('Codigo no valido');
+                    }
                 }
                 Object.defineProperty(ProductsService.prototype, "Data", {
                     get: function () {
-                        return this.http.get('/api/pie-report/' + this.id + '/2016-12-31')
+                        return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,
@@ -45,7 +56,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                 });
                 Object.defineProperty(ProductsService.prototype, "DataRenta", {
                     get: function () {
-                        return this.http.get('api/variable-report/' + this.id + '/2016-12-31')
+                        return this.http.get('api/variable-report/' + this.id + '/' + this.date)
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,
@@ -53,7 +64,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                 });
                 Object.defineProperty(ProductsService.prototype, "DataRentaFija", {
                     get: function () {
-                        return this.http.get('api/fija-report/' + this.id + '/2016-12-31')
+                        return this.http.get('api/fija-report/' + this.id + '/' + this.date)
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,
@@ -61,7 +72,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                 });
                 Object.defineProperty(ProductsService.prototype, "DataFics", {
                     get: function () {
-                        return this.http.get('api/fics-report/' + this.id + '/2016-12-31')
+                        return this.http.get('api/fics-report/' + this.id + '/' + this.date)
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,
@@ -69,7 +80,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                 });
                 Object.defineProperty(ProductsService.prototype, "DataOPC", {
                     get: function () {
-                        return this.http.get('api/opc-report/' + this.id + '/2016-12-31')
+                        return this.http.get('api/opc-report/' + this.id + '/' + this.date)
                             .map(function (response) { return response.json(); });
                     },
                     enumerable: true,

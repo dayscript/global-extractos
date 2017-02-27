@@ -124,4 +124,9 @@ class HomeController extends Controller
     {
         echo 'ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ.ynLB6A0UvAuObZ0GnSsJH6zVaAeLWMgTEPyhFwkC2TY';
     }
+    public function NotFound()
+    {
+        return view('notfound');
+    }
+
 }
