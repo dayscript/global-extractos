@@ -26,9 +26,16 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
             function (_1) {}],
         execute: function() {
             RentaComponent = (function () {
-                function RentaComponent(productsService) {
+                function RentaComponent(productsService, activatedRoute) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.DataRenta
                         .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
                 }
@@ -38,15 +45,22 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         templateUrl: '/app/templates/renta-variable.html',
                         providers: [personal_service_1.ProductsService],
                     }), 
-                    __metadata('design:paramtypes', [personal_service_1.ProductsService])
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], RentaComponent);
                 return RentaComponent;
             }());
             exports_1("RentaComponent", RentaComponent);
             RentaFijaComponent = (function () {
-                function RentaFijaComponent(productsService) {
+                function RentaFijaComponent(productsService, activatedRoute) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.DataRentaFija
                         .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
                 }
@@ -56,15 +70,22 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         templateUrl: '/app/templates/renta-fija.html',
                         providers: [personal_service_1.ProductsService],
                     }), 
-                    __metadata('design:paramtypes', [personal_service_1.ProductsService])
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], RentaFijaComponent);
                 return RentaFijaComponent;
             }());
             exports_1("RentaFijaComponent", RentaFijaComponent);
             FicsComponent = (function () {
-                function FicsComponent(productsService) {
+                function FicsComponent(productsService, activatedRoute) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.DataFics
                         .subscribe(function (data) { _this.fics = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.fics); });
                 }
@@ -74,7 +95,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         templateUrl: '/app/templates/fics.html',
                         providers: [personal_service_1.ProductsService],
                     }), 
-                    __metadata('design:paramtypes', [personal_service_1.ProductsService])
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], FicsComponent);
                 return FicsComponent;
             }());
@@ -84,6 +105,12 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                     var _this = this;
                     this.productsService = productsService;
                     this.activatedRoute = activatedRoute;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.DataOPC
                         .subscribe(function (data) { _this.opc = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.NotFound(); });
                 }
@@ -105,10 +132,17 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
             }());
             exports_1("OPCComponent", OPCComponent);
             ODLComponent = (function () {
-                function ODLComponent(productsService) {
+                function ODLComponent(productsService, activatedRoute) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
+                    this.id = 123456;
+                    this.date = '2016-12-31';
                     this.path = 'api/variable-report/1013611324';
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.Data
                         .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
                     productsService.DataRenta
@@ -120,7 +154,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         templateUrl: '/app/templates/operaciones-de-liquidez.html',
                         providers: [personal_service_1.ProductsService],
                     }), 
-                    __metadata('design:paramtypes', [personal_service_1.ProductsService])
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], ODLComponent);
                 return ODLComponent;
             }());

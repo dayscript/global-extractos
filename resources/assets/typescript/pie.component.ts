@@ -35,7 +35,12 @@ export class PieComponent {
         }
 
 
-  constructor(private productsService: ProductsService) {
+  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute) {
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    )
     productsService.Data
       .subscribe(
         data => { this.products = data},
