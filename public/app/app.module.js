@@ -48,7 +48,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
                 { path: 'report/:id/:date/pie', component: pie_component_1.PieComponent },
                 { path: 'report/:id/:date/renta-varible', component: renta_component_1.RentaComponent },
                 { path: 'report/:id/:date/renta-fija', component: renta_component_1.RentaFijaComponent },
-                { path: 'report/:id//:date/fics', component: renta_component_1.FicsComponent },
+                { path: 'report/:id/:date/fics', component: renta_component_1.FicsComponent },
                 { path: 'report/:id/:date/operaciones-por-cumplir', component: renta_component_1.OPCComponent },
                 { path: 'report/:id/:date/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
             ];

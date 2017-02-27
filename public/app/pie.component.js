@@ -1,4 +1,4 @@
-System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map'], function(exports_1, context_1) {
+System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs/add/operator/map'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, personal_service_1;
+    var core_1, personal_service_1, router_1;
     var PieComponent;
     return {
         setters:[
@@ -20,12 +20,16 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
             function (personal_service_1_1) {
                 personal_service_1 = personal_service_1_1;
             },
+            function (router_1_1) {
+                router_1 = router_1_1;
+            },
             function (_1) {}],
         execute: function() {
             PieComponent = (function () {
-                function PieComponent(productsService) {
+                function PieComponent(productsService, activatedRoute) {
                     var _this = this;
                     this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
                     this.id = 123456;
                     this.date = '2016-12-31';
                     this.pieChartLabels = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
@@ -43,6 +47,10 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                             bodyFontSize: 50,
                         }
                     };
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
                     productsService.Data
                         .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
                 }
@@ -71,7 +79,7 @@ System.register(['@angular/core', './personal.service', 'rxjs/add/operator/map']
                         templateUrl: '/app/templates/pie-report.html',
                         providers: [personal_service_1.ProductsService],
                     }), 
-                    __metadata('design:paramtypes', [personal_service_1.ProductsService])
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], PieComponent);
                 return PieComponent;
             }());

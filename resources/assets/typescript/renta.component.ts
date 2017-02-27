@@ -13,8 +13,15 @@ import 'rxjs/add/operator/map';
 
 })
 export class RentaComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
 	renta:Observable<Array<string>>;
-	constructor (private productsService: ProductsService){
+	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    );
 		productsService.DataRenta
   	.subscribe(
       data => { this.renta = data},
@@ -31,8 +38,15 @@ export class RentaComponent {
 
 })
 export class RentaFijaComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
 	renta:Observable<Array<string>>;
-	constructor (private productsService: ProductsService){
+	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    );
 		productsService.DataRentaFija
   	.subscribe(
       data => { this.renta = data},
@@ -49,8 +63,15 @@ export class RentaFijaComponent {
 
 })
 export class FicsComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
 	fics:Observable<Array<string>>;
-	constructor (private productsService: ProductsService){
+	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    );
 		productsService.DataFics
       	.subscribe(
 	        data => { this.fics = data},
@@ -67,9 +88,15 @@ export class FicsComponent {
 
 })
 export class OPCComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
 	opc:Observable<Array<string>>;
-  id:number;
 	constructor (private productsService: ProductsService, private activatedRoute: ActivatedRoute){
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    );
     productsService.DataOPC
       	.subscribe(
 	        data => { this.opc = data},
@@ -99,11 +126,18 @@ export class OPCComponent {
 
 })
 export class ODLComponent {
+  id:number = 123456;
+  date:string = '2016-12-31';
 	products:Observable<Array<string>>;
 	renta:Observable<Array<string>>;
 	path: string = 'api/variable-report/1013611324';
 
- 	constructor (private productsService: ProductsService){
+ 	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    );
 		productsService.Data
       	.subscribe(
 	        data => { this.products = data},

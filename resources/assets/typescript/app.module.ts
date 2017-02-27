@@ -18,7 +18,7 @@ const appRoutes: Routes = [
     { path:'report/:id/:date/pie', component:PieComponent },
     { path:'report/:id/:date/renta-varible', component:RentaComponent },
     { path:'report/:id/:date/renta-fija', component:RentaFijaComponent },
-    { path:'report/:id//:date/fics', component:FicsComponent },
+    { path:'report/:id/:date/fics', component:FicsComponent },
     { path:'report/:id/:date/operaciones-por-cumplir', component:OPCComponent },
     { path:'report/:id/:date/operaciones-de-liquidez', component:ODLComponent },
  ];
