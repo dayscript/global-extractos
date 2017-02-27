@@ -14,7 +14,9 @@
 Route::get('/','HomeController@index');
 Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
 Route::get('/query','HomeController@query');
-Route::get('/.well-known/acme-challenge/jVnSQs-5qZUr97QNwqeS5YAvynIS02NkpjzvWfKL50M','HomeController@ssl');
+Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
+Route::get('/not-found','HomeController@NotFound');
+
 
 
 Route::group(['prefix' => 'api'], function () {
