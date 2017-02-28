@@ -64,6 +64,9 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         }
                     }
                     this.pieChartData = PieData;
+                    if (this.products.hasOwnProperty('access')) {
+                        console.log(this.products['access']);
+                    }
                 };
                 // events
                 PieComponent.prototype.chartClicked = function (e) {

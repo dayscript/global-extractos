@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
 import { ActivatedRoute  } from '@angular/router';
-
-
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -15,6 +13,7 @@ export class PieComponent {
   id:number = 123456;
   date:string = '2016-12-31';
   products:Observable<Array<string>>;
+  access:Observable<Array<string>>;
   public pieChartLabels:string[] = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
   public pieChartData:number[];
   public pieChartType:string = 'pie';
@@ -58,6 +57,11 @@ export class PieComponent {
         }
     }
     this.pieChartData = PieData;
+
+    if(this.products.hasOwnProperty('access')){
+        console.log(this.products['access']);
+    }
+
   }
 
   // events

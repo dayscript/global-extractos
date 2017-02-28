@@ -86,6 +86,14 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '@an
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(ProductsService.prototype, "Cache", {
+                    get: function () {
+                        return this.http.get('api/cache/' + this.id)
+                            .map(function (response) { return response.json(); });
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 ProductsService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http, router_1.ActivatedRoute])

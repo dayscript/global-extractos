@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { ProductsService } from './personal.service';
 import { Observable }     from 'rxjs/Observable';
 import { ActivatedRoute  } from '@angular/router';
-
-
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -16,13 +14,21 @@ export class RentaComponent {
   id:number = 123456;
   date:string = '2016-12-31';
 	renta:Observable<Array<string>>;
+  access:any;
 	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
       params=>{ this.id = +params['id'],
                 this.date = params['date']
               }
     );
-		productsService.DataRenta
+    this.productsService.Cache
+    .subscribe(
+      data => { this.access = data},
+      error => console.error(`Error: ${error}`),
+      () => console.log(this.access)
+    );
+
+    productsService.DataRenta
   	.subscribe(
       data => { this.renta = data},
       error => console.error(`Error: ${error}`),
@@ -38,6 +44,7 @@ export class RentaComponent {
 
 })
 export class RentaFijaComponent {
+  access:any;
   id:number = 123456;
   date:string = '2016-12-31';
 	renta:Observable<Array<string>>;
@@ -46,6 +53,12 @@ export class RentaFijaComponent {
       params=>{ this.id = +params['id'],
                 this.date = params['date']
               }
+    );
+    this.productsService.Cache
+    .subscribe(
+      data => { this.access = data},
+      error => console.error(`Error: ${error}`),
+      () => console.log(this.access)
     );
 		productsService.DataRentaFija
   	.subscribe(
@@ -63,6 +76,7 @@ export class RentaFijaComponent {
 
 })
 export class FicsComponent {
+  access:any;
   id:number = 123456;
   date:string = '2016-12-31';
 	fics:Observable<Array<string>>;
@@ -71,6 +85,12 @@ export class FicsComponent {
       params=>{ this.id = +params['id'],
                 this.date = params['date']
               }
+    );
+    this.productsService.Cache
+    .subscribe(
+      data => { this.access = data},
+      error => console.error(`Error: ${error}`),
+      () => console.log(this.access)
     );
 		productsService.DataFics
       	.subscribe(
@@ -88,6 +108,7 @@ export class FicsComponent {
 
 })
 export class OPCComponent {
+  access:any;
   id:number = 123456;
   date:string = '2016-12-31';
 	opc:Observable<Array<string>>;
@@ -96,6 +117,12 @@ export class OPCComponent {
       params=>{ this.id = +params['id'],
                 this.date = params['date']
               }
+    );
+    this.productsService.Cache
+    .subscribe(
+      data => { this.access = data},
+      error => console.error(`Error: ${error}`),
+      () => console.log(this.access)
     );
     productsService.DataOPC
       	.subscribe(
@@ -126,6 +153,7 @@ export class OPCComponent {
 
 })
 export class ODLComponent {
+  access:any;
   id:number = 123456;
   date:string = '2016-12-31';
 	products:Observable<Array<string>>;
@@ -137,6 +165,12 @@ export class ODLComponent {
       params=>{ this.id = +params['id'],
                 this.date = params['date']
               }
+    );
+    this.productsService.Cache
+    .subscribe(
+      data => { this.access = data},
+      error => console.error(`Error: ${error}`),
+      () => console.log(this.access)
     );
 		productsService.Data
       	.subscribe(
