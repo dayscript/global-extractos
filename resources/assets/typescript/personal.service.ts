@@ -56,5 +56,9 @@ export class ProductsService {
              .map( response => response.json() );
 
   }
+  get Cache():Observable<any>{
+    return this.http.get('api/cache/'+this.id)
+             .map( response => response.json() );
+  }
 
 }

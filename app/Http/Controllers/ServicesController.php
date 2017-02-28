@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use File;
 
 
 class ServicesController extends Controller
@@ -11,6 +12,9 @@ class ServicesController extends Controller
 
     public function show($CodigoOyd,$Fecha)
     {
+      $cc = $CodigoOyd;
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       #dd($stmt);
@@ -25,6 +29,22 @@ class ServicesController extends Controller
       #$porcent = $a*$b/$c;
       #dd($porcent);
       #a+b/c
+
+      $items = array('TotalRV','TotalRF','TotalCarteras','TotalLiquidez','TotalPorCumplir');
+      $access = array();
+      foreach ($items as $key => $value) {
+        if($stmt[0]->$value < 1){
+          $access[$value] = array('val'=>0);
+        }else{
+          $access[$value] = array('val'=>1);
+        }
+      }
+
+      $path = storage_path().'/'.$cc.'.json';
+
+      if(!File::exists($path)) {
+          File::put( storage_path().'/json/'.$cc.'.json',json_encode($access));
+      }
 
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
@@ -48,8 +68,13 @@ class ServicesController extends Controller
                                                      'RF'=> substr(self::calcPorcent( $stmt[0]->TotalRF,100,$piedata ),0,5),
                                                      'FICS' => substr(self::calcPorcent($found,100,$piedata ),0,5)
                                                    ],
+                                   'access' => $access
+
                                 ],
               ];
+
+
+
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -63,6 +88,8 @@ class ServicesController extends Controller
      */
     public function rentVariable($CodigoOyd,$Fecha)
     {
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
@@ -100,7 +127,8 @@ class ServicesController extends Controller
      */
     public function rentFija($CodigoOyd,$Fecha)
     {
-
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
@@ -137,7 +165,8 @@ class ServicesController extends Controller
      */
     public function fics($CodigoOyd,$Fecha)
     {
-
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
@@ -175,6 +204,8 @@ class ServicesController extends Controller
      */
     public function OPC($CodigoOyd,$Fecha)
     {
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
@@ -214,6 +245,8 @@ class ServicesController extends Controller
     public function OPL($CodigoOyd,$Fecha)
     {
 
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
@@ -241,9 +274,26 @@ class ServicesController extends Controller
       return response()->json($json[$CodigoOyd]);
 
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
+     * @return \Illuminate\Http\Response
+     */
+    public function CACHE($cc)
+    {
+
+      $path = storage_path()."/json/".$cc.".json";
+      $json[$cc] = json_decode(file_get_contents($path), true);
+      return response()->json($json[$cc]);
+
+    }
 
   function calcPorcent($a,$b,$c){
+    $c = ( $c != 0 )? $c:'1';
     return $a*$b/$c;
+
   }
 
 
