@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@fics');
     Route::get('opc-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPC');
     Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
+    Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');
     Route::get('cache/{CodigoOyd}', 'ServicesController@CACHE');
 
 

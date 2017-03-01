@@ -274,6 +274,38 @@ class ServicesController extends Controller
       return response()->json($json[$CodigoOyd]);
 
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $CodigoOyd
+     * @param  int  $Fecha
+     * @return \Illuminate\Http\Response
+     */
+    public function ClientReport($CodigoOyd,$Fecha_start,$Fecha_end)
+    {
+
+      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = trim($CodigoOyd[0]->lngID);
+      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+      if(count($stmt) == 0)
+        return response()->json(['No se ha encotrado información']);
+
+      foreach ($stmt as $key => $value) {
+          $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
+          $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
+          $resutl[$key]['ACargo'] = $value->ACargo;
+          $resutl[$key]['AFavor'] = $value->AFavor;
+          $resutl[$key]['Saldo'] = $value->Saldo;
+        }
+
+
+      $json = [ $CodigoOyd => ['data' =>$resutl]];
+
+      return response()->json($json[$CodigoOyd]);
+
+    }
     /**
      * Display the specified resource.
      *

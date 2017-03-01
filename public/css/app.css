@@ -70,6 +70,65 @@ table {
   margin-top: 20px;
 }
 
+.report-table {
+  border: solid 1px;
+}
+
+.report-table thead {
+  border: solid 1px;
+}
+
+.report-table th {
+  border: solid 1px;
+  text-align: center;
+}
+
+.report-table td {
+  border: solid 1px;
+}
+
+.report-table th.numero {
+  width: 100px;
+}
+
+.report-table th.detalle {
+  width: 500px;
+}
+
+.report-table td.numero {
+  width: 100px;
+  font-size: 10px;
+  text-align: right;
+}
+
+.report-table td.detalle {
+  width: 500px;
+  font-size: 10px;
+}
+
+.report-table td.cargo {
+  text-align: right;
+  font-size: 10px;
+}
+
+.report-table td.favor {
+  text-align: right;
+  font-size: 10px;
+}
+
+.report-table td.saldo {
+  text-align: right;
+  font-size: 10px;
+}
+
+.form-search {
+  margin: 15px 0 15px 0;
+}
+
+input {
+  margin: 0 5px 0 5px !important;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
