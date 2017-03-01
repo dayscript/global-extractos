@@ -9,6 +9,7 @@ import { ActivatedRoute  } from '@angular/router';
 export class ProductsService {
   id:any;
   date:any;
+  date_end:any;
 
 
   constructor(private http: Http, private activatedRoute:ActivatedRoute) {

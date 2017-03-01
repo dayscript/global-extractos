@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', '@angular/http', '@angular/router', './app.component', './pie.component', './renta.component', './notfound.component', 'ng2-charts'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', '@angular/http', '@angular/router', "@angular/forms", './app.component', './pie.component', './renta.component', './notfound.component', 'ng2-charts'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, http_1, core_2, router_1, app_component_1, pie_component_1, renta_component_1, notfound_component_1, ng2_charts_1;
+    var core_1, platform_browser_1, http_1, core_2, router_1, forms_1, app_component_1, pie_component_1, renta_component_1, notfound_component_1, ng2_charts_1;
     var appRoutes, AsyncPipe, KeysPipe, AppModule;
     return {
         setters:[
@@ -26,6 +26,9 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             },
             function (app_component_1_1) {
                 app_component_1 = app_component_1_1;
@@ -91,7 +94,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
                 }
                 AppModule = __decorate([
                     core_1.NgModule({
-                        imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes)],
+                        imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
                         declarations: [app_component_1.AppComponent, KeysPipe, notfound_component_1.NotFoundPageComponent, renta_component_1.OPCComponent, renta_component_1.ODLComponent, renta_component_1.FicsComponent, pie_component_1.PieComponent, renta_component_1.RentaComponent, renta_component_1.RentaFijaComponent, AsyncPipe],
                         bootstrap: [app_component_1.AppComponent]
                     }), 

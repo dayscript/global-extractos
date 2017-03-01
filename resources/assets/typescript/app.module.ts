@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { Component, Pipe , PipeTransform } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {FormsModule} from "@angular/forms";
+
 
 import { AppComponent }   from './app.component';
 import { PieComponent }   from './pie.component';
@@ -46,7 +48,7 @@ export class KeysPipe implements PipeTransform {
 }
 
 @NgModule({
-  imports:      [BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes)],
+  imports:      [BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
   declarations: [ AppComponent,KeysPipe,NotFoundPageComponent,OPCComponent,ODLComponent,FicsComponent,PieComponent,RentaComponent,RentaFijaComponent,AsyncPipe],
   bootstrap:    [ AppComponent ]
 })

@@ -81,6 +81,10 @@
 </section>
 <section class="diagram">
   <div *ngIf="pieChartData != undefined" style="display: block">
+    <button  (click)="show_pie()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Diagrama</button>
+    <button  (click)="show_extrac()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Extracto Detallado</button>
+  </div>
+  <div *ngIf="pieChartData != undefined && showPie == 1" style="display: block">
     <canvas class="diagram-pie" baseChart
             [data]="pieChartData"
             [labels]="pieChartLabels"
@@ -89,5 +93,31 @@
             (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)">
     </canvas>
+  </div>
+
+  <div *ngIf="pieChartData != undefined && showExtrac == 1" style="display: block">
+    <form class="form-search">
+        <label for="name">Desde:</label>
+        <input type="text" [(ngModel)]="date" name="date" required>
+        <label for="name">Hasta:</label>
+        <input type="text" [(ngModel)]="date_end" name="date_end" required>
+        <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">buscar</button>
+    </form>
+    <table *ngIf="dataExtrac != undefined " style="width:100%" class="report-table">
+      <thead>
+        <th class="numero" >Numero</th>
+        <th class="detalle">Detalle</th>
+        <th>A. Cargo</th>
+        <th>A. Favor</th>
+        <th>Saldo</th>
+      </thead>
+        <tr *ngFor="let item of dataExtrac?.data">
+          <td class="numero" >{{item.strNumero}}</td>
+          <td class="detalle" >{{item.strDetalle1}}</td>
+          <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
+          <td class="favor" >{{item.AFavor | currency:'USD':true:'1.2-2'}}</td>
+          <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
+        </tr>
+    </table>
   </div>
 </section>
