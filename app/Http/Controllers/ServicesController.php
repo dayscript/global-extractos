@@ -12,7 +12,14 @@ class ServicesController extends Controller
 
     public function show($CodigoOyd,$Fecha)
     {
+      $fileName =
       $cc = $CodigoOyd;
+      $path1 = storage_path()."/json/".$cc."-pie-report.json";
+      if(File::exists($path1)) {
+          $json = json_decode(file_get_contents($path1), true);
+          return response()->json($json);
+      }
+
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
@@ -39,7 +46,6 @@ class ServicesController extends Controller
           $access[$value] = array('val'=>1);
         }
       }
-
       $path = storage_path().'/'.$cc.'.json';
 
       if(!File::exists($path)) {
@@ -74,7 +80,7 @@ class ServicesController extends Controller
               ];
 
 
-
+      File::put( $path1 ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -88,17 +94,31 @@ class ServicesController extends Controller
      */
     public function rentVariable($CodigoOyd,$Fecha)
     {
+      $cc = $CodigoOyd;
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
+
+      $path = storage_path()."/json/".$cc."-variable-report.json";
+      if(File::exists($path)) {
+          $json = json_decode(file_get_contents($path), true);
+          return response()->json($json);
+      }
+
 
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
       $data = array();
       $total = 0;
+
       foreach ($stmt as $key => $item) {
+
           $data[$key] = $item;
           $total = $total + $item->Valoracion;
+          $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
+          $data[$key]->Precio = number_format($item->Precio,2);
+          $data[$key]->Valoracion = number_format($item->Valoracion,2);
+
       }
 
 
@@ -111,10 +131,11 @@ class ServicesController extends Controller
                                           ],
 
                                   'data' =>$data,
-                                  'total' => $total,
+                                  'total' => number_format($total,2),
                               ],
               ];
 
+      File::put( $path ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -127,8 +148,18 @@ class ServicesController extends Controller
      */
     public function rentFija($CodigoOyd,$Fecha)
     {
+
+      $cc = $CodigoOyd;
+      $path = storage_path()."/json/".$cc."-fija-report.json";
+      if(File::exists($path)) {
+          $json = json_decode(file_get_contents($path), true);
+          return response()->json($json);
+      }
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
+
+
+
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
@@ -136,6 +167,15 @@ class ServicesController extends Controller
       foreach ($stmt as $key => $item) {
           $data[$key] = $item;
           $total = $total + $item->Valoracion;
+          $data[$key]->Precio = number_format($item->Precio,2);;
+          $data[$key]->Valoracion = number_format($item->Valoracion,2);;
+          $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
+          $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
+          $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;
+
+
+
+
       }
 
 
@@ -148,10 +188,10 @@ class ServicesController extends Controller
                                           ],
 
                                   'data' =>$data,
-                                  'total' => $total,
+                                  'total' => number_format($total,2),
                               ],
               ];
-
+      File::put( $path ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -165,15 +205,27 @@ class ServicesController extends Controller
      */
     public function fics($CodigoOyd,$Fecha)
     {
+      $cc = $CodigoOyd;
+      $path = storage_path()."/json/".$cc."-fics-report.json";
+      if(File::exists($path)) {
+          $json = json_decode(file_get_contents($path), true);
+          return response()->json($json);
+      }
+
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
       $total = 0;
+    #dd($stmt);
       foreach ($stmt as $key => $item) {
           $data[$key] = $item;
           $total = $total + $item->SaldoPesos;
+          $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
+          $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
+          $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
+          $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
       }
 
 
@@ -186,10 +238,10 @@ class ServicesController extends Controller
                                           ],
 
                                   'data' =>$data,
-                                  'total' => $total,
+                                  'total' => number_format($total,2),
                               ],
               ];
-
+      File::put( $path ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -317,7 +369,7 @@ class ServicesController extends Controller
     {
 
       $path = storage_path()."/json/".$cc.".json";
-      $json[$cc] = json_decode(file_get_contents($path), true);
+      $json[$cc]['access'] = json_decode(file_get_contents($path), true);
       return response()->json($json[$cc]);
 
     }

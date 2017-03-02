@@ -23,7 +23,7 @@ export class RentaComponent {
     );
     this.productsService.Cache
     .subscribe(
-      data => { this.access = data},
+      data => { this.access = data.access},
       error => console.error(`Error: ${error}`),
       () => console.log(this.access)
     );
@@ -56,7 +56,7 @@ export class RentaFijaComponent {
     );
     this.productsService.Cache
     .subscribe(
-      data => { this.access = data},
+      data => { this.access = data.access},
       error => console.error(`Error: ${error}`),
       () => console.log(this.access)
     );
@@ -88,7 +88,7 @@ export class FicsComponent {
     );
     this.productsService.Cache
     .subscribe(
-      data => { this.access = data},
+      data => { this.access = data.access},
       error => console.error(`Error: ${error}`),
       () => console.log(this.access)
     );
@@ -120,7 +120,7 @@ export class OPCComponent {
     );
     this.productsService.Cache
     .subscribe(
-      data => { this.access = data},
+      data => { this.access = data.access},
       error => console.error(`Error: ${error}`),
       () => console.log(this.access)
     );
@@ -168,7 +168,7 @@ export class ODLComponent {
     );
     this.productsService.Cache
     .subscribe(
-      data => { this.access = data},
+      data => { this.access = data.access},
       error => console.error(`Error: ${error}`),
       () => console.log(this.access)
     );
