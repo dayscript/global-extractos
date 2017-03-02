@@ -44,28 +44,28 @@
   </div>
   <div *ngIf="products != undefined" class="content-wrapper border-container">
     <div class="col">
-        <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.variable_rent }} </div>
+        <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.variable_rent  }} </div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Renta fija:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.static_rent }}</div>
+        <div class="text-left" ><strong>Renta fija:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.static_rent }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Operaciones de liquidez:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.operation_liquidity }}</div>
+        <div class="text-left" ><strong>Operaciones de liquidez:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.operation_liquidity }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">{{ products?.composition_portfolio.operation_comply }}</div>
+        <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">$ {{ products?.composition_portfolio.operation_comply }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.avaluable_balance }}</div>
+        <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.avaluable_balance }}</div>
     </div>
     <div class="col">
-        <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.total_administration_account }}</div>
+        <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.total_administration_account }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.funds_investment_colective }}</div>
+        <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.funds_investment_colective }}</div>
     </div>
     <div class="col">
-        <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> {{ products?.composition_portfolio.gran_total }}</div>
+        <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.gran_total }}</div>
     </div>
   </div>
   <table>

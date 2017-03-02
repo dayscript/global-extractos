@@ -43,15 +43,15 @@
       <tr *ngFor="let item of fics?.data">
         <td>{{ item.FONDO }}</td>
         <td>{{ item.Encargo }}</td>
-        <td>{{ item.Fecha_Const | date: 'dd-MM-yyyy' }}</td>
-        <td>{{ item.Fecha_vto | date: 'dd-MM-yyyy'}}</td>
-        <td>{{ item.ValorUnidad | currency:'USD':true:'1.2-2' }}</td>
+        <td>{{ item.Fecha_Const  }}</td>
+        <td>{{ item.Fecha_vto }}</td>
+        <td>$ {{ item.ValorUnidad  }}</td>
         <td>{{ item.nro_unidades }}</td>
-        <td>{{ item.SaldoPesos | currency:'USD':true:'1.2-2' }}</td>
+        <td>$ {{ item.SaldoPesos  }}</td>
       </tr>
       <tr>
        <td colspan="6"><strong>Total Fics</strong></td>
-       <td colspan="1"><strong> {{ fics?.total | currency:'USD':true:'1.2-2'}} </strong></td>
+       <td colspan="1"><strong>$ {{ fics?.total }} </strong></td>
       </tr>
   </table>
 </section>

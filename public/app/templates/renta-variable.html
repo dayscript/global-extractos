@@ -45,13 +45,13 @@
 		  <tr *ngFor="let item of renta?.data">
 		    <td>{{item.strNombre}} </td>
 		    <td>{{item.dblCantidad}}</td>
-		    <td>{{item.FechaCompra | date: 'dd-MM-yyyy'}}</td>
-		    <td>{{item.Precio | currency:'USD':true:'1.2-2'}}</td>
-		    <td>{{item.Valoracion | currency:'USD':true:'1.2-2' }}</td>
+		    <td>{{item.FechaCompra }}</td>
+		    <td>$ {{item.Precio }}</td>
+		    <td>$ {{item.Valoracion }}</td>
 		  </tr>
 		  <tr>
 		   <td colspan="4"><strong>Total Renta Variable</strong></td>
-		   <td colspan="1"><strong> {{ renta?.total | currency:'USD':true:'1.2-2'}} </strong></td>
+		   <td colspan="1"><strong> $ {{ renta?.total}} </strong></td>
 		  </tr>
 	</table>
 </section>
