@@ -15,7 +15,6 @@ class HomeController extends Controller
      */
     public function index($id = NULL)
     {
-
       return view('welcome');
 
     }
