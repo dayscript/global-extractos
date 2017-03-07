@@ -17,7 +17,7 @@ export class PieComponent {
   date_end:string;
   products:Observable<Array<string>>;
   access:Observable<Array<string>>;
-  dataExtrac:Observable<Array<string>>;
+  
 
   showPie : number;
   showExtrac : number;
@@ -30,17 +30,29 @@ export class PieComponent {
           legend: {
                   display: true,
                   labels: {
-                      fontSize:50,
-                      boxWidth:60,
-                      padding:40
+                      fontSize:30,
+                      boxWidth:30,
+                      padding:30
 
-                  }
+                  },
               },
           tooltips:
-          {
-            bodyFontSize: 50,
-          }
+                  {
+                    bodyFontSize: 50,
+                  },
         }
+
+  /*public pieCharColors:Array<any> = [
+    {
+      backgroundColor: '#000000',
+    },
+    {
+      backgroundColor: 'rgba(0, 102, 255)',
+    },
+    {
+      backgroundColor: 'rgba(204, 153, 51)',
+    }
+  ]*/
 
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
@@ -97,16 +109,7 @@ export class PieComponent {
     this.showPie = 0;
   }
 
-  search(){
-    this.http.get('api/client-report/'+this.id+'/'+this.date+'/'+this.date_end)
-                      .map( response => response.json() )
-                      .subscribe(
-                        data => { this.dataExtrac = data},
-                        error => console.error(`Error: ${error}`),
-                        () => console.log(this.dataExtrac)
-                      );
 
-  }
 
 
 }

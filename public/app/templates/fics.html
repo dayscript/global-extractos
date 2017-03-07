@@ -4,9 +4,10 @@
     <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Portafolio </button>
     <button *ngIf="access?.TotalRV.val" routerLink="/report/{{id}}/{{date}}/renta-varible" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Varible</button>
     <button *ngIf="access?.TotalRF.val" routerLink="/report/{{id}}/{{date}}/renta-fija" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fija</button>
-    <button *ngIf="access?.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fic´s</button>
+    <button *ngIf="access?.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Fondos de inversión</button>
     <button *ngIf="access?.TotalLiquidez.val" routerLink="/report/{{id}}/{{date}}/operaciones-por-cumplir" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones por cumplir</button>
     <button *ngIf="access?.TotalPorCumplir.val" routerLink="/report/{{id}}/{{date}}/operaciones-de-liquidez" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones de liquidez</button>
+    <button routerLink="/report/{{id}}/{{date}}/movimientos" class="btn btn-sm align-middle btn-outline-secondary" type="button">Movimientos</button>
   </form>
 </nav>
 </div>
@@ -18,23 +19,25 @@
   </div>
   <div *ngIf="fics != undefined" class="content-wrapper border-container">
       <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ fics?.personal_data.name }}</em></div>
+          <div class="text-left"><strong>Nombre:   </strong><span>{{ fics?.personal_data.name }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Direccion:   </strong><em> {{ fics?.personal_data.address }}</em></div>
+          <div class="text-left"><strong>Direccion:   </strong><span> {{ fics?.personal_data.address }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Ciudad:   </strong><em>{{ fics?.personal_data.city }}</em></div>
+          <div class="text-left"><strong>Ciudad:   </strong><span>{{ fics?.personal_data.city }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ fics?.personal_data.comercial_adviser }}</em></div>
+          <div class="text-left"><strong>Asessor comercial:   </strong><span>{{ fics?.personal_data.comercial_adviser }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Estado:   </strong><em> {{ fics?.personal_data.state }}</em></div>
+          <div class="text-left"><strong>Estado:   </strong><span> {{ fics?.personal_data.state }}</span></div>
       </div>
   </div>
 </section>
-
+<section class="header">
+  <h3>FONDOS DE INVERSIÓN COLECTIVA</h3>
+</section>
 <section class="table">
   <table style="width:100%">
     <thead>

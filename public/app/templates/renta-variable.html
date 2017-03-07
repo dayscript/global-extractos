@@ -1,57 +1,61 @@
-<div class=" row wrapper-content">
-  <nav class="navbar navbar-light bg-faded">
-  <form class="form-inline" >
-    <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Portafolio </button>
-    <button *ngIf="access?.TotalRV.val" routerLink="/report/{{id}}/{{date}}/renta-varible" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Varible</button>
-    <button *ngIf="access?.TotalRF.val" routerLink="/report/{{id}}/{{date}}/renta-fija" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fija</button>
-    <button *ngIf="access?.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fic´s</button>
-    <button *ngIf="access?.TotalLiquidez.val" routerLink="/report/{{id}}/{{date}}/operaciones-por-cumplir" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones por cumplir</button>
-    <button *ngIf="access?.TotalPorCumplir.val" routerLink="/report/{{id}}/{{date}}/operaciones-de-liquidez" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones de liquidez</button>
-  </form>
-</nav>
-</div>
-<section class="personal-data">
-  <div *ngIf="renta == undefined" class="content-wrapper border-container">
-      <div>
-        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
-      </div>
+<div class="page-rv">
+  <div class=" row wrapper-content">
+    <nav class="navbar navbar-light bg-faded">
+    <form class="form-inline" >
+      <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Portafolio </button>
+      <button *ngIf="access?.TotalRV.val" routerLink="/report/{{id}}/{{date}}/renta-varible" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Varible</button>
+      <button *ngIf="access?.TotalRF.val" routerLink="/report/{{id}}/{{date}}/renta-fija" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fija</button>
+      <button *ngIf="access?.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Fondos de inversión</button>
+      <button *ngIf="access?.TotalLiquidez.val" routerLink="/report/{{id}}/{{date}}/operaciones-por-cumplir" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones por cumplir</button>
+      <button *ngIf="access?.TotalPorCumplir.val" routerLink="/report/{{id}}/{{date}}/operaciones-de-liquidez" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones de liquidez</button>
+      <button routerLink="/report/{{id}}/{{date}}/movimientos" class="btn btn-sm align-middle btn-outline-secondary" type="button">Movimientos</button>
+    </form>
+  </nav>
   </div>
-  <div *ngIf="renta != undefined" class="content-wrapper border-container">
+  <section class="personal-data">
+    <div *ngIf="renta == undefined" class="content-wrapper border-container">
+        <div>
+          <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+        </div>
+    </div>
+    <div *ngIf="renta != undefined" class="content-wrapper border-container">
 
-      <div class="col">
-          <div class="text-left"><strong>Nombre:   </strong><em>{{ renta?.personal_data.name }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Direccion:   </strong><em> {{ renta?.personal_data.address }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Ciudad:   </strong><em>{{ renta?.personal_data.city }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Asessor comercial:   </strong><em>{{ renta?.personal_data.comercial_adviser }}</em></div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Estado:   </strong><em> {{ renta?.personal_data.state }}</em></div>
-      </div>
-  </div>
-</section>
-<section class="header">
-</section>
-<section class="table">
-	<table style="width:100%">
-		<thead>
-			<th>Emisión</th><th>Cantidad</th><th>Fecha Compra</th><th>Precio</th><th>Valoración</th>
-		</thead>
-		  <tr *ngFor="let item of renta?.data">
-		    <td>{{item.strNombre}} </td>
-		    <td>{{item.dblCantidad}}</td>
-		    <td>{{item.FechaCompra }}</td>
-		    <td>$ {{item.Precio }}</td>
-		    <td>$ {{item.Valoracion }}</td>
-		  </tr>
-		  <tr>
-		   <td colspan="4"><strong>Total Renta Variable</strong></td>
-		   <td colspan="1"><strong> $ {{ renta?.total}} </strong></td>
-		  </tr>
-	</table>
-</section>
+        <div class="col">
+            <div class="text-left"><strong>Nombre:   </strong><span>{{ renta?.personal_data.name }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Direccion:   </strong><span> {{ renta?.personal_data.address }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Ciudad:   </strong><span>{{ renta?.personal_data.city }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Asessor comercial:   </strong><span>{{ renta?.personal_data.comercial_adviser }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Estado:   </strong><span> {{ renta?.personal_data.state }}</span></div>
+        </div>
+    </div>
+  </section>
+  <section class="header">
+    <h3>PORTAFOLIO DE RENTA VARIABLE</h3>
+  </section>
+  <section class="table">
+  	<table style="width:100%">
+  		<thead>
+  			<th>Emisión</th><th>Cantidad</th><th>Fecha Compra</th><th>Precio</th><th>Valoración</th>
+  		</thead>
+  		  <tr *ngFor="let item of renta?.data">
+  		    <td>{{item.strNombre}} </td>
+  		    <td>{{item.dblCantidad}}</td>
+  		    <td>{{item.FechaCompra }}</td>
+  		    <td>$ {{item.Precio }}</td>
+  		    <td>$ {{item.Valoracion }}</td>
+  		  </tr>
+  		  <tr>
+  		   <td colspan="4"><strong>Total Renta Variable</strong></td>
+  		   <td colspan="1"><strong> $ {{ renta?.total}} </strong></td>
+  		  </tr>
+  	</table>
+  </section>
+</div>

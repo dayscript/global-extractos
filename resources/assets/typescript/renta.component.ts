@@ -3,7 +3,7 @@ import { ProductsService } from './personal.service';
 import { Observable }     from 'rxjs/Observable';
 import { ActivatedRoute  } from '@angular/router';
 import 'rxjs/add/operator/map';
-
+import { Http } from '@angular/http';
 @Component({
   selector: 'my-app',
   templateUrl: '/app/templates/renta-variable.html',
@@ -185,4 +185,52 @@ export class ODLComponent {
       () => console.log(this.renta)
   	);
 	}
+}
+
+@Component({
+  selector: 'my-app',
+  templateUrl: '/app/templates/movimientos.html',
+  providers: [ProductsService],
+
+})
+export class MovimientosComponent {
+
+  id:number = 123456;
+  date:string;
+  date_end:string;
+  products:Observable<Array<string>>;
+  access:Observable<Array<string>>;
+  dataExtrac:Observable<Array<string>>;
+  user:any;
+
+
+  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = +params['id'],
+                this.date = params['date']
+              }
+    )
+    productsService.Data
+      .subscribe(
+        data => { this.products = data},
+        error => console.error(`Error: ${error}`),
+        () => this.setParamsPie()
+      );
+  }
+  public setParamsPie(){
+    if(this.products.hasOwnProperty('access')){
+        console.log(this.products['access']);
+    }
+  }
+
+  search(){
+    this.http.get('api/client-report/'+this.id+'/'+this.date+'/'+this.date_end)
+                      .map( response => response.json() )
+                      .subscribe(
+                        data => { this.dataExtrac = data},
+                        error => console.error(`Error: ${error}`),
+                        () => console.log(this.dataExtrac)
+                      );
+
+  }
 }

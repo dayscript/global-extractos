@@ -1,4 +1,4 @@
-<div class="page-pie">
+<div class="page-movimientos">
   <div class=" row wrapper-content">
     <nav class="navbar navbar-light bg-faded">
     <form class="form-inline">
@@ -38,84 +38,41 @@
   </section>
 
   <section class="header">
-    <h3> COMPOSICIÓN DEL PORTAFOLIO </h3>
-    <div *ngIf="products == undefined" class="content-wrapper border-container">
-        <div>
-          <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
-        </div>
-    </div>
-    <div *ngIf="products != undefined" class="content-wrapper border-container">
-      <div class="col">
-          <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.variable_rent  }} </div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Renta fija:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.static_rent }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Operaciones de liquidez:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.operation_liquidity }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">$ {{ products?.composition_portfolio.operation_comply }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.avaluable_balance }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.total_administration_account }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.funds_investment_colective }}</div>
-      </div>
-      <div class="col">
-          <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.gran_total }}</div>
-      </div>
-    </div>
-    <table>
-      <thead>
-        <th></th>
-      </thead>
-      <tbody>
-        <tr><td></td></tr>
-      </tbody>
-      <tfoot>
-      </tfoot>
-    </table>
+    <h3> MOVIMIENTOS DEL PERIODO </h3>
   </section>
-  <section class="diagram">
-    <div *ngIf="pieChartData != undefined && showPie == 1" style="display: block">
-      <canvas class="diagram-pie" baseChart
-              [data]="pieChartData"
-              [labels]="pieChartLabels"
-              [chartType]="pieChartType"
-              [options]="pieChartOptions"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)">
-      </canvas>
-    </div>
-    <!--<div *ngIf="pieChartData != undefined && showExtrac == 1" style="display: block">
+  <section class="movimientos">
+    <div style="display: block">
       <form class="form-search">
           <label for="name">Desde:</label>
           <input type="text" [(ngModel)]="date" name="date" required>
           <label for="name">Hasta:</label>
           <input type="text" [(ngModel)]="date_end" name="date_end" required>
-          <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">buscar</button>
+          <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
       </form>
       <table *ngIf="dataExtrac != undefined " style="width:100%" class="report-table">
         <thead>
-          <th class="numero" >Numero</th>
-          <th class="detalle">Detalle</th>
-          <th>A. Cargo</th>
-          <th>A. Favor</th>
-          <th>Saldo</th>
+          <th class="numero" >FECHA</th>
+          <th class="numero" >DOCUMENTO</th>
+          <th class="detalle">DETALLE</th>
+          <th>A. SU CARGO</th>
+          <th>A. SU FAVOR</th>
+          <th>SALDO</th>
         </thead>
           <tr *ngFor="let item of dataExtrac?.data">
+            <td class="numero" >00-00-00</td>
             <td class="numero" >{{item.strNumero}}</td>
             <td class="detalle" >{{item.strDetalle1}}</td>
             <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
             <td class="favor" >{{item.AFavor | currency:'USD':true:'1.2-2'}}</td>
             <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
           </tr>
+          <tr>
+            <td colspan="3"><strong>TOTAL</strong></td>
+            <td ><strong>--</strong></td>
+            <td ><strong>--</strong></td>
+          </tr>
+
       </table>
-    </div>-->
+    </div>
   </section>
 </div>

@@ -1,5 +1,28 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+body {
+  font-family: sans-serif !important;
+}
+
+.page-pie span {
+  font-size: 11px;
+  margin: 10px;
+}
+
+.page-pie canvas {
+  margin: 0 auto;
+}
+
+.page-rv span {
+  font-size: 11px;
+  margin: 10px;
+}
+
+span {
+  font-size: 11px;
+  margin: 10px;
+}
+
 section {
   margin: 5px 0 5px 0;
 }
@@ -43,8 +66,8 @@ section {
 
 .diagram-pie {
   display: initial !important;
-  width: 300px !important;
-  height: 300px !important;
+  width: 400px !important;
+  height: 400px !important;
 }
 
 .diagram {

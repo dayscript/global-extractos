@@ -54,6 +54,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
                 { path: 'report/:id/:date/fics', component: renta_component_1.FicsComponent },
                 { path: 'report/:id/:date/operaciones-por-cumplir', component: renta_component_1.OPCComponent },
                 { path: 'report/:id/:date/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
+                { path: 'report/:id/:date/movimientos', component: renta_component_1.MovimientosComponent },
             ];
             AsyncPipe = (function () {
                 function AsyncPipe() {
@@ -95,7 +96,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/http', 
                 AppModule = __decorate([
                     core_1.NgModule({
                         imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
-                        declarations: [app_component_1.AppComponent, KeysPipe, notfound_component_1.NotFoundPageComponent, renta_component_1.OPCComponent, renta_component_1.ODLComponent, renta_component_1.FicsComponent, pie_component_1.PieComponent, renta_component_1.RentaComponent, renta_component_1.RentaFijaComponent, AsyncPipe],
+                        declarations: [app_component_1.AppComponent, KeysPipe, notfound_component_1.NotFoundPageComponent, renta_component_1.OPCComponent, renta_component_1.ODLComponent, renta_component_1.FicsComponent, pie_component_1.PieComponent, renta_component_1.RentaComponent, renta_component_1.RentaFijaComponent, renta_component_1.MovimientosComponent, AsyncPipe],
                         bootstrap: [app_component_1.AppComponent]
                     }), 
                     __metadata('design:paramtypes', [])

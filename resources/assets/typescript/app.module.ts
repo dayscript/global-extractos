@@ -9,7 +9,7 @@ import {FormsModule} from "@angular/forms";
 
 import { AppComponent }   from './app.component';
 import { PieComponent }   from './pie.component';
-import { RentaComponent,RentaFijaComponent,FicsComponent,OPCComponent,ODLComponent}   from './renta.component';
+import { RentaComponent,RentaFijaComponent,FicsComponent,OPCComponent,ODLComponent,MovimientosComponent}   from './renta.component';
 
 import { NotFoundPageComponent }   from './notfound.component';
 
@@ -23,6 +23,8 @@ const appRoutes: Routes = [
     { path:'report/:id/:date/fics', component:FicsComponent },
     { path:'report/:id/:date/operaciones-por-cumplir', component:OPCComponent },
     { path:'report/:id/:date/operaciones-de-liquidez', component:ODLComponent },
+    { path:'report/:id/:date/movimientos', component:MovimientosComponent },
+
  ];
 
 @Pipe({
@@ -49,7 +51,7 @@ export class KeysPipe implements PipeTransform {
 
 @NgModule({
   imports:      [BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
-  declarations: [ AppComponent,KeysPipe,NotFoundPageComponent,OPCComponent,ODLComponent,FicsComponent,PieComponent,RentaComponent,RentaFijaComponent,AsyncPipe],
+  declarations: [ AppComponent,KeysPipe,NotFoundPageComponent,OPCComponent,ODLComponent,FicsComponent,PieComponent,RentaComponent,RentaFijaComponent,MovimientosComponent,AsyncPipe],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

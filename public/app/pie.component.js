@@ -29,6 +29,17 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
             function (_1) {}],
         execute: function() {
             PieComponent = (function () {
+                /*public pieCharColors:Array<any> = [
+                  {
+                    backgroundColor: '#000000',
+                  },
+                  {
+                    backgroundColor: 'rgba(0, 102, 255)',
+                  },
+                  {
+                    backgroundColor: 'rgba(204, 153, 51)',
+                  }
+                ]*/
                 function PieComponent(productsService, activatedRoute, http) {
                     var _this = this;
                     this.productsService = productsService;
@@ -41,14 +52,14 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                         legend: {
                             display: true,
                             labels: {
-                                fontSize: 50,
-                                boxWidth: 60,
-                                padding: 40
-                            }
+                                fontSize: 30,
+                                boxWidth: 30,
+                                padding: 30
+                            },
                         },
                         tooltips: {
                             bodyFontSize: 50,
-                        }
+                        },
                     };
                     this.activatedRoute.params.subscribe(function (params) {
                         _this.id = +params['id'],
@@ -90,12 +101,6 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                     event.preventDefault();
                     this.showExtrac = 1;
                     this.showPie = 0;
-                };
-                PieComponent.prototype.search = function () {
-                    var _this = this;
-                    this.http.get('api/client-report/' + this.id + '/' + this.date + '/' + this.date_end)
-                        .map(function (response) { return response.json(); })
-                        .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
                 };
                 PieComponent = __decorate([
                     core_1.Component({

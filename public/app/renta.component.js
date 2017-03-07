@@ -1,4 +1,4 @@
-System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs/add/operator/map'], function(exports_1, context_1) {
+System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs/add/operator/map', '@angular/http'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, personal_service_1, router_1;
-    var RentaComponent, RentaFijaComponent, FicsComponent, OPCComponent, ODLComponent;
+    var core_1, personal_service_1, router_1, http_1;
+    var RentaComponent, RentaFijaComponent, FicsComponent, OPCComponent, ODLComponent, MovimientosComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -23,7 +23,10 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (_1) {}],
+            function (_1) {},
+            function (http_1_1) {
+                http_1 = http_1_1;
+            }],
         execute: function() {
             RentaComponent = (function () {
                 function RentaComponent(productsService, activatedRoute) {
@@ -169,6 +172,42 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                 return ODLComponent;
             }());
             exports_1("ODLComponent", ODLComponent);
+            MovimientosComponent = (function () {
+                function MovimientosComponent(productsService, activatedRoute, http) {
+                    var _this = this;
+                    this.productsService = productsService;
+                    this.activatedRoute = activatedRoute;
+                    this.http = http;
+                    this.id = 123456;
+                    this.activatedRoute.params.subscribe(function (params) {
+                        _this.id = +params['id'],
+                            _this.date = params['date'];
+                    });
+                    productsService.Data
+                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
+                }
+                MovimientosComponent.prototype.setParamsPie = function () {
+                    if (this.products.hasOwnProperty('access')) {
+                        console.log(this.products['access']);
+                    }
+                };
+                MovimientosComponent.prototype.search = function () {
+                    var _this = this;
+                    this.http.get('api/client-report/' + this.id + '/' + this.date + '/' + this.date_end)
+                        .map(function (response) { return response.json(); })
+                        .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
+                };
+                MovimientosComponent = __decorate([
+                    core_1.Component({
+                        selector: 'my-app',
+                        templateUrl: '/app/templates/movimientos.html',
+                        providers: [personal_service_1.ProductsService],
+                    }), 
+                    __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http])
+                ], MovimientosComponent);
+                return MovimientosComponent;
+            }());
+            exports_1("MovimientosComponent", MovimientosComponent);
         }
     }
 });
