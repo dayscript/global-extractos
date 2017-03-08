@@ -149,3 +149,16 @@ text-align: right;
 input{
   margin:0 5px 0 5px!important;
 }
+
+.ui-datepicker-calendar{
+    td{
+      padding: 0px!important;
+  }
+   th{
+    padding: 0px!important;
+  }
+}
+
+div#ui-datepicker-div {
+    width: auto;
+}

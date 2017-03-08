@@ -152,6 +152,18 @@ input {
   margin: 0 5px 0 5px !important;
 }
 
+.ui-datepicker-calendar td {
+  padding: 0px !important;
+}
+
+.ui-datepicker-calendar th {
+  padding: 0px !important;
+}
+
+div#ui-datepicker-div {
+  width: auto;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
