@@ -4,6 +4,8 @@ import { Observable }     from 'rxjs/Observable';
 import { ActivatedRoute  } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { Http } from '@angular/http';
+declare var $: any
+
 @Component({
   selector: 'my-app',
   templateUrl: '/app/templates/renta-variable.html',
@@ -216,6 +218,21 @@ export class MovimientosComponent {
         error => console.error(`Error: ${error}`),
         () => this.setParamsPie()
       );
+
+      setTimeout(function() {
+
+        $(function() {
+          $( "#datepicker_start" ).datepicker({
+            dateFormat: "yy-mm-dd"
+          });
+        });
+        $(function() {
+          $( "#datepicker_end" ).datepicker({
+              dateFormat: "yy-mm-dd"
+          });
+        });
+      },1000);
+
   }
   public setParamsPie(){
     if(this.products.hasOwnProperty('access')){
@@ -224,13 +241,18 @@ export class MovimientosComponent {
   }
 
   search(){
-    this.http.get('api/client-report/'+this.id+'/'+this.date+'/'+this.date_end)
-                      .map( response => response.json() )
-                      .subscribe(
-                        data => { this.dataExtrac = data},
-                        error => console.error(`Error: ${error}`),
-                        () => console.log(this.dataExtrac)
-                      );
+
+    this.date = $('#datepicker_start').val()
+    this.date_end = $('#datepicker_end').val()
+    var url = 'api/client-report/'+this.id+'/'+this.date+'/'+this.date_end
+    console.log(url)
+    this.http.get(url)
+                .map( response => response.json() )
+                .subscribe(
+                  data => { this.dataExtrac = data},
+                  error => console.error(`Error: ${error}`),
+                  () => console.log(this.dataExtrac)
+                );
 
   }
 }

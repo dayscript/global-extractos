@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "md2-datepicker",
+        "scope": null,
+        "escapedName": "md2-datepicker",
+        "name": "md2-datepicker",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/var/www/html/global-extractos"
+    ]
+  ],
+  "_from": "md2-datepicker@latest",
+  "_id": "md2-datepicker@0.0.1-alpha.1",
+  "_inCache": true,
+  "_location": "/md2-datepicker",
+  "_nodeVersion": "6.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/md2-datepicker-0.0.1-alpha.1.tgz_1478299337923_0.4572116960771382"
+  },
+  "_npmUser": {
+    "name": "dharmeshpipariya",
+    "email": "pipariyadharmesh@gmail.com"
+  },
+  "_npmVersion": "3.10.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "md2-datepicker",
+    "scope": null,
+    "escapedName": "md2-datepicker",
+    "name": "md2-datepicker",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/md2-datepicker/-/md2-datepicker-0.0.1-alpha.1.tgz",
+  "_shasum": "2f46b2a20726dc3a9facf9e585a8997a52083e32",
+  "_shrinkwrap": null,
+  "_spec": "md2-datepicker",
+  "_where": "/var/www/html/global-extractos",
+  "author": {
+    "name": "Dharmesh Pipariya",
+    "email": "pipariyadharmesh@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/dharmeshpipariya/md2-datepicker/issues"
+  },
+  "dependencies": {},
+  "description": "Angular2 based Material Design Datepicker component.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "2f46b2a20726dc3a9facf9e585a8997a52083e32",
+    "tarball": "https://registry.npmjs.org/md2-datepicker/-/md2-datepicker-0.0.1-alpha.1.tgz"
+  },
+  "homepage": "https://github.com/dharmeshpipariya/md2-datepicker",
+  "keywords": [
+    "angular",
+    "material",
+    "material design",
+    "components"
+  ],
+  "license": "MIT",
+  "main": "./md2datepicker.umd.js",
+  "maintainers": [
+    {
+      "name": "dharmeshpipariya",
+      "email": "pipariyadharmesh@gmail.com"
+    }
+  ],
+  "module": "./index.js",
+  "name": "md2-datepicker",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "@angular/core": "^2.0.0",
+    "@angular/common": "^2.0.0",
+    "@angular/http": "^2.0.0"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dharmeshpipariya/md2-datepicker.git"
+  },
+  "scripts": {},
+  "typings": "./index.d.ts",
+  "version": "0.0.1-alpha.1"
+}

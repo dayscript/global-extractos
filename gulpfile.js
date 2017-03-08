@@ -24,9 +24,8 @@ elixir(mix => {
     .copy('node_modules/zone.js', 'public/zone.js')
     .copy('node_modules/ng2-charts', 'public/ng2-charts')
     .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
-
-    .copy('node_modules/bootstrap/dist/css/bootstrap.min.css', 'public/css/boostrap.min.css')
-
+    .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
+    
 
 
 

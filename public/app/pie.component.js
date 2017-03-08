@@ -102,6 +102,12 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                     this.showExtrac = 1;
                     this.showPie = 0;
                 };
+                PieComponent.prototype.search = function () {
+                    var _this = this;
+                    this.http.get('api/client-report/' + this.id + '/' + this.date + '/' + this.date_end)
+                        .map(function (response) { return response.json(); })
+                        .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
+                };
                 PieComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',

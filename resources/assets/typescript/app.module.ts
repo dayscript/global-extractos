@@ -12,7 +12,6 @@ import { PieComponent }   from './pie.component';
 import { RentaComponent,RentaFijaComponent,FicsComponent,OPCComponent,ODLComponent,MovimientosComponent}   from './renta.component';
 
 import { NotFoundPageComponent }   from './notfound.component';
-
 import { ChartsModule } from 'ng2-charts';
 
 const appRoutes: Routes = [
@@ -50,7 +49,7 @@ export class KeysPipe implements PipeTransform {
 }
 
 @NgModule({
-  imports:      [BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
+  imports:      [ BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
   declarations: [ AppComponent,KeysPipe,NotFoundPageComponent,OPCComponent,ODLComponent,FicsComponent,PieComponent,RentaComponent,RentaFijaComponent,MovimientosComponent,AsyncPipe],
   bootstrap:    [ AppComponent ]
 })

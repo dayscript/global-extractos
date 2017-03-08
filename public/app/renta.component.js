@@ -185,6 +185,18 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                     });
                     productsService.Data
                         .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
+                    setTimeout(function () {
+                        $(function () {
+                            $("#datepicker_start").datepicker({
+                                dateFormat: "yy-mm-dd"
+                            });
+                        });
+                        $(function () {
+                            $("#datepicker_end").datepicker({
+                                dateFormat: "yy-mm-dd"
+                            });
+                        });
+                    }, 1000);
                 }
                 MovimientosComponent.prototype.setParamsPie = function () {
                     if (this.products.hasOwnProperty('access')) {
@@ -193,7 +205,11 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                 };
                 MovimientosComponent.prototype.search = function () {
                     var _this = this;
-                    this.http.get('api/client-report/' + this.id + '/' + this.date + '/' + this.date_end)
+                    this.date = $('#datepicker_start').val();
+                    this.date_end = $('#datepicker_end').val();
+                    var url = 'api/client-report/' + this.id + '/' + this.date + '/' + this.date_end;
+                    console.log(url);
+                    this.http.get(url)
                         .map(function (response) { return response.json(); })
                         .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
                 };

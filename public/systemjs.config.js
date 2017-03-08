@@ -21,7 +21,7 @@
             // other libraries
             'rxjs':                       'rxjs',
             'angular2-in-memory-web-api': 'angular2-in-memory-web-api',
-            'ng2-charts': 'ng2-charts'
+            'ng2-charts': 'ng2-charts',
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -40,6 +40,7 @@
               main: 'ng2-charts.js',
               defaultExtension: 'js'
             },
+
         }
     });
 })(this);

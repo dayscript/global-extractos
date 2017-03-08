@@ -44,9 +44,9 @@
     <div style="display: block">
       <form class="form-search">
           <label for="name">Desde:</label>
-          <input type="text" [(ngModel)]="date" name="date" required>
+          <input  id="datepicker_start" type="text" [(ngModel)]="date" name="date" required>
           <label for="name">Hasta:</label>
-          <input type="text" [(ngModel)]="date_end" name="date_end" required>
+          <input id="datepicker_end" type="text" [(ngModel)]="date_end" name="date_end" required>
           <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
       </form>
       <table *ngIf="dataExtrac != undefined " style="width:100%" class="report-table">
