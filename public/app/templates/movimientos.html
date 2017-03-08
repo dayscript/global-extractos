@@ -68,8 +68,9 @@
           </tr>
           <tr>
             <td colspan="3"><strong>TOTAL</strong></td>
-            <td ><strong>--</strong></td>
-            <td ><strong>--</strong></td>
+            <td ><strong>{{dataExtrac?.total.totalCargo | currency:'USD':true:'1.2-2'}}</strong></td>
+            <td ><strong>{{dataExtrac?.total.totalFavor | currency:'USD':true:'1.2-2'}}</strong></td>
+            <td ><strong>{{dataExtrac?.total.totalSaldo | currency:'USD':true:'1.2-2'}}</strong></td>
           </tr>
 
       </table>

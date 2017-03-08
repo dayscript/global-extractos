@@ -241,7 +241,6 @@ export class MovimientosComponent {
   }
 
   search(){
-
     this.date = $('#datepicker_start').val()
     this.date_end = $('#datepicker_end').val()
     var url = 'api/client-report/'+this.id+'/'+this.date+'/'+this.date_end

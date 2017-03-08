@@ -344,16 +344,34 @@ class ServicesController extends Controller
       if(count($stmt) == 0)
         return response()->json(['No se ha encotrado información']);
 
+
+      $totalFavor = 0;
+      $totalCargo = 0;
+      $total = array();
+
+
       foreach ($stmt as $key => $value) {
           $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
           $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
           $resutl[$key]['ACargo'] = $value->ACargo;
           $resutl[$key]['AFavor'] = $value->AFavor;
           $resutl[$key]['Saldo'] = $value->Saldo;
+
+          if(!is_null($value->ACargo) && $value->ACargo != 0 ){
+              $totalCargo += $value->ACargo;
+          }
+          if(!is_null($value->AFavor  && $value->AFavor != 0)){
+              $totalFavor += $value->AFavor;
+          }
         }
 
+      $totalSaldo = $totalFavor-$totalCargo;
 
-      $json = [ $CodigoOyd => ['data' =>$resutl]];
+      $total['totalFavor'] = $totalFavor;
+      $total['totalCargo'] = $totalCargo;
+      $total['totalSaldo']= $totalSaldo;
+
+      $json = [ $CodigoOyd => ['data' =>$resutl,'total'=>$total]];
 
       return response()->json($json[$CodigoOyd]);
 
