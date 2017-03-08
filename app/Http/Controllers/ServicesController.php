@@ -12,9 +12,8 @@ class ServicesController extends Controller
 
     public function show($CodigoOyd,$Fecha)
     {
-      $fileName =
       $cc = $CodigoOyd;
-      $path1 = storage_path()."/json/".$cc."-pie-report.json";
+      $path1 = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
       if(File::exists($path1)) {
           $json = json_decode(file_get_contents($path1), true);
           return response()->json($json);
@@ -98,7 +97,7 @@ class ServicesController extends Controller
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
-      $path = storage_path()."/json/".$cc."-variable-report.json";
+      $path = storage_path()."/json/".$cc.'-'.$Fecha."-variable-report.json";
       if(File::exists($path)) {
           $json = json_decode(file_get_contents($path), true);
           return response()->json($json);
@@ -150,7 +149,7 @@ class ServicesController extends Controller
     {
 
       $cc = $CodigoOyd;
-      $path = storage_path()."/json/".$cc."-fija-report.json";
+      $path = storage_path()."/json/".$cc.'-'.$Fecha."-fija-report.json";
       if(File::exists($path)) {
           $json = json_decode(file_get_contents($path), true);
           return response()->json($json);
@@ -206,7 +205,7 @@ class ServicesController extends Controller
     public function fics($CodigoOyd,$Fecha)
     {
       $cc = $CodigoOyd;
-      $path = storage_path()."/json/".$cc."-fics-report.json";
+      $path = storage_path()."/json/".$cc.'-'.$Fecha."-fics-report.json";
       if(File::exists($path)) {
           $json = json_decode(file_get_contents($path), true);
           return response()->json($json);
