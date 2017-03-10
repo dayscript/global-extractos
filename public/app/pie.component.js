@@ -59,7 +59,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                         },
                         tooltips: {
                             display: false,
-                            bodyFontSize: 50,
+                            bodyFontSize: 1,
                         },
                     };
                     this.activatedRoute.params.subscribe(function (params) {

@@ -33,14 +33,14 @@ export class PieComponent {
                   labels: {
                       fontSize:30,
                       boxWidth:30,
-                      padding:30 
+                      padding:30
 
                   },
               },
           tooltips:
                   {
                     display:false,
-                    bodyFontSize: 50,
+                    bodyFontSize: 1,
                   },
         }
 
