@@ -350,6 +350,7 @@ class ServicesController extends Controller
 
 
       foreach ($stmt as $key => $value) {
+          $resutl[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
           $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
           $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
           $resutl[$key]['ACargo'] = $value->ACargo;

@@ -38,7 +38,7 @@
   </section>
 
   <section class="header">
-    <h3> MOVIMIENTOS DEL PERIODO FIRMA COMISIONISTA (Sin Movimientos de Fondos de inversión) </h3>
+    <h5> MOVIMIENTOS DEL PERIODO FIRMA COMISIONISTA (Sin Movimientos de Fondos de inversión) </h5>
   </section>
   <section class="movimientos">
     <div style="display: block">
@@ -59,7 +59,7 @@
           <th>SALDO</th>
         </thead>
           <tr *ngFor="let item of dataExtrac?.data">
-            <td class="numero" >00-00-00</td>
+            <td class="numero" >{{item.fecha}}</td>
             <td class="numero" >{{item.strNumero}}</td>
             <td class="detalle" >{{item.strDetalle1}}</td>
             <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
