@@ -24,7 +24,7 @@ export class PieComponent {
   showExtrac : number;
   user:any;
 
-  public pieChartLabels:string[] = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
+  public pieChartLabels:string[] = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
   public pieChartData:number[];
   public pieChartType:string = 'pie';
   public pieChartOptions:any = {
@@ -33,12 +33,13 @@ export class PieComponent {
                   labels: {
                       fontSize:30,
                       boxWidth:30,
-                      padding:30
+                      padding:30 
 
                   },
               },
           tooltips:
                   {
+                    display:false,
                     bodyFontSize: 50,
                   },
         }
@@ -74,10 +75,13 @@ export class PieComponent {
   }
   public setParamsPie(){
     var PieData = [];
+    var cont = 0;
     for( var item in this.products){
       for(var elem in this.products[item] ){
           if(item == 'pie_porcents'){
             PieData.push(this.products[item][elem]);
+            this.pieChartLabels[cont] = this.pieChartLabels[cont].replace('$',this.products[item][elem])
+            cont = cont+1;
           }
         }
     }

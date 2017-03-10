@@ -46,7 +46,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                     this.activatedRoute = activatedRoute;
                     this.http = http;
                     this.id = 123456;
-                    this.pieChartLabels = ['% Renta Fija', '% Renta Variable', '% Fic\'s'];
+                    this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
                     this.pieChartType = 'pie';
                     this.pieChartOptions = {
                         legend: {
@@ -58,6 +58,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                             },
                         },
                         tooltips: {
+                            display: false,
                             bodyFontSize: 50,
                         },
                     };
@@ -72,10 +73,13 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                 }
                 PieComponent.prototype.setParamsPie = function () {
                     var PieData = [];
+                    var cont = 0;
                     for (var item in this.products) {
                         for (var elem in this.products[item]) {
                             if (item == 'pie_porcents') {
                                 PieData.push(this.products[item][elem]);
+                                this.pieChartLabels[cont] = this.pieChartLabels[cont].replace('$', this.products[item][elem]);
+                                cont = cont + 1;
                             }
                         }
                     }
