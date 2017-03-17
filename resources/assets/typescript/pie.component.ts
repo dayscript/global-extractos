@@ -82,7 +82,7 @@ export class PieComponent {
             PieData.push(this.products[item][elem]);
             this.pieChartLabels[cont] = this.pieChartLabels[cont].replace('$',this.products[item][elem])
             cont = cont+1;
-          }
+          } 
         }
     }
     this.pieChartData = PieData;

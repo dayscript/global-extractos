@@ -33,7 +33,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                   {
                     backgroundColor: '#000000',
                   },
-                  {
+                  { 
                     backgroundColor: 'rgba(0, 102, 255)',
                   },
                   {
