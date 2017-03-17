@@ -49,7 +49,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/renta-variable.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], RentaComponent);
                 return RentaComponent;
@@ -76,7 +76,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/renta-fija.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], RentaFijaComponent);
                 return RentaFijaComponent;
@@ -103,7 +103,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/fics.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], FicsComponent);
                 return FicsComponent;
@@ -136,7 +136,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/operaciones-por-cumplir.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], OPCComponent);
                 return OPCComponent;
@@ -166,7 +166,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/operaciones-de-liquidez.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute])
                 ], ODLComponent);
                 return ODLComponent;
@@ -180,8 +180,8 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                     this.http = http;
                     this.id = 123456;
                     this.activatedRoute.params.subscribe(function (params) {
-                        _this.id = +params['id'],
-                            _this.date = params['date'];
+                        _this.id = +params['id'];
+                            //_this.date = params['date'];
                     });
                     productsService.Data
                         .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
@@ -218,7 +218,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                         selector: 'my-app',
                         templateUrl: '/app/templates/movimientos.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http])
                 ], MovimientosComponent);
                 return MovimientosComponent;

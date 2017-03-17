@@ -24,7 +24,7 @@ export class PieComponent {
   showExtrac : number;
   user:any;
 
-  public pieChartLabels:string[] = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
+  public pieChartLabels:string[] = ['Renta Variable $ %', 'Renta Fija $ %', 'Fic\'s $ %'];
   public pieChartData:number[];
   public pieChartType:string = 'pie';
   public pieChartOptions:any = {

@@ -191,7 +191,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                     this.activatedRoute = activatedRoute;
                     this.http = http;
                     this.id = 123456;
-                    this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
+                    this.pieChartLabels = ['Renta Variable $ %', 'Renta Fija $ %', 'Fic\'s $ %'];
                     this.pieChartType = 'pie';
                     this.pieChartOptions = {
                         legend: {
@@ -454,8 +454,8 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                     this.http = http;
                     this.id = 123456;
                     this.activatedRoute.params.subscribe(function (params) {
-                        _this.id = +params['id'],
-                            _this.date = params['date'];
+                        _this.id = +params['id'];
+                        //this.date = params['date']
                     });
                     productsService.Data
                         .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });

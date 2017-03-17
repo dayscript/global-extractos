@@ -46,7 +46,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                     this.activatedRoute = activatedRoute;
                     this.http = http;
                     this.id = 123456;
-                    this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
+                    this.pieChartLabels = ['Renta Variable $ %', 'Renta Fija $ %', 'Fic\'s $ %'];
                     this.pieChartType = 'pie';
                     this.pieChartOptions = {
                         legend: {
@@ -117,7 +117,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                         selector: 'my-app',
                         templateUrl: '/app/templates/pie-report.html',
                         providers: [personal_service_1.ProductsService],
-                    }), 
+                    }),
                     __metadata('design:paramtypes', [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http])
                 ], PieComponent);
                 return PieComponent;

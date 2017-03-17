@@ -115,6 +115,7 @@ class ServicesController extends Controller
           $data[$key] = $item;
           $total = $total + $item->Valoracion;
           $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
+          $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
           $data[$key]->Precio = number_format($item->Precio,2);
           $data[$key]->Valoracion = number_format($item->Valoracion,2);
 
@@ -168,6 +169,7 @@ class ServicesController extends Controller
           $total = $total + $item->Valoracion;
           $data[$key]->Precio = number_format($item->Precio,2);;
           $data[$key]->Valoracion = number_format($item->Valoracion,2);;
+          $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
           $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
           $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
           $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;

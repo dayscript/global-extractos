@@ -208,8 +208,8 @@ export class MovimientosComponent {
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
-                this.date = params['date']
+      params=>{ this.id = +params['id']
+                //this.date = params['date']
               }
     )
     productsService.Data
