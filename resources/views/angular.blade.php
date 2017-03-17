@@ -34,8 +34,8 @@
 
     <body class="container">
       <div class="content-wrapper content-align-center container">
-        <my-app class="my-app-container">{{ HTML::image('/images/loading.gif', 'alt', array( 'width' => 100, 'height' => 100, 'text-aling'=>'center' )) }}
-        </my-app>
+        <admin-app class="my-app-container">{{ HTML::image('/images/loading.gif', 'alt', array( 'width' => 100, 'height' => 100, 'text-aling'=>'center' )) }}
+        </admin-app>
       <div>
     </body>
     <script>

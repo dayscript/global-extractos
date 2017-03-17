@@ -19,10 +19,10 @@ class ServicesController extends Controller
           return response()->json($json);
       }
 
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       #dd($stmt);
 
       $total_administration_account = $stmt[0]->TotalRV+$stmt[0]->TotalRF+$stmt[0]->TotalLiquidez+$stmt[0]->TotalPorCumplir+$stmt[0]->Efectivo;
@@ -94,7 +94,7 @@ class ServicesController extends Controller
     public function rentVariable($CodigoOyd,$Fecha)
     {
       $cc = $CodigoOyd;
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
       $path = storage_path()."/json/".$cc.'-'.$Fecha."-variable-report.json";
@@ -104,8 +104,8 @@ class ServicesController extends Controller
       }
 
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
       $data = array();
       $total = 0;
@@ -154,13 +154,13 @@ class ServicesController extends Controller
           $json = json_decode(file_get_contents($path), true);
           return response()->json($json);
       }
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
 
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
       $total = 0;
       foreach ($stmt as $key => $item) {
@@ -211,10 +211,10 @@ class ServicesController extends Controller
           return response()->json($json);
       }
 
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
       $total = 0;
     #dd($stmt);
@@ -255,11 +255,11 @@ class ServicesController extends Controller
      */
     public function OPC($CodigoOyd,$Fecha)
     {
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(array('Not_found' => 'No se ha encontrado informacón'));
       $data = array();
@@ -296,10 +296,10 @@ class ServicesController extends Controller
     public function OPL($CodigoOyd,$Fecha)
     {
 
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(['No se ha encotrado información']);
       $data = array();
@@ -336,10 +336,10 @@ class ServicesController extends Controller
     public function ClientReport($CodigoOyd,$Fecha_start,$Fecha_end)
     {
 
-      $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-      $stmt = DB::select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+      $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+      $stmt = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(['No se ha encotrado información']);
 

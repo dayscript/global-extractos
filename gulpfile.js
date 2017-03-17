@@ -25,8 +25,6 @@ elixir(mix => {
     .copy('node_modules/ng2-charts', 'public/ng2-charts')
     .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
     .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
-    
-
 
 
     .typescript(
@@ -36,9 +34,13 @@ elixir(mix => {
             'renta.component.ts',
             'personal.service.ts',
             'notfound.component.ts',
-            'chart.component.ts',
+            'chart.component.ts', 
             'app.module.ts',
-            'main.ts'
+            'main.ts',
+            'app.admincomponent.ts',
+            'app.adminmain.ts',
+            'app.adminmodule.ts',
+
         ],
         'public/app',
         {

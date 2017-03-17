@@ -18,7 +18,6 @@ Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDM
 Route::get('/not-found','HomeController@NotFound');
 
 
-
 Route::group(['prefix' => 'api'], function () {
     Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@show');
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
@@ -28,9 +27,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
     Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');
     Route::get('cache/{CodigoOyd}', 'ServicesController@CACHE');
-
-
-
     Route::get('/query','HomeController@query');
 
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

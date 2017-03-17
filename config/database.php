@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlsrv'),
+    'default' => env('MYSQL_DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
