@@ -15,10 +15,9 @@ var AppComponent = (function () {
 }());
 AppComponent = __decorate([
     core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/index.html'
+        selector: 'admin-app',
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;
 
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=app.admincomponent.js.map

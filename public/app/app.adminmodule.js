@@ -7,18 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-require("rxjs/add/operator/map");
-var AppComponent = (function () {
-    function AppComponent() {
+var platform_browser_1 = require("@angular/platform-browser");
+var http_1 = require("@angular/http");
+var forms_1 = require("@angular/forms");
+var app_admincomponent_1 = require("./app.admincomponent");
+var AppModule = (function () {
+    function AppModule() {
     }
-    return AppComponent;
+    return AppModule;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/index.html'
+AppModule = __decorate([
+    core_1.NgModule({
+        imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule],
+        declarations: [],
+        bootstrap: [app_admincomponent_1.AppComponent]
     })
-], AppComponent);
-exports.AppComponent = AppComponent;
+], AppModule);
+exports.AppModule = AppModule;
 
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=app.adminmodule.js.map

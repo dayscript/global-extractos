@@ -23,6 +23,7 @@
     "bootstrap": "^4.0.0-alpha.3",
     "bootstrap-sass": "^3.3.7",
     "concurrently": "^2.2.0",
+    "laravel-elixir-typescript": "3.0.6",
     "elixir-typescript": "2.0.0",
     "gulp": "^3.9.1",
     "jquery": "^3.1.0",

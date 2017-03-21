@@ -1,7 +1,8 @@
 const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vue');
-require('elixir-typescript');
+//require('laravel-elixir-typescript');
+require('laravel-elixir-ts');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -22,36 +23,20 @@ elixir(mix => {
     .copy('node_modules/systemjs', 'public/systemjs')
     .copy('node_modules/rxjs', 'public/rxjs')
     .copy('node_modules/zone.js', 'public/zone.js')
-    .copy('node_modules/ng2-charts', 'public/ng2-charts')
-    .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
-    .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
-
 
     .typescript(
-        [
-            'app.component.ts',
-            'pie.component.ts',
-            'renta.component.ts',
-            'personal.service.ts',
-            'notfound.component.ts',
-            'chart.component.ts', 
-            'app.module.ts',
-            'main.ts',
-            'app.admincomponent.ts',
-            'app.adminmain.ts',
-            'app.adminmodule.ts',
-
-        ],
-        'public/app',
         {
-            "target": "es5",
-            "module": "system",
-            "moduleResolution": "node",
-            "sourceMap": true,
-            "emitDecoratorMetadata": true,
-            "experimentalDecorators": true,
-            "removeComments": false,
-            "noImplicitAny": false
+          source: "/resources/assets/typescript/*.ts",
+          destination: "public/app",
+          target: "es5",
+          module: "commonjs",
+          moduleResolution: "node",
+          sourceMap: true,
+          inlineSourceMap: false,
+          emitDecoratorMetadata: true,
+          experimentalDecorators: true,
+          removeComments: false,
+          noImplicitAny: false
         }
     );
 });
