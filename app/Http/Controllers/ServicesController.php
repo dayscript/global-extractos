@@ -13,11 +13,21 @@ class ServicesController extends Controller
     public function show($CodigoOyd,$Fecha)
     {
       $cc = $CodigoOyd;
-      $path1 = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
-      if(File::exists($path1)) {
-          $json = json_decode(file_get_contents($path1), true);
-          return response()->json($json);
+      $fileJsonPie = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
+      $fileJsonAccess = storage_path().'/json/'.$cc.'.json';
+      $updateFile = 0;
+      if( File::exists($fileJsonAccess) ) {
+          $acces = json_decode(file_get_contents($fileJsonAccess));
+          foreach ($acces as $key => $value) {
+              $updateFile = $updateFile + $value->val;
+          }
+          if( File::exists($fileJsonPie) && $updateFile != 0 ) {
+              $json = json_decode(file_get_contents($fileJsonPie), true);
+              return response()->json($json);
+          }
+
       }
+
 
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
@@ -45,11 +55,7 @@ class ServicesController extends Controller
           $access[$value] = array('val'=>1);
         }
       }
-      $path = storage_path().'/'.$cc.'.json';
-
-      if(!File::exists($path)) {
-          File::put( storage_path().'/json/'.$cc.'.json',json_encode($access));
-      }
+      File::put( storage_path().'/json/'.$cc.'.json',json_encode($access));
 
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
@@ -79,7 +85,7 @@ class ServicesController extends Controller
               ];
 
 
-      File::put( $path1 ,json_encode($json[$CodigoOyd]));
+      File::put( $fileJsonPie ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
     }
