@@ -26,9 +26,9 @@ elixir(mix => {
 
     .typescript(
         {
-          source: "/resources/assets/typescript/*.ts",
+          source: "/**/*.ts",
           destination: "public/app",
-          target: "es5",
+          target: "es6",
           module: "commonjs",
           moduleResolution: "node",
           sourceMap: true,

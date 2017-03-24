@@ -9,21 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
+const core_1 = require("@angular/core");
+const http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-var router_1 = require("@angular/router");
-var ProductsService = (function () {
-    function ProductsService(http, activatedRoute) {
-        var _this = this;
+const router_1 = require("@angular/router");
+let ProductsService = class ProductsService {
+    constructor(http, activatedRoute) {
         this.http = http;
         this.activatedRoute = activatedRoute;
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
-        var regex = /^[0-9]+$/g;
-        var date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
+        const regex = /^[0-9]+$/g;
+        const date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
         if (date.exec(this.date) == null) {
             alert('El fecha no es valida');
         }
@@ -34,56 +33,31 @@ var ProductsService = (function () {
             alert('Codigo no valido');
         }
     }
-    Object.defineProperty(ProductsService.prototype, "Data", {
-        get: function () {
-            return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "DataRenta", {
-        get: function () {
-            return this.http.get('api/variable-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "DataRentaFija", {
-        get: function () {
-            return this.http.get('api/fija-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "DataFics", {
-        get: function () {
-            return this.http.get('api/fics-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "DataOPC", {
-        get: function () {
-            return this.http.get('api/opc-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "Cache", {
-        get: function () {
-            return this.http.get('api/cache/' + this.id)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ProductsService;
-}());
+    get Data() {
+        return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get DataRenta() {
+        return this.http.get('api/variable-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get DataRentaFija() {
+        return this.http.get('api/fija-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get DataFics() {
+        return this.http.get('api/fics-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get DataOPC() {
+        return this.http.get('api/opc-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get Cache() {
+        return this.http.get('api/cache/' + this.id)
+            .map(response => response.json());
+    }
+};
 ProductsService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])

@@ -6,23 +6,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var PieChartDemoComponent = (function () {
-    function PieChartDemoComponent() {
+const core_1 = require("@angular/core");
+let PieChartDemoComponent = class PieChartDemoComponent {
+    constructor() {
         // Pie
         this.pieChartLabels = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
         this.pieChartData = [300, 500, 100];
         this.pieChartType = 'pie';
     }
     // events
-    PieChartDemoComponent.prototype.chartClicked = function (e) {
+    chartClicked(e) {
         console.log(e);
-    };
-    PieChartDemoComponent.prototype.chartHovered = function (e) {
+    }
+    chartHovered(e) {
         console.log(e);
-    };
-    return PieChartDemoComponent;
-}());
+    }
+};
 PieChartDemoComponent = __decorate([
     core_1.Component({
         selector: 'diagram',

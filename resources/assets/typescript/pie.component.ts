@@ -105,7 +105,7 @@ export class PieComponent {
   }
   show_pie(){
     event.preventDefault();
-    this.showPie = 1;
+    this.showPie = 1; 
     this.showExtrac = 0;
   }
   show_extrac(){
@@ -124,6 +124,5 @@ export class PieComponent {
                       );
 
   }
-
 
 }

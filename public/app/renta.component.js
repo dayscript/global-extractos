@@ -9,29 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var personal_service_1 = require("./personal.service");
-var router_1 = require("@angular/router");
+const core_1 = require("@angular/core");
+const personal_service_1 = require("./personal.service");
+const router_1 = require("@angular/router");
 require("rxjs/add/operator/map");
-var http_1 = require("@angular/http");
-var RentaComponent = (function () {
-    function RentaComponent(productsService, activatedRoute) {
-        var _this = this;
+const http_1 = require("@angular/http");
+let RentaComponent = class RentaComponent {
+    constructor(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.id = 123456;
         this.date = '2016-12-31';
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         this.productsService.Cache
-            .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
+            .subscribe(data => { this.access = data.access; }, error => console.error(`Error: ${error}`), () => console.log(this.access));
         productsService.DataRenta
-            .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+            .subscribe(data => { this.renta = data; }, error => console.error(`Error: ${error}`), () => console.log(this.renta));
     }
-    return RentaComponent;
-}());
+};
 RentaComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
@@ -41,24 +39,22 @@ RentaComponent = __decorate([
     __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
 ], RentaComponent);
 exports.RentaComponent = RentaComponent;
-var RentaFijaComponent = (function () {
-    function RentaFijaComponent(productsService, activatedRoute) {
-        var _this = this;
+let RentaFijaComponent = class RentaFijaComponent {
+    constructor(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.id = 123456;
         this.date = '2016-12-31';
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         this.productsService.Cache
-            .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
+            .subscribe(data => { this.access = data.access; }, error => console.error(`Error: ${error}`), () => console.log(this.access));
         productsService.DataRentaFija
-            .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+            .subscribe(data => { this.renta = data; }, error => console.error(`Error: ${error}`), () => console.log(this.renta));
     }
-    return RentaFijaComponent;
-}());
+};
 RentaFijaComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
@@ -68,24 +64,22 @@ RentaFijaComponent = __decorate([
     __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
 ], RentaFijaComponent);
 exports.RentaFijaComponent = RentaFijaComponent;
-var FicsComponent = (function () {
-    function FicsComponent(productsService, activatedRoute) {
-        var _this = this;
+let FicsComponent = class FicsComponent {
+    constructor(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.id = 123456;
         this.date = '2016-12-31';
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         this.productsService.Cache
-            .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
+            .subscribe(data => { this.access = data.access; }, error => console.error(`Error: ${error}`), () => console.log(this.access));
         productsService.DataFics
-            .subscribe(function (data) { _this.fics = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.fics); });
+            .subscribe(data => { this.fics = data; }, error => console.error(`Error: ${error}`), () => console.log(this.fics));
     }
-    return FicsComponent;
-}());
+};
 FicsComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
@@ -95,30 +89,28 @@ FicsComponent = __decorate([
     __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
 ], FicsComponent);
 exports.FicsComponent = FicsComponent;
-var OPCComponent = (function () {
-    function OPCComponent(productsService, activatedRoute) {
-        var _this = this;
+let OPCComponent = class OPCComponent {
+    constructor(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.id = 123456;
         this.date = '2016-12-31';
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         this.productsService.Cache
-            .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
+            .subscribe(data => { this.access = data.access; }, error => console.error(`Error: ${error}`), () => console.log(this.access));
         productsService.DataOPC
-            .subscribe(function (data) { _this.opc = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.NotFound(); });
+            .subscribe(data => { this.opc = data; }, error => console.error(`Error: ${error}`), () => this.NotFound());
     }
-    OPCComponent.prototype.NotFound = function () {
+    NotFound() {
         if (this.opc.hasOwnProperty('Not_found')) {
             alert('No se encontraron resultados');
         }
         console.log(this.opc);
-    };
-    return OPCComponent;
-}());
+    }
+};
 OPCComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
@@ -128,27 +120,25 @@ OPCComponent = __decorate([
     __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
 ], OPCComponent);
 exports.OPCComponent = OPCComponent;
-var ODLComponent = (function () {
-    function ODLComponent(productsService, activatedRoute) {
-        var _this = this;
+let ODLComponent = class ODLComponent {
+    constructor(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.id = 123456;
         this.date = '2016-12-31';
         this.path = 'api/variable-report/1013611324';
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         this.productsService.Cache
-            .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
+            .subscribe(data => { this.access = data.access; }, error => console.error(`Error: ${error}`), () => console.log(this.access));
         productsService.Data
-            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.products); });
+            .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => console.log(this.products));
         productsService.DataRenta
-            .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+            .subscribe(data => { this.renta = data; }, error => console.error(`Error: ${error}`), () => console.log(this.renta));
     }
-    return ODLComponent;
-}());
+};
 ODLComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
@@ -158,19 +148,18 @@ ODLComponent = __decorate([
     __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
 ], ODLComponent);
 exports.ODLComponent = ODLComponent;
-var MovimientosComponent = (function () {
-    function MovimientosComponent(productsService, activatedRoute, http) {
-        var _this = this;
+let MovimientosComponent = class MovimientosComponent {
+    constructor(productsService, activatedRoute, http) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.id = 123456;
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
-                _this.date = params['date'];
+        this.activatedRoute.params.subscribe(params => {
+            this.id = +params['id'],
+                this.date = params['date'];
         });
         productsService.Data
-            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
+            .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => this.setParamsPie());
         setTimeout(function () {
             $(function () {
                 $("#datepicker_start").datepicker({
@@ -184,23 +173,21 @@ var MovimientosComponent = (function () {
             });
         }, 1000);
     }
-    MovimientosComponent.prototype.setParamsPie = function () {
+    setParamsPie() {
         if (this.products.hasOwnProperty('access')) {
             console.log(this.products['access']);
         }
-    };
-    MovimientosComponent.prototype.search = function () {
-        var _this = this;
+    }
+    search() {
         this.date = $('#datepicker_start').val();
         this.date_end = $('#datepicker_end').val();
         var url = 'api/client-report/' + this.id + '/' + this.date + '/' + this.date_end;
         console.log(url);
         this.http.get(url)
-            .map(function (response) { return response.json(); })
-            .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
-    };
-    return MovimientosComponent;
-}());
+            .map(response => response.json())
+            .subscribe(data => { this.dataExtrac = data; }, error => console.error(`Error: ${error}`), () => console.log(this.dataExtrac));
+    }
+};
 MovimientosComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
