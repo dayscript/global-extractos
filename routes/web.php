@@ -11,13 +11,24 @@
 |
 */
 
-Route::get('/','HomeController@index');
-Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
+
+/*Laravel admin routes*/
+Auth::routes();
+Route::get('/','HomeController@index')->middleware('auth');
+Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/query','HomeController@query');
-Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
 Route::get('/not-found','HomeController@NotFound');
 
 
+/* SSL Certificate confirm */
+Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
+
+
+/*Angular front routes*/
+Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('auth');
+
+
+/*Laravel API routes*/
 Route::group(['prefix' => 'api'], function () {
     Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@show');
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
@@ -30,7 +41,3 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/query','HomeController@query');
 
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');

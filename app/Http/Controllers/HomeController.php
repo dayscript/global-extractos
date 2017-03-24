@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        #$this->middleware('auth'); // require login for all methods
     }
 
     /**
@@ -25,7 +25,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-      $CodigosOyd = DB::connection('sqlsrv')->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]  FROM [DBOyD].[dbo].[tblClientes] WHERE [lngID] > 20000'  );
+      return redirect()->route('home');
+    }
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+      $CodigosOyd = DB::connection('sqlsrv')
+                        ->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]
+                                  FROM [DBOyD].[dbo].[tblClientes]
+                                  WHERE [lngID] > 20000');
+
       return view('home',compact('CodigosOyd'));
     }
     /**
