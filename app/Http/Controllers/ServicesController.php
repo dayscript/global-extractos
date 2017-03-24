@@ -168,23 +168,28 @@ class ServicesController extends Controller
 
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+
       $data = array();
       $total = 0;
       foreach ($stmt as $key => $item) {
           $data[$key] = $item;
           $total = $total + $item->Valoracion;
-          $data[$key]->Precio = number_format($item->Precio,2);;
-          $data[$key]->Valoracion = number_format($item->Valoracion,2);;
+          $data[$key]->Precio = number_format($item->Precio,2);
+          $data[$key]->Valoracion = number_format($item->Valoracion,2);
           $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
-          $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
-          $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
-          $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;
-
-
-
-
+          $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
+          $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));
+          $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));
+          $data[$key]->strNombre = utf8_decode($item->strNombre);
       }
 
+      $dataTransform = array_map(function($index){
+        $temp = array();
+        foreach ($index as $key => $value) {
+            $temp[$key] = utf8_decode($value);
+        }
+        return $temp;
+      },$data);
 
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
@@ -194,11 +199,33 @@ class ServicesController extends Controller
                                               'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>$data,
+                                  'data' =>$dataTransform,
                                   'total' => number_format($total,2),
                               ],
               ];
-      File::put( $path ,json_encode($json[$CodigoOyd]));
+
+        $filesave = File::put( $path ,json_encode($json[$CodigoOyd]));
+
+        switch (json_last_error()) {
+              default:
+                  return;
+              case JSON_ERROR_DEPTH:
+                  $error = 'Maximum stack depth exceeded';
+              break;
+              case JSON_ERROR_STATE_MISMATCH:
+                  $error = 'Underflow or the modes mismatch';
+              break;
+              case JSON_ERROR_CTRL_CHAR:
+                  $error = 'Unexpected control character found';
+              break;
+              case JSON_ERROR_SYNTAX:
+                  $error = 'Syntax error, malformed JSON';
+              break;
+              case JSON_ERROR_UTF8:
+                  $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+              break;
+          }
+
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -404,6 +431,10 @@ class ServicesController extends Controller
     $c = ( $c != 0 )? $c:'1';
     return $a*$b/$c;
 
+  }
+
+  function array_to_utf(){
+    return 1;
   }
 
 

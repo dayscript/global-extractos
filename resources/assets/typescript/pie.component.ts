@@ -65,7 +65,7 @@ export class PieComponent {
     )
     productsService.Data
       .subscribe(
-        data => { this.products = data},
+        data => {data},//this.products = 
         error => console.error(`Error: ${error}`),
         () => this.setParamsPie()
       );
@@ -82,7 +82,7 @@ export class PieComponent {
             PieData.push(this.products[item][elem]);
             this.pieChartLabels[cont] = this.pieChartLabels[cont].replace('$',this.products[item][elem])
             cont = cont+1;
-          } 
+          }
         }
     }
     this.pieChartData = PieData;

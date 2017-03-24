@@ -25,7 +25,7 @@ elixir(mix => {
     .copy('node_modules/ng2-charts', 'public/ng2-charts')
     .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
     .copy('node_modules/chart.js/src/chart.js', 'public/chart/chart.js')
-    
+
 
 
 

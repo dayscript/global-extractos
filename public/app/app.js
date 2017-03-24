@@ -212,7 +212,9 @@ System.register(['@angular/core', './personal.service', '@angular/router', '@ang
                             _this.date = params['date'];
                     });
                     productsService.Data
-                        .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
+                        .subscribe(function (data) { data; }, //this.products = 
+                    function (//this.products = 
+                        error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
                     this.showPie = 1;
                     this.showExtrac = 0;
                 }
@@ -343,7 +345,7 @@ System.register(['@angular/core', './personal.service', '@angular/router', 'rxjs
                     this.productsService.Cache
                         .subscribe(function (data) { _this.access = data.access; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.access); });
                     productsService.DataRentaFija
-                        .subscribe(function (data) { _this.renta = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
+                        .subscribe(function (data) { data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.renta); });
                 }
                 RentaFijaComponent = __decorate([
                     core_1.Component({
