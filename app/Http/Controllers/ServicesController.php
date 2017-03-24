@@ -127,6 +127,14 @@ class ServicesController extends Controller
 
       }
 
+      $dataTransform = array_map(function($index){
+        $temp = array();
+        foreach ($index as $key => $value) {
+            $temp[$key] = utf8_decode($value);
+        }
+        return $temp;
+      },$data);
+
 
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
@@ -136,7 +144,7 @@ class ServicesController extends Controller
                                               'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>$data,
+                                  'data' =>$dataTransform,
                                   'total' => number_format($total,2),
                               ],
               ];
@@ -204,27 +212,7 @@ class ServicesController extends Controller
                               ],
               ];
 
-        $filesave = File::put( $path ,json_encode($json[$CodigoOyd]));
-
-        switch (json_last_error()) {
-              default:
-                  return;
-              case JSON_ERROR_DEPTH:
-                  $error = 'Maximum stack depth exceeded';
-              break;
-              case JSON_ERROR_STATE_MISMATCH:
-                  $error = 'Underflow or the modes mismatch';
-              break;
-              case JSON_ERROR_CTRL_CHAR:
-                  $error = 'Unexpected control character found';
-              break;
-              case JSON_ERROR_SYNTAX:
-                  $error = 'Syntax error, malformed JSON';
-              break;
-              case JSON_ERROR_UTF8:
-                  $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-              break;
-          }
+      $filesave = File::put( $path ,json_encode($json[$CodigoOyd]));
 
       return response()->json($json[$CodigoOyd]);
 
@@ -262,6 +250,13 @@ class ServicesController extends Controller
           $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
       }
 
+      $dataTransform = array_map(function($index){
+        $temp = array();
+        foreach ($index as $key => $value) {
+            $temp[$key] = utf8_decode($value);
+        }
+        return $temp;
+      },$data);
 
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
@@ -271,7 +266,7 @@ class ServicesController extends Controller
                                               'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>$data,
+                                  'data' =>$dataTransform,
                                   'total' => number_format($total,2),
                               ],
               ];
@@ -304,6 +299,14 @@ class ServicesController extends Controller
           $total = $total + $item->Valoracion;
       }
 
+      $dataTransform = array_map(function($index){
+        $temp = array();
+        foreach ($index as $key => $value) {
+            $temp[$key] = utf8_decode($value);
+        }
+        return $temp;
+      },$data);
+
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
                                               'city' => $stmt[0]->Ciudad,
@@ -312,7 +315,7 @@ class ServicesController extends Controller
                                               'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>$data,
+                                  'data' =>$dataTransform,
                                   'total' => $total,
                               ],
               ];
@@ -344,6 +347,14 @@ class ServicesController extends Controller
           $total = $total + $item->Valoracion;
       }
 
+      $dataTransform = array_map(function($index){
+        $temp = array();
+        foreach ($index as $key => $value) {
+            $temp[$key] = utf8_decode($value);
+        }
+        return $temp;
+      },$data);
+
       $json = [ $CodigoOyd => [  'personal_data' => [
                                               'name' => $stmt[0]->Nombre,
                                               'city' => $stmt[0]->Ciudad,
@@ -352,10 +363,11 @@ class ServicesController extends Controller
                                               'comercial_adviser' => $stmt[0]->Comercial
                                           ],
 
-                                  'data' =>$data,
+                                  'data' =>$dataTransform,
                                   'total' => $total,
                               ],
               ];
+
 
       return response()->json($json[$CodigoOyd]);
 
@@ -381,16 +393,16 @@ class ServicesController extends Controller
 
       $totalFavor = 0;
       $totalCargo = 0;
-      $total = array();
+      $total = array(); 
 
 
       foreach ($stmt as $key => $value) {
-          $resutl[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
+          $resutl[$key]['fecha'] = utf8_decode(trim(str_replace('00:00:00','',$value->dtmDocumento)));
           $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
           $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
-          $resutl[$key]['ACargo'] = $value->ACargo;
-          $resutl[$key]['AFavor'] = $value->AFavor;
-          $resutl[$key]['Saldo'] = $value->Saldo;
+          $resutl[$key]['ACargo'] = utf8_decode($value->ACargo);
+          $resutl[$key]['AFavor'] = utf8_decode($value->AFavor);
+          $resutl[$key]['Saldo'] = utf8_decode($value->Saldo);
 
           if(!is_null($value->ACargo) && $value->ACargo != 0 ){
               $totalCargo += $value->ACargo;
@@ -400,13 +412,14 @@ class ServicesController extends Controller
           }
         }
 
+
       $totalSaldo = $totalFavor-$totalCargo;
 
       $total['totalFavor'] = $totalFavor;
       $total['totalCargo'] = $totalCargo;
       $total['totalSaldo']= $totalSaldo;
 
-      $json = [ $CodigoOyd => ['data' =>$resutl,'total'=>$total]];
+      $json = [ $CodigoOyd => ['data' =>$dataTransform,'total'=>$total]];
 
       return response()->json($json[$CodigoOyd]);
 
