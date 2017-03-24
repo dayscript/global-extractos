@@ -393,7 +393,7 @@ class ServicesController extends Controller
 
       $totalFavor = 0;
       $totalCargo = 0;
-      $total = array(); 
+      $total = array();
 
 
       foreach ($stmt as $key => $value) {
@@ -419,7 +419,7 @@ class ServicesController extends Controller
       $total['totalCargo'] = $totalCargo;
       $total['totalSaldo']= $totalSaldo;
 
-      $json = [ $CodigoOyd => ['data' =>$dataTransform,'total'=>$total]];
+      $json = [ $CodigoOyd => ['data' =>$resutl,'total'=>$total]];
 
       return response()->json($json[$CodigoOyd]);
 
