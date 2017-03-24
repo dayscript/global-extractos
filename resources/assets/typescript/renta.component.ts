@@ -11,7 +11,7 @@ declare var $: any
   templateUrl: '/app/templates/renta-variable.html',
   providers: [ProductsService],
 
-})  
+})
 export class RentaComponent {
   id:number = 123456;
   date:string = '2016-12-31';
@@ -64,9 +64,9 @@ export class RentaFijaComponent {
     );
 		productsService.DataRentaFija
   	.subscribe(
-      data => {data},
+      data => { this.renta = data},
       error => console.error(`Error: ${error}`),
-      () => console.log(this.renta)
+      () => console.log(this.renta) 
   	);
 	}
 }

@@ -65,7 +65,7 @@ export class PieComponent {
     )
     productsService.Data
       .subscribe(
-        data => {data},//this.products = 
+        data => {this.products = data},
         error => console.error(`Error: ${error}`),
         () => this.setParamsPie()
       );
