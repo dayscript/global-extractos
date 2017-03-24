@@ -39,22 +39,22 @@
   <h3>FONDOS DE INVERSIÓN COLECTIVA</h3>
 </section>
 <section class="table">
-  <table style="width:100%">
+  <table style="width:100%" class="report-table">
     <thead>
       <th>Fondo de Inversión</th><th>Encargo</th><th>F. Constitucion</th><th>F. Vncto.</th><th>Vlr. Unidad</th><th>Nro.Unidades</th><th>Saldo Pesos</th>
     </thead>
       <tr *ngFor="let item of fics?.data">
-        <td>{{ item.FONDO }}</td>
-        <td>{{ item.Encargo }}</td>
-        <td>{{ item.Fecha_Const  }}</td>
-        <td>{{ item.Fecha_vto }}</td>
-        <td>$ {{ item.ValorUnidad  }}</td>
-        <td>{{ item.nro_unidades }}</td>
-        <td>$ {{ item.SaldoPesos  }}</td>
+        <td class="detalle">{{ item.FONDO }}</td>
+        <td class="numero" >{{ item.Encargo }}</td>
+        <td class="numero" >{{ item.Fecha_Const  }}</td>
+        <td class="numero" >{{ item.Fecha_vto }}</td>
+        <td class="numero" >$ {{ item.ValorUnidad  }}</td>
+        <td class="numero" >{{ item.nro_unidades }}</td>
+        <td class="numero" >$ {{ item.SaldoPesos  }}</td>
       </tr>
       <tr>
-       <td colspan="6"><strong>Total Fics</strong></td>
-       <td colspan="1"><strong>$ {{ fics?.total }} </strong></td>
+       <td colspan="6" class="total"><strong>Total Fics</strong></td>
+       <td class="total"><strong>${{ fics?.total }} </strong></td>
       </tr>
   </table>
 </section>
