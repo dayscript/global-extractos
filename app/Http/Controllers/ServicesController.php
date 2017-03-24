@@ -397,12 +397,12 @@ class ServicesController extends Controller
 
 
       foreach ($stmt as $key => $value) {
-          $resutl[$key]['fecha'] = utf8_decode(trim(str_replace('00:00:00','',$value->dtmDocumento)));
+          $resutl[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
           $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
           $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
-          $resutl[$key]['ACargo'] = utf8_decode($value->ACargo);
-          $resutl[$key]['AFavor'] = utf8_decode($value->AFavor);
-          $resutl[$key]['Saldo'] = utf8_decode($value->Saldo);
+          $resutl[$key]['ACargo'] = $value->ACargo;
+          $resutl[$key]['AFavor'] = $value->AFavor;
+          $resutl[$key]['Saldo'] = $value->Saldo;
 
           if(!is_null($value->ACargo) && $value->ACargo != 0 ){
               $totalCargo += $value->ACargo;
@@ -411,6 +411,7 @@ class ServicesController extends Controller
               $totalFavor += $value->AFavor;
           }
         }
+      
 
 
       $totalSaldo = $totalFavor-$totalCargo;
