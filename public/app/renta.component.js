@@ -156,7 +156,7 @@ let MovimientosComponent = class MovimientosComponent {
         this.id = 123456;
         this.activatedRoute.params.subscribe(params => {
             this.id = +params['id'];
-            //this.date = params['date']
+            this.date = params['date'];
         });
         productsService.Data
             .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => this.setParamsPie());
@@ -179,9 +179,9 @@ let MovimientosComponent = class MovimientosComponent {
         }
     }
     search() {
-        this.date = $('#datepicker_start').val();
+        this.date_start = $('#datepicker_start').val();
         this.date_end = $('#datepicker_end').val();
-        var url = 'api/client-report/' + this.id + '/' + this.date + '/' + this.date_end;
+        var url = 'api/client-report/' + this.id + '/' + this.date_start + '/' + this.date_end;
         console.log(url);
         this.http.get(url)
             .map(response => response.json())

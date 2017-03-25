@@ -66,7 +66,7 @@ export class RentaFijaComponent {
   	.subscribe(
       data => { this.renta = data},
       error => console.error(`Error: ${error}`),
-      () => console.log(this.renta) 
+      () => console.log(this.renta)
   	);
 	}
 }
@@ -199,6 +199,7 @@ export class MovimientosComponent {
 
   id:number = 123456;
   date:string;
+  date_start:string;
   date_end:string;
   products:Observable<Array<string>>;
   access:Observable<Array<string>>;
@@ -209,7 +210,7 @@ export class MovimientosComponent {
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
     this.activatedRoute.params.subscribe(
       params=>{ this.id = +params['id']
-                //this.date = params['date']
+                this.date = params['date']
               }
     )
     productsService.Data
@@ -241,9 +242,9 @@ export class MovimientosComponent {
   }
 
   search(){
-    this.date = $('#datepicker_start').val()
+    this.date_start = $('#datepicker_start').val()
     this.date_end = $('#datepicker_end').val()
-    var url = 'api/client-report/'+this.id+'/'+this.date+'/'+this.date_end
+    var url = 'api/client-report/'+this.id+'/'+this.date_start+'/'+this.date_end
     console.log(url)
     this.http.get(url)
                 .map( response => response.json() )
