@@ -6,9 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-let NotFoundPageComponent = class NotFoundPageComponent {
-};
+var core_1 = require("@angular/core");
+var NotFoundPageComponent = (function () {
+    function NotFoundPageComponent() {
+    }
+    return NotFoundPageComponent;
+}());
 NotFoundPageComponent = __decorate([
     core_1.Component({
         templateUrl: '/app/templates/error404.html',

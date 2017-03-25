@@ -6,10 +6,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
+var core_1 = require("@angular/core");
 require("rxjs/add/operator/map");
-let AppComponent = class AppComponent {
-};
+var AppComponent = (function () {
+    function AppComponent() {
+    }
+    return AppComponent;
+}());
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',

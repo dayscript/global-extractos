@@ -7,18 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // ///<reference path="../../../typings/index.d.ts"/> ya no sirve
-const core_1 = require("@angular/core");
-const platform_browser_1 = require("@angular/platform-browser");
-const http_1 = require("@angular/http");
-const core_2 = require("@angular/core");
-const router_1 = require("@angular/router");
-const forms_1 = require("@angular/forms");
-const app_component_1 = require("./app.component");
-const pie_component_1 = require("./pie.component");
-const renta_component_1 = require("./renta.component");
-const notfound_component_1 = require("./notfound.component");
-const ng2_charts_1 = require("ng2-charts");
-const appRoutes = [
+var core_1 = require("@angular/core");
+var platform_browser_1 = require("@angular/platform-browser");
+var http_1 = require("@angular/http");
+var core_2 = require("@angular/core");
+var router_1 = require("@angular/router");
+var forms_1 = require("@angular/forms");
+var app_component_1 = require("./app.component");
+var pie_component_1 = require("./pie.component");
+var renta_component_1 = require("./renta.component");
+var notfound_component_1 = require("./notfound.component");
+var ng2_charts_1 = require("ng2-charts");
+var appRoutes = [
     { path: 'report/:id/:date', redirectTo: 'report/:id/:date/pie', pathMatch: 'full' },
     { path: 'report/:id/:date/pie', component: pie_component_1.PieComponent },
     { path: 'report/:id/:date/renta-varible', component: renta_component_1.RentaComponent },
@@ -28,34 +28,43 @@ const appRoutes = [
     { path: 'report/:id/:date/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
     { path: 'report/:id/:date/movimientos', component: renta_component_1.MovimientosComponent },
 ];
-let AsyncPipe = class AsyncPipe {
-    transform(obj, args) {
+var AsyncPipe = (function () {
+    function AsyncPipe() {
+    }
+    AsyncPipe.prototype.transform = function (obj, args) {
         if (obj) {
             return obj[args[0]][args[1]];
         }
-    }
-};
+    };
+    return AsyncPipe;
+}());
 AsyncPipe = __decorate([
     core_2.Pipe({
         name: 'asyncPipe'
     })
 ], AsyncPipe);
 exports.AsyncPipe = AsyncPipe;
-let KeysPipe = class KeysPipe {
-    transform(value, args) {
-        let keys = [];
-        for (let key in value) {
+var KeysPipe = (function () {
+    function KeysPipe() {
+    }
+    KeysPipe.prototype.transform = function (value, args) {
+        var keys = [];
+        for (var key in value) {
             keys.push({ key: key, value: value[key] });
         }
         return keys;
-    }
-};
+    };
+    return KeysPipe;
+}());
 KeysPipe = __decorate([
     core_2.Pipe({ name: 'keys' }) // permite convertir un objeto en un arreglo
 ], KeysPipe);
 exports.KeysPipe = KeysPipe;
-let AppModule = class AppModule {
-};
+var AppModule = (function () {
+    function AppModule() {
+    }
+    return AppModule;
+}());
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],

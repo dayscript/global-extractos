@@ -9,12 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const personal_service_1 = require("./personal.service");
-const router_1 = require("@angular/router");
-const http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var personal_service_1 = require("./personal.service");
+var router_1 = require("@angular/router");
+var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-let PieComponent = class PieComponent {
+var PieComponent = (function () {
     /*public pieCharColors:Array<any> = [
       {
         backgroundColor: '#000000',
@@ -26,7 +26,8 @@ let PieComponent = class PieComponent {
         backgroundColor: 'rgba(204, 153, 51)',
       }
     ]*/
-    constructor(productsService, activatedRoute, http) {
+    function PieComponent(productsService, activatedRoute, http) {
+        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -47,16 +48,16 @@ let PieComponent = class PieComponent {
                 bodyFontSize: 1,
             },
         };
-        this.activatedRoute.params.subscribe(params => {
-            this.id = +params['id'],
-                this.date = params['date'];
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id = +params['id'],
+                _this.date = params['date'];
         });
         productsService.Data
-            .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => this.setParamsPie());
+            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
         this.showPie = 1;
         this.showExtrac = 0;
     }
-    setParamsPie() {
+    PieComponent.prototype.setParamsPie = function () {
         var PieData = [];
         var cont = 0;
         for (var item in this.products) {
@@ -72,31 +73,33 @@ let PieComponent = class PieComponent {
         if (this.products.hasOwnProperty('access')) {
             console.log(this.products['access']);
         }
-    }
+    };
     // events
-    chartClicked(e) {
+    PieComponent.prototype.chartClicked = function (e) {
         //    console.log(e);
         console.log(this.pieChartOptions);
-    }
-    chartHovered(e) {
+    };
+    PieComponent.prototype.chartHovered = function (e) {
         //console.log(e);
-    }
-    show_pie() {
+    };
+    PieComponent.prototype.show_pie = function () {
         event.preventDefault();
         this.showPie = 1;
         this.showExtrac = 0;
-    }
-    show_extrac() {
+    };
+    PieComponent.prototype.show_extrac = function () {
         event.preventDefault();
         this.showExtrac = 1;
         this.showPie = 0;
-    }
-    search() {
+    };
+    PieComponent.prototype.search = function () {
+        var _this = this;
         this.http.get('api/client-report/' + this.id + '/' + this.date + '/' + this.date_end)
-            .map(response => response.json())
-            .subscribe(data => { this.dataExtrac = data; }, error => console.error(`Error: ${error}`), () => console.log(this.dataExtrac));
-    }
-};
+            .map(function (response) { return response.json(); })
+            .subscribe(function (data) { _this.dataExtrac = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.dataExtrac); });
+    };
+    return PieComponent;
+}());
 PieComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
