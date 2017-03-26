@@ -13,6 +13,7 @@ class ServicesController extends Controller
     public function show($CodigoOyd,$Fecha)
     {
       $cc = $CodigoOyd;
+      $noInfo = storage_path()."/json/no-info.json";
       $fileJsonPie = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
       $fileJsonAccess = storage_path().'/json/'.$cc.'.json';
       $updateFile = 0;
@@ -30,6 +31,10 @@ class ServicesController extends Controller
 
 
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+      if(!isset($CodigoOyd[0])){
+            return response()->json(json_decode(file_get_contents($noInfo), true));
+      }
+
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
@@ -411,7 +416,7 @@ class ServicesController extends Controller
               $totalFavor += $value->AFavor;
           }
         }
-      
+
 
 
       $totalSaldo = $totalFavor-$totalCargo;
