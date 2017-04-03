@@ -5,14 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
+use App\Portafolio;
 
 
 class ServicesController extends Controller
 {
 
-    public function show($CodigoOyd,$Fecha)
+    public function portafolio($CodigoOyd,$Fecha)
     {
+
+      /*-------------------------*/
+
+      $Portafolios = App\Portafolio::all();
+      dd($Portafolios);
+
+      /*-------------------------*/
+
+
+
+
       $cc = $CodigoOyd;
+
       $path1 = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
       if(File::exists($path1)) {
           $json = json_decode(file_get_contents($path1), true);

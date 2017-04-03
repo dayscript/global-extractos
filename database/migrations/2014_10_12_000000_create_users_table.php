@@ -17,6 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->integer('identification')->unique();
             $table->integer('codeoyd')->unique();
+            $table->char('nombre');
+            $table->char('ciudad');
+            $table->char('direccion');
+            $table->char('asesor_comercial');
+            $table->boolean('estado');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

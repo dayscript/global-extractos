@@ -30,7 +30,7 @@ Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('
 
 /*Laravel API routes*/
 Route::group(['prefix' => 'api'], function () {
-    Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@show');
+    Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio');
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
     Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentFija');
     Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@fics');

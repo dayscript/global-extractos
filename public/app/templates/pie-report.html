@@ -2,7 +2,7 @@
   <div class=" row wrapper-content">
     <nav class="navbar navbar-light bg-faded">
     <form class="form-inline">
-      <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Portafolio </button>
+      <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Resumen de Portafolio </button>
       <button *ngIf="products?.access.TotalRV.val" routerLink="/report/{{id}}/{{date}}/renta-varible" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Varible</button>
       <button *ngIf="products?.access.TotalRF.val" routerLink="/report/{{id}}/{{date}}/renta-fija" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fija</button>
       <button *ngIf="products?.access.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Fondos de inversión</button>
