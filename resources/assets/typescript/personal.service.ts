@@ -7,14 +7,14 @@ import { ActivatedRoute  } from '@angular/router';
 
 @Injectable()
 export class ProductsService {
-  id:any;
+  id:string;
   date:any;
   date_end:any;
 
 
   constructor(private http: Http, private activatedRoute:ActivatedRoute) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -24,12 +24,13 @@ export class ProductsService {
     if(date.exec(this.date) == null){
       alert('El fecha no es valida');
     }
-    if(regex.exec(this.id) == null){
-      alert('El codigo no es valido');
-    }
+    /*if(regex.exec(this.id) == null){
+      alert('El código no es válido');
+    }*/
     if( this.id == 0 ){
-      alert('Codigo no valido');
+      alert('Código no valido');
     }
+    console.log(this.id);
   }
 
   get Data(): Observable<any> {

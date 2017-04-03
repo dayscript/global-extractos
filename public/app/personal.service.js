@@ -19,7 +19,7 @@ var ProductsService = (function () {
         this.http = http;
         this.activatedRoute = activatedRoute;
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         var regex = /^[0-9]+$/g;
@@ -27,12 +27,13 @@ var ProductsService = (function () {
         if (date.exec(this.date) == null) {
             alert('El fecha no es valida');
         }
-        if (regex.exec(this.id) == null) {
-            alert('El codigo no es valido');
-        }
+        /*if(regex.exec(this.id) == null){
+          alert('El código no es válido');
+        }*/
         if (this.id == 0) {
-            alert('Codigo no valido');
+            alert('Código no valido');
         }
+        console.log(this.id);
     }
     Object.defineProperty(ProductsService.prototype, "Data", {
         get: function () {

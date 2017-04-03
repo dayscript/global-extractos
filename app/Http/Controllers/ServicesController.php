@@ -29,7 +29,6 @@ class ServicesController extends Controller
 
       }
 
-
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       if(!isset($CodigoOyd[0])){
             return response()->json(json_decode(file_get_contents($noInfo), true));
