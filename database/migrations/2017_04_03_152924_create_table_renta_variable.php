@@ -18,6 +18,7 @@ class CreateTableRentaVariable extends Migration
             $table->integer('user_id')->unsigned();
             $table->json('info_json');
             $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

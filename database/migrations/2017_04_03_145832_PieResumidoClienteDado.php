@@ -16,6 +16,7 @@ class PieResumidoClienteDado extends Migration
         Schema::create('portafolios',function(Blueprint $table){
           $table->increments('id');
           $table->integer('user_id')->unsigned();
+          $table->string('fecha')->nullable();
           $table->string('retan_variable')->nullable();
           $table->string('retan_fija')->nullable();
           $table->string('operaciones_de_liquiez')->nullable();
@@ -29,7 +30,7 @@ class PieResumidoClienteDado extends Migration
           $table->string('renta_fics_porcentaje')->nullable();
           $table->json('info_json');
           $table->timestamp('created_at')->nullable();
-
+          $table->timestamp('updated_at')->nullable();
           $table->foreign('user_id')->references('id')->on('users');
         });
     }

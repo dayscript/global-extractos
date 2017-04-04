@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
-use App\Portafolio;
+use \App\Portafolio;
+use \App\User;
+
 
 
 class ServicesController extends Controller
@@ -15,10 +17,51 @@ class ServicesController extends Controller
     {
 
       /*-------------------------*/
+      $cc = $CodigoOyd;
 
-      $Portafolios = App\Portafolio::all();
-      dd($Portafolios);
+      try{
+        $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
+        $CodigoOyd = trim($CodigoOyd[0]->lngID);
+      }catch(\Exception $e){
+          return response()->json(array('Error'=>'Usuario no existe','debug'=>''.$e));
+      }
 
+      if($CodigoOyd){
+        $user = User::where('codeoyd',$cc)->get();
+        if(isset($user[0])){
+          $portafolio = Portafolio::where(
+                          ['user_id','=',$user[0]['attributes']['id']],
+                          ['fecha','=',$Fecha]
+                        );
+        }else{
+          dd('no');
+        }
+
+
+      }
+
+
+
+
+
+
+    /*  $portafolio = new Portafolio;
+      $portafolio->user_id = '1';
+      $portafolio->fecha = '';
+      $portafolio->retan_variable = '';
+      $portafolio->retan_fija = '';
+      $portafolio->operaciones_de_liquiez = '';
+      $portafolio->operaciones_por_cumplir = '';
+      $portafolio->saldo_disponible = '';
+      $portafolio->total_cuenta_de_administracion = '';
+      $portafolio->fondos_de_inversion_colectiva = '';
+      $portafolio->gran_total = '';
+      $portafolio->renta_fija_porcentaje = '';
+      $portafolio->renta_variable_porcentaje = '';
+      $portafolio->renta_fics_porcentaje = '';
+      $portafolio->info_json = json_encode(array(1,2,3,4,65,7));
+      $portafolio->save();
+      dd($portafolio);
       /*-------------------------*/
 
 
