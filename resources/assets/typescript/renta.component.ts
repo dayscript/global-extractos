@@ -19,7 +19,7 @@ export class RentaComponent {
   access:any;
 	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -52,7 +52,7 @@ export class RentaFijaComponent {
 	renta:Observable<Array<string>>;
 	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -84,7 +84,7 @@ export class FicsComponent {
 	fics:Observable<Array<string>>;
 	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -116,7 +116,7 @@ export class OPCComponent {
 	opc:Observable<Array<string>>;
 	constructor (private productsService: ProductsService, private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -164,7 +164,7 @@ export class ODLComponent {
 
  	constructor (private productsService: ProductsService,private activatedRoute: ActivatedRoute){
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );
@@ -209,7 +209,7 @@ export class MovimientosComponent {
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id']
+      params=>{ this.id = params['id']
                 this.date = params['date']
               }
     )

@@ -49,7 +49,7 @@ var PieComponent = (function () {
             },
         };
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         productsService.Data

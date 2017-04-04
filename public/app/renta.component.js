@@ -22,7 +22,7 @@ var RentaComponent = (function () {
         this.id = 123456;
         this.date = '2016-12-31';
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         this.productsService.Cache
@@ -49,7 +49,7 @@ var RentaFijaComponent = (function () {
         this.id = 123456;
         this.date = '2016-12-31';
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         this.productsService.Cache
@@ -76,7 +76,7 @@ var FicsComponent = (function () {
         this.id = 123456;
         this.date = '2016-12-31';
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         this.productsService.Cache
@@ -103,7 +103,7 @@ var OPCComponent = (function () {
         this.id = 123456;
         this.date = '2016-12-31';
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         this.productsService.Cache
@@ -137,7 +137,7 @@ var ODLComponent = (function () {
         this.date = '2016-12-31';
         this.path = 'api/variable-report/1013611324';
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         this.productsService.Cache
@@ -166,7 +166,7 @@ var MovimientosComponent = (function () {
         this.http = http;
         this.id = 123456;
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'];
+            _this.id = params['id'];
             _this.date = params['date'];
         });
         productsService.Data
