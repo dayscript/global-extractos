@@ -12,6 +12,7 @@ class ServicesController extends Controller
 
     public function show($CodigoOyd,$Fecha)
     {
+
       $cc = $CodigoOyd;
       $noInfo = storage_path()."/json/no-info.json";
       $fileJsonPie = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
@@ -66,7 +67,7 @@ class ServicesController extends Controller
                                               'city' => $stmt[0]->Ciudad,
                                               'state'=> $stmt[0]->Estado,
                                               'address' => $stmt[0]->Direccion,
-                                              'comercial_adviser' => $stmt[0]->Comercial
+                                              'comercial_adviser' => $stmt[0]->Comercial,
                                           ],
                                   'composition_portfolio' =>[
                                           'variable_rent' =>number_format($stmt[0]->TotalRV,2),
@@ -88,7 +89,7 @@ class ServicesController extends Controller
                                 ],
               ];
 
-
+      $json = self::array_to_utf($json);
       File::put( $fileJsonPie ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
@@ -215,7 +216,7 @@ class ServicesController extends Controller
                                   'total' => number_format($total,2),
                               ],
               ];
-
+      $json = self::array_to_utf($json);
       $filesave = File::put( $path ,json_encode($json[$CodigoOyd]));
 
       return response()->json($json[$CodigoOyd]);
@@ -274,6 +275,7 @@ class ServicesController extends Controller
                                   'total' => number_format($total,2),
                               ],
               ];
+      $json = self::array_to_utf($json);
       File::put( $path ,json_encode($json[$CodigoOyd]));
       return response()->json($json[$CodigoOyd]);
 
@@ -323,7 +325,7 @@ class ServicesController extends Controller
                                   'total' => $total,
                               ],
               ];
-
+      $json = self::array_to_utf($json);
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -372,7 +374,7 @@ class ServicesController extends Controller
                               ],
               ];
 
-
+      $json = self::array_to_utf($json);
       return response()->json($json[$CodigoOyd]);
 
     }
@@ -425,9 +427,8 @@ class ServicesController extends Controller
       $total['totalSaldo']= $totalSaldo;
 
       $json = [ $CodigoOyd => ['data' =>$resutl,'total'=>$total]];
-
+      $json = self::array_to_utf($json);
       return response()->json($json[$CodigoOyd]);
-
     }
     /**
      * Display the specified resource.
@@ -451,9 +452,15 @@ class ServicesController extends Controller
 
   }
 
-  function array_to_utf(){
-    return 1;
+  function array_to_utf($array = array()){
+    foreach ( $array as $key => $value ) {
+        if(is_array($value)){
+          $temp[$key] = self::array_to_utf($value);
+        }else{
+          $temp[$key] = utf8_decode($value);
+        }
+    }
+    return $temp;
   }
-
 
 }
