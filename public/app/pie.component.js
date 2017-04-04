@@ -58,6 +58,7 @@ var PieComponent = (function () {
         this.showExtrac = 0;
     }
     PieComponent.prototype.setParamsPie = function () {
+        console.log(this.products);
         var PieData = [];
         var cont = 0;
         for (var item in this.products) {

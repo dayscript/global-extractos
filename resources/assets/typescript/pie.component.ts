@@ -75,6 +75,7 @@ export class PieComponent {
 
   }
   public setParamsPie(){
+    console.log(this.products)
     var PieData = [];
     var cont = 0;
     for( var item in this.products){

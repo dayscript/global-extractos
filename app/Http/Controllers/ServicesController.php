@@ -55,7 +55,7 @@ class ServicesController extends Controller
       $access = array();
       foreach ($items as $key => $value) {
         if($stmt[0]->$value < 1){
-          $access[$value] = array('val'=>0);
+          $access[$value] = array(0=>0);
         }else{
           $access[$value] = array('val'=>1);
         }
