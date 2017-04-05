@@ -15,14 +15,14 @@ class CreateUsersTable extends Migration
     {
         Schema::connection('mysql')->create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('identification')->unique();
-            $table->integer('codeoyd')->unique();
+            $table->string('identification')->unique();
+            $table->string('codeoyd')->unique();
             $table->char('nombre');
             $table->char('ciudad');
             $table->char('direccion');
             $table->char('asesor_comercial');
             $table->boolean('estado');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
