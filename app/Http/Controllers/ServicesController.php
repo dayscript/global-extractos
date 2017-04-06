@@ -29,66 +29,47 @@ class ServicesController extends Controller
     }
     # valida si la peticion ya existe en Laravel
     if($CodigoOyd){
-      $user = User::where('codeoyd',$cc)->get();
+      $user = User::where('identification',$cc)->get();
       if(isset($user[0])){
-        $portafolio = Portafolio::where(
-        ['user_id','=',$user[0]['attributes']['id']],
-        ['fecha','=',$Fecha]
-      );
-    }else{
-      $user = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
-      /*$user_save = array(
-        'identification' =>$cc,
-        'codeoyd' => trim($user[0]->Codigo),
-        'email' => '',
-        'nombre'=>$user[0]->Nombre,
-        'ciudad'=>$user[0]->Ciudad,
-        'direccion'=>$user[0]->Direccion,
-        'asesor_comercial'=>$user[0]->Comercial,
-        'estado'=>'1',
-        'password' => bcrypt('p0p01234'),
-      );*/
-      $user_new = new User;
-      $user_new->identification = $cc;
-      $user_new->codeoyd = trim($user[0]->Codigo);
-      $user_new->email = '';
-      $user_new->nombre=$user[0]->Nombre;
-      $user_new->ciudad=$user[0]->Ciudad;
-      $user_new->direccion=$user[0]->Direccion;
-      $user_new->asesor_comercial=$user[0]->Comercial;
-      $user_new->estado='1';
-      $user_new->password = bcrypt('p0p01234');
-      $user_new->save();
+          $portafolio = Portafolio::where(
+          ['user_id','=',$user[0]['attributes']['id']],
+          ['fecha','=',$Fecha]
+        );
+      }else{
+        $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
+        $user_new = new User;
+        $user_new->identification = $cc;
+        $user_new->codeoyd = trim( $info_portafolio[0]->Codigo);
+        $user_new->email = '';
+        $user_new->nombre= $info_portafolio[0]->Nombre;
+        $user_new->ciudad= $info_portafolio[0]->Ciudad;
+        $user_new->direccion= $info_portafolio[0]->Direccion;
+        $user_new->asesor_comercial= $info_portafolio[0]->Comercial;
+        $user_new->estado='1';
+        $user_new->password = bcrypt('p0p01234');
+        $user_new->save();
+
+        $user = User::where('identification',$cc)->get();
+        $user = $user[0];
+        $portafolio = new Portafolio;
+        $portafolio->user_id = $user->id;
+        $portafolio->fecha = $Fecha;
+        $portafolio->retan_variable = $info_portafolio[0]->TotalRV;
+        $portafolio->retan_fija = $info_portafolio[0]->TotalRF;
+        $portafolio->operaciones_de_liquiez = $info_portafolio[0]->TotalLiquidez;
+        $portafolio->operaciones_por_cumplir = $info_portafolio[0]->TotalPorCumplir;
+        $portafolio->saldo_disponible = $info_portafolio[0]->Efectivo;
+        $portafolio->total_cuenta_de_administracion = 0;
+        $portafolio->fondos_de_inversion_colectiva = $info_portafolio[0]->TotalCarteras;
+        $portafolio->gran_total = 0;
+        $portafolio->renta_fija_porcentaje = 0;
+        $portafolio->renta_variable_porcentaje = 0;
+        $portafolio->renta_fics_porcentaje = 0;
+        $portafolio->info_json = json_encode(array(1,2,3,4,65,7));
+        $portafolio->save();
+        dd($portafolio);
+        }
       }
-    }
-
-
-
-
-
-
-
-  /*  $portafolio = new Portafolio;
-  $portafolio->user_id = '1';
-  $portafolio->fecha = '';
-  $portafolio->retan_variable = '';
-  $portafolio->retan_fija = '';
-  $portafolio->operaciones_de_liquiez = '';
-  $portafolio->operaciones_por_cumplir = '';
-  $portafolio->saldo_disponible = '';
-  $portafolio->total_cuenta_de_administracion = '';
-  $portafolio->fondos_de_inversion_colectiva = '';
-  $portafolio->gran_total = '';
-  $portafolio->renta_fija_porcentaje = '';
-  $portafolio->renta_variable_porcentaje = '';
-  $portafolio->renta_fics_porcentaje = '';
-  $portafolio->info_json = json_encode(array(1,2,3,4,65,7));
-  $portafolio->save();
-  dd($portafolio);
-  /*-------------------------*/
-
-
-
 
   $cc = $CodigoOyd;
 
@@ -495,5 +476,6 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   $stmt = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   return $stmt;
 }
+
 
 }
