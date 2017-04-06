@@ -38,7 +38,7 @@ class ServicesController extends Controller
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
       $stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-      #dd($stmt);
+
 
       $total_administration_account = $stmt[0]->TotalRV+$stmt[0]->TotalRF+$stmt[0]->TotalLiquidez+$stmt[0]->TotalPorCumplir+$stmt[0]->Efectivo;
       $found  = $stmt[0]->TotalCarteras;
@@ -55,7 +55,7 @@ class ServicesController extends Controller
       $access = array();
       foreach ($items as $key => $value) {
         if($stmt[0]->$value < 1){
-          $access[$value] = array(0=>0);
+          $access[$value] = array('val'=>0);
         }else{
           $access[$value] = array('val'=>1);
         }
