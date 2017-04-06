@@ -24,9 +24,9 @@ export class ProductsService {
     if(date.exec(this.date) == null){
       alert('El fecha no es valida');
     }
-    if(regex.exec(this.id) == null){
+    /*if(regex.exec(this.id) == null){
       alert('El codigo no es valido');
-    }
+    }*/
     if( this.id == 0 ){
       alert('Codigo no valido');
     }

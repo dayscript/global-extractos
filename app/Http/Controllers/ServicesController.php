@@ -18,130 +18,50 @@ class ServicesController extends Controller
 
     /*-------------------------*/
     $cc = $CodigoOyd;
-
     try{
       #valida si $CodigoOyd existe en la base de datos de global
       $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
     }catch(\Exception $e){
       # si dectecta un error devuelve el mensaje $e
-      return response()->json(array('Error'=>'Usuario no existe','debug'=>''.$e));
+      return response()->json(array('error'=>true,'description'=>'Usuario no existe','debug'=>''.$e));
     }
     # valida si la peticion ya existe en Laravel
     if($CodigoOyd){
       $user = User::where('identification',$cc)->get();
+      # si el usuario existe valida si existe informacion para la fecha
       if(isset($user[0])){
-          $portafolio = Portafolio::where(
-          ['user_id','=',$user[0]['attributes']['id']],
-          ['fecha','=',$Fecha]
-        );
+          $portafolio = Portafolio::where('user_id',$user[0]['attributes']['id'])
+                                  ->where('fecha',$Fecha)
+                                  ->get();
+          if( isset($portafolio[0]) ){
+              $output = $portafolio[0];
+          }else{
+            # consultar informacion en sqlsrv
+            $user = User::where('identification',$cc)->get();
+            $user = $user[0];
+            $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
+            if(isset($info_portafolio['error'])){
+              return response()->json($info_portafolio);
+            }
+            $portafolio = self::create_porfafolio($user,$info_portafolio,$Fecha,$CodigoOyd);
+            $output = $portafolio;
+          }
       }else{
         $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
-        $user_new = new User;
-        $user_new->identification = $cc;
-        $user_new->codeoyd = trim( $info_portafolio[0]->Codigo);
-        $user_new->email = '';
-        $user_new->nombre= $info_portafolio[0]->Nombre;
-        $user_new->ciudad= $info_portafolio[0]->Ciudad;
-        $user_new->direccion= $info_portafolio[0]->Direccion;
-        $user_new->asesor_comercial= $info_portafolio[0]->Comercial;
-        $user_new->estado='1';
-        $user_new->password = bcrypt('p0p01234');
-        $user_new->save();
-
+        if(isset($info_portafolio['error'])){
+          return response()->json($info_portafolio);
+        }
+        self::create_user($info_portafolio,$cc);
         $user = User::where('identification',$cc)->get();
         $user = $user[0];
-        $portafolio = new Portafolio;
-        $portafolio->user_id = $user->id;
-        $portafolio->fecha = $Fecha;
-        $portafolio->retan_variable = $info_portafolio[0]->TotalRV;
-        $portafolio->retan_fija = $info_portafolio[0]->TotalRF;
-        $portafolio->operaciones_de_liquiez = $info_portafolio[0]->TotalLiquidez;
-        $portafolio->operaciones_por_cumplir = $info_portafolio[0]->TotalPorCumplir;
-        $portafolio->saldo_disponible = $info_portafolio[0]->Efectivo;
-        $portafolio->total_cuenta_de_administracion = 0;
-        $portafolio->fondos_de_inversion_colectiva = $info_portafolio[0]->TotalCarteras;
-        $portafolio->gran_total = 0;
-        $portafolio->renta_fija_porcentaje = 0;
-        $portafolio->renta_variable_porcentaje = 0;
-        $portafolio->renta_fics_porcentaje = 0;
-        $portafolio->info_json = json_encode(array(1,2,3,4,65,7));
-        $portafolio->save();
-        dd($portafolio);
+        $output = self:: create_porfafolio($user,$info_portafolio,$Fecha,$CodigoOyd);
+
         }
-      }
-
-  $cc = $CodigoOyd;
-
-  $path1 = storage_path()."/json/".$cc.'-'.$Fecha."-pie-report.json";
-  if(File::exists($path1)) {
-    $json = json_decode(file_get_contents($path1), true);
-    return response()->json($json);
-  }
-
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-  #dd($stmt);
-
-  $total_administration_account = $stmt[0]->TotalRV+$stmt[0]->TotalRF+$stmt[0]->TotalLiquidez+$stmt[0]->TotalPorCumplir+$stmt[0]->Efectivo;
-  $found  = $stmt[0]->TotalCarteras;
-  $piedata = $stmt[0]->TotalRV+$stmt[0]->TotalRF+$stmt[0]->TotalCarteras;
-
-  #$c = $piedata;
-  #$b = 100;
-  #$a = $stmt[0]->TotalRV;
-  #$porcent = $a*$b/$c;
-  #dd($porcent);
-  #a+b/c
-
-  $items = array('TotalRV','TotalRF','TotalCarteras','TotalLiquidez','TotalPorCumplir');
-  $access = array();
-  foreach ($items as $key => $value) {
-    if($stmt[0]->$value < 1){
-      $access[$value] = array('val'=>0);
-    }else{
-      $access[$value] = array('val'=>1);
     }
-  }
-  $path = storage_path().'/'.$cc.'.json';
 
-  if(!File::exists($path)) {
-    File::put( storage_path().'/json/'.$cc.'.json',json_encode($access));
-  }
-
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-  'composition_portfolio' =>[
-    'variable_rent' =>number_format($stmt[0]->TotalRV,2),
-    'static_rent'  => number_format($stmt[0]->TotalRF,2),
-    'operation_liquidity' => number_format($stmt[0]->TotalLiquidez,2),
-    'operation_comply' => number_format($stmt[0]->TotalPorCumplir,2),
-    'avaluable_balance' => number_format($stmt[0]->Efectivo,2),
-    'total_administration_account' => number_format($total_administration_account,2),
-    'funds_investment_colective' => number_format($found,2),
-    'gran_total' => number_format($total_administration_account+$found,2),
-  ],
-  'pie_porcents' =>[
-    'RV'=> substr(self::calcPorcent( $stmt[0]->TotalRV,100,$piedata),0,5),
-    'RF'=> substr(self::calcPorcent( $stmt[0]->TotalRF,100,$piedata ),0,5),
-    'FICS' => substr(self::calcPorcent($found,100,$piedata ),0,5)
-  ],
-  'access' => $access
-
-],
-];
-
-
-File::put( $path1 ,json_encode($json[$CodigoOyd]));
-return response()->json($json[$CodigoOyd]);
-
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
 }
 
 /**
@@ -469,12 +389,91 @@ function array_to_utf($array = array()){
   return $temp;
 }
 
-function save_user($user){}
+function create_user($info,$cc){
+  $user_new = new User;
+  $user_new->identification = $cc;
+  $user_new->codeoyd = trim( $info[0]->Codigo);
+  $user_new->email = '';
+  $user_new->nombre= $info[0]->Nombre;
+  $user_new->ciudad= $info[0]->Ciudad;
+  $user_new->direccion= $info[0]->Direccion;
+  $user_new->asesor_comercial= $info[0]->Comercial;
+  $user_new->estado='1';
+  $user_new->password = bcrypt('p0p01234');
+  $user_new->save();
+  return $user_new;
+}
+
+function create_porfafolio($user,$info,$fecha,$codigo){
+  $info = $info[0];
+  $total_administration_account = $info->TotalRV + $info->TotalRF + $info->TotalLiquidez + $info->TotalPorCumplir + $info->Efectivo;
+  $found  = $info->TotalCarteras;
+  $piedata = $info->TotalRV + $info->TotalRF + $info->TotalCarteras;
+
+  $items = array('TotalRV','TotalRF','TotalCarteras','TotalLiquidez','TotalPorCumplir');
+  $access = array();
+  foreach ($items as $key => $value) {
+    if($info->$value < 1){
+      $access[$value] = array('val'=>0);
+    }else{
+      $access[$value] = array('val'=>1);
+    }
+  }
+  $json = [
+    $codigo => [
+      'personal_data' => [
+        'name' => $info->Nombre,
+        'city' => $info->Ciudad,
+        'state'=> $info->Estado,
+        'address' => $info->Direccion,
+        'comercial_adviser' => $info->Comercial
+      ],
+      'composition_portfolio' =>[
+        'variable_rent' =>number_format($info->TotalRV,2),
+        'static_rent'  => number_format($info->TotalRF,2),
+        'operation_liquidity' => number_format($info->TotalLiquidez,2),
+        'operation_comply' => number_format($info->TotalPorCumplir,2),
+        'avaluable_balance' => number_format($info->Efectivo,2),
+        'total_administration_account' => number_format($total_administration_account,2),
+        'funds_investment_colective' => number_format($found,2),
+        'gran_total' => number_format($total_administration_account+$found,2),
+      ],
+      'pie_porcents' =>[
+        'RV'=> substr(self::calcPorcent( $info->TotalRV,100,$piedata),0,5),
+        'RF'=> substr(self::calcPorcent( $info->TotalRF,100,$piedata ),0,5),
+        'FICS' => substr(self::calcPorcent($found,100,$piedata ),0,5)
+      ],
+      'access' => $access
+    ],
+  ];
+
+  $portafolio = new Portafolio;
+  $portafolio->user_id = $user->id;
+  $portafolio->fecha = $fecha;
+  $portafolio->retan_variable = $info->TotalRV;
+  $portafolio->retan_fija = $info->TotalRF;
+  $portafolio->operaciones_de_liquiez = $info->TotalLiquidez;
+  $portafolio->operaciones_por_cumplir = $info->TotalPorCumplir;
+  $portafolio->saldo_disponible = $info->Efectivo;
+  $portafolio->total_cuenta_de_administracion = $total_administration_account;
+  $portafolio->fondos_de_inversion_colectiva = $info->TotalCarteras;
+  $portafolio->gran_total = 0;
+  $portafolio->renta_fija_porcentaje = 0;
+  $portafolio->renta_variable_porcentaje = 0;
+  $portafolio->renta_fics_porcentaje = 0;
+  $portafolio->info_json = json_encode($json);
+  $portafolio->save();
+  return $portafolio;
+}
 
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-  return $stmt;
+  try{
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+  }catch( \Exception $e ){
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
 }
 
 
