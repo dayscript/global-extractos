@@ -16,6 +16,7 @@ class CreateTableRentaVariable extends Migration
         Schema::create('renta_variable', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->string('fecha')->nullable();
             $table->json('info_json');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

@@ -31,9 +31,9 @@ Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('
 /*Laravel API routes*/
 Route::group(['prefix' => 'api'], function () {
     Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio');
-    Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentVariable');
-    Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@rentFija');
-    Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@fics');
+    Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_variable');
+    Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fija');
+    Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fics');
     Route::get('opc-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPC');
     Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
     Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');

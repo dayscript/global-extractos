@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
+use App\RentaFija;
 use \App\Portafolio;
+use \App\RentaVariable;
+use \App\RentaFics;
 use \App\User;
 
 
@@ -15,8 +18,6 @@ class ServicesController extends Controller
 
   public function portafolio($CodigoOyd,$Fecha)
   {
-
-    /*-------------------------*/
     $cc = $CodigoOyd;
     try{
       #valida si $CodigoOyd existe en la base de datos de global
@@ -26,10 +27,10 @@ class ServicesController extends Controller
       # si dectecta un error devuelve el mensaje $e
       return response()->json(array('error'=>true,'description'=>'Usuario no existe','debug'=>''.$e));
     }
-    # valida si la peticion ya existe en Laravel
+    # valida si la información ya existe en Laravel
     if($CodigoOyd){
       $user = User::where('identification',$cc)->get();
-      # si el usuario existe valida si existe informacion para la fecha
+      # si el usuario existe valida si existe información para la fecha
       if(isset($user[0])){
           $portafolio = Portafolio::where('user_id',$user[0]['attributes']['id'])
                                   ->where('fecha',$Fecha)
@@ -48,6 +49,7 @@ class ServicesController extends Controller
             $output = $portafolio;
           }
       }else{
+        #crea el usuario y crea el portafolio para la fecha
         $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
         if(isset($info_portafolio['error'])){
           return response()->json($info_portafolio);
@@ -59,6 +61,43 @@ class ServicesController extends Controller
 
         }
     }
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
+}
+
+/**
+* Display the specified resource.
+*
+* @param  int  $CodigoOyd
+* @param  int  $Fecha
+* @return \Illuminate\Http\Response
+*/
+public function portafolio_renta_variable($CodigoOyd,$Fecha)
+{
+
+  $cc = $CodigoOyd;
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $user = $user[0];
+    $CodigoOyd = $user['attributes']['codeoyd'];
+    $renta_variable = RentaVariable::where('user_id',$user->id)->where('fecha',$Fecha)->get();
+    if(isset($renta_variable[0])){
+      $output = $renta_variable[0];
+    }else{
+      $portafolio_rv = self::exec_PieRVClienteDado($CodigoOyd,$Fecha);
+      if(isset($portafolio_rv['error'])){
+        return response()->json($portafolio_rv);
+      }
+      if(count($portafolio_rv) > 0){
+        $renta_variable = self::create_renta_variable($portafolio_rv,$user,$Fecha);
+        $output = $renta_variable;
+      }else{
+        return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+      }
+    }
+  }else{
+    return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
+  }
 
   $output = json_decode($output['attributes']['info_json']);
   return response()->json($output->$CodigoOyd);
@@ -71,108 +110,37 @@ class ServicesController extends Controller
 * @param  int  $Fecha
 * @return \Illuminate\Http\Response
 */
-public function rentVariable($CodigoOyd,$Fecha)
-{
-  $cc = $CodigoOyd;
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-
-  $path = storage_path()."/json/".$cc.'-'.$Fecha."-variable-report.json";
-  if(File::exists($path)) {
-    $json = json_decode(file_get_contents($path), true);
-    return response()->json($json);
-  }
-
-
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-
-  $data = array();
-  $total = 0;
-
-  foreach ($stmt as $key => $item) {
-
-    $data[$key] = $item;
-    $total = $total + $item->Valoracion;
-    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
-    $data[$key]->Precio = number_format($item->Precio,2);
-    $data[$key]->Valoracion = number_format($item->Valoracion,2);
-
-  }
-
-
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-
-  'data' =>$data,
-  'total' => number_format($total,2),
-],
-];
-
-File::put( $path ,json_encode($json[$CodigoOyd]));
-return response()->json($json[$CodigoOyd]);
-
-}
-/**
-* Display the specified resource.
-*
-* @param  int  $CodigoOyd
-* @param  int  $Fecha
-* @return \Illuminate\Http\Response
-*/
-public function rentFija($CodigoOyd,$Fecha)
+public function portafolio_renta_fija($CodigoOyd,$Fecha)
 {
 
+  /**/
   $cc = $CodigoOyd;
-  $path = storage_path()."/json/".$cc.'-'.$Fecha."-fija-report.json";
-  if(File::exists($path)) {
-    $json = json_decode(file_get_contents($path), true);
-    return response()->json($json);
-  }
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-
-
-
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-  $data = array();
-  $total = 0;
-  foreach ($stmt as $key => $item) {
-    $data[$key] = $item;
-    $total = $total + $item->Valoracion;
-    $data[$key]->Precio = number_format($item->Precio,2);;
-    $data[$key]->Valoracion = number_format($item->Valoracion,2);;
-    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
-    $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
-    $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;
-
-
-
-
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $user = $user[0];
+    $CodigoOyd = $user['attributes']['codeoyd'];
+    $renta_fija = RentaFija::where('user_id',$user->id)->where('fecha',$Fecha)->get();
+    if(isset($renta_fija[0])){
+      $output = $renta_fija[0];
+    }else{
+      $portafolio_rf = self::exec_PieRFClienteDado($CodigoOyd,$Fecha);
+      if(isset($portafolio_rf['error'])){
+        return response()->json($portafolio_rf);
+      }
+      if(count($portafolio_rf) > 0){
+        $renta_fija = self::create_renta_fija($portafolio_rf,$user,$Fecha);
+        $output = $renta_fija;
+      }else{
+        return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+      }
+    }
+  }else{
+    return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
   }
 
-
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-
-  'data' =>$data,
-  'total' => number_format($total,2),
-],
-];
-File::put( $path ,json_encode($json[$CodigoOyd]));
-return response()->json($json[$CodigoOyd]);
-
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
+  /**/
 }
 
 /**
@@ -182,47 +150,37 @@ return response()->json($json[$CodigoOyd]);
 * @param  int  $Fecha
 * @return \Illuminate\Http\Response
 */
-public function fics($CodigoOyd,$Fecha)
+public function portafolio_renta_fics($CodigoOyd,$Fecha)
 {
+
+  /**/
   $cc = $CodigoOyd;
-  $path = storage_path()."/json/".$cc.'-'.$Fecha."-fics-report.json";
-  if(File::exists($path)) {
-    $json = json_decode(file_get_contents($path), true);
-    return response()->json($json);
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $user = $user[0];
+    $CodigoOyd = $user['attributes']['codeoyd'];
+    $renta_fics = RentaFics::where('user_id',$user->id)->where('fecha',$Fecha)->get();
+    if(isset($renta_fics[0])){
+      $output = $renta_fics[0];
+    }else{
+      $portafolio_rfics = self::exec_PieCarterasClienteDado($CodigoOyd,$Fecha);
+      if(isset($portafolio_rfics['error'])){
+        return response()->json($portafolio_rfics);
+      }
+      if(count($portafolio_rfics) >= 0){
+        $renta_fics = self::create_renta_fics($portafolio_rfics,$user,$Fecha);
+        $output = $renta_fics;
+      }else{
+        return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+      }
+    }
+  }else{
+    return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
   }
 
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-  $data = array();
-  $total = 0;
-  #dd($stmt);
-  foreach ($stmt as $key => $item) {
-    $data[$key] = $item;
-    $total = $total + $item->SaldoPesos;
-    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
-    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
-    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
-  }
-
-
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-
-  'data' =>$data,
-  'total' => number_format($total,2),
-],
-];
-File::put( $path ,json_encode($json[$CodigoOyd]));
-return response()->json($json[$CodigoOyd]);
-
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
+  /**/
 }
 
 
@@ -382,22 +340,28 @@ function array_to_utf($array = array()){
   foreach ( $array as $key => $value ) {
       if(is_array($value)){
         $temp[$key] = self::array_to_utf($value);
-      }else{
-        $temp[$key] = utf8_decode($value);
+      }elseif(is_object($value)){
+        foreach ($value as $index => $item) {
+            $temp[$key][$index] = utf8_encode(html_entity_decode($item, ENT_QUOTES | ENT_HTML401, "UTF-8"));
+        }
+      }
+      else{
+        $temp[$key] = utf8_encode(html_entity_decode($value,ENT_QUOTES | ENT_HTML401, "UTF-8"));
       }
   }
   return $temp;
 }
 
 function create_user($info,$cc){
+  $info = self::array_to_utf($info);
   $user_new = new User;
   $user_new->identification = $cc;
-  $user_new->codeoyd = trim( $info[0]->Codigo);
+  $user_new->codeoyd = trim( $info[0]['Codigo']);
   $user_new->email = '';
-  $user_new->nombre= $info[0]->Nombre;
-  $user_new->ciudad= $info[0]->Ciudad;
-  $user_new->direccion= $info[0]->Direccion;
-  $user_new->asesor_comercial= $info[0]->Comercial;
+  $user_new->nombre= $info[0]['Nombre'];
+  $user_new->ciudad= $info[0]['Ciudad'];
+  $user_new->direccion= $info[0]['Direccion'];
+  $user_new->asesor_comercial= $info[0]['Comercial'];
   $user_new->estado='1';
   $user_new->password = bcrypt('p0p01234');
   $user_new->save();
@@ -446,7 +410,7 @@ function create_porfafolio($user,$info,$fecha,$codigo){
       'access' => $access
     ],
   ];
-
+  $json = self::array_to_utf($json);
   $portafolio = new Portafolio;
   $portafolio->user_id = $user->id;
   $portafolio->fecha = $fecha;
@@ -466,11 +430,143 @@ function create_porfafolio($user,$info,$fecha,$codigo){
   return $portafolio;
 }
 
+function create_renta_variable($info,$user,$fecha){
+  $data = array();
+  $total = 0;
+  foreach ($info as $key => $item) {
+    $data[$key] = $item;
+    $total = $total + $item->Valoracion;
+    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
+    $data[$key]->Precio = number_format($item->Precio,2);
+    $data[$key]->Valoracion = number_format($item->Valoracion,2);
+  }
+  $json = [
+    $user['attributes']['codeoyd'] => [
+      'personal_data' => [
+        'name' => $info[0]->Nombre,
+        'city' => $info[0]->Ciudad,
+        'state'=> $info[0]->Estado,
+        'address' => $info[0]->Direccion,
+        'comercial_adviser' => $info[0]->Comercial
+      ],
+
+      'data' =>$data,
+      'total' => number_format($total,2),
+    ],
+  ];
+
+  $json = self::array_to_utf($json);
+  $renta_variable = new RentaVariable;
+  $renta_variable->user_id = $user->id;
+  $renta_variable->fecha = $fecha;
+  $renta_variable->info_json = json_encode($json);
+  $renta_variable->save();
+  return $renta_variable;
+}
+
+function create_renta_fija($info,$user,$fecha){
+  $data = array();
+  $total = 0;
+  foreach ($info as $key => $item) {
+    $data[$key] = $item;
+    $total = $total + $item->Valoracion;
+    $data[$key]->Precio = number_format($item->Precio,2);;
+    $data[$key]->Valoracion = number_format($item->Valoracion,2);;
+    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
+    $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
+    $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;
+  }
+  $json = [
+    $user['attributes']['codeoyd'] => [
+      'personal_data' => [
+        'name' => $info[0]->Nombre,
+        'city' => $info[0]->Ciudad,
+        'state'=> $info[0]->Estado,
+        'address' => $info[0]->Direccion,
+        'comercial_adviser' => $info[0]->Comercial
+      ],
+      'data' =>$data,
+      'total' => number_format($total,2),
+        ],
+  ];
+  $json = self::array_to_utf($json);
+  $renta_fija = new RentaFija;
+  $renta_fija->user_id = $user->id;
+  $renta_fija->fecha = $fecha;
+  $renta_fija->info_json = json_encode($json);
+  $renta_fija->save();
+  return $renta_fija;
+}
+
+function create_renta_fics($info,$user,$fecha){
+  $data = array();
+  $total = 0;
+  foreach ($info as $key => $item) {
+    $data[$key] = $item;
+    $total = $total + $item->SaldoPesos;
+    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
+    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
+    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
+    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+  }
+  $json = [
+    $user['attributes']['codeoyd'] => [
+      'personal_data' => [
+        'name' => $info[0]->Nombre,
+        'city' => $info[0]->Ciudad,
+        'state'=> $info[0]->Estado,
+        'address' => $info[0]->Direccion,
+        'comercial_adviser' => $info[0]->Comercial
+      ],
+    'data' =>$data,
+    'total' => number_format($total,2),
+    ],
+  ];
+
+  $json = self::array_to_utf($json);
+  $renta_fics = new RentaFics;
+  $renta_fics->user_id = $user->id;
+  $renta_fics->fecha = $fecha;
+  $renta_fics->info_json = json_encode($json);
+  $renta_fics->save();
+  return $renta_fics;
+}
+
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
     $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch( \Exception $e ){
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
+}
+
+function exec_PieRVClienteDado($CodigoOyd,$Fecha){
+  try {
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+  } catch ( \Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+return $info;
+}
+
+function exec_PieRFClienteDado($CodigoOyd,$Fecha){
+  try{
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+  }catch(\Exception $e){
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+return $info;
+}
+
+function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
+  try {
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+  } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
   return $info;
