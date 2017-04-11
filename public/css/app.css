@@ -36,6 +36,10 @@ section {
   text-align: center;
 }
 
+.gran-total {
+  font-size: 18px;
+}
+
 .border-container {
   border: 1px solid;
   border-color: #0082d4;
@@ -162,6 +166,32 @@ input {
 
 div#ui-datepicker-div {
   width: auto;
+}
+
+#navbar-menu {
+  padding: 0;
+}
+
+ul.navbar-nav {
+  background: #f0f0f0;
+  list-style: none;
+  padding: 6px;
+}
+
+ul.navbar-nav li {
+  text-decoration: none;
+  text-transform: uppercase;
+  margin: 0 20px 0 0;
+}
+
+.date-selector {
+  text-align: left;
+  margin: 25px 0 0 0;
+}
+
+.download-xls {
+  margin-top: 10px;
+  margin-bottom: 50px;
 }
 
 /*!

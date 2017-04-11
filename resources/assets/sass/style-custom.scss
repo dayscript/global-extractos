@@ -26,7 +26,6 @@ span
    margin: 10px;
  }
 
-
 section{
   margin: 5px 0 5px 0;
 }
@@ -38,6 +37,9 @@ section{
 .content-align-center{
  text-align: center;
 
+}
+.gran-total{
+  font-size: 18px;
 }
 
 .border-container{
@@ -161,4 +163,25 @@ input{
 
 div#ui-datepicker-div {
     width: auto;
+}
+#navbar-menu{
+  padding: 0;
+}
+ul.navbar-nav{
+  background: #f0f0f0;
+  list-style: none;
+  padding: 6px;
+  li{
+    text-decoration: none;
+    text-transform: uppercase;
+    margin: 0 20px 0 0;
+  }
+}
+.date-selector{
+  text-align: left;
+  margin: 25px 0 0 0;
+}
+.download-xls{
+  margin-top: 10px;
+  margin-bottom: 50px;
 }

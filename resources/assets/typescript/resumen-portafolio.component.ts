@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
-import { ActivatedRoute  } from '@angular/router';
+import { ActivatedRoute,Router  } from '@angular/router';
 import { Http } from '@angular/http';
-
-
 import 'rxjs/add/operator/map';
+declare var $: any
 
 @Component({
   selector: 'my-app',
-  templateUrl: '/app/templates/pie-report.html',
+  templateUrl: '/app/templates/resumen-de-portafolio.html',
   providers: [ProductsService],
 })
-export class PieComponent {
-  id:number = 123456;
-  date:string;
+export class ResumenPortafolioComponent {
+  id_identificacion:number = 123456;
+  fecha:string;
   date_end:string;
   products:Observable<Array<string>>;
   access:Observable<Array<string>>;
@@ -57,10 +56,10 @@ export class PieComponent {
   ]*/
 
 
-  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http) {
+  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
-                this.date = params['date']
+      params=>{ this.id_identificacion = +params['id'],
+                this.fecha = params['date']
               }
     )
     productsService.Data
@@ -69,8 +68,17 @@ export class PieComponent {
         error => console.error(`Error: ${error}`),
         () => this.setParamsPie()
       );
-      this.showPie = 1
-      this.showExtrac = 0
+    this.showPie = 1
+    this.showExtrac = 0
+
+    setTimeout(function() {
+
+      $(function() {
+        $( "#datepicker" ).datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+    },1000);
 
   }
   public setParamsPie(){
@@ -105,7 +113,7 @@ export class PieComponent {
   }
   show_pie(){
     event.preventDefault();
-    this.showPie = 1; 
+    this.showPie = 1;
     this.showExtrac = 0;
   }
   show_extrac(){
@@ -115,14 +123,8 @@ export class PieComponent {
   }
 
   search(){
-    this.http.get('api/client-report/'+this.id+'/'+this.date+'/'+this.date_end)
-                      .map( response => response.json() )
-                      .subscribe(
-                        data => { this.dataExtrac = data},
-                        error => console.error(`Error: ${error}`),
-                        () => console.log(this.dataExtrac)
-                      );
-
+    this.fecha = $('#datepicker').val()
+    window.location.replace('/report/'+this.id_identificacion+'/'+this.fecha);
   }
 
 }

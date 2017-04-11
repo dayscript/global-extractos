@@ -1,16 +1,34 @@
 <div class="page-pie">
-  <div class=" row wrapper-content">
+  <div class="wrapper-content">
     <nav class="navbar navbar-light bg-faded">
-    <form class="form-inline">
-      <button routerLink="/report/{{id}}/{{date}}/pie" class="btn btn-sm align-middle btn-outline-secondary" type="button"> Resumen de Portafolio </button>
-      <button *ngIf="products?.access.TotalRV.val" routerLink="/report/{{id}}/{{date}}/renta-varible" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Varible</button>
-      <button *ngIf="products?.access.TotalRF.val" routerLink="/report/{{id}}/{{date}}/renta-fija" class="btn btn-sm align-middle btn-outline-secondary" type="button">Renta Fija</button>
-      <button *ngIf="products?.access.TotalCarteras.val" routerLink="/report/{{id}}/{{date}}/fics" class="btn btn-sm align-middle btn-outline-secondary" type="button">Fondos de inversión</button>
-      <button *ngIf="products?.access.TotalLiquidez.val" routerLink="/report/{{id}}/{{date}}/operaciones-por-cumplir" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones por cumplir</button>
-      <button *ngIf="products?.access.TotalPorCumplir.val" routerLink="/report/{{id}}/{{date}}/operaciones-de-liquidez" class="btn btn-sm align-middle btn-outline-secondary" type="button">Operaciones de liquidez</button>
-      <button routerLink="/report/{{id}}/{{date}}/movimientos" class="btn btn-sm align-middle btn-outline-secondary" type="button">Movimientos</button>
-    </form>
-  </nav>
+      <div class="collapse navbar-collapse" id="navbar-menu">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link"  routerLink="/report/{{id_identificacion}}/{{fecha}}/resumen-de-portafolio" >Resumen de Portafolio <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-de-la-firma">Saldos y Movimientos Firma Comisionista</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-fondos-de-inversion">Saldos y Movimientos Fondos de Inversión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/movimientos-y-certificaciones">Extractos y Certificaciones </a>
+          </li>
+        </ul>
+      </div>
+      <div class="date-selector">
+        <form class="form-search form-inline my-2 my-lg-0">
+            <input  class="form-control mr-sm-2" id="datepicker"
+                    type="text"
+                    [(ngModel)]="fecha"
+                    name="fecha"
+                    placeholder="Seleccione una fecha"
+                    required>
+            <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+        </form>
+      </div>
+    </nav>
   </div>
   <section class="personal-data">
     <div *ngIf="products == undefined" class="content-wrapper border-container">
@@ -23,13 +41,13 @@
             <div class="text-left"><strong>Nombre:</strong><span>{{ products?.personal_data.name }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Direccion:   </strong><span> {{ products?.personal_data.address }}</span></div>
+            <div class="text-left"><strong>Dirección:   </strong><span> {{ products?.personal_data.address }}</span></div>
         </div>
         <div class="col">
             <div class="text-left"><strong>Ciudad:   </strong><span>{{ products?.personal_data.city }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Asessor comercial:   </strong><span>{{ products?.personal_data.comercial_adviser }}</span></div>
+            <div class="text-left"><strong>Asesor Comercial:   </strong><span>{{ products?.personal_data.comercial_adviser }}</span></div>
         </div>
         <div class="col">
             <div class="text-left"><strong>Estado:   </strong><span> {{ products?.personal_data.state }}</span></div>
@@ -58,16 +76,16 @@
           <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">$ {{ products?.composition_portfolio.operation_comply }}</div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.avaluable_balance }}</div>
+          <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.avaluable_balance }}</strong></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.total_administration_account }}</div>
+          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.total_administration_account }}</strong></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.funds_investment_colective }}</div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Gran Total:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.gran_total }}</div>
+          <div class="text-left gran-total" ><strong>Gran Total:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.gran_total }}</strong></div>
       </div>
     </div>
     <table>

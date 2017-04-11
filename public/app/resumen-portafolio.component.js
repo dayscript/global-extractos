@@ -14,7 +14,7 @@ const personal_service_1 = require("./personal.service");
 const router_1 = require("@angular/router");
 const http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-let PieComponent = class PieComponent {
+let ResumenPortafolioComponent = class ResumenPortafolioComponent {
     /*public pieCharColors:Array<any> = [
       {
         backgroundColor: '#000000',
@@ -26,10 +26,11 @@ let PieComponent = class PieComponent {
         backgroundColor: 'rgba(204, 153, 51)',
       }
     ]*/
-    constructor(productsService, activatedRoute, http) {
+    constructor(productsService, activatedRoute, http, Router) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
+        this.Router = Router;
         this.id_identificacion = 123456;
         this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
         this.pieChartType = 'pie';
@@ -55,6 +56,13 @@ let PieComponent = class PieComponent {
             .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => this.setParamsPie());
         this.showPie = 1;
         this.showExtrac = 0;
+        setTimeout(function () {
+            $(function () {
+                $("#datepicker").datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
+            });
+        }, 1000);
     }
     setParamsPie() {
         var PieData = [];
@@ -92,19 +100,18 @@ let PieComponent = class PieComponent {
         this.showPie = 0;
     }
     search() {
-        this.http.get('api/client-report/' + this.id_identificacion + '/' + this.fecha + '/' + this.date_end)
-            .map(response => response.json())
-            .subscribe(data => { this.dataExtrac = data; }, error => console.error(`Error: ${error}`), () => console.log(this.dataExtrac));
+        this.fecha = $('#datepicker').val();
+        window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
     }
 };
-PieComponent = __decorate([
+ResumenPortafolioComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
         templateUrl: '/app/templates/resumen-de-portafolio.html',
         providers: [personal_service_1.ProductsService],
     }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http])
-], PieComponent);
-exports.PieComponent = PieComponent;
+    __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+], ResumenPortafolioComponent);
+exports.ResumenPortafolioComponent = ResumenPortafolioComponent;
 
-//# sourceMappingURL=pie.component.js.map
+//# sourceMappingURL=resumen-portafolio.component.js.map

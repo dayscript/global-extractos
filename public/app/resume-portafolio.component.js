@@ -107,4 +107,4 @@ PieComponent = __decorate([
 ], PieComponent);
 exports.PieComponent = PieComponent;
 
-//# sourceMappingURL=pie.component.js.map
+//# sourceMappingURL=resume-portafolio.component.js.map

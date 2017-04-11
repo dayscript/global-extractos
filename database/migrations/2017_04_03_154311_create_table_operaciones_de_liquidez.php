@@ -16,10 +16,11 @@ class CreateTableOperacionesDeLiquidez extends Migration
         Schema::create('operaciones_de_liquidez', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->string('fecha')->nullable();
             $table->json('info_json');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            
+
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

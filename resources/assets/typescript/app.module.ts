@@ -7,15 +7,20 @@ import {FormsModule} from "@angular/forms";
 
 
 import { AppComponent }   from './app.component';
-import { PieComponent }   from './pie.component';
+import { ResumenPortafolioComponent }   from './resumen-portafolio.component';
+import { SaldosMovimientosComponent } from './saldos-y-movimientos.component';
+import { SaldosMovimientosFondosComponent } from './saldos-y-movimientos-fondos.component';
 import { RentaComponent,RentaFijaComponent,FicsComponent,OPCComponent,ODLComponent,MovimientosComponent}   from './renta.component';
 
 import { NotFoundPageComponent }   from './notfound.component';
 import { ChartsModule } from 'ng2-charts';
 
 const appRoutes: Routes = [
-    { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/pie', pathMatch: 'full' },
-    { path:'report/:id/:date/pie', component:PieComponent },
+    { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
+    { path:'report/:id/:date/resumen-de-portafolio', component:ResumenPortafolioComponent },
+    { path:'report/:id/:date/saldos-y-movimientos-de-la-firma', component:SaldosMovimientosComponent },
+    { path:'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component:SaldosMovimientosFondosComponent },
+
     { path:'report/:id/:date/renta-varible', component:RentaComponent },
     { path:'report/:id/:date/renta-fija', component:RentaFijaComponent },
     { path:'report/:id/:date/fics', component:FicsComponent },
@@ -49,7 +54,20 @@ export class KeysPipe implements PipeTransform {
 
 @NgModule({
   imports:      [ BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
-  declarations: [ AppComponent,KeysPipe,NotFoundPageComponent,OPCComponent,ODLComponent,FicsComponent,PieComponent,RentaComponent,RentaFijaComponent,MovimientosComponent,AsyncPipe],
+  declarations: [ AppComponent,
+                  KeysPipe,
+                  NotFoundPageComponent,
+                  OPCComponent,
+                  ODLComponent,
+                  FicsComponent,
+                  ResumenPortafolioComponent,
+                  RentaComponent,
+                  RentaFijaComponent,
+                  MovimientosComponent,
+                  AsyncPipe,
+                  SaldosMovimientosComponent,
+                  SaldosMovimientosFondosComponent
+                ],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

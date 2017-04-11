@@ -13,13 +13,17 @@ const core_2 = require("@angular/core");
 const router_1 = require("@angular/router");
 const forms_1 = require("@angular/forms");
 const app_component_1 = require("./app.component");
-const pie_component_1 = require("./pie.component");
+const resumen_portafolio_component_1 = require("./resumen-portafolio.component");
+const saldos_y_movimientos_component_1 = require("./saldos-y-movimientos.component");
+const saldos_y_movimientos_fondos_component_1 = require("./saldos-y-movimientos-fondos.component");
 const renta_component_1 = require("./renta.component");
 const notfound_component_1 = require("./notfound.component");
 const ng2_charts_1 = require("ng2-charts");
 const appRoutes = [
-    { path: 'report/:id/:date', redirectTo: 'report/:id/:date/pie', pathMatch: 'full' },
-    { path: 'report/:id/:date/pie', component: pie_component_1.PieComponent },
+    { path: 'report/:id/:date', redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
+    { path: 'report/:id/:date/resumen-de-portafolio', component: resumen_portafolio_component_1.ResumenPortafolioComponent },
+    { path: 'report/:id/:date/saldos-y-movimientos-de-la-firma', component: saldos_y_movimientos_component_1.SaldosMovimientosComponent },
+    { path: 'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component: saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent },
     { path: 'report/:id/:date/renta-varible', component: renta_component_1.RentaComponent },
     { path: 'report/:id/:date/renta-fija', component: renta_component_1.RentaFijaComponent },
     { path: 'report/:id/:date/fics', component: renta_component_1.FicsComponent },
@@ -58,7 +62,20 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
-        declarations: [app_component_1.AppComponent, KeysPipe, notfound_component_1.NotFoundPageComponent, renta_component_1.OPCComponent, renta_component_1.ODLComponent, renta_component_1.FicsComponent, pie_component_1.PieComponent, renta_component_1.RentaComponent, renta_component_1.RentaFijaComponent, renta_component_1.MovimientosComponent, AsyncPipe],
+        declarations: [app_component_1.AppComponent,
+            KeysPipe,
+            notfound_component_1.NotFoundPageComponent,
+            renta_component_1.OPCComponent,
+            renta_component_1.ODLComponent,
+            renta_component_1.FicsComponent,
+            resumen_portafolio_component_1.ResumenPortafolioComponent,
+            renta_component_1.RentaComponent,
+            renta_component_1.RentaFijaComponent,
+            renta_component_1.MovimientosComponent,
+            AsyncPipe,
+            saldos_y_movimientos_component_1.SaldosMovimientosComponent,
+            saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent
+        ],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);

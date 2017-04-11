@@ -18,6 +18,7 @@ Route::get('/','HomeController@index')->middleware('auth');
 Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
+Route::get('/download/{id_movimientos}','HomeController@download');
 
 
 /* SSL Certificate confirm */

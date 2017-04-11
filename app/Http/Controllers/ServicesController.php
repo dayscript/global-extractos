@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
+use App\Movimientos;
+use App\OperacionesLiquidez;
+use App\OperacionesCumplir;
 use App\RentaFija;
 use \App\Portafolio;
 use \App\RentaVariable;
 use \App\RentaFics;
 use \App\User;
-
-
 
 class ServicesController extends Controller
 {
@@ -193,35 +194,34 @@ public function portafolio_renta_fics($CodigoOyd,$Fecha)
 */
 public function OPC($CodigoOyd,$Fecha)
 {
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
-  if(count($stmt) == 0)
-  return response()->json(array('Not_found' => 'No se ha encontrado informacón'));
-  $data = array();
-  $total = 0;
-  foreach ($stmt as $key => $item) {
-    $data[$key] = $item;
-    $total = $total + $item->Valoracion;
+  $cc = $CodigoOyd;
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $user = $user[0];
+    $CodigoOyd = $user['attributes']['codeoyd'];
+    $create_operaciones_por_cumplir = OperacionesCumplir::where('user_id',$user->id)->where('fecha',$Fecha)->get();
+    if(isset($create_operaciones_por_cumplir[0])){
+      $output = $create_operaciones_por_cumplir[0];
+    }else{
+      $portafolio_o_por_cumplir = self::exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha);
+      if(isset($portafolio_o_por_cumplir['error'])){
+        return response()->json($portafolio_o_por_cumplir);
+      }
+      dd($portafolio_o_por_cumplir);
+      if(count($portafolio_o_por_cumplir) >= 0){
+        $create_operaciones_por_cumplir = self::create_operaciones_por_cumplir($portafolio_o_por_cumplir,$user,$Fecha);
+        $output = $create_operaciones_por_cumplir;
+      }else{
+        return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+      }
+    }
+  }else{
+    return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
   }
 
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-
-  'data' =>$data,
-  'total' => $total,
-],
-];
-
-return response()->json($json[$CodigoOyd]);
-
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
 }
 
 /**
@@ -234,34 +234,32 @@ return response()->json($json[$CodigoOyd]);
 public function OPL($CodigoOyd,$Fecha)
 {
 
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
-  if(count($stmt) == 0)
-  return response()->json(['No se ha encotrado información']);
-  $data = array();
-  $total = 0;
-  foreach ($stmt as $key => $item) {
-    $data[$key] = $item;
-    $total = $total + $item->Valoracion;
+  $cc = $CodigoOyd;
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $user = $user[0];
+    $CodigoOyd = $user['attributes']['codeoyd'];
+    $operaciones_de_liquidez = OperacionesLiquidez::where('user_id',$user->id)->where('fecha',$Fecha)->get();
+    if(isset($operaciones_de_liquidez[0])){
+      $output = $operaciones_de_liquidez[0];
+    }else{
+      $operaciones = self::exec_OperacionesLiquidez($CodigoOyd,$Fecha);
+      if(isset($operaciones['error'])){
+        return response()->json($operaciones);
+      }
+      if(count($operaciones) >= 0){
+        $operaciones_de_liquidez = self::create_operaciones_de_liquidez($operaciones,$user,$Fecha);
+        $output = $operaciones_de_liquidez;
+      }else{
+        return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+      }
+    }
+  }else{
+    return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
   }
 
-  $json = [ $CodigoOyd => [  'personal_data' => [
-    'name' => $stmt[0]->Nombre,
-    'city' => $stmt[0]->Ciudad,
-    'state'=> $stmt[0]->Estado,
-    'address' => $stmt[0]->Direccion,
-    'comercial_adviser' => $stmt[0]->Comercial
-  ],
-
-  'data' =>$data,
-  'total' => $total,
-],
-];
-
-return response()->json($json[$CodigoOyd]);
-
+  $output = json_decode($output['attributes']['info_json']);
+  return response()->json($output->$CodigoOyd);
 }
 
 /**
@@ -274,44 +272,17 @@ return response()->json($json[$CodigoOyd]);
 public function ClientReport($CodigoOyd,$Fecha_start,$Fecha_end)
 {
 
-  $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-  $CodigoOyd = trim($CodigoOyd[0]->lngID);
-  $stmt = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-  $stmt = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
-  if(count($stmt) == 0)
-  return response()->json(['No se ha encotrado información']);
-
-
-  $totalFavor = 0;
-  $totalCargo = 0;
-  $total = array();
-
-
-  foreach ($stmt as $key => $value) {
-    $resutl[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
-    $resutl[$key]['strNumero'] = utf8_decode($value->strNumero);
-    $resutl[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
-    $resutl[$key]['ACargo'] = $value->ACargo;
-    $resutl[$key]['AFavor'] = $value->AFavor;
-    $resutl[$key]['Saldo'] = $value->Saldo;
-
-    if(!is_null($value->ACargo) && $value->ACargo != 0 ){
-      $totalCargo += $value->ACargo;
-    }
-    if(!is_null($value->AFavor  && $value->AFavor != 0)){
-      $totalFavor += $value->AFavor;
-    }
+  $cc = $CodigoOyd;
+  $user = User::where('identification',$cc)->get();
+  if(isset($user[0])){
+    $report = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $report = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$user[0]->codeoyd) );
+    $report = self::exec_ExtractoClienteDado($user[0]->codeoyd,$Fecha_start,$Fecha_end);
+    $output = self::create_movimiento($report,$user,$Fecha_start,$Fecha_end);
+    $json = json_decode($output['info_json']);
+    $json->id = $output['id'];
+    return response()->json($json);
   }
-
-  $totalSaldo = $totalFavor-$totalCargo;
-
-  $total['totalFavor'] = $totalFavor;
-  $total['totalCargo'] = $totalCargo;
-  $total['totalSaldo']= $totalSaldo;
-
-  $json = [ $CodigoOyd => ['data' =>$resutl,'total'=>$total]];
-
-  return response()->json($json[$CodigoOyd]);
 
 }
 /**
@@ -321,8 +292,7 @@ public function ClientReport($CodigoOyd,$Fecha_start,$Fecha_end)
 * @param  int  $Fecha
 * @return \Illuminate\Http\Response
 */
-public function CACHE($cc)
-{
+public function CACHE($cc){
 
   $path = storage_path()."/json/".$cc.".json";
   $json[$cc]['access'] = json_decode(file_get_contents($path), true);
@@ -378,9 +348,9 @@ function create_porfafolio($user,$info,$fecha,$codigo){
   $access = array();
   foreach ($items as $key => $value) {
     if($info->$value < 1){
-      $access[$value] = array('val'=>0);
+      $access[$value] = array('val'=>false);
     }else{
-      $access[$value] = array('val'=>1);
+      $access[$value] = array('val'=>true);
     }
   }
   $json = [
@@ -532,6 +502,114 @@ function create_renta_fics($info,$user,$fecha){
   return $renta_fics;
 }
 
+
+function create_operaciones_por_cumplir($info,$user,$fecha){
+  $data = array();
+  $total = 0;
+  foreach ($info as $key => $item) {
+    $data[$key] = $item;
+    $total = $total + $item->SaldoPesos;
+    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
+    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
+    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
+    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+  }
+  $json = [
+    $user['attributes']['codeoyd'] => [
+      'personal_data' => [
+        'name' => $info[0]->Nombre,
+        'city' => $info[0]->Ciudad,
+        'state'=> $info[0]->Estado,
+        'address' => $info[0]->Direccion,
+        'comercial_adviser' => $info[0]->Comercial
+      ],
+    'data' =>$data,
+    'total' => number_format($total,2),
+    ],
+  ];
+
+  $json = self::array_to_utf($json);
+  $renta_fics = new OperacionesCumplir;
+  $renta_fics->user_id = $user->id;
+  $renta_fics->fecha = $fecha;
+  $renta_fics->info_json = json_encode($json);
+  $renta_fics->save();
+  return $renta_fics;
+}
+
+function create_operaciones_de_liquidez($info,$user,$fecha){
+  $data = array();
+  $total = 0;
+  foreach ($info as $key => $item) {
+    $data[$key] = $item;
+    $total = $total + $item->SaldoPesos;
+    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
+    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
+    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
+    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+  }
+  $json = [
+    $user['attributes']['codeoyd'] => [
+      'personal_data' => [
+        'name' => $info[0]->Nombre,
+        'city' => $info[0]->Ciudad,
+        'state'=> $info[0]->Estado,
+        'address' => $info[0]->Direccion,
+        'comercial_adviser' => $info[0]->Comercial
+      ],
+    'data' =>$data,
+    'total' => number_format($total,2),
+    ],
+  ];
+
+  $json = self::array_to_utf($json);
+  $renta_fics = new OperacionesLiquidez;
+  $renta_fics->user_id = $user->id;
+  $renta_fics->fecha = $fecha;
+  $renta_fics->info_json = json_encode($json);
+  $renta_fics->save();
+  return $renta_fics;
+}
+
+function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
+
+  $totalFavor = 0;
+  $totalCargo = 0;
+  $total = array();
+
+  foreach ($info as $key => $value) {
+    $movimiento[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
+    $movimiento[$key]['strNumero'] = utf8_decode($value->strNumero);
+    $movimiento[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
+    $movimiento[$key]['ACargo'] = ( $value->ACargo == '' )? 0:$value->ACargo;
+    $movimiento[$key]['AFavor'] = ($value->AFavor== '' )? 0:$value->AFavor;
+    $movimiento[$key]['Saldo'] = ($value->Saldo == '' )? 0:$value->Saldo;
+
+    if(!is_null($value->ACargo) && $value->ACargo != 0 ){
+      $totalCargo += $value->ACargo;
+    }
+    if(!is_null($value->AFavor  && $value->AFavor != 0)){
+      $totalFavor += $value->AFavor;
+    }
+  }
+
+  $totalSaldo = $totalFavor-$totalCargo;
+
+  $total['totalFavor'] = $totalFavor;
+  $total['totalCargo'] = $totalCargo;
+  $total['totalSaldo']= $totalSaldo;
+
+  $json = self::array_to_utf(array('data' => $movimiento,'total'=>(array)$total));
+  $movimiento = new Movimientos;
+  $movimiento->user_id = $user[0]->id;
+  $movimiento->fecha_inicio = $fecha_inicio;
+  $movimiento->fecha_fin = $fecha_fin;
+  $movimiento->info_json = json_encode($json);
+  $movimiento->save();
+  return $movimiento;
+}
+
+
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
     $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
@@ -572,5 +650,35 @@ function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
   return $info;
 }
 
+function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
+  try {
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
+}
+
+function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
+  try {
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
+}
+
+function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
+  try {
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
+
+}
 
 }
