@@ -433,7 +433,7 @@ class HomeController extends Controller
       })->export('pdf');
     });
  }
-
+   
 
 
  function array_to_utf($array = array()){
