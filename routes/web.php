@@ -19,6 +19,10 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
 Route::get('/download/{id_movimientos}','HomeController@download');
+Route::get('/download-fics/{id_movimientos}','HomeController@download_fics');
+Route::get('/download-fics-extrac/{id}/{fondo}/{encargo}/{fecha}','HomeController@extract_fondos_inversion');
+Route::get('/download-firma-extrac/{id}/{fecha}','HomeController@extract_firma');
+
 
 
 /* SSL Certificate confirm */
@@ -31,10 +35,13 @@ Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('
 
 /*Laravel API routes*/
 Route::group(['prefix' => 'api'], function () {
+    Route::get('user-data/{CodigoOyd}', 'ServicesController@user_info');
     Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio');
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_variable');
     Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fija');
     Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fics');
+    Route::get('fondos-de-inversion-report/{CodigoOyd}/{Fecha}', 'ServicesController@fondos_de_inversion');
+    Route::get('extracto-fondos-de-inversion-report/{Fondo}/{Encargo}/{Fecha_start}/{Fecha_end}', 'ServicesController@portafolio_fondos_de_inversion');
     Route::get('opc-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPC');
     Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
     Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');

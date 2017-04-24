@@ -17,59 +17,54 @@ const http_1 = require("@angular/http");
 /**
  * Componente para la pagina de salfos y movimientos firma
  */
-let SaldosMovimientosFondosComponent = class SaldosMovimientosFondosComponent {
+let ExtractosCertificaciones = class ExtractosCertificaciones {
     constructor(productsService, activatedRoute, http) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.id_identificacion = 0;
         this.fecha = '';
-        this.fecha_inicio = '';
-        this.fecha_final = '';
         this.option_select = 'NA';
-        setTimeout(function () {
-            $(function () {
-                $("#datepicker_start").datepicker({
-                    dateFormat: "yy-mm-dd"
-                });
-            });
-            $(function () {
-                $("#datepicker_end").datepicker({
-                    dateFormat: "yy-mm-dd"
-                });
-            });
-        }, 1000);
+        this.fecha_select_firma = 'NA';
+        this.fecha_select = 'NA';
+        this.fechas = [];
         this.activatedRoute.params.subscribe(params => {
             this.id_identificacion = params['id'],
                 this.fecha = params['date'];
         });
-        productsService.DataFics.subscribe(data => { this.renta_fics = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_fics));
-        productsService.user_info.subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
+        productsService.user_info
+            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
         productsService.FicsFilter.subscribe(data => { this.fics_filter = data; }, error => console.log('Error: ${error}'), () => console.log(this.fics_filter));
-        /*Fin de componenete SaldosMovimientosComponent*/
+        for (var i = 1; i <= 6; i++) {
+            var date = new Date();
+            date.setMonth(date.getMonth() - i);
+            this.fechas.push(date);
+        }
     }
-    search() {
-        this.fecha_inicio = $('#datepicker_start').val();
-        this.fecha_final = $('#datepicker_end').val();
+    download_firma() {
+        this.fecha_select_firma = $('#fecha_select_firma').val();
+        window.location.replace('/download-firma-extrac/' + this.id_identificacion + '/' + this.fecha_select_firma);
+    }
+    download_fics() {
+        this.fecha_select = $('#fecha_select').val();
         this.option_select = $('#option_select').val();
-        var splice = this.option_select.split('|');
-        var url = 'api/extracto-fondos-de-inversion-report/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
+        var fecha = this.fecha_select;
+        var split = this.option_select.split('|');
+        var url = '/download-fics-extrac/' + this.id_identificacion + '/' + split[0] + '/' + split[2] + '/' + fecha;
         console.log(url);
-        this.http.get(url)
-            .map(response => response.json())
-            .subscribe(data => { this.info_movimientos = data; }, error => console.error(`Error: ${error}`), () => console.log(this.info_movimientos));
+        window.location.replace(url);
     }
 };
-SaldosMovimientosFondosComponent = __decorate([
+ExtractosCertificaciones = __decorate([
     core_1.Component({
         selector: 'my-app',
-        templateUrl: '/app/templates/saldos-y-movimientos-fondos.html',
+        templateUrl: '/app/templates/extractos-y-certificaciones.html',
         providers: [personal_service_1.ProductsService],
     }),
     __metadata("design:paramtypes", [personal_service_1.ProductsService,
         router_1.ActivatedRoute,
         http_1.Http])
-], SaldosMovimientosFondosComponent);
-exports.SaldosMovimientosFondosComponent = SaldosMovimientosFondosComponent;
+], ExtractosCertificaciones);
+exports.ExtractosCertificaciones = ExtractosCertificaciones;
 
-//# sourceMappingURL=saldos-y-movimientos-fondos.component.js.map
+//# sourceMappingURL=extractos-y-certificaciones.component.js.map

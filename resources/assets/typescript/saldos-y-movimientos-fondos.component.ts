@@ -22,6 +22,12 @@ export class SaldosMovimientosFondosComponent {
   renta_fics:Observable<Array<string>>;
   info_movimientos:Observable<Array<string>>;
   access:any;
+  user_info:Observable<Array<string>>;
+  today:any;
+  fics_filter:Observable<Array<string>>;
+  fondo:any;
+  encargo:any;
+  option_select = 'NA'
   constructor(
               private productsService:ProductsService,
               private activatedRoute:ActivatedRoute,
@@ -51,11 +57,19 @@ export class SaldosMovimientosFondosComponent {
     );
     productsService.DataFics.subscribe(
       data  => {this.renta_fics = data},
-      error => console.log('error: ${errir}'),
+      error => console.log('error: ${error}'),
       ()    =>console.log(this.renta_fics)
     );
-
-
+    productsService.user_info.subscribe(
+      data => { this.user_info = data },
+      error => console.log( 'Error: ${error}' ),
+      () => this.today = new Date(),
+    );
+    productsService.FicsFilter.subscribe(
+      data => { this.fics_filter = data },
+      error => console.log( 'Error: ${error}' ),
+      () => console.log(this.fics_filter)
+    )
 
   /*Fin de componenete SaldosMovimientosComponent*/
   }
@@ -63,7 +77,10 @@ export class SaldosMovimientosFondosComponent {
   search(){
     this.fecha_inicio = $('#datepicker_start').val()
     this.fecha_final = $('#datepicker_end').val()
-    var url = 'api/client-report/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
+    this.option_select = $('#option_select').val()
+    var splice = this.option_select.split('|')
+
+    var url = 'api/extracto-fondos-de-inversion-report/'+splice[0]+'/'+splice[2 ]+'/'+this.fecha_inicio+'/'+this.fecha_final
     console.log(url)
     this.http.get(url)
                 .map( response => response.json() )

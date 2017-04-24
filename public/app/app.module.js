@@ -16,7 +16,7 @@ const app_component_1 = require("./app.component");
 const resumen_portafolio_component_1 = require("./resumen-portafolio.component");
 const saldos_y_movimientos_component_1 = require("./saldos-y-movimientos.component");
 const saldos_y_movimientos_fondos_component_1 = require("./saldos-y-movimientos-fondos.component");
-const renta_component_1 = require("./renta.component");
+const extractos_y_certificaciones_component_1 = require("./extractos-y-certificaciones.component");
 const notfound_component_1 = require("./notfound.component");
 const ng2_charts_1 = require("ng2-charts");
 const appRoutes = [
@@ -24,12 +24,7 @@ const appRoutes = [
     { path: 'report/:id/:date/resumen-de-portafolio', component: resumen_portafolio_component_1.ResumenPortafolioComponent },
     { path: 'report/:id/:date/saldos-y-movimientos-de-la-firma', component: saldos_y_movimientos_component_1.SaldosMovimientosComponent },
     { path: 'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component: saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent },
-    { path: 'report/:id/:date/renta-varible', component: renta_component_1.RentaComponent },
-    { path: 'report/:id/:date/renta-fija', component: renta_component_1.RentaFijaComponent },
-    { path: 'report/:id/:date/fics', component: renta_component_1.FicsComponent },
-    { path: 'report/:id/:date/operaciones-por-cumplir', component: renta_component_1.OPCComponent },
-    { path: 'report/:id/:date/operaciones-de-liquidez', component: renta_component_1.ODLComponent },
-    { path: 'report/:id/:date/movimientos', component: renta_component_1.MovimientosComponent },
+    { path: 'report/:id/:date/extractos-y-certificaciones', component: extractos_y_certificaciones_component_1.ExtractosCertificaciones },
 ];
 let AsyncPipe = class AsyncPipe {
     transform(obj, args) {
@@ -65,16 +60,11 @@ AppModule = __decorate([
         declarations: [app_component_1.AppComponent,
             KeysPipe,
             notfound_component_1.NotFoundPageComponent,
-            renta_component_1.OPCComponent,
-            renta_component_1.ODLComponent,
-            renta_component_1.FicsComponent,
             resumen_portafolio_component_1.ResumenPortafolioComponent,
-            renta_component_1.RentaComponent,
-            renta_component_1.RentaFijaComponent,
-            renta_component_1.MovimientosComponent,
             AsyncPipe,
             saldos_y_movimientos_component_1.SaldosMovimientosComponent,
-            saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent
+            saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent,
+            extractos_y_certificaciones_component_1.ExtractosCertificaciones
         ],
         bootstrap: [app_component_1.AppComponent]
     })

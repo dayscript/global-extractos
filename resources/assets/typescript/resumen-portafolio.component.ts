@@ -18,10 +18,11 @@ export class ResumenPortafolioComponent {
   products:Observable<Array<string>>;
   access:Observable<Array<string>>;
   dataExtrac:Observable<Array<string>>;
-
+  user_info:Observable<Array<string>>;
   showPie : number;
   showExtrac : number;
   user:any;
+  today:any;
 
   public pieChartLabels:string[] = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
   public pieChartData:number[];
@@ -66,7 +67,7 @@ export class ResumenPortafolioComponent {
       .subscribe(
         data => { this.products = data},
         error => console.error(`Error: ${error}`),
-        () => this.setParamsPie()
+        () => this.setParamsPie(),
       );
     this.showPie = 1
     this.showExtrac = 0
@@ -80,10 +81,25 @@ export class ResumenPortafolioComponent {
       });
     },1000);
 
+    productsService.user_info
+      .subscribe(
+        data => { this.user_info = data },
+        error => console.log( 'Error: ${error}' ),
+        () => this.today = new Date(),
+      );
+
+
   }
+
   public setParamsPie(){
+
     var PieData = [];
     var cont = 0;
+
+    if(this.products['error']){
+        alert('Servicio no disponible')
+    }
+
     for( var item in this.products){
       for(var elem in this.products[item] ){
           if(item == 'pie_porcents'){

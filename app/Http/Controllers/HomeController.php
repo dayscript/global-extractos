@@ -13,6 +13,9 @@ use \App\RentaVariable;
 use \App\RentaFics;
 use \App\User;
 use \App\Movimientos;
+use \App\Extractos_fics;
+use \App\Extractos_firma;
+
 use Excel;
 
 class HomeController extends Controller
@@ -224,6 +227,9 @@ class HomeController extends Controller
          foreach($headers as $cel => $value){
            $sheet->cell($cel, function($cell) use($value) {
             $cell->setValue($value);
+            $cell->setBackground('#898989');
+            $cell->setFontWeight('bold');
+            $cell->setBorder('solid', 'solid', 'solid', 'solid');
            });
          }
 
@@ -256,4 +262,197 @@ class HomeController extends Controller
 
 
    }
+   public function download_fics($id_movimiento){
+
+     # Genera el archivo excel
+    Excel::create('prueba.xls',function($excel) use ($id_movimiento){
+
+      $excel->setTitle('Download test');
+      $excel->setCreator('globalcdb.com');
+      $excel->setCompany('Global CDB');
+      $excel->sheet('Movimientos',function($sheet) use($id_movimiento){
+        $movimiento = Movimientos::where('id',$id_movimiento)->get();
+       })->download('xls');
+
+    });
+ }
+
+ public function extract_fondos_inversion($id,$fondo,$encargo,$fecha){
+
+    /*ExtractoFondoyFideicomisoDadosEncabezado
+      ExtractoFondoyFideicomisoDadosInformacionBasica
+      ExtractoFondoyFideicomisoDadosMovimiento
+      ExtractoFondoyFideicomisoDadosResumen
+
+      @Fondo = 1,
+      @Encargo = 17486,
+      @FechaInicial = 2017-03-24,
+      @FechaFinal = 2017-03-24
+    */
+
+    $my_date = new \DateTime($fecha);
+    $my_date->modify('first day of this month');
+    $fecha_inicio = $my_date->format('Y-m-d');
+    $my_date->modify('last day of this month');
+    $fecha_fin = $my_date->format('Y-m-d');
+    
+    $user_load = User::where('identification',$id)->get();
+    if(!isset($user_load[0])){
+      $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
+      return response()->json($info);
+    }
+    $extracto = Extractos_fics::where('user_id',$user_load[0]->id)
+                                  ->where('fondo',$fondo)
+                                  ->where('encargo',$encargo)
+                                  ->where('fecha_inicio',$fecha)
+                                  ->get();
+    if(isset($extracto[0])){
+      $info = $extracto[0]->info_json;
+    }else{
+      try {
+        $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+        $info_encabezado = DB::connection('sqlsrv2')
+                    ->select('EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                            );
+        $info_informacion_basica = DB::connection('sqlsrv2')
+                    ->select('EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                            );
+        $info_informacion_movimientos = DB::connection('sqlsrv2')
+                    ->select('EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                            );
+        $info_informacion_resumen = DB::connection('sqlsrv2')
+                    ->select('EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                            );
+      } catch (Exception $e) {
+        $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+        return response()->json($info);
+      }
+
+      $data = array();
+      $data['encabezado'] =  self::array_to_utf($info_encabezado);
+      $data['basica'] =  self::array_to_utf($info_informacion_basica);
+      $data['movimientos'] =  self::array_to_utf($info_informacion_movimientos);
+      $data['resumen'] =  self::array_to_utf($info_informacion_resumen);
+
+      $Extractos_fics = new Extractos_fics;
+      $Extractos_fics->user_id = $user_load[0]->id;
+      $Extractos_fics->fondo = $fondo;
+      $Extractos_fics->encargo = $encargo;
+      $Extractos_fics->fecha_inicio = $fecha;
+      $Extractos_fics->info_json = json_encode($data);
+      $Extractos_fics->save();
+      $info = $Extractos_fics->info_json;
+  }
+     
+  # Genera el archivo excel
+  Excel::create('Extracto-fics.xls',function($excel) use ($info,$fecha,$id,$fecha_inicio,$fecha_fin){
+    $excel->setTitle('Download test');
+    $excel->setCreator('globalcdb.com');
+    $excel->setCompany('Global CDB');
+    $info = self::array_to_utf(json_decode($info));
+    $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id,$fecha_inicio,$fecha_fin){
+      // Set font with ->setStyle()`
+      $sheet->setStyle(array(
+          'font' => array(
+              'name'      =>  'Calibri',
+              'size'      =>  7,
+              'bold'      =>  false
+          )
+));
+    $sheet->loadView('extracto-fics', array('info'=>$info ,'fecha'=>$fecha,'Nit'=>$id,'fecha_inicio'=>$fecha_inicio,'fecha_fin'=>$fecha_fin) );
+
+    })->export('pdf');
+
+  });
+ }
+
+  public function extract_firma($id,$fecha){
+    $info=array();
+    $user = User::where('identification',$id)->get();
+    if(!isset($user[0])){
+      $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
+      return response()->json( $info );
+    }
+
+    $extracto = Extractos_firma::where('user_id',$user[0]->id)
+                                  ->where('fecha_inicio',$fecha)
+                                  ->get();
+    $info['encabezado'] = $user[0]['attributes'];
+    
+    if(isset($extracto[0])){
+       $info = json_decode($extracto[0]->info_json);
+     }else{ 
+        try{
+        $set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        $info['movimientos']['rv'] = DB::connection('sqlsrv')
+                          ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
+
+        $info['movimientos']['rf'] = DB::connection('sqlsrv')
+                                ->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',
+                                          array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha)
+                                        ); 
+        $info['movimientos']['opc'] = DB::connection('sqlsrv')
+                                ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd) 
+                                  );
+        $info['movimientos']['odl'] = DB::connection('sqlsrv')
+                                ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
+                                  );
+      } catch (Exception $e) {
+        $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>'');
+        return response()->json($info);
+      }
+    }
+    $Extractos_fics = new Extractos_firma;
+    $Extractos_fics->user_id = $user[0]->id;
+    $Extractos_fics->fecha_inicio = $fecha;
+    $Extractos_fics->info_json = json_encode($info);
+    $Extractos_fics->save();
+    $info = $Extractos_fics->info_json;
+    #$info = json_decode($info);
+    #dd($info);
+    Excel::create('Extracto-firma.xls',function($excel) use ($info,$fecha,$id){
+      $excel->setTitle('Download test');
+      $excel->setCreator('globalcdb.com');
+      $excel->setCompany('Global CDB');
+      $info = json_decode($info);
+      $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id){
+        $sheet->setStyle(array(
+            'font' => array(
+                'name'      =>  'Calibri',
+                'size'      =>  7,
+                'bold'      =>  false
+            )
+        ));
+      $sheet->loadView('extracto-firma', array('info'=>$info,'fecha'=>$fecha) );
+      })->export('pdf');
+    });
+ }
+
+
+
+ function array_to_utf($array = array()){
+  $temp = array();
+  foreach ( $array as $key => $value ) {
+      if(is_array($value)){
+        $temp[$key] = self::array_to_utf($value);
+      }elseif(is_object($value)){
+        foreach ($value as $index => $item) {
+            $temp[$key][$index] = utf8_encode(html_entity_decode($item, ENT_QUOTES | ENT_HTML401, "UTF-8"));
+        }
+      }
+      else{
+        $temp[$key] = utf8_encode(html_entity_decode($value,ENT_QUOTES | ENT_HTML401, "UTF-8"));
+      }
+  }
+  return $temp;
+}
+
+
+
 }

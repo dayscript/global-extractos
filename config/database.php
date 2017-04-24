@@ -74,7 +74,17 @@ return [
             'password' => env('DB_PASSWORD', 'forge'),
             'charset' => 'utf8',
             'prefix' => '',
-],
+        ],
+
+        'sqlsrv2' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB2_HOST', '127.0.0.1'),
+            'database' => env('DB2_DATABASE', 'forge'),
+            'username' => env('DB2_USERNAME', 'forge'),
+            'password' => env('DB2_PASSWORD', 'forge'),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
 
     ],
 

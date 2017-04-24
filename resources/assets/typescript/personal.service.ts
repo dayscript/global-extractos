@@ -31,6 +31,10 @@ export class ProductsService {
       alert('Codigo no valido');
     }
   }
+  get user_info():Observable<any>{
+    return this.http.get('/api/user-data/'+this.id)
+      .map( response => response.json() );
+  }
 
   get Data(): Observable<any> {
     return this.http.get('/api/pie-report/'+this.id+'/'+this.date)
@@ -61,5 +65,8 @@ export class ProductsService {
     return this.http.get('api/cache/'+this.id)
              .map( response => response.json() );
   }
-
+  get FicsFilter():Observable<any>{
+    return this.http.get('api/fondos-de-inversion-report/'+this.id+'/'+this.date)
+             .map( response => response.json() );
+  }
 }

@@ -16,6 +16,15 @@ use \App\User;
 
 class ServicesController extends Controller
 {
+  public function user_info($cc){
+
+    $user_load = User::where('identification',$cc)->get();
+    if(isset($user_load[0])){
+      $user['nombre'] = $user_load[0]->nombre;
+      $user['identification'] = $user_load[0]->identification;
+    }
+    return response()->json($user);
+  }
 
   public function portafolio($CodigoOyd,$Fecha)
   {
@@ -182,6 +191,30 @@ public function portafolio_renta_fics($CodigoOyd,$Fecha)
   $output = json_decode($output['attributes']['info_json']);
   return response()->json($output->$CodigoOyd);
   /**/
+}
+
+
+public function fondos_de_inversion($CodigoOyd,$Fecha){
+  $user = User::where('identification',$CodigoOyd)->get();
+  if(isset($user[0])){
+      $output['fics'] = self::exec_FideicomisosVigentesClienteDado($user[0]->codeoyd);
+  }
+  return response()->json($output);
+}
+
+public function portafolio_fondos_de_inversion($Fondo, $Encargo,$Fecha_start,$Fecha_end){
+
+  $output['data'] = self::array_to_utf(self::exec_ExtractoFondoyFideicomisoDados($Fondo,$Encargo,$Fecha_start,$Fecha_end));
+  foreach ($output['data'] as $key => $value) {
+    $output['data'][$key]['ValorUnidad'] = $value['valor Unidad'];
+  }
+
+  $output = self::create_movimiento_fics($output,$Fecha_start,$Fecha_end);
+  $data = json_decode($output->info_json);
+
+  $return['data'] = $data->data;
+  $return['id'] = $output->id;
+  return response()->json($return);
 }
 
 
@@ -610,6 +643,17 @@ function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
 }
 
 
+function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
+  $movimiento = new Movimientos;
+  $movimiento->user_id = 1;
+  $movimiento->fecha_inicio = $fecha_inicio;
+  $movimiento->fecha_fin = $fecha_fin;
+  $movimiento->info_json = json_encode($data);
+  $movimiento->save();
+  return $movimiento;
+}
+
+
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
     $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
@@ -678,7 +722,26 @@ function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
   return $info;
+}
 
+function exec_FideicomisosVigentesClienteDado($CodigoOyd){
+  try {
+    $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv2')->select('EXEC FideicomisosVigentesClienteDado :Consecutivo',array('Consecutivo'=>$CodigoOyd) );
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
+}
+
+function exec_ExtractoFondoyFideicomisoDados($Fondo,$Encargo,$Fecha_start,$Fecha_end){
+  try {
+    $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv2')->select('EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',array('Fondo'=>$Fondo,'Encargo'=>$Encargo,'FechaInicial'=>$Fecha_start,'FechaFinal'=>$Fecha_end) );
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
 }
 
 }

@@ -10,8 +10,7 @@ import { AppComponent }   from './app.component';
 import { ResumenPortafolioComponent }   from './resumen-portafolio.component';
 import { SaldosMovimientosComponent } from './saldos-y-movimientos.component';
 import { SaldosMovimientosFondosComponent } from './saldos-y-movimientos-fondos.component';
-import { RentaComponent,RentaFijaComponent,FicsComponent,OPCComponent,ODLComponent,MovimientosComponent}   from './renta.component';
-
+import { ExtractosCertificaciones } from './extractos-y-certificaciones.component';
 import { NotFoundPageComponent }   from './notfound.component';
 import { ChartsModule } from 'ng2-charts';
 
@@ -20,14 +19,7 @@ const appRoutes: Routes = [
     { path:'report/:id/:date/resumen-de-portafolio', component:ResumenPortafolioComponent },
     { path:'report/:id/:date/saldos-y-movimientos-de-la-firma', component:SaldosMovimientosComponent },
     { path:'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component:SaldosMovimientosFondosComponent },
-
-    { path:'report/:id/:date/renta-varible', component:RentaComponent },
-    { path:'report/:id/:date/renta-fija', component:RentaFijaComponent },
-    { path:'report/:id/:date/fics', component:FicsComponent },
-    { path:'report/:id/:date/operaciones-por-cumplir', component:OPCComponent },
-    { path:'report/:id/:date/operaciones-de-liquidez', component:ODLComponent },
-    { path:'report/:id/:date/movimientos', component:MovimientosComponent },
-
+    { path:'report/:id/:date/extractos-y-certificaciones', component:ExtractosCertificaciones },
  ];
 
 @Pipe({
@@ -57,16 +49,11 @@ export class KeysPipe implements PipeTransform {
   declarations: [ AppComponent,
                   KeysPipe,
                   NotFoundPageComponent,
-                  OPCComponent,
-                  ODLComponent,
-                  FicsComponent,
                   ResumenPortafolioComponent,
-                  RentaComponent,
-                  RentaFijaComponent,
-                  MovimientosComponent,
                   AsyncPipe,
                   SaldosMovimientosComponent,
-                  SaldosMovimientosFondosComponent
+                  SaldosMovimientosFondosComponent,
+                  ExtractosCertificaciones
                 ],
   bootstrap:    [ AppComponent ]
 })

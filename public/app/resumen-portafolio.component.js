@@ -63,10 +63,15 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
                 });
             });
         }, 1000);
+        productsService.user_info
+            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
     }
     setParamsPie() {
         var PieData = [];
         var cont = 0;
+        if (this.products['error']) {
+            alert('Servicio no disponible');
+        }
         for (var item in this.products) {
             for (var elem in this.products[item]) {
                 if (item == 'pie_porcents') {

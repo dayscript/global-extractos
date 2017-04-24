@@ -4,39 +4,49 @@
       <div class="collapse navbar-collapse" id="navbar-menu">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link"  routerLink="/report/{{id_identificacion}}/{{fecha}}/resumen-de-portafolio" >Resumen de Portafolio <span class="sr-only">(current)</span></a>
+            <a class="nav-link"  routerLink="/report/{{id_identificacion}}/{{fecha}}/resumen-de-portafolio">
+              <span class="glyphicon glyphicon glyphicon-briefcase" aria-hidden="true"> </span>Resumen de Portafolio <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-de-la-firma">Saldos y Movimientos Firma Comisionista</a>
+            <a class="nav-link" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-de-la-firma">
+              <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Saldos y Movimientos Firma Comisionista</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-fondos-de-inversion">Saldos y Movimientos Fondos de Inversión</a>
+            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-fondos-de-inversion">
+              <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>Saldos y Movimientos Fondos de Inversión</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/movimientos-y-certificaciones">Extractos y Certificaciones </a>
+            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/extractos-y-certificaciones">
+              <span class="glyphicon glyphicon-folder-open"></span>
+              Extractos y Certificaciones </a>
           </li>
         </ul>
       </div>
-      <div class="date-selector">
-        <form class="form-search form-inline my-2 my-lg-0">
-            <input  class="form-control mr-sm-2" id="datepicker"
-                    type="text"
-                    [(ngModel)]="fecha"
-                    name="fecha"
-                    placeholder="Seleccione una fecha"
-                    required>
-            <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
-        </form>
-      </div>
     </nav>
+    <div class="date-selector">
+      <form class="form-search form-inline my-2 my-lg-0 col-md-6">
+          <input  class="form-control mr-sm-2" id="datepicker"
+                  type="text"
+                  [(ngModel)]="fecha"
+                  name="fecha"
+                  placeholder="Seleccione una fecha"
+                  required>
+          <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+      </form>
+      <div class="personal-info col-md-6 my-2 my-lg-0">
+        <span> {{user_info?.nombre}} </span><br>
+        <span> {{user_info?.identification}} </span><br>
+        <span> Fecha actual: {{ today | date: 'dd/MM/yyyy' }} </span>
+      </div>
+    </div>
   </div>
   <section class="personal-data">
-    <div *ngIf="products == undefined" class="content-wrapper border-container">
+    <div *ngIf="products == undefined" class="content-wrapper ">
         <div>
           <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
         </div>
     </div>
-    <div *ngIf="products != undefined" class="content-wrapper border-container">
+    <div *ngIf="products != undefined" class="content-wrapper ">
         <div class="col">
             <div class="text-left"><strong>Nombre:</strong><span>{{ products?.personal_data.name }}</span></div>
         </div>
@@ -57,12 +67,12 @@
 
   <section class="header">
     <h3> COMPOSICIÓN DEL PORTAFOLIO </h3>
-    <div *ngIf="products == undefined" class="content-wrapper border-container">
+    <div *ngIf="products == undefined" class="content-wrapper">
         <div>
           <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
         </div>
     </div>
-    <div *ngIf="products != undefined" class="content-wrapper border-container">
+    <div *ngIf="products != undefined" class="content-wrapper">
       <div class="col">
           <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.variable_rent  }} </div>
       </div>
@@ -88,16 +98,6 @@
           <div class="text-left gran-total" ><strong>Gran Total:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.gran_total }}</strong></div>
       </div>
     </div>
-    <table>
-      <thead>
-        <th></th>
-      </thead>
-      <tbody>
-        <tr><td></td></tr>
-      </tbody>
-      <tfoot>
-      </tfoot>
-    </table>
   </section>
   <section class="diagram">
     <div *ngIf="pieChartData != undefined && showPie == 1" style="display: block">

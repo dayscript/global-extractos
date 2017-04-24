@@ -22,6 +22,8 @@ export class SaldosMovimientosComponent {
   info_movimientos:Observable<Array<string>>;
   renta_variable:Observable<Array<string>>;
   renta_fija:Observable<Array<string>>;
+  today:any;
+  user_info:Observable<Array<string>>;
 
   access:any;
   constructor(
@@ -61,6 +63,12 @@ export class SaldosMovimientosComponent {
       error => console.log('error: ${error}'),
       ()    => console.log(this.renta_fija)
     );
+    productsService.user_info
+      .subscribe(
+        data => { this.user_info = data },
+        error => console.log( 'Error: ${error}' ),
+        () => this.today = new Date(),
+      );
   /*Fin de componenete SaldosMovimientosComponent*/
   }
   search(){
