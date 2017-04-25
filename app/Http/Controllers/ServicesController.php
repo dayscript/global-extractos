@@ -340,6 +340,7 @@ function calcPorcent($a,$b,$c){
 }
 
 function array_to_utf($array = array()){
+  $temp=array()
   foreach ( $array as $key => $value ) {
       if(is_array($value)){
         $temp[$key] = self::array_to_utf($value);
