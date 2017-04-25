@@ -30,7 +30,9 @@ Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDM
 
 
 /*Angular front routes*/
-Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('auth');
+#Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular')->middleware('auth');
+
+Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
 
 
 /*Laravel API routes*/
