@@ -36,7 +36,7 @@ class ServicesController extends Controller
       }
 
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
 
@@ -115,7 +115,7 @@ class ServicesController extends Controller
       }
 
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
       $data = array();
@@ -179,7 +179,7 @@ class ServicesController extends Controller
 
 
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
       $data = array();
@@ -241,7 +241,7 @@ class ServicesController extends Controller
 
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
       $data = array();
       $total = 0;
@@ -294,7 +294,7 @@ class ServicesController extends Controller
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
 
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(array('Not_found' => 'No se ha encontrado informacón'));
@@ -342,7 +342,7 @@ class ServicesController extends Controller
 
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(['No se ha encotrado información']);
@@ -391,7 +391,7 @@ class ServicesController extends Controller
 
       $CodigoOyd = DB::select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
       $CodigoOyd = trim($CodigoOyd[0]->lngID);
-      $stmt = DB::select('SET ANSI_WARNINGS ON;');
+      #$stmt = DB::select('SET ANSI_WARNINGS ON;');
       $stmt = DB::select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
       if(count($stmt) == 0)
         return response()->json(['No se ha encotrado información']);
