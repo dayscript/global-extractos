@@ -414,24 +414,31 @@ class HomeController extends Controller
     $Extractos_fics->info_json = json_encode($info);
     $Extractos_fics->save();
     $info = $Extractos_fics->info_json;
-    #$info = json_decode($info);
-    #dd($info);
-    Excel::create('Extracto-firma.xls',function($excel) use ($info,$fecha,$id){
+    $info = json_decode($info);
+    Excel::create('firma-comisionista-'.$id ,function($excel) use ($info,$fecha,$id){
       $excel->setTitle('Download test');
       $excel->setCreator('globalcdb.com');
       $excel->setCompany('Global CDB');
-      $info = json_decode($info);
-      $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id){
+      
+      $image_header = public_path().'/images/header-extracto2.jpg';
+      
+      $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id,$image_header){
+     
         $sheet->setStyle(array(
-            'font' => array(
-                'name'      =>  'Calibri',
-                'size'      =>  7,
-                'bold'      =>  false
-            )
+          'font' => array(
+              'name'      =>  'Calibri',
+              'size'      =>  7,
+              'bold'      =>  false
+          )
         ));
-      $sheet->loadView('extracto-firma', array('info'=>$info,'fecha'=>$fecha) );
+
+        $sheet->loadView('extracto-firma', array('info'=>$info,'fecha'=>$fecha,'image_header'=>$image_header) );
+      
       })->export('pdf');
     });
+
+    return view('extracto-firma',array('info'=>$info,'fecha'=>$fecha));
+
  }
    
 
