@@ -13,6 +13,8 @@ const core_2 = require("@angular/core");
 const router_1 = require("@angular/router");
 const forms_1 = require("@angular/forms");
 const app_component_1 = require("./app.component");
+const menu_component_1 = require("./menu.component");
+const user_info_component_1 = require("./user-info.component");
 const resumen_portafolio_component_1 = require("./resumen-portafolio.component");
 const saldos_y_movimientos_component_1 = require("./saldos-y-movimientos.component");
 const saldos_y_movimientos_fondos_component_1 = require("./saldos-y-movimientos-fondos.component");
@@ -58,6 +60,8 @@ AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
         declarations: [app_component_1.AppComponent,
+            menu_component_1.MenuComponent,
+            user_info_component_1.UserInfoComponent,
             KeysPipe,
             notfound_component_1.NotFoundPageComponent,
             resumen_portafolio_component_1.ResumenPortafolioComponent,

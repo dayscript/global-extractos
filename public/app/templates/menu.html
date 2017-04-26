@@ -1,0 +1,23 @@
+<nav class="navbar navbar-light bg-faded">
+  <div class="collapse navbar-collapse" id="navbar-menu">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link"  routerLink="/report/{{id_identificacion}}/{{fecha}}/resumen-de-portafolio">
+          <span class="glyphicon glyphicon glyphicon-briefcase" aria-hidden="true"> </span>Resumen de Portafolio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-de-la-firma">
+          <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Saldos y Movimientos Firma Comisionista</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-fondos-de-inversion">
+          <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>Saldos y Movimientos Fondos de Inversión</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/extractos-y-certificaciones">
+          <span class="glyphicon glyphicon-folder-open"></span>
+          Extractos y Certificaciones </a>
+      </li>
+    </ul>
+  </div>
+</nav>

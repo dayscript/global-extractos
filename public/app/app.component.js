@@ -13,7 +13,7 @@ let AppComponent = class AppComponent {
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
-        templateUrl: '/app/templates/index.html'
+        templateUrl: '/app/templates/index.html',
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;

@@ -5,8 +5,11 @@ import { Component, Pipe , PipeTransform } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {FormsModule} from "@angular/forms";
 
-
 import { AppComponent }   from './app.component';
+import { MenuComponent }   from './menu.component';
+import { UserInfoComponent }   from './user-info.component';
+import { ProductsService } from './personal.service';
+
 import { ResumenPortafolioComponent }   from './resumen-portafolio.component';
 import { SaldosMovimientosComponent } from './saldos-y-movimientos.component';
 import { SaldosMovimientosFondosComponent } from './saldos-y-movimientos-fondos.component';
@@ -47,6 +50,8 @@ export class KeysPipe implements PipeTransform {
 @NgModule({
   imports:      [ BrowserModule,ChartsModule,HttpModule,RouterModule.forRoot(appRoutes),FormsModule],
   declarations: [ AppComponent,
+                  MenuComponent,
+                  UserInfoComponent,
                   KeysPipe,
                   NotFoundPageComponent,
                   ResumenPortafolioComponent,

@@ -1,28 +1,5 @@
-<div class="page-pie">
   <div class="wrapper-content">
-    <nav class="navbar navbar-light bg-faded">
-      <div class="collapse navbar-collapse" id="navbar-menu">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link"  routerLink="/report/{{id_identificacion}}/{{fecha}}/resumen-de-portafolio">
-              <span class="glyphicon glyphicon glyphicon-briefcase" aria-hidden="true"> </span>Resumen de Portafolio <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-de-la-firma">
-              <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Saldos y Movimientos Firma Comisionista</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/saldos-y-movimientos-fondos-de-inversion">
-              <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>Saldos y Movimientos Fondos de Inversión</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" routerLink="/report/{{id_identificacion}}/{{fecha}}/extractos-y-certificaciones">
-              <span class="glyphicon glyphicon-folder-open"></span>
-              Extractos y Certificaciones </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <menu></menu>
     <div class="date-selector">
       <form class="form-search form-inline my-2 my-lg-0 col-md-6">
           <input  class="form-control mr-sm-2" id="datepicker"
@@ -33,11 +10,7 @@
                   required>
           <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
       </form>
-      <div class="personal-info col-md-6 my-2 my-lg-0">
-        <span> {{user_info?.nombre}} </span><br>
-        <span> {{user_info?.identification}} </span><br>
-        <span> Fecha actual: {{ today | date: 'dd/MM/yyyy' }} </span>
-      </div>
+      <user-info></user-info>
     </div>
   </div>
   <section class="personal-data">
@@ -66,7 +39,7 @@
   </section>
 
   <section class="header">
-    <h3> COMPOSICIÓN DEL PORTAFOLIO </h3>
+    <h5> COMPOSICIÓN DEL PORTAFOLIO </h5>
     <div *ngIf="products == undefined" class="content-wrapper">
         <div>
           <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
@@ -74,28 +47,36 @@
     </div>
     <div *ngIf="products != undefined" class="content-wrapper">
       <div class="col">
-          <div class="text-left"><strong>Renta variable:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.variable_rent  }} </div>
+          <div class="text-left"><strong>Renta variable:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.variable_rent  }} </span></div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Renta fija:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.static_rent }}</div>
+          <div class="text-left" ><strong>Renta fija:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.static_rent }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Operaciones de liquidez:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.operation_liquidity }}</div>
+          <div class="text-left" ><strong>Operaciones de liquidez:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.operation_liquidity }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Operaciones por cumplir:</strong></div><div class="text-rigth">$ {{ products?.composition_portfolio.operation_comply }}</div>
+          <div class="text-left" ><strong>Operaciones por cumplir:</strong></div>
+          <div class="text-rigth"><span>$ {{ products?.composition_portfolio.operation_comply }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Saldo disponible:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.avaluable_balance }}</strong></div>
+          <div class="text-left" ><strong>Saldo disponible:</strong></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.composition_portfolio.avaluable_balance }}</strong></span></div>
       </div>
       <div class="col">
-          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.total_administration_account }}</strong></div>
+          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.composition_portfolio.total_administration_account }}</strong></span></div>
       </div>
       <div class="col">
-          <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div><div class="text-rigth"> $ {{ products?.composition_portfolio.funds_investment_colective }}</div>
+          <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.funds_investment_colective }}</span></div>
       </div>
       <div class="col">
-          <div class="text-left gran-total" ><strong>Gran Total:</strong></div><div class="text-rigth"><strong> $ {{ products?.composition_portfolio.gran_total }}</strong></div>
+          <div class="text-left" ><strong class="text-medium">Gran Total:</strong></div>
+          <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.composition_portfolio.gran_total }}</strong></span></div>
       </div>
     </div>
   </section>
@@ -110,30 +91,4 @@
               (chartClick)="chartClicked($event)">
       </canvas>
     </div>
-    <!--<div *ngIf="pieChartData != undefined && showExtrac == 1" style="display: block">
-      <form class="form-search">
-          <label for="name">Desde:</label>
-          <input type="text" [(ngModel)]="date" name="date" required>
-          <label for="name">Hasta:</label>
-          <input type="text" [(ngModel)]="date_end" name="date_end" required>
-          <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">buscar</button>
-      </form>
-      <table *ngIf="dataExtrac != undefined " style="width:100%" class="report-table">
-        <thead>
-          <th class="numero" >Numero</th>
-          <th class="detalle">Detalle</th>
-          <th>A. Cargo</th>
-          <th>A. Favor</th>
-          <th>Saldo</th>
-        </thead>
-          <tr *ngFor="let item of dataExtrac?.data">
-            <td class="numero" >{{item.strNumero}}</td>
-            <td class="detalle" >{{item.strDetalle1}}</td>
-            <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
-            <td class="favor" >{{item.AFavor | currency:'USD':true:'1.2-2'}}</td>
-            <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
-          </tr>
-      </table>
-    </div>-->
   </section>
-</div>

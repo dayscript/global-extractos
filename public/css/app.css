@@ -4,8 +4,39 @@ body {
   font-family: sans-serif !important;
 }
 
+menu {
+  margin: 0;
+  padding: 0;
+}
+
+strong {
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+th {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+td {
+  font-size: 9px;
+}
+
+label {
+  font-size: 12px;
+}
+
+h5 {
+  font-weight: 600 !important;
+}
+
+.text-medium {
+  font-size: 12px;
+}
+
 .page-pie span {
-  font-size: 11px;
+  font-size: 9px;
   margin: 10px;
 }
 
@@ -14,12 +45,12 @@ body {
 }
 
 .page-rv span {
-  font-size: 11px;
+  font-size: 9px;
   margin: 10px;
 }
 
 span {
-  font-size: 11px;
+  font-size: 9px;
   margin: 10px;
 }
 
@@ -34,10 +65,6 @@ section {
 
 .content-align-center {
   text-align: center;
-}
-
-.gran-total {
-  font-size: 18px;
 }
 
 .border-container {
@@ -245,7 +272,7 @@ nav ul li a {
 
 .personal-info {
   margin: 15px 0 15px 0;
-  font-size: 11px;
+  font-size: 9px;
   text-align: right;
 }
 

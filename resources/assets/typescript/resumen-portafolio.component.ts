@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Directive } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
 import { ActivatedRoute,Router  } from '@angular/router';

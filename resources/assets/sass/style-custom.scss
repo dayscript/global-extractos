@@ -1,11 +1,43 @@
+$FontSize_Text : 9px;
+$FontSize_TextMedium : 12px;
+
 body{
   font-family: sans-serif!important;
 }
+menu{
+  margin: 0;
+  padding: 0;
+}
+strong{
+  font-size: $FontSize_Text;
+  text-transform: uppercase;
+}
+
+th{
+  text-transform: uppercase;
+  font-size: $FontSize_TextMedium;
+}
+td{
+  font-size: $FontSize_Text;
+}
+
+label{
+  font-size: $FontSize_TextMedium;
+}
+h5{
+  font-weight: 600!important;
+}
+
+.text-medium{
+  font-size: $FontSize_TextMedium;
+}
+
+
 
 .page-pie{
  span
   {
-    font-size: 11px;
+    font-size: $FontSize_Text;
     margin: 10px;
   }
   canvas{
@@ -15,14 +47,14 @@ body{
 .page-rv{
  span
   {
-    font-size: 11px;
+    font-size: $FontSize_Text;
     margin: 10px;
   }
 
 }
 span
  {
-   font-size: 11px;
+   font-size: $FontSize_Text;
    margin: 10px;
  }
 
@@ -37,9 +69,6 @@ section{
 .content-align-center{
  text-align: center;
 
-}
-.gran-total{
-  font-size: 18px;
 }
 
 .border-container{
@@ -233,6 +262,6 @@ nav{
 }
 .personal-info{
   margin: 15px 0 15px 0;
-  font-size: 11px;
+  font-size: $FontSize_Text;
   text-align: right;
 }
