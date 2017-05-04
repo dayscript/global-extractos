@@ -276,6 +276,10 @@ nav ul li a {
   text-align: right;
 }
 
+.extracto table th td {
+  font-size: 9px;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

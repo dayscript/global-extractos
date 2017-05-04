@@ -1,5 +1,6 @@
-<html>
-	<table style="padding: 10px">
+<div class="" style="text-align:center">
+	<img src="{{$image}}" width="100%" height="100px" alt="">
+	<table style="padding: 10px; width=100%; margin:0 auto" class="extracto" >
 	<tr>
 		<td colspan="5">{{$info['encabezado'][0]['Nombre']}}</td>
 		<td colspan="2"> Fecha de Corte : {{$fecha}}</td>
@@ -17,34 +18,34 @@
 		<td colspan="2"> </td>
 	</tr>
 	<tr>
-		<td colspan="7">Nit: {{$Nit}}</td>
+		<td colspan="7">Nit: {{$nit}}</td>
 	</tr>
 	<tr>
-		<td colspan="7" style="background-color:#b1b1b1; text-align: center;">INFORMACIÓN BÁSICA</td>
-		
+		<td colspan="7" style="background-color:#b1b1b1; text-align: center;">INFORMACI&Oacute;N B&Aacute;SICA</td>
+
 	</tr>
-	<tr> 
-		<td colspan="2">Identificació:<br>{{$info['basica'][0]['FIDEICOMITENTE']}}</td>
-		<td colspan="2">Cuenta Número:<br>{{$info['basica'][0]['Fideicomiso']}}</td>
+	<tr>
+		<td colspan="2">Identificaci&oacute;:<br>{{$info['basica'][0]['FIDEICOMITENTE']}}</td>
+		<td colspan="2">Cuenta N&uacute;mero:<br>{{$info['basica'][0]['Fideicomiso']}}</td>
 		<td colspan="2">Valor Unidad:<br>{{$info['basica'][0]['Valor Unidad']}}</td>
-		<td>F. Consitución:<br>{{$info['basica'][0]['Fecha Constitucion']}}</td>
+		<td>F. Consituci&oacute;n:<br>{{$info['basica'][0]['Fecha Constitucion']}}</td>
 	</tr>
-	<tr> 
+	<tr>
 		<td colspan="2">Retabilidad periodica del fondo:<br>{{$info['basica'][0]['RentaPeriodicaFondo']}}</td>
-		<td colspan="2">Comisión de administración:<br>{{$info['basica'][0]['ComisionAdministracion']}}</td>
-		<td colspan="2">Comisión de Éxito:<br>NULL</td>
+		<td colspan="2">Comisi&oacute;n de administraci&oacute;n:<br>{{$info['basica'][0]['ComisionAdministracion']}}</td>
+		<td colspan="2">Comisi&oacute;n de &Eacute;xito:<br>NULL</td>
 		<td>F. Vencimiento:<br>{{$info['basica'][0]['Fecha_vto']}}</td>
 	</tr>
 	<tr>
-		<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >MÓVIMIENTO PERÍODICO</td>
+		<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >M&Oacute;VIMIENTO PER&Iacute;ODICO</td>
 	</tr>
-	<tr> 
+	<tr>
 		<td>Fecha</td>
-		<td>Descripción</td>
-		<td>Crédito</td>
-		<td>Débito</td>
+		<td>Descripci&oacute;n</td>
+		<td>Cr&eacute;dito</td>
+		<td>D&eacute;bito</td>
 		<td>Valor de la unidad</td>
-		<td>Número de unidades</td>
+		<td>N&uacute;mero de unidades</td>
 		<td>Saldo</td>
 	</tr>
 	@foreach ( $info['movimientos'] as $key => $value )
@@ -70,4 +71,5 @@
 		<td colspan="1">{{ $value['Nro_Unidades'] }}</td>
 	</tr>
 	@endforeach
-</html>
+</table>
+</div>

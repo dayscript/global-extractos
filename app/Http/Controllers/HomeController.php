@@ -295,7 +295,7 @@ class HomeController extends Controller
     $fecha_inicio = $my_date->format('Y-m-d');
     $my_date->modify('last day of this month');
     $fecha_fin = $my_date->format('Y-m-d');
-    
+
     $user_load = User::where('identification',$id)->get();
     if(!isset($user_load[0])){
       $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
@@ -313,19 +313,19 @@ class HomeController extends Controller
         $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
         $info_encabezado = DB::connection('sqlsrv2')
                     ->select('EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_basica = DB::connection('sqlsrv2')
                     ->select('EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_movimientos = DB::connection('sqlsrv2')
                     ->select('EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_resumen = DB::connection('sqlsrv2')
                     ->select('EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin) 
+                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
       } catch (Exception $e) {
         $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -347,13 +347,22 @@ class HomeController extends Controller
       $Extractos_fics->save();
       $info = $Extractos_fics->info_json;
   }
-     
+  $info = self::array_to_utf(json_decode($info));
+  $image_header = public_path().'/images/header-extracto2.jpg';
+  $data = array('info'=> $info, 'fecha'=> $fecha,'nit' => $id, 'fecha_inicio'=> $fecha_inicio,'fecha_fin' => $fecha_fin,'image'=>$image_header);
+
+  return $pdf = \PDF::loadView('extracto-fics', $data)->download('test.pdf');
+
   # Genera el archivo excel
-  Excel::create('Extracto-fics.xls',function($excel) use ($info,$fecha,$id,$fecha_inicio,$fecha_fin){
+  /*Excel::create('Extracto-fics.xls',function($excel) use ($info,$fecha,$id,$fecha_inicio,$fecha_fin){
     $excel->setTitle('Download test');
     $excel->setCreator('globalcdb.com');
     $excel->setCompany('Global CDB');
-    $info = self::array_to_utf(json_decode($info));
+
+
+
+
+
     $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id,$fecha_inicio,$fecha_fin){
       // Set font with ->setStyle()`
       $sheet->setStyle(array(
@@ -365,9 +374,9 @@ class HomeController extends Controller
 ));
     $sheet->loadView('extracto-fics', array('info'=>$info ,'fecha'=>$fecha,'Nit'=>$id,'fecha_inicio'=>$fecha_inicio,'fecha_fin'=>$fecha_fin) );
 
-    })->export('pdf');
+  })->export('pdf');
 
-  });
+  });*/
  }
 
   public function extract_firma($id,$fecha){
@@ -382,22 +391,22 @@ class HomeController extends Controller
                                   ->where('fecha_inicio',$fecha)
                                   ->get();
     $info['encabezado'] = $user[0]['attributes'];
-    
+
     if(isset($extracto[0])){
        $info = json_decode($extracto[0]->info_json);
-     }else{ 
+     }else{
         try{
-        $set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                           ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
 
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
                                 ->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                           array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha)
-                                        ); 
+                                        );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
                                 ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
-                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd) 
+                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
                                   );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
                                 ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
@@ -415,32 +424,12 @@ class HomeController extends Controller
     $Extractos_fics->save();
     $info = $Extractos_fics->info_json;
     $info = json_decode($info);
-    Excel::create('firma-comisionista-'.$id ,function($excel) use ($info,$fecha,$id){
-      $excel->setTitle('Download test');
-      $excel->setCreator('globalcdb.com');
-      $excel->setCompany('Global CDB');
-      
-      $image_header = public_path().'/images/header-extracto2.jpg';
-      
-      $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id,$image_header){
-     
-        $sheet->setStyle(array(
-          'font' => array(
-              'name'      =>  'Calibri',
-              'size'      =>  7,
-              'bold'      =>  false
-          )
-        ));
+    $image_header = public_path().'/images/header-extracto2.jpg';
+    $data  = array('info' => $info, 'fecha' => $fecha, 'image' => $image_header);
 
-        $sheet->loadView('extracto-firma', array('info'=>$info,'fecha'=>$fecha,'image_header'=>$image_header) );
-      
-      })->export('pdf');
-    });
-
-    return view('extracto-firma',array('info'=>$info,'fecha'=>$fecha));
-
+    return $pdf = \PDF::loadView('extracto-firma', $data)->download('test.pdf');
  }
-   
+
 
 
  function array_to_utf($array = array()){
