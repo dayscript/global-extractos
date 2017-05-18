@@ -399,18 +399,18 @@ class HomeController extends Controller
         try{
         $set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
-                          ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
+                          ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
 
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
-                                ->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',
+                                ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                           array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha)
                                         );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
-                                ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
                                           array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
                                   );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
-                                ->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
                                           array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
                                   );
       } catch (Exception $e) {
