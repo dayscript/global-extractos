@@ -138,6 +138,7 @@ public function portafolio_renta_fija($CodigoOyd,$Fecha)
         return response()->json($portafolio_rf);
       }
       if(count($portafolio_rf) > 0){
+        dd($portafolio_rf);
         $renta_fija = self::create_renta_fija($portafolio_rf,$user,$Fecha);
         $output = $renta_fija;
       }else{
