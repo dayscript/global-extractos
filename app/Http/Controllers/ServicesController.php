@@ -100,6 +100,7 @@ public function portafolio_renta_variable($CodigoOyd,$Fecha)
       }
       if(count($portafolio_rv) > 0){
         $renta_variable = self::create_renta_variable($portafolio_rv,$user,$Fecha);
+
         $output = $renta_variable;
       }else{
         return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
@@ -108,7 +109,6 @@ public function portafolio_renta_variable($CodigoOyd,$Fecha)
   }else{
     return response()->json(array('error'=>true,'description'=>'Usuario no registra','debug'=>'Intento de acceso no permitido'));
   }
-
   $output = json_decode($output['attributes']['info_json']);
   return response()->json($output->$CodigoOyd);
 }
@@ -441,7 +441,7 @@ function create_renta_variable($info,$user,$fecha){
   foreach ($info as $key => $item) {
     $data[$key] = $item;
     $total = $total + $item->Valoracion;
-    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));
+    $data[$key]->FechaCompra = trim((str_replace('.000','',str_replace('00:00:00','',$item->FechaCompra))));
     $data[$key]->Precio = number_format($item->Precio,2);
     $data[$key]->Valoracion = number_format($item->Valoracion,2);
   }
@@ -475,11 +475,11 @@ function create_renta_fija($info,$user,$fecha){
   foreach ($info as $key => $item) {
     $data[$key] = $item;
     $total = $total + $item->Valoracion;
-    $data[$key]->Precio = number_format($item->Precio,2);;
-    $data[$key]->Valoracion = number_format($item->Valoracion,2);;
-    $data[$key]->FechaCompra = trim(str_replace('00:00:00','',$item->FechaCompra));;
-    $data[$key]->dtmEmision = trim(str_replace('00:00:00','',$item->dtmEmision));;
-    $data[$key]->dtmVencimiento = trim(str_replace('00:00:00','',$item->dtmVencimiento));;
+    $data[$key]->Precio = number_format($item->Precio,2);
+    $data[$key]->Valoracion = number_format($item->Valoracion,2);
+    $data[$key]->FechaCompra = trim((str_replace('.000','',str_replace('00:00:00','',$item->FechaCompra))));
+    $data[$key]->dtmEmision = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmEmision))));
+    $data[$key]->dtmVencimiento = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmVencimiento))));
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -511,8 +511,8 @@ function create_renta_fics($info,$user,$fecha){
     $total = $total + $item->SaldoPesos;
     $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
     $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
-    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+    $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
+    $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -546,8 +546,8 @@ function create_operaciones_por_cumplir($info,$user,$fecha){
     $total = $total + $item->SaldoPesos;
     $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
     $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
-    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+    $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
+    $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -580,8 +580,8 @@ function create_operaciones_de_liquidez($info,$user,$fecha){
     $total = $total + $item->SaldoPesos;
     $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
     $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim(str_replace('00:00:00','',$item->Fecha_Const));
-    $data[$key]->Fecha_vto = trim(str_replace('00:00:00','',$item->Fecha_vto));
+    $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
+    $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -613,7 +613,7 @@ function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
   $total = array();
 
   foreach ($info as $key => $value) {
-    $movimiento[$key]['fecha'] = trim(str_replace('00:00:00','',$value->dtmDocumento));
+    $movimiento[$key]['fecha'] = trim((str_replace('.000','',str_replace('00:00:00','',$value->dtmDocumento))));
     $movimiento[$key]['strNumero'] = utf8_decode($value->strNumero);
     $movimiento[$key]['strDetalle1'] = utf8_decode($value->strDetalle1);
     $movimiento[$key]['ACargo'] = ( $value->ACargo == '' )? 0:$value->ACargo;
