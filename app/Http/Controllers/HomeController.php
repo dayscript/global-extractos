@@ -397,7 +397,7 @@ class HomeController extends Controller
        $info = json_decode($extracto[0]->info_json);
      }else{
         try{
-        $set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                           ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
 
