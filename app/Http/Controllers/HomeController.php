@@ -311,6 +311,7 @@ class HomeController extends Controller
     }else{
       try {
         $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+
         $info_encabezado = DB::connection('sqlsrv2')
                     ->select('EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
@@ -396,7 +397,7 @@ class HomeController extends Controller
        $info = json_decode($extracto[0]->info_json);
      }else{
         try{
-        #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        $set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                           ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
 

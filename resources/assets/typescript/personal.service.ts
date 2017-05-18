@@ -37,26 +37,32 @@ export class ProductsService {
   }
 
   get Data(): Observable<any> {
+    console.log('/api/pie-report/'+this.id+'/'+this.date);
     return this.http.get('/api/pie-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
   get DataRenta(): Observable<any> {
+    console.log('api/variable-report/'+this.id+'/'+this.date);
     return this.http.get('api/variable-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
   get DataRentaFija(): Observable<any> {
+    console.log('api/fija-report/'+this.id+'/'+this.date);
     return this.http.get('api/fija-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
   get DataFics(): Observable<any> {
+    console.log('api/fics-report/'+this.id+'/'+this.date);
+
     return this.http.get('api/fics-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
   get DataOPC(): Observable<any> {
+    console.log('api/opc-report/'+this.id+'/'+this.date);
     return this.http.get('api/opc-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
@@ -66,6 +72,7 @@ export class ProductsService {
              .map( response => response.json() );
   }
   get FicsFilter():Observable<any>{
+    console.log('api/fondos-de-inversion-report/'+this.id+'/'+this.date);
     return this.http.get('api/fondos-de-inversion-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
   }

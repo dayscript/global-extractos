@@ -7,19 +7,19 @@
       <h5>EXTRACTOS Y CERTIFICACIONES</h5>
     </section>
     <section>
-      <label for="">Extractos</label>
+      <label for="">EXTRACTOS</label>
       <form class="">
         <div class="left-aling-content">
-          <label for="">Firma Comisionista</label>
-          <select class="" [(ngModel)]="fecha_select_firma" name="fecha_select_firma" id="fecha_select_firma" required>
+          <label style="width:145px" for="">Firma Comisionista</label>
+          <select  style="width:200px" class="" [(ngModel)]="fecha_select_firma" name="fecha_select_firma" id="fecha_select_firma" required>
             <option value="NA">-seleccione una fecha-</option>
             <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
           </select>
           <button (click)=download_firma() type="button" name="button">Consultar</button>
         </div>
         <div class="left-aling-content">
-          <label for="">Fondos de Inversión</label>
-          <select id="option_select" [(ngModel)]="option_select" name="option_select" class="wrapper-select">
+          <label style="width:145px" for="">Fondos de Inversión</label>
+          <select style="width:200px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
                 <option value="NA">-seleccione un fondo-</option>
                 <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
           </select>
@@ -32,10 +32,10 @@
       </form>
     </section>
     <section class="header">
-      <label for="">Certificaciónes</label>
+      <label for="">CERTIFICACIÓNES</label>
       <form class="" action="index.html" method="post">
         <div class="left-aling-content">
-          <label for="">Certificado para Declaración de Renta</label>
+          <label  style="width:250px" for="">Certificado para declaración de renta</label>
           <select class="" name="">
             <option value="option">2016</option>
           </select>

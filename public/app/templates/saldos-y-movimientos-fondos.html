@@ -14,13 +14,13 @@
             </div>
         </div>
         <thead>
-          <th>FONDO</th>
-          <th>Encargo</th>
-          <th>F. Constitucion</th>
-          <th>F. Vncto.</th>
-          <th>Vlr. Unidad</th>
-          <th>Nro.Unidades</th>
-          <th>Saldo Pesos</th>
+          <th>fondo de inversión</th>
+          <th>encargo</th>
+          <th>f. Constitución</th>
+          <th>f. Vencimiento</th>
+          <th>vlr. Unidad</th>
+          <th>nro.Unidades</th>
+          <th>saldo pesos</th>
         </thead>
           <tr *ngFor="let item of renta_fics?.data">
             <td>{{ item.FONDO }}</td>
@@ -61,11 +61,11 @@
           <thead>
             <th class="numero" >FECHA</th>
             <th class="numero" >TRANSACCIÓN</th>
-            <th class="detalle">DEBITO</th>
-            <th>CREDITO</th>
-            <th>UNIDADES</th>
-            <th>VALOR UNIDAD</th>
-            <th>SALDO</th>
+            <th class="detalle">DÉBITO</th>
+            <th>CRÉDITO</th>
+            <th>NRO. UNIDADES</th>
+            <th>VLR. UNIDAD</th>
+            <th>SALDO PESOS</th>
           </thead>
             <tr *ngFor="let item of info_movimientos?.data">
               <td class="numero" >{{item.fecha | date: 'dd/MM/yyyy'}}</td>

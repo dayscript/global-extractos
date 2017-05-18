@@ -146,7 +146,7 @@ table {
 }
 
 .report-table th.detalle {
-  width: 500px;
+  width: 400px;
 }
 
 .report-table td.numero {
@@ -156,7 +156,7 @@ table {
 }
 
 .report-table td.detalle {
-  width: 500px;
+  width: 400px;
   font-size: 10px;
 }
 

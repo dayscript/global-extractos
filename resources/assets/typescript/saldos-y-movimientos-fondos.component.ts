@@ -78,8 +78,14 @@ export class SaldosMovimientosFondosComponent {
     this.fecha_inicio = $('#datepicker_start').val()
     this.fecha_final = $('#datepicker_end').val()
     this.option_select = $('#option_select').val()
-    var splice = this.option_select.split('|')
 
+    var splice = this.option_select.split('|')
+    if(splice[0] == 'NA'){
+      $('#option_select').css('border','solid 1px #ff0202');
+      return false;
+    }else{
+      $('#option_select').css('border','1px solid rgb(198, 198, 198)');
+    }
     var url = 'api/extracto-fondos-de-inversion-report/'+splice[0]+'/'+splice[2 ]+'/'+this.fecha_inicio+'/'+this.fecha_final
     console.log(url)
     this.http.get(url)
@@ -89,7 +95,5 @@ export class SaldosMovimientosFondosComponent {
                   error => console.error(`Error: ${error}`),
                   () => console.log(this.info_movimientos)
                 );
-
   }
-
 }

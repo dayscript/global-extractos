@@ -38,22 +38,27 @@ let ProductsService = class ProductsService {
             .map(response => response.json());
     }
     get Data() {
+        console.log('/api/pie-report/' + this.id + '/' + this.date);
         return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
     get DataRenta() {
+        console.log('api/variable-report/' + this.id + '/' + this.date);
         return this.http.get('api/variable-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
     get DataRentaFija() {
+        console.log('api/fija-report/' + this.id + '/' + this.date);
         return this.http.get('api/fija-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
     get DataFics() {
+        console.log('api/fics-report/' + this.id + '/' + this.date);
         return this.http.get('api/fics-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
     get DataOPC() {
+        console.log('api/opc-report/' + this.id + '/' + this.date);
         return this.http.get('api/opc-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
@@ -62,6 +67,7 @@ let ProductsService = class ProductsService {
             .map(response => response.json());
     }
     get FicsFilter() {
+        console.log('api/fondos-de-inversion-report/' + this.id + '/' + this.date);
         return this.http.get('api/fondos-de-inversion-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
