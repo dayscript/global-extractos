@@ -310,22 +310,22 @@ class HomeController extends Controller
       $info = $extracto[0]->info_json;
     }else{
       try {
-        $info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+        #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
 
         $info_encabezado = DB::connection('sqlsrv2')
-                    ->select('EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_basica = DB::connection('sqlsrv2')
-                    ->select('EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_movimientos = DB::connection('sqlsrv2')
-                    ->select('EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
         $info_informacion_resumen = DB::connection('sqlsrv2')
-                    ->select('EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
                             );
       } catch (Exception $e) {
@@ -351,33 +351,7 @@ class HomeController extends Controller
   $info = self::array_to_utf(json_decode($info));
   $image_header = public_path().'/images/header-extracto2.jpg';
   $data = array('info'=> $info, 'fecha'=> $fecha,'nit' => $id, 'fecha_inicio'=> $fecha_inicio,'fecha_fin' => $fecha_fin,'image'=>$image_header);
-
   return $pdf = \PDF::loadView('extracto-fics', $data)->download('test.pdf');
-
-  # Genera el archivo excel
-  /*Excel::create('Extracto-fics.xls',function($excel) use ($info,$fecha,$id,$fecha_inicio,$fecha_fin){
-    $excel->setTitle('Download test');
-    $excel->setCreator('globalcdb.com');
-    $excel->setCompany('Global CDB');
-
-
-
-
-
-    $excel->sheet('Extracto',function($sheet) use($info,$fecha,$id,$fecha_inicio,$fecha_fin){
-      // Set font with ->setStyle()`
-      $sheet->setStyle(array(
-          'font' => array(
-              'name'      =>  'Calibri',
-              'size'      =>  7,
-              'bold'      =>  false
-          )
-));
-    $sheet->loadView('extracto-fics', array('info'=>$info ,'fecha'=>$fecha,'Nit'=>$id,'fecha_inicio'=>$fecha_inicio,'fecha_fin'=>$fecha_fin) );
-
-  })->export('pdf');
-
-  });*/
  }
 
   public function extract_firma($id,$fecha){
