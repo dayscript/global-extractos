@@ -308,7 +308,7 @@ public function ClientReport($CodigoOyd,$Fecha_start,$Fecha_end)
   $cc = $CodigoOyd;
   $user = User::where('identification',$cc)->get();
   if(isset($user[0])){
-    #$report = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $report = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $report = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$user[0]->codeoyd) );
     $report = self::exec_ExtractoClienteDado($user[0]->codeoyd,$Fecha_start,$Fecha_end);
     $output = self::create_movimiento($report,$user,$Fecha_start,$Fecha_end);
