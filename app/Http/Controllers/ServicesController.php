@@ -718,10 +718,10 @@ function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
 function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
   try {
     if($_SERVER['HTTP_HOST'] != 'extractos.local'){
-      $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-      $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;');
+        $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+    }else{
+        $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
     }
-    $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
