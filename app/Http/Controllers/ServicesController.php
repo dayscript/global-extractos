@@ -708,7 +708,7 @@ function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
 function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
   try {
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -718,7 +718,7 @@ function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
 function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
   try {
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
