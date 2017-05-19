@@ -1,5 +1,5 @@
-$FontSize_Text : 9px;
-$FontSize_TextMedium : 12px;
+$FontSize_Text : 10px;
+$FontSize_TextMedium : 13px;
 
 body{
   font-family: sans-serif!important;
@@ -24,8 +24,21 @@ td{
 label{
   font-size: $FontSize_TextMedium;
 }
-h5{
+h5{ 
   font-weight: 600!important;
+}
+h5, .h5 {
+    font-size: 18px !important;
+    color: #222 !important; 
+
+}
+h6{ 
+  font-weight: 600!important;
+}
+h6, .h6 {
+    font-size: 14px !important;
+    color: #222 !important; 
+
 }
 
 .text-medium{
@@ -109,14 +122,17 @@ section{
 
 td{
   text-align: left;
-  padding: 0 5px!important;
+  padding: 5px!important;
 }
 thead{
-  background-color: #3173bd;
+  background-color: #29abfc;
     color: #fff;
+    th{
+      padding: 6px;
+    }
 }
 table{
- border: 1px solid;
+ border: 1px solid #ccc;
 }
 
 .wrapper-content{
@@ -174,7 +190,7 @@ text-align: right;
 
 }
 .form-search{
-  margin:15px 0 15px 0;
+  margin:0px 0 15px 0;
 }
 input{
   margin:0 5px 0 5px!important;
@@ -195,19 +211,27 @@ div#ui-datepicker-div {
 #navbar-menu{
   padding: 0;
 }
+.navbar{
+  margin-bottom: 0px;
+}
 ul.navbar-nav{
-  background: #f0f0f0;
+  background: #29abfc; 
   list-style: none;
-  padding: 6px;
+  padding: 12px;
+  color: #fff; 
+  font-size: 14px;
   li{
     text-decoration: none;
     text-transform: uppercase;
     margin: 0 8px 0 0;
   }
+  a{
+    color: #fff;
+  }
 }
 .date-selector{
   text-align: left;
-  margin: 25px 0 0 0;
+  margin: 4px 0 20px 0;
 }
 .download-xls{
   margin-top: 10px;
@@ -260,7 +284,7 @@ nav{
 
 }
 .personal-info{
-  margin: 15px 0 15px 0;
+  margin: 0px 0 15px 0;
   font-size: $FontSize_Text;
   text-align: right;
 }
@@ -274,4 +298,27 @@ nav{
       }
     }
   }
+}
+
+.btn{
+  background-color: #29abfc;
+  text-transform: uppercase;
+  color: #fff;
+  a{
+    color: #fff;
+  }
+}
+input, select, textarea {
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 12px;
+    min-width: 220px
+}
+option {
+    padding: 4px 10px;
+}
+.footer{
+  font-size: 11px;
+  padding: 20px;
 }

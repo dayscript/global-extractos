@@ -15,17 +15,6 @@ const router_1 = require("@angular/router");
 const http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 let ResumenPortafolioComponent = class ResumenPortafolioComponent {
-    /*public pieCharColors:Array<any> = [
-      {
-        backgroundColor: '#000000',
-      },
-      {
-        backgroundColor: 'rgba(0, 102, 255)',
-      },
-      {
-        backgroundColor: 'rgba(204, 153, 51)',
-      }
-    ]*/
     constructor(productsService, activatedRoute, http, Router) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
@@ -48,6 +37,17 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
                 bodyFontSize: 1,
             },
         };
+        this.pieCharColors = [
+            {
+                backgroundColor: 'rgba(0, 102, 255)',
+            },
+            {
+                backgroundColor: 'rgba(0, 102, 255)',
+            },
+            {
+                backgroundColor: 'rgba(204, 153, 51)',
+            }
+        ];
         this.activatedRoute.params.subscribe(params => {
             this.id_identificacion = +params['id'],
                 this.fecha = params['date'];

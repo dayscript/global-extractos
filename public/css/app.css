@@ -10,33 +10,47 @@ menu {
 }
 
 strong {
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
 }
 
 th {
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 td {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 label {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 h5 {
   font-weight: 600 !important;
 }
 
+h5, .h5 {
+  font-size: 18px !important;
+  color: #222 !important;
+}
+
+h6 {
+  font-weight: 600 !important;
+}
+
+h6, .h6 {
+  font-size: 14px !important;
+  color: #222 !important;
+}
+
 .text-medium {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .page-pie span {
-  font-size: 9px;
+  font-size: 10px;
   margin: 10px;
 }
 
@@ -45,12 +59,12 @@ h5 {
 }
 
 .page-rv span {
-  font-size: 9px;
+  font-size: 10px;
   margin: 10px;
 }
 
 span {
-  font-size: 9px;
+  font-size: 10px;
   margin: 10px;
 }
 
@@ -107,16 +121,20 @@ section {
 
 td {
   text-align: left;
-  padding: 0 5px !important;
+  padding: 5px !important;
 }
 
 thead {
-  background-color: #3173bd;
+  background-color: #29abfc;
   color: #fff;
 }
 
+thead th {
+  padding: 6px;
+}
+
 table {
-  border: 1px solid;
+  border: 1px solid #ccc;
 }
 
 .wrapper-content {
@@ -176,7 +194,7 @@ table {
 }
 
 .form-search {
-  margin: 15px 0 15px 0;
+  margin: 0px 0 15px 0;
 }
 
 input {
@@ -199,10 +217,16 @@ div#ui-datepicker-div {
   padding: 0;
 }
 
+.navbar {
+  margin-bottom: 0px;
+}
+
 ul.navbar-nav {
-  background: #f0f0f0;
+  background: #29abfc;
   list-style: none;
-  padding: 6px;
+  padding: 12px;
+  color: #fff;
+  font-size: 14px;
 }
 
 ul.navbar-nav li {
@@ -211,9 +235,13 @@ ul.navbar-nav li {
   margin: 0 8px 0 0;
 }
 
+ul.navbar-nav a {
+  color: #fff;
+}
+
 .date-selector {
   text-align: left;
-  margin: 25px 0 0 0;
+  margin: 4px 0 20px 0;
 }
 
 .download-xls {
@@ -271,13 +299,40 @@ nav ul li a {
 }
 
 .personal-info {
-  margin: 15px 0 15px 0;
-  font-size: 9px;
+  margin: 0px 0 15px 0;
+  font-size: 10px;
   text-align: right;
 }
 
 .extracto table th td {
   font-size: 9px;
+}
+
+.btn {
+  background-color: #29abfc;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.btn a {
+  color: #fff;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 12px;
+  min-width: 220px;
+}
+
+option {
+  padding: 4px 10px;
+}
+
+.footer {
+  font-size: 11px;
+  padding: 20px;
 }
 
 /*!

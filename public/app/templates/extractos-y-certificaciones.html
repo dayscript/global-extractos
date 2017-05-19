@@ -7,7 +7,7 @@
       <h5>EXTRACTOS Y CERTIFICACIONES</h5>
     </section>
     <section>
-      <label for="">EXTRACTOS</label>
+      <h6 for="" class="left-aling-content">EXTRACTOS</h6>
       <form class="">
         <div class="left-aling-content">
           <label style="width:145px" for="">Firma Comisionista</label>
@@ -15,8 +15,9 @@
             <option value="NA">-seleccione una fecha-</option>
             <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
           </select>
-          <button (click)=download_firma() type="button" name="button">Consultar</button>
+          <button (click)=download_firma() type="button" name="button" class="btn">CONSULTAR</button>
         </div>
+        <hr>
         <div class="left-aling-content">
           <label style="width:145px" for="">Fondos de Inversión</label>
           <select style="width:200px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
@@ -27,19 +28,19 @@
             <option value="NA">-seleccione una fecha-</option>
             <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
           </select>
-          <button (click)=download_fics() type="button" name="button">Consultar</button>
+          <button (click)=download_fics() type="button" name="button" class="btn">CONSULTAR</button>
         </div>
       </form>
     </section>
     <section class="header">
-      <label for="">CERTIFICACIÓNES</label>
+      <h6 for="" class="left-aling-content">CERTIFICACIÓNES</h6>
       <form class="" action="index.html" method="post">
         <div class="left-aling-content">
           <label  style="width:250px" for="">Certificado para declaración de renta</label>
           <select class="" name="">
             <option value="option">2016</option>
           </select>
-          <button type="button" name="button">Consultar</button>
+          <button type="button" name="button" class="btn">CONSULTAR</button>
         </div>
       </form>
     </section>

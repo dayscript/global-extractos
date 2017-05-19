@@ -44,9 +44,9 @@ export class ResumenPortafolioComponent {
                   },
         }
 
-  /*public pieCharColors:Array<any> = [
+  public pieCharColors:Array<any> = [
     {
-      backgroundColor: '#000000',
+      backgroundColor: 'rgba(0, 102, 255)',
     },
     {
       backgroundColor: 'rgba(0, 102, 255)',
@@ -54,7 +54,7 @@ export class ResumenPortafolioComponent {
     {
       backgroundColor: 'rgba(204, 153, 51)',
     }
-  ]*/
+  ]
 
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
