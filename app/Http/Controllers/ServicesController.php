@@ -648,7 +648,6 @@ function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
 
 function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
   $movimiento = new Movimientos;
-  $data = self::array_to_utf($data);
   $movimiento->user_id = 1;
   $movimiento->fecha_inicio = $fecha_inicio;
   $movimiento->fecha_fin = $fecha_fin;
