@@ -513,6 +513,7 @@ function create_renta_fics($info,$user,$fecha){
     $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
     $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
     $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
+    $data[$key]->nro_unidades = trim(number_format($item->nro_unidades,6));
   }
   $json = [
     $user['attributes']['codeoyd'] => [

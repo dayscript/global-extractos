@@ -35,6 +35,22 @@ h5 {
   font-size: 12px;
 }
 
+td.left-text {
+  text-align: left;
+}
+
+th.left-text {
+  text-align: left;
+}
+
+td.right-text {
+  text-align: right;
+}
+
+th.right-text {
+  text-align: right;
+}
+
 .page-pie span {
   font-size: 9px;
   margin: 10px;

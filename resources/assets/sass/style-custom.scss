@@ -32,6 +32,19 @@ h5{
   font-size: $FontSize_TextMedium;
 }
 
+td.left-text{
+  text-align: left;
+}
+th.left-text{
+  text-align: left;
+}
+td.right-text{
+  text-align: right;
+}
+th.right-text{
+  text-align: right;
+}
+
 
 .page-pie{
  span
