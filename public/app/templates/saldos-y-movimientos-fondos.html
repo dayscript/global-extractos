@@ -60,8 +60,8 @@
         <table *ngIf="info_movimientos != undefined " style="width:100%" class="report-table">
           <thead>
             <th class="numero" >FECHA</th>
-            <th class="numero" >TRANSACCIÓN</th>
-            <th class="detalle">DÉBITO</th>
+            <th class="detalle" >TRANSACCIÓN</th>
+            <th class="numero">DÉBITO</th>
             <th>CRÉDITO</th>
             <th>NRO. UNIDADES</th>
             <th>VLR. UNIDAD</th>
@@ -70,7 +70,7 @@
             <tr *ngFor="let item of info_movimientos?.data">
               <td class="numero" >{{item.fecha | date: 'dd/MM/yyyy'}}</td>
               <td class="detalle" >{{item.Transaccion}}</td>
-              <td class="numero" >{{item.Debito}}</td>
+              <td class="cargo" >{{item.Debito}}</td>
               <td class="cargo">{{item.Credito | currency:'USD':true:'1.2-2' }}</td>
               <td class="favor" >{{item.Unidades }}</td>
               <td class="favor" >{{item.ValorUnidad | currency:'USD':true:'1.2-2' }}</td>
