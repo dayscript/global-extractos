@@ -11,7 +11,7 @@
       <form class="">
         <div class="left-aling-content">
           <label style="width:145px" for="">Firma Comisionista</label>
-          <select  style="width:200px" class="" [(ngModel)]="fecha_select_firma" name="fecha_select_firma" id="fecha_select_firma" required>
+          <select  style="width:300px" class="" [(ngModel)]="fecha_select_firma" name="fecha_select_firma" id="fecha_select_firma" required>
             <option value="NA">-seleccione una fecha-</option>
             <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
           </select>
@@ -19,7 +19,7 @@
         </div>
         <div class="left-aling-content">
           <label style="width:145px" for="">Fondos de Inversión</label>
-          <select style="width:200px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
+          <select style="width:300px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
                 <option value="NA">-seleccione un fondo-</option>
                 <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
           </select>
