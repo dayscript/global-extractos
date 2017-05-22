@@ -314,10 +314,15 @@ class HomeController extends Controller
   $info = self::array_to_utf(json_decode($info));
   $image_header = public_path().'/images/header-extracto2.jpg';
   $data = array('info'=> $info, 'fecha'=> $fecha,'nit' => $id, 'fecha_inicio'=> $fecha_inicio,'fecha_fin' => $fecha_fin,'image'=>$image_header);
-  return $pdf = \PDF::loadView('extracto-fics', $data)->download('test.pdf');
+  return $pdf = \PDF::loadView('extracto-fics', $data)->download('extracto_fodos_de_inversion.pdf');
  }
   public function extract_firma($id,$fecha){
     $info=array();
+    $my_date = new \DateTime($fecha);
+    $my_date->modify('first day of this month');
+    $fecha_inicio = $my_date->format('Y-m-d');
+    $my_date->modify('last day of this month');
+    $fecha_fin = $my_date->format('Y-m-d');
     $user = User::where('identification',$id)->get();
     if(!isset($user[0])){
       $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
@@ -359,7 +364,7 @@ class HomeController extends Controller
     $info = $Extractos_fics->info_json;
     $info = json_decode($info);
     $image_header = public_path().'/images/header-extracto2.jpg';
-    $data  = array('info' => $info, 'fecha' => $fecha, 'image' => $image_header);
+    $data  = array('info' => $info, 'fecha' => $fecha, 'image' => $image_header,'fecha_inicio'=>$fecha_inicio,'fecha_fin'=>$fecha_fin);
     return $pdf = \PDF::loadView('extracto-firma', $data)->download('test.pdf');
  }
  function array_to_utf($array = array()){
