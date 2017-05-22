@@ -299,26 +299,26 @@ nav{
   padding: 0!important;
 }
 .title::after{
-  background: #0082d4;
+  background: #c8c8c8;
   position: absolute;
   content: '';
-  height: 2px;
+  height: 1px;
   right: 0;
   bottom: 4px;
-  width: 555px;
+  //width: 555px;
 }
-/*.resumen::after{
-  width: 716px; 
+.resumen::after{
+  width: 705px;
 }
 .firma::after{
-  width: 582px;
+  width: 563px;
 }
 .fondos:after{
-  width: 496px;
+  width: 547px;
 }
 .extractos::after{
-  width: 629px;
-}*/
+  width: 666px;
+}
 
 .title-text{
   text-align: left;

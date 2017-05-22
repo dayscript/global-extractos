@@ -43,11 +43,18 @@ let ExtractosCertificaciones = class ExtractosCertificaciones {
     }
     download_firma() {
         this.fecha_select_firma = $('#fecha_select_firma').val();
+        if (this.fecha_select_firma == 'NA') {
+            $('#fecha_select_firma').css('border', 'solid 1px red;');
+            return;
+        }
         window.location.replace('/download-firma-extrac/' + this.id_identificacion + '/' + this.fecha_select_firma);
     }
     download_fics() {
         this.fecha_select = $('#fecha_select').val();
         this.option_select = $('#option_select').val();
+        if (this.fecha_select == 'NA' || this.option_select == 'NA') {
+            return;
+        }
         var fecha = this.fecha_select;
         var split = this.option_select.split('|');
         var url = '/download-fics-extrac/' + this.id_identificacion + '/' + split[0] + '/' + split[2] + '/' + fecha;
