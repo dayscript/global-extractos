@@ -177,7 +177,7 @@ public function portafolio_renta_fics($CodigoOyd,$Fecha)
       if(isset($portafolio_rfics['error'])){
         return response()->json($portafolio_rfics);
       }
-      if(count($portafolio_rfics) >= 0){
+      if(count($portafolio_rfics) >= 1){
         $renta_fics = self::create_renta_fics($portafolio_rfics,$user,$Fecha);
         $output = $renta_fics;
       }else{
@@ -241,7 +241,7 @@ public function OPC($CodigoOyd,$Fecha)
       if(isset($portafolio_o_por_cumplir['error'])){
         return response()->json($portafolio_o_por_cumplir);
       }
-      dd($portafolio_o_por_cumplir);
+      //dd($portafolio_o_por_cumplir);
       if(count($portafolio_o_por_cumplir) >= 0){
         $create_operaciones_por_cumplir = self::create_operaciones_por_cumplir($portafolio_o_por_cumplir,$user,$Fecha);
         $output = $create_operaciones_por_cumplir;
@@ -435,7 +435,7 @@ function create_porfafolio($user,$info,$fecha,$codigo){
 }
 
 function create_renta_variable($info,$user,$fecha){
-	
+
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -508,6 +508,7 @@ function create_renta_fija($info,$user,$fecha){
 }
 
 function create_renta_fics($info,$user,$fecha){
+  //dd($info);
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -649,8 +650,25 @@ function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
   return $movimiento;
 }
 
+function convert($data = array()){
+  $temp = array();
+  foreach ( $data as $key => $value ) {
+    if( is_array($value) ){
+      foreach($value as $index => $item){
+          $temp[$key][$index] = self::convert($item);
+      }
+    }else{
+       $temp[$key] = utf8_decode($value);
+    }
+  }
+  return $temp;
+}
 
 function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
+
+
+  $data = self::convert($data);
+
   $movimiento = new Movimientos;
   $movimiento->user_id = 1;
   $movimiento->fecha_inicio = $fecha_inicio;
@@ -663,7 +681,7 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch( \Exception $e ){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -673,7 +691,7 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
 
 function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -683,7 +701,7 @@ return $info;
 
 function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
