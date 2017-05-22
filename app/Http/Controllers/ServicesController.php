@@ -435,7 +435,7 @@ function create_porfafolio($user,$info,$fecha,$codigo){
 }
 
 function create_renta_variable($info,$user,$fecha){
-	
+
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -650,8 +650,25 @@ function create_movimiento($info,$user,$fecha_inicio,$fecha_fin){
   return $movimiento;
 }
 
+function convert($data = array()){
+  $temp = array();
+  foreach ( $data as $key => $value ) {
+    if( is_array($value) ){
+      foreach($value as $index => $item){
+          $temp[$key][$index] = self::convert($item);
+      }
+    }else{
+       $temp[$key] = utf8_decode($value);
+    }
+  }
+  return $temp;
+}
 
 function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
+
+
+  $data = self::convert($data);
+
   $movimiento = new Movimientos;
   $movimiento->user_id = 1;
   $movimiento->fecha_inicio = $fecha_inicio;
