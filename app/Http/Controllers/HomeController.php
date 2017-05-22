@@ -145,7 +145,7 @@ class HomeController extends Controller
     */
    public function ssl()
    {
-       echo 'ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ.ynLB6A0UvAuObZ0GnSsJH6zVaAeLWMgTEPyhFwkC2TY';
+       echo '9jaMzhVdHjD3Gx05c8Sy8ig68a6TSVYEZ6SDdzDEjV8.YGlHCuLuCxiuFulQ8uI2X8ZnpOBdHSawgwufIfCWcDY';
    }
    public function NotFound()
    {

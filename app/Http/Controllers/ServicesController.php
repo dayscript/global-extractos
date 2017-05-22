@@ -177,7 +177,7 @@ public function portafolio_renta_fics($CodigoOyd,$Fecha)
       if(isset($portafolio_rfics['error'])){
         return response()->json($portafolio_rfics);
       }
-      if(count($portafolio_rfics) >= 0){
+      if(count($portafolio_rfics) >= 1){
         $renta_fics = self::create_renta_fics($portafolio_rfics,$user,$Fecha);
         $output = $renta_fics;
       }else{
@@ -508,6 +508,7 @@ function create_renta_fija($info,$user,$fecha){
 }
 
 function create_renta_fics($info,$user,$fecha){
+  dd($info);
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -663,7 +664,7 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch( \Exception $e ){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -673,7 +674,7 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
 
 function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -683,7 +684,7 @@ return $info;
 
 function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
