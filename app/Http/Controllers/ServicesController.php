@@ -241,7 +241,7 @@ public function OPC($CodigoOyd,$Fecha)
       if(isset($portafolio_o_por_cumplir['error'])){
         return response()->json($portafolio_o_por_cumplir);
       }
-      dd($portafolio_o_por_cumplir);
+      //dd($portafolio_o_por_cumplir);
       if(count($portafolio_o_por_cumplir) >= 0){
         $create_operaciones_por_cumplir = self::create_operaciones_por_cumplir($portafolio_o_por_cumplir,$user,$Fecha);
         $output = $create_operaciones_por_cumplir;
@@ -508,7 +508,7 @@ function create_renta_fija($info,$user,$fecha){
 }
 
 function create_renta_fics($info,$user,$fecha){
-  dd($info);
+  //dd($info);
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
