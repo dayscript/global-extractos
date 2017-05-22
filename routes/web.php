@@ -26,7 +26,9 @@ Route::get('/download-firma-extrac/{id}/{fecha}','HomeController@extract_firma')
 
 
 /* SSL Certificate confirm */
-Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
+#Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
+/* SSL Certificate confirm */
+Route::get('/ssl','HomeController@ssl');
 
 
 /*Angular front routes*/

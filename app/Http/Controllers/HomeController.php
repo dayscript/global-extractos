@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 use App\OperacionesLiquidez;
 use App\OperacionesCumplir;
 use App\RentaFija;
@@ -15,9 +12,7 @@ use \App\User;
 use \App\Movimientos;
 use \App\Extractos_fics;
 use \App\Extractos_firma;
-
 use Excel;
-
 class HomeController extends Controller
 {
     /**
@@ -29,7 +24,6 @@ class HomeController extends Controller
     {
         #$this->middleware('auth'); // require login for all methods
     }
-
     /**
      * Show the application dashboard.
      *
@@ -50,7 +44,6 @@ class HomeController extends Controller
                         ->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]
                                   FROM [DBOyD].[dbo].[tblClientes]
                                   WHERE [lngID] > 20000');
-
       return view('home',compact('CodigosOyd'));
     }
     /**
@@ -145,28 +138,22 @@ class HomeController extends Controller
     */
    public function ssl()
    {
-       echo 'ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ.ynLB6A0UvAuObZ0GnSsJH6zVaAeLWMgTEPyhFwkC2TY';
+       echo '9jaMzhVdHjD3Gx05c8Sy8ig68a6TSVYEZ6SDdzDEjV8.YGlHCuLuCxiuFulQ8uI2X8ZnpOBdHSawgwufIfCWcDY';
    }
    public function NotFound()
    {
        return view('notfound');
    }
-
    public function download($id_movimiento){
-
      # Genera el archivo excel
      Excel::create('prueba.xls',function($excel) use ($id_movimiento){
-
        $excel->setTitle('Download test');
        $excel->setCreator('globalcdb.com');
        $excel->setCompany('Global CDB');
-
        $excel->sheet('Movimientos',function($sheet) use($id_movimiento){
-
          $movimiento = Movimientos::where('id',$id_movimiento)->get();
          $user = User::where('id',$movimiento[0]->user_id)->get();
          $info = json_decode($movimiento[0]->info_json);
-
          $user = [
            'nombre' => $user[0]->nombre,
            'direccion'=>$user[0]->direccion,
@@ -178,7 +165,6 @@ class HomeController extends Controller
            'fecha'=>date('Y-m-d'),
          ];
          $headers = ['A6'=>'FECHA','B6'=>'DOCUMENTO','C6'=>'DETALLE','D6'=>'A SU CARGO','E6'=>'A SU FAVOR','F6'=>'SALDO'];
-
          $sheet->cell('A1', function($cell) use($user) {
           $cell->setValue($user['nombre']);
          });
@@ -203,13 +189,10 @@ class HomeController extends Controller
          $sheet->cell('D4', function($cell) use($user) {
           $cell->setValue($user['fecha']);
          });
-
          $sheet->cell('A5', function($cell) use($user) {
           $cell->setAlignment('center');
           $cell->setValue('MOVIMIENTO DEL PERIODO');
          });
-
-
          #encabezado
          $sheet->mergeCells('A1:C1');
          $sheet->mergeCells('D1:F1');
@@ -219,10 +202,8 @@ class HomeController extends Controller
          $sheet->mergeCells('D3:F3');
          $sheet->mergeCells('A4:C4');
          $sheet->mergeCells('D4:F4');
-
          #titlulo
          $sheet->mergeCells('A5:F5');
-
          #headers
          foreach($headers as $cel => $value){
            $sheet->cell($cel, function($cell) use($value) {
@@ -232,7 +213,6 @@ class HomeController extends Controller
             $cell->setBorder('solid', 'solid', 'solid', 'solid');
            });
          }
-
          $sheet->setWidth(array(
             'A'     =>  20,
             'B'     =>  20,
@@ -252,50 +232,36 @@ class HomeController extends Controller
             );
             $sheet->rows(array($temp));
           }
-
-
-
           $sheet->fromArray( $info->data[0]->Saldo );
-
        });
      })->download('xls');
-
-
    }
    public function download_fics($id_movimiento){
-
      # Genera el archivo excel
     Excel::create('prueba.xls',function($excel) use ($id_movimiento){
-
       $excel->setTitle('Download test');
       $excel->setCreator('globalcdb.com');
       $excel->setCompany('Global CDB');
       $excel->sheet('Movimientos',function($sheet) use($id_movimiento){
         $movimiento = Movimientos::where('id',$id_movimiento)->get();
        })->download('xls');
-
     });
  }
-
  public function extract_fondos_inversion($id,$fondo,$encargo,$fecha){
-
     /*ExtractoFondoyFideicomisoDadosEncabezado
       ExtractoFondoyFideicomisoDadosInformacionBasica
       ExtractoFondoyFideicomisoDadosMovimiento
       ExtractoFondoyFideicomisoDadosResumen
-
       @Fondo = 1,
       @Encargo = 17486,
       @FechaInicial = 2017-03-24,
       @FechaFinal = 2017-03-24
     */
-
     $my_date = new \DateTime($fecha);
     $my_date->modify('first day of this month');
     $fecha_inicio = $my_date->format('Y-m-d');
     $my_date->modify('last day of this month');
     $fecha_fin = $my_date->format('Y-m-d');
-
     $user_load = User::where('identification',$id)->get();
     if(!isset($user_load[0])){
       $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
@@ -311,7 +277,6 @@ class HomeController extends Controller
     }else{
       try {
         #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
-
         $info_encabezado = DB::connection('sqlsrv2')
                     ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
                               array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
@@ -332,13 +297,11 @@ class HomeController extends Controller
         $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
         return response()->json($info);
       }
-
       $data = array();
       $data['encabezado'] =  self::array_to_utf($info_encabezado);
       $data['basica'] =  self::array_to_utf($info_informacion_basica);
       $data['movimientos'] =  self::array_to_utf($info_informacion_movimientos);
       $data['resumen'] =  self::array_to_utf($info_informacion_resumen);
-
       $Extractos_fics = new Extractos_fics;
       $Extractos_fics->user_id = $user_load[0]->id;
       $Extractos_fics->fondo = $fondo;
@@ -353,7 +316,6 @@ class HomeController extends Controller
   $data = array('info'=> $info, 'fecha'=> $fecha,'nit' => $id, 'fecha_inicio'=> $fecha_inicio,'fecha_fin' => $fecha_fin,'image'=>$image_header);
   return $pdf = \PDF::loadView('extracto-fics', $data)->download('test.pdf');
  }
-
   public function extract_firma($id,$fecha){
     $info=array();
     $user = User::where('identification',$id)->get();
@@ -361,12 +323,10 @@ class HomeController extends Controller
       $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
       return response()->json( $info );
     }
-
     $extracto = Extractos_firma::where('user_id',$user[0]->id)
                                   ->where('fecha_inicio',$fecha)
                                   ->get();
     $info['encabezado'] = $user[0]['attributes'];
-
     if(isset($extracto[0])){
        $info = json_decode($extracto[0]->info_json);
      }else{
@@ -374,7 +334,6 @@ class HomeController extends Controller
         #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                           ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
-
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
                                 ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                           array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha)
@@ -401,12 +360,8 @@ class HomeController extends Controller
     $info = json_decode($info);
     $image_header = public_path().'/images/header-extracto2.jpg';
     $data  = array('info' => $info, 'fecha' => $fecha, 'image' => $image_header);
-
     return $pdf = \PDF::loadView('extracto-firma', $data)->download('test.pdf');
  }
-
-
-
  function array_to_utf($array = array()){
   $temp = array();
   foreach ( $array as $key => $value ) {
@@ -423,7 +378,4 @@ class HomeController extends Controller
   }
   return $temp;
 }
-
-
-
 }
