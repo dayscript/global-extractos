@@ -51,6 +51,10 @@ th.right-text {
   text-align: right;
 }
 
+.table {
+  margin: 20px 0 0 0;
+}
+
 .page-pie span {
   font-size: 9px;
   margin: 10px;
@@ -259,13 +263,13 @@ section {
 .header {
   display: inline-block;
   width: 100%;
-  margin: 0;
+  margin: 20px 0 0 0;
 }
 
 .personal-data {
   display: inline-block;
   width: 100%;
-  margin: 0;
+  margin: 20px 0 0 0;
 }
 
 nav {
@@ -294,6 +298,41 @@ nav ul li a {
 
 .extracto table th td {
   font-size: 9px;
+}
+
+.container-title {
+  padding: 0 !important;
+}
+
+.title {
+  padding: 0 !important;
+}
+
+.title::after {
+  background: #0082d4;
+  position: absolute;
+  content: '';
+  height: 2px;
+  right: 0;
+  bottom: 4px;
+  width: 555px;
+}
+
+/*.resumen::after{
+  width: 716px; 
+}
+.firma::after{
+  width: 582px;
+}
+.fondos:after{
+  width: 496px;
+}
+.extractos::after{
+  width: 629px;
+}*/
+.title-text {
+  text-align: left;
+  margin: 0;
 }
 
 /*!

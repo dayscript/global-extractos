@@ -138,7 +138,6 @@ public function portafolio_renta_fija($CodigoOyd,$Fecha)
         return response()->json($portafolio_rf);
       }
       if(count($portafolio_rf) > 0){
-        dd($portafolio_rf);
         $renta_fija = self::create_renta_fija($portafolio_rf,$user,$Fecha);
         $output = $renta_fija;
       }else{
@@ -436,6 +435,7 @@ function create_porfafolio($user,$info,$fecha,$codigo){
 }
 
 function create_renta_variable($info,$user,$fecha){
+	
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -444,6 +444,7 @@ function create_renta_variable($info,$user,$fecha){
     $data[$key]->FechaCompra = trim((str_replace('.000','',str_replace('00:00:00','',$item->FechaCompra))));
     $data[$key]->Precio = number_format($item->Precio,2);
     $data[$key]->Valoracion = number_format($item->Valoracion,2);
+    $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -470,6 +471,7 @@ function create_renta_variable($info,$user,$fecha){
 }
 
 function create_renta_fija($info,$user,$fecha){
+
   $data = array();
   $total = 0;
   foreach ($info as $key => $item) {
@@ -480,6 +482,8 @@ function create_renta_fija($info,$user,$fecha){
     $data[$key]->FechaCompra = trim((str_replace('.000','',str_replace('00:00:00','',$item->FechaCompra))));
     $data[$key]->dtmEmision = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmEmision))));
     $data[$key]->dtmVencimiento = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmVencimiento))));
+    $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
+
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -669,7 +673,7 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
 
 function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -679,7 +683,7 @@ return $info;
 
 function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
