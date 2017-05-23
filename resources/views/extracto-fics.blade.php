@@ -25,19 +25,19 @@
 
 	</tr>
 	<tr>
-		<td colspan="2" style="text-align:left;font-size:11px">Identificaci&oacute;:<br>{{$info['basica'][0]['FIDEICOMITENTE']}}</td>
+		<td colspan="2" style="text-align:left;font-size:11px">Identificaci&oacute;n:<br>{{$info['basica'][0]['FIDEICOMITENTE']}}</td>
 		<td colspan="2" style="text-align:left;font-size:11px">Cuenta N&uacute;mero:<br>{{$info['basica'][0]['Fideicomiso']}}</td>
 		<td colspan="2" style="text-align:left;font-size:11px">Valor Unidad:<br>{{number_format($info['basica'][0]['Valor Unidad'],6)}}</td>
-		<td style="text-align:left;font-size:11px">F. Consituci&oacute;n:<br>{{$info['basica'][0]['Fecha Constitucion']}}</td>
+		<td style="text-align:left;font-size:11px">F. Consituci&oacute;n:<br>{{str_replace('00:00:00.000','',$info['basica'][0]['Fecha Constitucion'] )}}</td>
 	</tr>
 	<tr>
-		<td colspan="2" style="text-align:left;font-size:11px">Retabilidad periodica del fondo:<br>{{$info['basica'][0]['RentaPeriodicaFondo']}}</td>
+		<td colspan="2" style="text-align:left;font-size:11px">Retabilidad peri&oacute;dica del fondo:<br>{{$info['basica'][0]['RentaPeriodicaFondo']}}</td>
 		<td colspan="2" style="text-align:left;font-size:11px">Comisi&oacute;n de administraci&oacute;n:<br>{{$info['basica'][0]['ComisionAdministracion']}}</td>
-		<td colspan="2" style="text-align:left;font-size:11px">Comisi&oacute;n de &Eacute;xito:<br>NULL</td>
+		<td colspan="2" style="text-align:left;font-size:11px">Comisi&oacute;n de &eacute;xito:<br>0</td>
 		<td style="text-align:left;font-size:11px">F. Vencimiento:<br>{{$info['basica'][0]['Fecha_vto']}}</td>
 	</tr>
 	<tr>
-		<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >M&Oacute;VIMIENTO PER&Iacute;ODICO</td>
+		<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >M&Oacute;VIMIENTO PERI&Oacute;DICO</td>
 	</tr>
 	<tr>
 		<td style="text-align:left;font-size:11px">Fecha</td>
