@@ -406,7 +406,7 @@ class HomeController extends Controller
 
         #Comentar en produccion
         # agregar a las EXE en produccion SET NOCOUNT ON;
-        $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['encabezado'] = $user[0]['attributes'];
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
