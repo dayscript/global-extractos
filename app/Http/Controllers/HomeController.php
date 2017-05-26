@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\ServicesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\OperacionesLiquidez;
@@ -44,7 +46,7 @@ class HomeController extends Controller
                         ->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]
                                   FROM [DBOyD].[dbo].[tblClientes]
                                   WHERE [lngID] > 20000');
-      return view('home',compact('CodigosOyd'));
+
     }
     /**
     * Display a listing of the resource.
@@ -248,60 +250,90 @@ class HomeController extends Controller
     });
  }
  public function extract_fondos_inversion($id,$fondo,$encargo,$fecha){
-    /*ExtractoFondoyFideicomisoDadosEncabezado
-      ExtractoFondoyFideicomisoDadosInformacionBasica
-      ExtractoFondoyFideicomisoDadosMovimiento
-      ExtractoFondoyFideicomisoDadosResumen
-      @Fondo = 1,
-      @Encargo = 17486,
-      @FechaInicial = 2017-03-24,
-      @FechaFinal = 2017-03-24
-    */
-    $my_date = new \DateTime($fecha);
-    $my_date->modify('first day of this month');
-    $fecha_inicio = $my_date->format('Y-m-d');
-    $my_date->modify('last day of this month');
-    $fecha_fin = $my_date->format('Y-m-d');
+
+    $fecha_actual = new \DateTime($fecha);
+    $fecha_actual->modify('first day of this month');
+    $fecha_inicio = $fecha_actual->format('Y-m-d');
+    $fecha_actual->modify('last day of this month');
+    $fecha_fin = $fecha_actual->format('Y-m-d');
     $user_load = User::where('identification',$id)->get();
-    if(!isset($user_load[0])){
-      $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
+
+    if( !isset($user_load[0]) ){
+      $info = array(
+                    'error'       =>  true,
+                    'description' =>  'usuario no existe',
+                    'debug'       =>  '');
       return response()->json($info);
     }
+
     $extracto = Extractos_fics::where('user_id',$user_load[0]->id)
-                                  ->where('fondo',$fondo)
-                                  ->where('encargo',$encargo)
-                                  ->where('fecha_inicio',$fecha)
-                                  ->get();
-    if(isset($extracto[0])){
+                                ->where('fondo',$fondo)
+                                ->where('encargo',$encargo)
+                                ->where('fecha_inicio',$fecha)
+                                ->get();
+    if( isset($extracto[0]) ){
       $info = $extracto[0]->info_json;
     }else{
       try {
-        #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
-        $info_encabezado = DB::connection('sqlsrv2')
-                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
-                            );
-        $info_informacion_basica = DB::connection('sqlsrv2')
-                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
-                            );
-        $info_informacion_movimientos = DB::connection('sqlsrv2')
-                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
-                            );
-        $info_informacion_resumen = DB::connection('sqlsrv2')
-                    ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
-                              array( 'Fondo'=>$fondo,'Encargo'=>$encargo,'FechaInicial'=>$fecha_inicio,'FechaFinal'=>$fecha_fin)
-                            );
-      } catch (Exception $e) {
-        $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+            #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+            $info_encabezado
+            = DB::connection('sqlsrv2')
+              ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosEncabezado :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                array(
+                    'FechaInicial'  =>  $fecha_inicio,
+                    'Fondo'         =>  $fondo,
+                    'Encargo'       =>  $encargo,
+                    'FechaFinal'    =>  $fecha_fin
+                  )
+                          );
+
+            $info_informacion_basica
+            = DB::connection('sqlsrv2')
+              ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosInformacionBasica :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                  array(
+                        'Fondo'   =>  $fondo,
+                        'Encargo' =>  $encargo,
+                        'FechaInicial'  =>  $fecha_inicio,
+                        'FechaFinal'    =>  $fecha_fin
+                      )
+                );
+
+            $info_informacion_movimientos
+            = DB::connection('sqlsrv2')
+              ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                array(
+                  'Fondo'   =>  $fondo,
+                  'Encargo' =>  $encargo,
+                  'FechaInicial'  =>  $fecha_inicio,
+                  'FechaFinal'    =>  $fecha_fin)
+              );
+
+            $info_informacion_resumen
+            = DB::connection('sqlsrv2')
+                ->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosResumen :Fondo, :Encargo, :FechaInicial, :FechaFinal',
+                    array(
+                          'Fondo'   =>  $fondo,
+                          'Encargo' =>  $encargo,
+                          'FechaInicial'  =>  $fecha_inicio,
+                          'FechaFinal'  =>  $fecha_fin)
+                  );
+
+
+      }catch (Exception $e) {
+        $info = array(
+            'error' =>  true,
+            'description' =>  'Fecha no valalida',
+            'debug' =>  ''.$e
+            );
         return response()->json($info);
       }
+
       $data = array();
-      $data['encabezado'] =  self::array_to_utf($info_encabezado);
-      $data['basica'] =  self::array_to_utf($info_informacion_basica);
-      $data['movimientos'] =  self::array_to_utf($info_informacion_movimientos);
-      $data['resumen'] =  self::array_to_utf($info_informacion_resumen);
+      $data['encabezado']   =  self::array_to_utf(  $info_encabezado  );
+      $data['basica']       =  self::array_to_utf(  $info_informacion_basica  );
+      $data['movimientos']  =  self::array_to_utf(  $info_informacion_movimientos );
+      $data['resumen']      =  self::array_to_utf(  $info_informacion_resumen );
+
       $Extractos_fics = new Extractos_fics;
       $Extractos_fics->user_id = $user_load[0]->id;
       $Extractos_fics->fondo = $fondo;
@@ -311,62 +343,131 @@ class HomeController extends Controller
       $Extractos_fics->save();
       $info = $Extractos_fics->info_json;
   }
-  $info = self::array_to_utf(json_decode($info));
   $image_header = public_path().'/images/header-extracto2.jpg';
-  $data = array('info'=> $info, 'fecha'=> $fecha,'nit' => $id, 'fecha_inicio'=> $fecha_inicio,'fecha_fin' => $fecha_fin,'image'=>$image_header);
+  $info         = self::array_to_utf(json_decode($info));
+  $data = array(
+    'fecha_inicio'  => $fecha_inicio,
+    'fecha_fin'     => $fecha_fin,
+    'image'         => $image_header,
+    'info'          => $info,
+    'fecha'         => $fecha,
+    'nit'           => $id,
+  );
   return $pdf = \PDF::loadView('extracto-fics', $data)->download('extracto_fodos_de_inversion.pdf');
  }
+
+ /*
+ *  Function return data to PDF
+ *
+ */
   public function extract_firma($id,$fecha){
     $info=array();
-    $my_date = new \DateTime($fecha);
-    $my_date->modify('first day of this month');
-    $fecha_inicio = $my_date->format('Y-m-d');
-    $my_date->modify('last day of this month');
-    $fecha_fin = $my_date->format('Y-m-d');
+    $fecha_actual = new \DateTime($fecha);
+    $fecha_actual->modify('first day of this month');
+    $fecha_inicio = $fecha_actual->format('Y-m-d');
+    $fecha_actual->modify('last day of this month');
+    $fecha_fin = $fecha_actual->format('Y-m-d');
+
     $user = User::where('identification',$id)->get();
-    if(!isset($user[0])){
-      $info = array('error'=>true,'description'=>'usuario no existe','debug'=>'');
+
+    if( !isset($user[0]) ){
+      $info = array(
+                    'error' =>  true,
+                    'description' =>  'usuario no existe',
+                    'debug' =>  ''
+                  );
       return response()->json( $info );
     }
     $extracto = Extractos_firma::where('user_id',$user[0]->id)
                                   ->where('fecha_inicio',$fecha)
                                   ->get();
     $info['encabezado'] = $user[0]['attributes'];
-    if(isset($extracto[0])){
-       $info = json_decode($extracto[0]->info_json);
+    if( isset($extracto[0]) ){
+      $info = json_decode($extracto[0]->info_json);
      }else{
         try{
         #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
-                          ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha));
+                                          ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
+                                                            array(
+                                                                  'CodigoOyd' =>  $user[0]->codeoyd,
+                                                                  'Fecha'     =>  $fecha
+                                                                )
+                                                          );
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
-                                ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
-                                          array('CodigoOyd'=>$user[0]->codeoyd,'Fecha'=>$fecha)
-                                        );
+                                          ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
+                                                            array(
+                                                                  'CodigoOyd' =>  $user[0]->codeoyd,
+                                                                  'Fecha'     =>  $fecha
+                                                                )
+                                                          );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
-                                ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
-                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
-                                  );
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                                            array(
+                                                                  'Fecha'     =>  $fecha,
+                                                                  'CodigoOyd' =>  $user[0]->codeoyd
+                                                                )
+                                                          );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
-                                ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
-                                          array('Fecha'=>$fecha,'CodigoOyd'=>$user[0]->codeoyd)
-                                  );
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                                            array(
+                                                                  'Fecha'     =>  $fecha,
+                                                                  'CodigoOyd' =>  $user[0]->codeoyd
+                                                                )
+                                                          );
+        $info['movimientos']['mes'] = self::exec_ExtractoClienteDado( $user[0]->codeoyd,$fecha_inicio,$fecha_fin  );
+        $total_a_cargo = 0;
+        $total_a_favor = 0;
+        $total_saldo   = 0;
+        foreach( $info['movimientos']['mes'] as $key => $movimiento){
+          $total_a_cargo += $movimiento->ACargo;
+          $total_a_favor += $movimiento->AFavor;
+          $total_saldo   += $movimiento->Saldo;
+          $movimiento->ACargo = ( $movimiento->ACargo == null ) ? '':'$ '.number_format($movimiento->ACargo,2);
+          $movimiento->AFavor = ( $movimiento->AFavor == null ) ? '':'$ '.number_format($movimiento->AFavor,2);
+          $movimiento->Saldo  = ( $movimiento->Saldo  == null ) ? '':'$ '.number_format($movimiento->Saldo,2);
+        }
+        $info['totales'] = array(
+                                'total_a_cargo' => $total_a_cargo,
+                                'total_a_favor' => $total_a_favor,
+                                'total_saldo'   => $total_saldo,
+                              );
+
       } catch (Exception $e) {
-        $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>'');
+        $info = array(
+                      'error' =>  true,
+                      'description' =>  'Fecha no valalida',
+                      'debug' =>  ''
+                    );
         return response()->json($info);
       }
     }
+
     $Extractos_fics = new Extractos_firma;
-    $Extractos_fics->user_id = $user[0]->id;
+    $Extractos_fics->user_id      = $user[0]->id;
     $Extractos_fics->fecha_inicio = $fecha;
-    $Extractos_fics->info_json = json_encode($info);
+    $Extractos_fics->info_json    = json_encode($info);
     $Extractos_fics->save();
+
     $info = $Extractos_fics->info_json;
     $info = json_decode($info);
+
     $image_header = public_path().'/images/header-extracto2.jpg';
-    $data  = array('info' => $info, 'fecha' => $fecha, 'image' => $image_header,'fecha_inicio'=>$fecha_inicio,'fecha_fin'=>$fecha_fin);
+    $image_fotter = public_path().'/images/report-footer.jpeg';
+
+    $data  = array(
+                   'info' => $info,
+                   'fecha' => $fecha,
+                   'image' => $image_header,
+                   'image_fotter'=>$image_fotter,
+                   'fecha_inicio'=>$fecha_inicio,
+                   'fecha_fin'=>$fecha_fin,
+                 );
+    #return view('extracto-firma',$data);
     return $pdf = \PDF::loadView('extracto-firma', $data)->download('test.pdf');
  }
+
+
  function array_to_utf($array = array()){
   $temp = array();
   foreach ( $array as $key => $value ) {
@@ -382,5 +483,18 @@ class HomeController extends Controller
       }
   }
   return $temp;
+}
+
+function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
+  try {
+    if($_SERVER['HTTP_HOST'] != 'extractos.local'){
+        $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+    }else{
+        $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+    }
+  } catch (Exception $e) {
+    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  }
+  return $info;
 }
 }
