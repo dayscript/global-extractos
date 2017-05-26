@@ -24,7 +24,7 @@ let ProductsService = class ProductsService {
         const regex = /^[0-9]+$/g;
         const date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
         if (date.exec(this.date) == null) {
-            alert('El fecha no es valida');
+            alert('La fecha no es valida');
         }
         /*if(regex.exec(this.id) == null){
           alert('El codigo no es valido');
@@ -60,6 +60,11 @@ let ProductsService = class ProductsService {
     get DataOPC() {
         console.log('api/opc-report/' + this.id + '/' + this.date);
         return this.http.get('api/opc-report/' + this.id + '/' + this.date)
+            .map(response => response.json());
+    }
+    get DataOPL() {
+        console.log('api/opl-report/' + this.id + '/' + this.date);
+        return this.http.get('api/opl-report/' + this.id + '/' + this.date)
             .map(response => response.json());
     }
     get Cache() {

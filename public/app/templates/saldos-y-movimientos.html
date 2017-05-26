@@ -62,10 +62,10 @@
   </section>
 
 
-<!--  <section class="header">
+<!---<section class="header">
     <h3>OPERACIONES POR CUMPLIR</h3>
   </section>
-  <div *ngIf="renta_fija == undefined" class="content-wrapper border-container">
+  <div *ngIf="opl == undefined" class="content-wrapper border-container">
       <div>
         <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
       </div>
@@ -75,7 +75,7 @@
   		<thead>
   			<th>Emisión</th><th>Cantidad</th><th>Fecha Compra</th><th>Precio</th><th>Valoración</th>
   		</thead>
-  		  <tr *ngFor="let item of renta_fija?.data">
+  		  <tr *ngFor="let item of DataOPL?.data">
   		    <td>{{item.strNombre}} </td>
   		    <td>{{item.dblCantidad}}</td>
   		    <td>{{item.FechaCompra }}</td>
@@ -89,32 +89,38 @@
   	</table>
   </section>-->
 
-  <!--<section class="header">
-    <h3>OPERACIONES DE LIQUIDEZ</h3>
-  </section>
-  <div *ngIf="renta_fija == undefined" class="content-wrapper border-container">
-      <div>
-        <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
-      </div>
-  </div>
-  <section class="table">
+  <section class="header">
+    <h5>PORTAFOLIO DE OPERACIONES DE LIQUIDEZ</h5>
   	<table style="width:100%">
+      <div *ngIf="opl == undefined" class="content-wrapper border-container">
+          <div>
+            <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+          </div>
+      </div>
   		<thead>
-  			<th>Emisión</th><th>Cantidad</th><th>Fecha Compra</th><th>Precio</th><th>Valoración</th>
+  			<th>Emisión</th>
+        <th style="text-align:right" >Cantidad</th>
+        <th style="text-align:right" >F. Liquidación</th>
+        <th style="text-align:right" >F. cumplimiento</th>
+        <th style="text-align:right" >Total inicio</th>
+        <th style="text-align:right" >Total regreso</th>
+        <th style="text-align:right" >Interés</th>
   		</thead>
-  		  <tr *ngFor="let item of renta_fija?.data">
-  		    <td>{{item.strNombre}} </td>
-  		    <td>{{item.dblCantidad}}</td>
-  		    <td>{{item.FechaCompra }}</td>
-  		    <td>$ {{item.Precio}} </td>
-  		    <td>$ {{item.Valoracion}} </td>
+  		  <tr *ngFor="let item of opl?.data">
+  		    <td>{{item.Emision}} </td>
+          <td style="text-align:right">{{item.dblCantidad}}</td>
+  		    <td style="text-align:right">{{item.dtmLiquidacion }}</td>
+  		    <td style="text-align:right">{{item.dtmCumplimiento_Regreso}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Inicio}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Regreso}} </td>
+          <td style="text-align:right">$ {{item.Interes}} </td>
   		  </tr>
   		  <tr>
-  		   <td colspan="4"><strong>Total Renta Fija</strong></td>
-  		   <td colspan="1"><strong> $ {{ renta_fija?.total }} </strong></td>
+  		   <td colspan="6"><strong>Total Operaciones</strong></td>
+  		   <td style="text-align:right" colspan="1"><strong> $ {{ opl?.total }} </strong></td>
   		  </tr>
   	</table>
-  </section>-->
+  </section>
 
   <section class="table">
     <h5>MOVIMIENTOS</h5>

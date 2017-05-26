@@ -583,12 +583,15 @@ function create_operaciones_de_liquidez($info,$user,$fecha){
   $total = 0;
   foreach ($info as $key => $item) {
     $data[$key] = $item;
-    $total = $total + $item->SaldoPesos;
-    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
-    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
-    $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
+    $total = $total + $item->Interes;
+    $data[$key]->dblCantidad = ( is_null($item->dblCantidad)) ? '':number_format($item->dblCantidad,2);
+    $data[$key]->dtmLiquidacion = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmLiquidacion))));
+    $data[$key]->dtmCumplimiento_Regreso = trim((str_replace('.000','',str_replace('00:00:00','',$item->dtmCumplimiento_Regreso))));
+    $data[$key]->CurTotalliq_Inicio = ( is_null($item->CurTotalliq_Inicio)) ? '':number_format($item->CurTotalliq_Inicio,2);
+    $data[$key]->CurTotalliq_Regreso = ( is_null($item->dblCantidad)) ? '':number_format($item->CurTotalliq_Regreso,2);
+    $data[$key]->Interes = ( is_null($item->Interes)) ? '':number_format($item->Interes,2);
   }
+
   $json = [
     $user['attributes']['codeoyd'] => [
       'personal_data' => [
@@ -602,7 +605,6 @@ function create_operaciones_de_liquidez($info,$user,$fecha){
     'total' => number_format($total,2),
     ],
   ];
-
   $json = self::array_to_utf($json);
   $renta_fics = new OperacionesLiquidez;
   $renta_fics->user_id = $user->id;
@@ -681,6 +683,7 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch( \Exception $e ){
@@ -691,6 +694,7 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
 
 function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
@@ -701,6 +705,7 @@ return $info;
 
 function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
@@ -711,6 +716,7 @@ return $info;
 
 function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
   try {
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch (Exception $e) {
@@ -721,8 +727,9 @@ function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
 
 function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
   try {
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -731,8 +738,9 @@ function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
 
 function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
   try {
+    #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('EXEC [TraerOperacionesLiquidezClienteDadoDayScript] :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }

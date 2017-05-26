@@ -44,6 +44,7 @@ let SaldosMovimientosComponent = class SaldosMovimientosComponent {
         });
         productsService.DataRenta.subscribe(data => { this.renta_variable = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_variable));
         productsService.DataRentaFija.subscribe(data => { this.renta_fija = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_fija));
+        productsService.DataOPL.subscribe(data => { this.opl = data; }, error => console.log('error: ${error}'), () => console.log(this.opl));
         productsService.user_info
             .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
         /*Fin de componenete SaldosMovimientosComponent*/

@@ -22,7 +22,7 @@ export class ProductsService {
     const date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
 
     if(date.exec(this.date) == null){
-      alert('El fecha no es valida');
+      alert('La fecha no es valida');
     }
     /*if(regex.exec(this.id) == null){
       alert('El codigo no es valido');
@@ -67,6 +67,13 @@ export class ProductsService {
              .map( response => response.json() );
 
   }
+
+  get DataOPL(): Observable<any>{
+    console.log('api/opl-report/'+this.id+'/'+this.date)
+    return this.http.get('api/opl-report/'+this.id+'/'+this.date)
+             .map( response => response.json());
+  }
+
   get Cache():Observable<any>{
     return this.http.get('api/cache/'+this.id)
              .map( response => response.json() );
