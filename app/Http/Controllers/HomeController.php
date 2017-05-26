@@ -367,9 +367,12 @@ class HomeController extends Controller
     $fecha_inicio = $fecha_actual->format('Y-m-d');
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
+    $image_header = public_path().'/images/header-extracto2.jpg';
+    $image_fotter = public_path().'/images/report-footer.jpeg';
 
     $user = User::where('identification',$id)->get();
 
+    #Valida si el usuario ya existe
     if( !isset($user[0]) ){
       $info = array(
                     'error' =>  true,
@@ -378,15 +381,33 @@ class HomeController extends Controller
                   );
       return response()->json( $info );
     }
+    #Valida si ya existe un extracto para esa $fecha
     $extracto = Extractos_firma::where('user_id',$user[0]->id)
                                   ->where('fecha_inicio',$fecha)
                                   ->get();
-    $info['encabezado'] = $user[0]['attributes'];
     if( isset($extracto[0]) ){
       $info = json_decode($extracto[0]->info_json);
+      $data  = array(
+                     'info' => $info,
+                     'fecha' => $fecha,
+                     'image' => $image_header,
+                     'image_fotter'=>$image_fotter,
+                     'fecha_inicio'=>$fecha_inicio,
+                     'fecha_fin'=>$fecha_fin,
+                   );
+      foreach ( $data['info']->movimientos->rf as $key => $value) {
+      }
+      #dd($data);
+      #return view('extracto-firma',$data);
+       return $pdf = \PDF::loadView('extracto-firma', $data)->download('Firma-comisionista.pdf');
+
      }else{
         try{
-        #$set = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+
+        #Comentar en produccion
+        # agregar a las EXE en produccion SET NOCOUNT ON;
+        $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+        $info['encabezado'] = $user[0]['attributes'];
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
                                                             array(
@@ -402,19 +423,20 @@ class HomeController extends Controller
                                                                 )
                                                           );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDado :Fecha,:CodigoOyd',
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
+
         $info['movimientos']['mes'] = self::exec_ExtractoClienteDado( $user[0]->codeoyd,$fecha_inicio,$fecha_fin  );
         $total_a_cargo = 0;
         $total_a_favor = 0;
@@ -432,6 +454,26 @@ class HomeController extends Controller
                                 'total_a_favor' => $total_a_favor,
                                 'total_saldo'   => $total_saldo,
                               );
+        $info = json_encode(self::array_to_utf($info));
+
+        $Extractos_fics = new Extractos_firma;
+        $Extractos_fics->user_id      = $user[0]->id;
+        $Extractos_fics->fecha_inicio = $fecha;
+        $Extractos_fics->info_json    = $info;
+        $Extractos_fics->save();
+        $info = $Extractos_fics->info_json;
+        $info = json_decode($info);
+        $data  = array(
+                       'info' => $info,
+                       'fecha' => $fecha,
+                       'image' => $image_header,
+                       'image_fotter'=>$image_fotter,
+                       'fecha_inicio'=>$fecha_inicio,
+                       'fecha_fin'=>$fecha_fin,
+                     );
+       #return view('extracto-firma',$data);
+        return $pdf = \PDF::loadView('extracto-firma', $data)->download('Forma-comisionista.pdf');
+
 
       } catch (Exception $e) {
         $info = array(
@@ -443,28 +485,6 @@ class HomeController extends Controller
       }
     }
 
-    $Extractos_fics = new Extractos_firma;
-    $Extractos_fics->user_id      = $user[0]->id;
-    $Extractos_fics->fecha_inicio = $fecha;
-    $Extractos_fics->info_json    = json_encode($info);
-    $Extractos_fics->save();
-
-    $info = $Extractos_fics->info_json;
-    $info = json_decode($info);
-
-    $image_header = public_path().'/images/header-extracto2.jpg';
-    $image_fotter = public_path().'/images/report-footer.jpeg';
-
-    $data  = array(
-                   'info' => $info,
-                   'fecha' => $fecha,
-                   'image' => $image_header,
-                   'image_fotter'=>$image_fotter,
-                   'fecha_inicio'=>$fecha_inicio,
-                   'fecha_fin'=>$fecha_fin,
-                 );
-    #return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->download('test.pdf');
  }
 
 

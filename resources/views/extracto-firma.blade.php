@@ -33,11 +33,21 @@
 				</tr>
 				@foreach( $info->movimientos->rf as $key => $value )
 				<tr>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{number_format($value->dblCantidad,2)}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{number_format($value->Precio,2)}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{number_format($value->Valoracion,2)}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">
+						{{$value->strNombre}}
+					</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
+						{{number_format($value->dblCantidad,2)}}
+					</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
+						{{explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}
+					</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
+						$ {{( $value->Precio != "") ? number_format($value->Precio,2):''}}
+					</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
+						$ {{( $value->Valoracion != "") ? number_format($value->Valoracion,2):''}}
+					</td>
 				</tr>
 				@endforeach
 				</table>
@@ -71,8 +81,11 @@
 			@endif
 
 			@if( count($info->movimientos->opc) >= 1)
+				<table  width="100%" cellspacing="0" style="margin-top:5px">
 				<tr>
-					<td  colspan="5" style="background-color:#b1b1b1; text-align: center;">Operaciones por cumplir </td>
+					<td colspan="7" style="background-color:#b1b1b1; text-align: center;">
+						OPERACIONES DE LIQUIDEZ
+					</td>
 				</tr>
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
@@ -90,30 +103,42 @@
 					<td style="border:solid 1px #efefef;font-size:9px">$ {{$value->Valoracion}}</td>
 				</tr>
 				@endforeach
+			</table>
+			@endif
 
+			@if( count( $info->movimientos->odl ) >= 1)
+				<table width="100%" cellspacing="0" style="margin-top:5px">
+					<tr>
+						<td colspan="7" style="background-color:#b1b1b1; text-align: center;">
+							OPERACIONES DE LIQUIDEZ
+						</td>
+					</tr>
+					<tr>
+						<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Cantidad</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F. Liquidaci&oacute;n</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F.Cumplimiento</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total inicio</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total regreso</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total inter&eacute;s</td>
+
+					</tr>
+					@foreach($info->movimientos->odl as $key => $value)
+					<tr>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: left">{{$value->Emision}}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  number_format($value->dblCantidad)}} </td>
+
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  str_replace(' 00:00:00','',$value->dtmLiquidacion)}} </td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  str_replace(' 00:00:00','',$value->dtmCumplimiento_Regreso)}} </td>
+
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{number_format( $value->CurTotalliq_Inicio ,2) }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{number_format( $value->CurTotalliq_Regreso,2) }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{number_format( $value->Interes,2)}}</td>
+					</tr>
+					@endforeach
+				</table>
 			@endif
-			@if( count($info->movimientos->opc) >= 1)
-				<tr>
-					<td colspan="5" style="background-color:#b1b1b1; text-align: center;">Operaciones de liquidez </td>
-				</tr>
-				<tr>
-					<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
-					<td style="border:solid 1px #efefef;font-size:11px">Cantidad</td>
-					<td style="border:solid 1px #efefef;font-size:11px">Fecha Compra</td>
-					<td style="border:solid 1px #efefef;font-size:11px">Precio</td>
-					<td style="border:solid 1px #efefef;font-size:11px">Valoraci&oacute;n</td>
-				</tr>
-				@foreach($info->movimientos->rv as $key => $value)
-				<tr>
-					<td style="border:solid 1px #efefef;font-size:9px">{{$value->strNombre}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px">{{$value->dblCantidad}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px">{{explode(' ',$value->FechaCompra)[0]}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px">$ {{$value->Precio}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px">$ {{$value->Valoracion}}</td>
-				</tr>
-				@endforeach
-			@endif
-	</table>
+
 	@if( count($info->movimientos->mes) >= 1)
 	<table 	cellspacing="0" style="margin-top:5px" class="extracto"  width=100%;>
 		<tr>
