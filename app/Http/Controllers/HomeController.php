@@ -408,28 +408,28 @@ class HomeController extends Controller
         #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['encabezado'] = $user[0]['attributes'];
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
-                                          ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',
+                                          ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
                                                                   'Fecha'     =>  $fecha
                                                                 )
                                                           );
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
-                                          ->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',
+                                          ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
                                                                   'Fecha'     =>  $fecha
                                                                 )
                                                           );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
-                                          ->select('EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
-                                          ->select('EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
+                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd

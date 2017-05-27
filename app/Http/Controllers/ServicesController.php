@@ -177,7 +177,7 @@ public function portafolio_renta_fics($CodigoOyd,$Fecha)
       if(isset($portafolio_rfics['error'])){
         return response()->json($portafolio_rfics);
       }
-      if(count($portafolio_rfics) >= 1){
+      if(count($portafolio_rfics) > 0 ){
         $renta_fics = self::create_renta_fics($portafolio_rfics,$user,$Fecha);
         $output = $renta_fics;
       }else{
@@ -208,13 +208,17 @@ public function portafolio_fondos_de_inversion($Fondo, $Encargo,$Fecha_start,$Fe
   foreach ($output['data'] as $key => $value) {
     $output['data'][$key]['ValorUnidad'] = $value['valor Unidad'];
   }
+  if( isset( $output['data'][0]) ){
+    $output = self::create_movimiento_fics($output,$Fecha_start,$Fecha_end);
+    $data = json_decode($output->info_json);
+    $return['data'] = $data->data;
+    $return['id'] = $output->id;
+    return response()->json($return);
+  }else{
+    return response()->json(array('error'=>true,'description'=>'No aplica','debug'=>'Sin información'));
+  }
 
-  $output = self::create_movimiento_fics($output,$Fecha_start,$Fecha_end);
-  $data = json_decode($output->info_json);
 
-  $return['data'] = $data->data;
-  $return['id'] = $output->id;
-  return response()->json($return);
 }
 
 
@@ -242,7 +246,7 @@ public function OPC($CodigoOyd,$Fecha)
         return response()->json($portafolio_o_por_cumplir);
       }
       //dd($portafolio_o_por_cumplir);
-      if(count($portafolio_o_por_cumplir) >= 1){
+      if(count($portafolio_o_por_cumplir) > 0){
         $create_operaciones_por_cumplir = self::create_operaciones_por_cumplir($portafolio_o_por_cumplir,$user,$Fecha);
         $output = $create_operaciones_por_cumplir;
       }else{
@@ -671,7 +675,6 @@ function convert($data = array()){
 }
 
 function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
-
 
   $data = self::convert($data);
   $movimiento = new Movimientos;
