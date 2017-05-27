@@ -23,6 +23,7 @@ export class SaldosMovimientosComponent {
   renta_variable:Observable<Array<string>>;
   renta_fija:Observable<Array<string>>;
   opl:Observable<Array<string>>;
+  opc:Observable<Array<string>>;
   today:any;
   user_info:Observable<Array<string>>;
 
@@ -69,6 +70,13 @@ export class SaldosMovimientosComponent {
       error => console.log('error: ${error}'),
       ()    => console.log(this.opl)
     );
+
+    productsService.DataOPC.subscribe(
+      data  => {this.opc = data},
+      error => console.log('error:${error}'),
+      ()    => console.log(this.opc)
+    );
+
     productsService.user_info
       .subscribe(
         data => { this.user_info = data },

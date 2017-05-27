@@ -242,7 +242,7 @@ public function OPC($CodigoOyd,$Fecha)
         return response()->json($portafolio_o_por_cumplir);
       }
       //dd($portafolio_o_por_cumplir);
-      if(count($portafolio_o_por_cumplir) >= 0){
+      if(count($portafolio_o_por_cumplir) >= 1){
         $create_operaciones_por_cumplir = self::create_operaciones_por_cumplir($portafolio_o_por_cumplir,$user,$Fecha);
         $output = $create_operaciones_por_cumplir;
       }else{
@@ -280,7 +280,7 @@ public function OPL($CodigoOyd,$Fecha)
       if(isset($operaciones['error'])){
         return response()->json($operaciones);
       }
-      if(count($operaciones) >= 0){
+      if(count($operaciones) >= 1){
         $operaciones_de_liquidez = self::create_operaciones_de_liquidez($operaciones,$user,$Fecha);
         $output = $operaciones_de_liquidez;
       }else{
@@ -546,14 +546,17 @@ function create_renta_fics($info,$user,$fecha){
 
 function create_operaciones_por_cumplir($info,$user,$fecha){
   $data = array();
-  $total = 0;
+  $total_dblCantidad = $total_curTotalLiq = 0;
   foreach ($info as $key => $item) {
     $data[$key] = $item;
-    $total = $total + $item->SaldoPesos;
-    $data[$key]->ValorUnidad = ( is_null($item->ValorUnidad)) ? '':number_format($item->ValorUnidad,2);
-    $data[$key]->SaldoPesos = number_format($item->SaldoPesos,2);
-    $data[$key]->Fecha_Const = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_Const))));
-    $data[$key]->Fecha_vto = trim((str_replace('.000','',str_replace('00:00:00','',$item->Fecha_vto))));
+
+    $total_dblCantidad = $total_dblCantidad + $item->dblCantidad;
+    $total_curTotalLiq = $total_curTotalLiq + $item->curTotalLiq;
+
+    $data[$key]->dtmLiquidacion = str_replace(' 00:00:00','',$item->dtmLiquidacion);
+    $data[$key]->dtmCumplimiento = str_replace(' 00:00:00','',$item->dtmCumplimiento);
+    $data[$key]->dblCantidad = number_format($item->dblCantidad,2);
+    $data[$key]->curTotalLiq = number_format($item->curTotalLiq,2);
   }
   $json = [
     $user['attributes']['codeoyd'] => [
@@ -565,10 +568,11 @@ function create_operaciones_por_cumplir($info,$user,$fecha){
         'comercial_adviser' => $info[0]->Comercial
       ],
     'data' =>$data,
-    'total' => number_format($total,2),
+    'total_dblCantidad' => number_format($total_dblCantidad,2),
+    'total_curTotalLiq' => number_format($total_curTotalLiq,2),
+
     ],
   ];
-
   $json = self::array_to_utf($json);
   $renta_fics = new OperacionesCumplir;
   $renta_fics->user_id = $user->id;
@@ -670,12 +674,11 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 
 
   $data = self::convert($data);
-
   $movimiento = new Movimientos;
   $movimiento->user_id = 1;
   $movimiento->fecha_inicio = $fecha_inicio;
   $movimiento->fecha_fin = $fecha_fin;
-  $movimiento->info_json = json_encode($data);
+  $movimiento->info_json = json_encode(self::array_to_utf($data));
   $movimiento->save();
   return $movimiento;
 }

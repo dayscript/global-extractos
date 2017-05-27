@@ -397,7 +397,6 @@ class HomeController extends Controller
                    );
       foreach ( $data['info']->movimientos->rf as $key => $value) {
       }
-      #dd($data);
       #return view('extracto-firma',$data);
        return $pdf = \PDF::loadView('extracto-firma', $data)->download('Firma-comisionista.pdf');
 
@@ -409,28 +408,28 @@ class HomeController extends Controller
         #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
         $info['encabezado'] = $user[0]['attributes'];
         $info['movimientos']['rv'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
+                                          ->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
                                                                   'Fecha'     =>  $fecha
                                                                 )
                                                           );
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
+                                          ->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
                                                                   'Fecha'     =>  $fecha
                                                                 )
                                                           );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
+                                          ->select('EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
-                                          ->select('SET NOCOUNT ON;EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
+                                          ->select('EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
                                                                   'Fecha'     =>  $fecha,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
@@ -471,6 +470,8 @@ class HomeController extends Controller
                        'fecha_inicio'=>$fecha_inicio,
                        'fecha_fin'=>$fecha_fin,
                      );
+
+
        #return view('extracto-firma',$data);
         return $pdf = \PDF::loadView('extracto-firma', $data)->download('Forma-comisionista.pdf');
 
