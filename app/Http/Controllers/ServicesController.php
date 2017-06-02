@@ -690,7 +690,7 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch( \Exception $e ){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -701,7 +701,7 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
 function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -712,7 +712,7 @@ return $info;
 function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -723,7 +723,7 @@ return $info;
 function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -734,7 +734,7 @@ function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
 function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -745,7 +745,7 @@ function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
 function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
-    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC [TraerOperacionesLiquidezClienteDadoDayScript] :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);

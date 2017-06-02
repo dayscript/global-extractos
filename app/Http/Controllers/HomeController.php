@@ -353,6 +353,8 @@ class HomeController extends Controller
     'fecha'         => $fecha,
     'nit'           => $id,
   );
+  return view('extracto-fics',$data);
+
   return $pdf = \PDF::loadView('extracto-fics', $data)->download('extracto_fodos_de_inversion.pdf');
  }
 
@@ -368,7 +370,7 @@ class HomeController extends Controller
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
     $image_header = public_path().'/images/header-extracto2.jpg';
-    $image_fotter = public_path().'/images/report-footer.jpeg';
+    $image_fotter = public_path().'/images/superintendencia.png';
 
     $user = User::where('identification',$id)->get();
 
@@ -397,7 +399,7 @@ class HomeController extends Controller
                    );
       foreach ( $data['info']->movimientos->rf as $key => $value) {
       }
-      #return view('extracto-firma',$data);
+       #return view('extracto-firma',$data);
        return $pdf = \PDF::loadView('extracto-firma', $data)->download('Firma-comisionista.pdf');
 
      }else{
@@ -472,8 +474,8 @@ class HomeController extends Controller
                      );
 
 
-       #return view('extracto-firma',$data);
-        return $pdf = \PDF::loadView('extracto-firma', $data)->download('Forma-comisionista.pdf');
+       return view('extracto-firma',$data);
+       #return $pdf = \PDF::loadView('extracto-firma', $data)->download('Forma-comisionista.pdf');
 
 
       } catch (Exception $e) {
