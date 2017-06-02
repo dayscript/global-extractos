@@ -257,6 +257,7 @@ class HomeController extends Controller
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
     $user_load = User::where('identification',$id)->get();
+    $image_fotter = public_path().'/images/vigilante.jpg';
 
     if( !isset($user_load[0]) ){
       $info = array(
@@ -327,12 +328,24 @@ class HomeController extends Controller
             );
         return response()->json($info);
       }
+     
 
       $data = array();
       $data['encabezado']   =  self::array_to_utf(  $info_encabezado  );
       $data['basica']       =  self::array_to_utf(  $info_informacion_basica  );
       $data['movimientos']  =  self::array_to_utf(  $info_informacion_movimientos );
       $data['resumen']      =  self::array_to_utf(  $info_informacion_resumen );
+
+
+       $total_saldo   = 0;
+        foreach( $info_informacion_movimientos as $key => $movimiento){
+          $total_saldo += $movimiento->Saldo;
+          $movimiento->Saldo = ( $movimiento->Saldo == null ) ? '':'$ '.number_format($movimiento->Saldo,2);
+        }
+        $data['totales'] = array(
+                                'total_saldo' => $total_saldo,
+                              ); 
+       
 
       $Extractos_fics = new Extractos_fics;
       $Extractos_fics->user_id = $user_load[0]->id;
@@ -352,8 +365,11 @@ class HomeController extends Controller
     'info'          => $info,
     'fecha'         => $fecha,
     'nit'           => $id,
+    'image_fotter'=>$image_fotter,
   );
-  return $pdf = \PDF::loadView('extracto-fics', $data)->download('extracto_fodos_de_inversion.pdf');
+  //dd($info);
+  //return view('extracto-fics',$data);
+  return $pdf = \PDF::loadView('extracto-fics', $data)->download('(FI_Extracto_Periodo.pdf');
  }
 
  /*
@@ -368,7 +384,7 @@ class HomeController extends Controller
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
     $image_header = public_path().'/images/header-extracto2.jpg';
-    $image_fotter = public_path().'/images/report-footer.jpeg';
+    $image_fotter = public_path().'/images/vigilante.jpg';
 
     $user = User::where('identification',$id)->get();
 
@@ -397,8 +413,6 @@ class HomeController extends Controller
                    );
       foreach ( $data['info']->movimientos->rf as $key => $value) {
       }
-      #return view('extracto-firma',$data);
-       return $pdf = \PDF::loadView('extracto-firma', $data)->download('Firma-comisionista.pdf');
 
      }else{
         try{
@@ -414,13 +428,14 @@ class HomeController extends Controller
                                                                   'Fecha'     =>  $fecha
                                                                 )
                                                           );
+
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
                                                                   'Fecha'     =>  $fecha
                                                                 )
-                                                          );
+                                                          );                                         
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
@@ -437,9 +452,47 @@ class HomeController extends Controller
                                                           );
 
         $info['movimientos']['mes'] = self::exec_ExtractoClienteDado( $user[0]->codeoyd,$fecha_inicio,$fecha_fin  );
+        
+
+        $total_valoracion   = 0;
+        foreach( $info['movimientos']['rf'] as $key => $movimiento_rf){
+          $total_valoracion += $movimiento_rf->Valoracion;
+          $movimiento_rf->Valoracion = ( $movimiento_rf->Valoracion == null ) ? '':'$ '.number_format($movimiento_rf->Valoracion,2);
+        }
+        $info['totales_rf'] = array(
+                                'total_valoracion' => $total_valoracion,
+                              );       
+        $total_precio   = 0;
+        foreach( $info['movimientos']['rv'] as $key => $movimiento_rv){
+          $total_precio += $movimiento_rv->Precio;
+          $movimiento_rv->Precio = ( $movimiento_rv->Precio == null ) ? '':'$ '.number_format($movimiento_rv->Precio,2);
+        }
+        $info['totales_rv'] = array(
+                                'total_precio' => $total_precio,
+                              );  
+       
+
+        $total_inicio = 0;
+        $total_regreso = 0;
+        $total_interes   = 0;
+        foreach( $info['movimientos']['odl'] as $key => $movimiento_odl){
+          $total_inicio += $movimiento_odl->CurTotalliq_Inicio;
+          $total_regreso += $movimiento_odl->CurTotalliq_Regreso;
+          $total_interes   += $movimiento_odl->Interes;
+          $movimiento_odl->CurTotalliq_Inicio = ( $movimiento_odl->CurTotalliq_Inicio == null ) ? '':'$ '.number_format($movimiento_odl->CurTotalliq_Inicio,2);
+          $movimiento_odl->CurTotalliq_Regreso = ( $movimiento_odl->CurTotalliq_Regreso == null ) ? '':'$ '.number_format($movimiento_odl->CurTotalliq_Regreso,2);
+          $movimiento_odl->Interes  = ( $movimiento_odl->Interes  == null ) ? '':'$ '.number_format($movimiento_odl->Interes,2);
+        }
+        $info['totales_odl'] = array(
+                                'total_inicio' => $total_inicio,
+                                'total_regreso' => $total_regreso,
+                                'total_interes'   => $total_interes,
+                              );
+        
+
         $total_a_cargo = 0;
         $total_a_favor = 0;
-        $total_saldo   = 0;
+        $total_saldo   = 0; 
         foreach( $info['movimientos']['mes'] as $key => $movimiento){
           $total_a_cargo += $movimiento->ACargo;
           $total_a_favor += $movimiento->AFavor;
@@ -453,6 +506,7 @@ class HomeController extends Controller
                                 'total_a_favor' => $total_a_favor,
                                 'total_saldo'   => $total_saldo,
                               );
+
         $info = json_encode(self::array_to_utf($info));
 
         $Extractos_fics = new Extractos_firma;
@@ -471,11 +525,6 @@ class HomeController extends Controller
                        'fecha_fin'=>$fecha_fin,
                      );
 
-
-       #return view('extracto-firma',$data);
-        return $pdf = \PDF::loadView('extracto-firma', $data)->download('Forma-comisionista.pdf');
-
-
       } catch (Exception $e) {
         $info = array(
                       'error' =>  true,
@@ -485,7 +534,9 @@ class HomeController extends Controller
         return response()->json($info);
       }
     }
-
+    //dd($info);
+    //return view('extracto-firma',$data);
+    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_Periodo.pdf');
  }
 
 
@@ -496,11 +547,11 @@ class HomeController extends Controller
         $temp[$key] = self::array_to_utf($value);
       }elseif(is_object($value)){
         foreach ($value as $index => $item) {
-            $temp[$key][$index] = utf8_encode(html_entity_decode($item, ENT_QUOTES | ENT_HTML401, "UTF-8"));
+            $temp[$key][$index] = $item;//utf8_encode(html_entity_decode($item, ENT_QUOTES | ENT_HTML401, "UTF-8"));
         }
       }
       else{
-        $temp[$key] = utf8_encode(html_entity_decode($value,ENT_QUOTES | ENT_HTML401, "UTF-8"));
+        $temp[$key] = $value;//utf8_encode(html_entity_decode($value,ENT_QUOTES | ENT_HTML401, "UTF-8"));
       }
   }
   return $temp;
