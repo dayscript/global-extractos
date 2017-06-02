@@ -6,5 +6,5 @@ import 'rxjs/add/operator/map';
   selector: 'my-app',
   templateUrl: '/app/templates/index.html',
 })
-export class AppComponent {
+export class AppComponent { 
 }
