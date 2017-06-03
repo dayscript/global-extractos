@@ -11,7 +11,7 @@ declare var $: any
  */
 @Component({
   selector: 'my-app',
-  templateUrl: '/app/templates/saldos-y-movimientos.html     ',
+  templateUrl: '/app/templates/saldos-y-movimientos.html',
   providers: [ProductsService],
 })
 export class SaldosMovimientosComponent {
@@ -30,7 +30,7 @@ export class SaldosMovimientosComponent {
   access:any;
   constructor(
               private productsService:ProductsService,
-              private activatedRoute:ActivatedRoute, 
+              private activatedRoute:ActivatedRoute,
               private http: Http,
               )
   {
@@ -52,7 +52,7 @@ export class SaldosMovimientosComponent {
     this.activatedRoute.params.subscribe(
       params => {
         this.id_identificacion = params['id'],
-        this.fecha = params['date'] 
+        this.fecha = params['date']
       }
     );
     productsService.DataRenta.subscribe(

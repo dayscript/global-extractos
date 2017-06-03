@@ -83,5 +83,10 @@ export class ExtractosCertificaciones {
     window.location.replace(url)
 
   }
+  download_renta(){
+    //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
+    var url = '/download-renta/2016'
+    window.location.replace(url)
+  }
 
 }

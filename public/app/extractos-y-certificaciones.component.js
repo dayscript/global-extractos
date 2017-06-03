@@ -61,6 +61,11 @@ let ExtractosCertificaciones = class ExtractosCertificaciones {
         console.log(url);
         window.location.replace(url);
     }
+    download_renta() {
+        //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
+        var url = '/download-renta/2016';
+        window.location.replace(url);
+    }
 };
 ExtractosCertificaciones = __decorate([
     core_1.Component({
