@@ -119,13 +119,13 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ssl()
+    public function ssl($code)
     {
-        echo 'ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ.ynLB6A0UvAuObZ0GnSsJH6zVaAeLWMgTEPyhFwkC2TY';
+        echo $code.'.Eu6bUsFfElu1qOoRvMII6JCJc3ajLdIQ07A3YQ9WgYU';
     }
     public function NotFound()
     {
-        return view('notfound');
+        echo 'No encontrado';
     }
 
 }

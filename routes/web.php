@@ -14,7 +14,7 @@
 Route::get('/','HomeController@index');
 Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
 Route::get('/query','HomeController@query');
-Route::get('/.well-known/acme-challenge/ffLSWapq-DGViMBAyUwBJgDbbEohI2gdqCBfoeDMCXQ','HomeController@ssl');
+Route::get('/.well-known/acme-challenge/{code}','HomeController@ssl');
 Route::get('/not-found','HomeController@NotFound');
 
 
