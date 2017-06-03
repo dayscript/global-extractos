@@ -539,4 +539,9 @@ function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
   }
   return $info;
 }
+
+function extract_renta(){
+    return redirect('download-firma-extrac/8605144712/2017-05-02');
+}
+
 }
