@@ -34,25 +34,15 @@
 				</tr>
 				@foreach( $info->movimientos->rf as $key => $value )
 				<tr>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">
-						{{$value->strNombre}}
-					</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
-						{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}
-					</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
-						{{explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}
-					</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
-						$ {{( $value->Precio != "") ? number_format($value->Precio,2):''}}
-					</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">
-						$ {{( $value->Valoracion != "") ? number_format($value->Valoracion,2):''}}
-					</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">${{$value->Precio}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{$value->Valoracion}}</td>
 				</tr>
 				@endforeach
 				<tr>
-					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: center" colspan="4" >TOTAL</td>
+					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
 					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info->totales_rf->total_valoracion,2)}}</td>
 				</tr>
 				</table>
@@ -78,12 +68,12 @@
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',$value->FechaCompra)[0]}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{( $value->Precio != "") ? number_format($value->Precio,2):''}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{( $value->Valoracion != "") ? number_format($value->Valoracion,2):''}} </td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Precio}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Valoracion}} </td>
 				</tr>
 				@endforeach
 				<tr>
-			        <td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: center" colspan="3" >TOTAL</td>
+			        <td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="3" >TOTAL</td>
 					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales_rv->total_precio,2)}}</td>
 					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales_rv->total_precio,2)}}</td>
 				</tr>
@@ -147,7 +137,7 @@
 					</tr>
 					@endforeach
 					<tr>
-						<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: center" colspan="4" >TOTAL</td>
+						<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
 						<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info->totales_odl->total_inicio,2)}}</td>
 						<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info->totales_odl->total_regreso,2)}}</td>
 						<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info->totales_odl->total_interes,2)}} </td>
@@ -179,7 +169,7 @@
 		</tr>
 		@endforeach
 		<tr>
-			<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: center" colspan="3" >TOTAL</td>
+			<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="3" >TOTAL</td>
 			<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales->total_a_cargo,2)}}</td>
 			<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales->total_a_favor,2)}}</td>
 			<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales->total_saldo,2)}}</td>
@@ -190,9 +180,11 @@
 	<div id="fotter">
         <div class="blue-bar"
                  style="width: 100%;
-                            height: 20px;
-                            background-color: #2d66e4;
-                            display: inline-block;">
+                        height: 20px;
+                        background-color: #004688;
+                        display: inline-block;
+                        margin-top:20px
+                        ">
         </div>
         <div class="logo-super-intendencia"
                  style="float: left;

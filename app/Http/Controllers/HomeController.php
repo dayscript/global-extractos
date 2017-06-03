@@ -369,7 +369,7 @@ class HomeController extends Controller
   );
   //dd($info);
   //return view('extracto-fics',$data);
-  return $pdf = \PDF::loadView('extracto-fics', $data)->download('(FI_Extracto_Periodo.pdf');
+  return $pdf = \PDF::loadView('extracto-fics', $data)->download('FI_Extracto_'.date('Y-m-d').'.pdf');
  }
 
  /*
@@ -536,7 +536,7 @@ class HomeController extends Controller
     }
     //dd($info);
     //return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_Periodo.pdf');
+    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('Y-m-d').'.pdf');
  }
 
 

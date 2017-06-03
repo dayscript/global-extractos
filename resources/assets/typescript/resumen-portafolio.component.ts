@@ -28,7 +28,7 @@ export class ResumenPortafolioComponent {
   public pieChartData:number[];
   public pieChartType:string = 'pie';
   public pieChartOptions:any = {
-          legend: {
+          legend: {     
                   display: true,
                   labels: {
                       fontSize:30,

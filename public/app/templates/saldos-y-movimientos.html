@@ -30,7 +30,9 @@
       </tr>
       <tr>
        <td colspan="4"><strong>Total Renta Variable</strong></td>
-       <td colspan="1" class="right-text"><strong> $ {{ renta_variable?.total}} </strong></td>
+       <td colspan="1" class="right-text">
+        <strong *ngIf="renta_variable?.description != 'No aplica' ">$ {{ renta_variable?.total}} </strong>
+      </td>
       </tr>
     </table>
   </section>
@@ -56,7 +58,9 @@
   		  </tr>
   		  <tr>
   		   <td colspan="4"><strong>Total Renta Fija</strong></td>
-  		   <td colspan="1" class="right-text"><strong> $ {{ renta_fija?.total }} </strong></td>
+  		   <td colspan="1" class="right-text">
+          <strong *ngIf="renta_fija?.description != 'No aplica' ">$ {{ renta_fija?.total }} </strong>
+        </td>
   		  </tr>
   	</table>
   </section>
@@ -86,8 +90,8 @@
   		  </tr>
   		  <tr>
   		   <td colspan="3"><strong>Total Operaciones</strong></td>
-         <td colspan="1"><strong> $ {{ opc?.total_dblCantidad }} </strong></td>
-  		   <td colspan="1"><strong> $ {{ opc?.total_curTotalLiq }} </strong></td>
+         <td colspan="1"><strong *ngIf="opc?.description != 'No aplica'">$ {{ opc?.total_dblCantidad }} </strong></td>
+  		   <td colspan="1"><strong *ngIf="opc?.description != 'No aplica'">$ {{ opc?.total_curTotalLiq }} </strong></td>
   		  </tr>
   	</table>
   </section>
@@ -120,7 +124,9 @@
   		  </tr>
   		  <tr>
   		   <td colspan="6"><strong>Total Operaciones</strong></td>
-  		   <td style="text-align:right" colspan="1"><strong> $ {{ opl?.total }} </strong></td>
+  		   <td style="text-align:right" colspan="1">
+          <strong *ngIf="opl?.description != 'No aplica'">$ {{ opl?.total}} </strong>
+         </td>
   		  </tr>
   	</table>
   </section>

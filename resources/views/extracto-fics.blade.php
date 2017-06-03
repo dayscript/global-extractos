@@ -58,7 +58,7 @@
 			</tr>
 		@endforeach
 				<tr>
-					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: center" colspan="6" >TOTAL</td>
+					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="6" >TOTAL</td>
 					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info['totales']['total_saldo'],2)}}</td>
 				</tr>
 	</table>
@@ -81,9 +81,10 @@
 <div id="fotter">
         <div class="blue-bar"
                  style="width: 100%;
-                            height: 20px;
-                            background-color: #2d66e4;
-                            display: inline-block;">
+                        height: 20px;
+                        background-color: #004688;
+                        display: inline-block;
+                        margin-top:20px">
         </div>
         <div class="logo-super-intendencia"
                  style="float: left;
