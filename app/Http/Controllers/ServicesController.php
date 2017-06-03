@@ -745,7 +745,7 @@ function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
 function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC [TraerOperacionesLiquidezClienteDadoDayScript] :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
