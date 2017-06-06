@@ -541,7 +541,7 @@ function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
 }
 
 function extract_renta(){
-    return redirect('download-firma-extrac/8605144712/2017-05-02');
+    return redirect('https://globalextractos.demodayscript.com/images/FC_certificado_renta_2016.pdf');
 }
 
 }
