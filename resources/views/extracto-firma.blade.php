@@ -26,24 +26,24 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: left;">Emisi&oacute;n</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Cantidad</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Fecha Compra</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Precio</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Valoraci&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Emisi&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Cantidad</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Compra</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
 				</tr>
 				@foreach( $info->movimientos->rf as $key => $value )
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">${{$value->Precio}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Precio}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{$value->Valoracion}}</td>
 				</tr>
 				@endforeach
 				<tr>
 					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
-					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{number_format($info->totales_rf->total_valoracion,2)}}</td>
+					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales_rf->total_valoracion,2)}}</td>
 				</tr>
 				</table>
 			@endif
@@ -57,24 +57,24 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Cantidad</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Fecha Compra</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Precio</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right;">Valoraci&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Emisi&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Cantidad</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Compra</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
 				</tr>
 				@foreach($info->movimientos->rv as $key => $value)
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',$value->FechaCompra)[0]}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Precio}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Valoracion}} </td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{$value->Precio}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format($value->Valoracion,2) }} </td>
 				</tr>
 				@endforeach
 				<tr>
-			        <td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="3" >TOTAL</td>
-					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales_rv->total_precio,2)}}</td>
+			    <td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
+
 					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info->totales_rv->total_precio,2)}}</td>
 				</tr>
 			</table>
@@ -88,11 +88,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F. Cumplimiento</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F. Liquidaci&oacute;n</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Cantidad</td>
-					<td style="border:solid 1px #efefef;font-size:11px;text-align: right">T. Liquidaci&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Emisi&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center">F. Cumplimiento</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center">F. Liquidaci&oacute;n</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Cantidad</td>
+					<td style="border:solid 1px #efefef;font-size:11px;text-align: center">T. Liquidaci&oacute;n</td>
 				</tr>
 				@foreach($info->movimientos->opc as $key => $value)
 				<tr>
@@ -114,13 +114,13 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="border:solid 1px #efefef;font-size:11px">Emisi&oacute;n</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Cantidad</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F. Liquidaci&oacute;n</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">F.Cumplimiento</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total inicio</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total regreso</td>
-						<td style="border:solid 1px #efefef;font-size:11px;text-align: right">Total inter&eacute;s</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Emisi&oacute;n</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Cantidad</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">F. Liquidaci&oacute;n</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">F.Cumplimiento</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Total inicio</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Total regreso</td>
+						<td style="border:solid 1px #efefef;font-size:11px;text-align: center">Total inter&eacute;s</td>
 
 					</tr>
 					@foreach($info->movimientos->odl as $key => $value)
@@ -151,12 +151,12 @@
 			<td colspan="6" style="background-color:#b1b1b1; text-align: center;">MOVIMIENTO DEL PERIODO</td>
 		</tr>
 		<tr>
-			<td style="font-size:11px;border:solid 1px #efefef;">Fecha</td>
-			<td style="font-size:11px;border:solid 1px #efefef;">Documento</td>
-			<td style="font-size:11px;border:solid 1px #efefef;width:50%">Detalle</td>
-			<td style="font-size:11px;border:solid 1px #efefef;text-align: right">A su cargo</td>
-			<td style="font-size:11px;border:solid 1px #efefef;text-align: right">A su favor</td>
-			<td style="font-size:11px;border:solid 1px #efefef;text-align: right">Saldo</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center">Fecha</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center">Documento</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center;width:50%">Detalle</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center">A su cargo</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center">A su favor</td>
+			<td style="font-size:11px;border:solid 1px #efefef;text-align: center">Saldo</td>
 		</tr>
 		@foreach($info->movimientos->mes as $key => $value)
 		<tr>

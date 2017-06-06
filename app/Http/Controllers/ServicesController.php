@@ -17,7 +17,7 @@ use \App\User;
 class ServicesController extends Controller
 {
   public function user_info($cc){
-
+  	$user = array('nombre'=>'','identification'=>'');
     $user_load = User::where('identification',$cc)->get();
     if(isset($user_load[0])){
       $user['nombre'] = $user_load[0]->nombre;

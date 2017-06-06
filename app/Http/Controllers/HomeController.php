@@ -248,6 +248,7 @@ class HomeController extends Controller
     });
  }
  public function extract_fondos_inversion($id,$fondo,$encargo,$fecha){
+
     $fecha_actual = new \DateTime($fecha);
     $fecha_actual->modify('first day of this month');
     $fecha_inicio = $fecha_actual->format('Y-m-d');
@@ -324,8 +325,8 @@ class HomeController extends Controller
       $data['basica']       =  self::array_to_utf(  $info_informacion_basica  );
       $data['movimientos']  =  self::array_to_utf(  $info_informacion_movimientos );
       $data['resumen']      =  self::array_to_utf(  $info_informacion_resumen );
-       $total_saldo   = 0;
-        foreach( $info_informacion_movimientos as $key => $movimiento){
+      $total_saldo   = 0;
+      foreach( $info_informacion_movimientos as $key => $movimiento){
           $total_saldo += $movimiento->Saldo;
           $movimiento->Saldo = ( $movimiento->Saldo == null ) ? '':'$ '.number_format($movimiento->Saldo,2);
         }
@@ -353,9 +354,8 @@ class HomeController extends Controller
     'nit'           => $id,
     'image_fotter'=>$image_fotter,
   );
-  //dd($info);
   //return view('extracto-fics',$data);
-  return $pdf = \PDF::loadView('extracto-fics', $data)->download('FI_Extracto_'.date('Y-m-d').'.pdf');
+  return $pdf = \PDF::loadView('extracto-fics', $data)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  /*
  *  Function return data to PDF
@@ -406,27 +406,27 @@ class HomeController extends Controller
                                           ->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
-                                                                  'Fecha'     =>  $fecha
+                                                                  'Fecha'     =>  $fecha_fin
                                                                 )
                                                           );
         $info['movimientos']['rf'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',
                                                             array(
                                                                   'CodigoOyd' =>  $user[0]->codeoyd,
-                                                                  'Fecha'     =>  $fecha
+                                                                  'Fecha'     =>  $fecha_fin
                                                                 )
                                                           );
         $info['movimientos']['opc'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
-                                                                  'Fecha'     =>  $fecha,
+                                                                  'Fecha'     =>  $fecha_fin,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
         $info['movimientos']['odl'] = DB::connection('sqlsrv')
                                           ->select('SET NOCOUNT ON;EXEC TraerOperacionesLiquidezClienteDadoDayScript :Fecha,:CodigoOyd',
                                                             array(
-                                                                  'Fecha'     =>  $fecha,
+                                                                  'Fecha'     =>  $fecha_fin,
                                                                   'CodigoOyd' =>  $user[0]->codeoyd
                                                                 )
                                                           );
@@ -442,7 +442,7 @@ class HomeController extends Controller
                               );
         $total_precio   = 0;
         foreach( $info['movimientos']['rv'] as $key => $movimiento_rv){
-          $total_precio += $movimiento_rv->Precio;
+          $total_precio += $movimiento_rv->Valoracion;
           $movimiento_rv->Precio = ( $movimiento_rv->Precio == null ) ? '':'$ '.number_format($movimiento_rv->Precio,2);
         }
         $info['totales_rv'] = array(
@@ -480,7 +480,7 @@ class HomeController extends Controller
         $info['totales'] = array(
                                 'total_a_cargo' => $total_a_cargo,
                                 'total_a_favor' => $total_a_favor,
-                                'total_saldo'   => $total_saldo,
+                                'total_saldo'   => $total_a_cargo - $total_a_favor,
                               );
         $info = json_encode(self::array_to_utf($info));
         $Extractos_fics = new Extractos_firma;
@@ -509,7 +509,7 @@ class HomeController extends Controller
     }
     //dd($info);
     //return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('Y-m-d').'.pdf');
+    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  function array_to_utf($array = array()){
   $temp = array();
