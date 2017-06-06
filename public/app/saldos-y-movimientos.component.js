@@ -9,16 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const personal_service_1 = require("./personal.service");
-const router_1 = require("@angular/router");
+var core_1 = require("@angular/core");
+var personal_service_1 = require("./personal.service");
+var router_1 = require("@angular/router");
 require("rxjs/add/operator/map");
-const http_1 = require("@angular/http");
+var http_1 = require("@angular/http");
 /**
  * Componente para la pagina de salfos y movimientos firma
  */
-let SaldosMovimientosComponent = class SaldosMovimientosComponent {
-    constructor(productsService, activatedRoute, http) {
+var SaldosMovimientosComponent = (function () {
+    function SaldosMovimientosComponent(productsService, activatedRoute, http) {
+        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -38,28 +39,30 @@ let SaldosMovimientosComponent = class SaldosMovimientosComponent {
                 });
             });
         }, 1000);
-        this.activatedRoute.params.subscribe(params => {
-            this.id_identificacion = params['id'],
-                this.fecha = params['date'];
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id_identificacion = params['id'],
+                _this.fecha = params['date'];
         });
-        productsService.DataRenta.subscribe(data => { this.renta_variable = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_variable));
-        productsService.DataRentaFija.subscribe(data => { this.renta_fija = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_fija));
-        productsService.DataOPL.subscribe(data => { this.opl = data; }, error => console.log('error: ${error}'), () => console.log(this.opl));
-        productsService.DataOPC.subscribe(data => { this.opc = data; }, error => console.log('error:${error}'), () => console.log(this.opc));
+        productsService.DataRenta.subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_variable); });
+        productsService.DataRentaFija.subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
+        productsService.DataOPL.subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
+        productsService.DataOPC.subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
         productsService.user_info
-            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
+            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
         /*Fin de componenete SaldosMovimientosComponent*/
     }
-    search() {
+    SaldosMovimientosComponent.prototype.search = function () {
+        var _this = this;
         this.fecha_inicio = $('#datepicker_start').val();
         this.fecha_final = $('#datepicker_end').val();
         var url = 'api/client-report/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
         console.log(url);
         this.http.get(url)
-            .map(response => response.json())
-            .subscribe(data => { this.info_movimientos = data; }, error => console.error(`Error: ${error}`), () => console.log(this.info_movimientos));
-    }
-};
+            .map(function (response) { return response.json(); })
+            .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });
+    };
+    return SaldosMovimientosComponent;
+}());
 SaldosMovimientosComponent = __decorate([
     core_1.Component({
         selector: 'my-app',

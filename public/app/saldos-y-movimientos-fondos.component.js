@@ -9,16 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const personal_service_1 = require("./personal.service");
-const router_1 = require("@angular/router");
+var core_1 = require("@angular/core");
+var personal_service_1 = require("./personal.service");
+var router_1 = require("@angular/router");
 require("rxjs/add/operator/map");
-const http_1 = require("@angular/http");
+var http_1 = require("@angular/http");
 /**
  * Componente para la pagina de salfos y movimientos firma
  */
-let SaldosMovimientosFondosComponent = class SaldosMovimientosFondosComponent {
-    constructor(productsService, activatedRoute, http) {
+var SaldosMovimientosFondosComponent = (function () {
+    function SaldosMovimientosFondosComponent(productsService, activatedRoute, http) {
+        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -39,16 +40,17 @@ let SaldosMovimientosFondosComponent = class SaldosMovimientosFondosComponent {
                 });
             });
         }, 1000);
-        this.activatedRoute.params.subscribe(params => {
-            this.id_identificacion = params['id'],
-                this.fecha = params['date'];
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id_identificacion = params['id'],
+                _this.fecha = params['date'];
         });
-        productsService.DataFics.subscribe(data => { this.renta_fics = data; }, error => console.log('error: ${error}'), () => console.log(this.renta_fics));
-        productsService.user_info.subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
-        productsService.FicsFilter.subscribe(data => { this.fics_filter = data; }, error => console.log('Error: ${error}'), () => console.log(this.fics_filter));
+        productsService.DataFics.subscribe(function (data) { _this.renta_fics = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fics); });
+        productsService.user_info.subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
+        productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return console.log(_this.fics_filter); });
         /*Fin de componenete SaldosMovimientosComponent*/
     }
-    search() {
+    SaldosMovimientosFondosComponent.prototype.search = function () {
+        var _this = this;
         this.fecha_inicio = $('#datepicker_start').val();
         this.fecha_final = $('#datepicker_end').val();
         this.option_select = $('#option_select').val();
@@ -63,10 +65,11 @@ let SaldosMovimientosFondosComponent = class SaldosMovimientosFondosComponent {
         var url = 'api/extracto-fondos-de-inversion-report/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
         console.log(url);
         this.http.get(url)
-            .map(response => response.json())
-            .subscribe(data => { this.info_movimientos = data; }, error => console.error(`Error: ${error}`), () => console.log(this.info_movimientos));
-    }
-};
+            .map(function (response) { return response.json(); })
+            .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });
+    };
+    return SaldosMovimientosFondosComponent;
+}());
 SaldosMovimientosFondosComponent = __decorate([
     core_1.Component({
         selector: 'my-app',

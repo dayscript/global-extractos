@@ -9,20 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-const router_1 = require("@angular/router");
-let ProductsService = class ProductsService {
-    constructor(http, activatedRoute) {
+var router_1 = require("@angular/router");
+var ProductsService = (function () {
+    function ProductsService(http, activatedRoute) {
+        var _this = this;
         this.http = http;
         this.activatedRoute = activatedRoute;
-        this.activatedRoute.params.subscribe(params => {
-            this.id = +params['id'],
-                this.date = params['date'];
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id = +params['id'],
+                _this.date = params['date'];
         });
-        const regex = /^[0-9]+$/g;
-        const date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
+        var regex = /^[0-9]+$/g;
+        var date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
         if (date.exec(this.date) == null) {
             alert('La fecha no es valida');
         }
@@ -33,50 +34,87 @@ let ProductsService = class ProductsService {
             alert('Codigo no valido');
         }
     }
-    get user_info() {
-        return this.http.get('/api/user-data/' + this.id)
-            .map(response => response.json());
-    }
-    get Data() {
-        console.log('/api/pie-report/' + this.id + '/' + this.date);
-        return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get DataRenta() {
-        console.log('api/variable-report/' + this.id + '/' + this.date);
-        return this.http.get('api/variable-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get DataRentaFija() {
-        console.log('api/fija-report/' + this.id + '/' + this.date);
-        return this.http.get('api/fija-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get DataFics() {
-        console.log('api/fics-report/' + this.id + '/' + this.date);
-        return this.http.get('api/fics-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get DataOPC() {
-        console.log('api/opc-report/' + this.id + '/' + this.date);
-        return this.http.get('api/opc-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get DataOPL() {
-        console.log('api/opl-report/' + this.id + '/' + this.date);
-        return this.http.get('api/opl-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-    get Cache() {
-        return this.http.get('api/cache/' + this.id)
-            .map(response => response.json());
-    }
-    get FicsFilter() {
-        console.log('api/fondos-de-inversion-report/' + this.id + '/' + this.date);
-        return this.http.get('api/fondos-de-inversion-report/' + this.id + '/' + this.date)
-            .map(response => response.json());
-    }
-};
+    Object.defineProperty(ProductsService.prototype, "user_info", {
+        get: function () {
+            return this.http.get('/api/user-data/' + this.id)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "Data", {
+        get: function () {
+            console.log('/api/pie-report/' + this.id + '/' + this.date);
+            return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "DataRenta", {
+        get: function () {
+            console.log('api/variable-report/' + this.id + '/' + this.date);
+            return this.http.get('api/variable-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "DataRentaFija", {
+        get: function () {
+            console.log('api/fija-report/' + this.id + '/' + this.date);
+            return this.http.get('api/fija-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "DataFics", {
+        get: function () {
+            console.log('api/fics-report/' + this.id + '/' + this.date);
+            return this.http.get('api/fics-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "DataOPC", {
+        get: function () {
+            console.log('api/opc-report/' + this.id + '/' + this.date);
+            return this.http.get('api/opc-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "DataOPL", {
+        get: function () {
+            console.log('api/opl-report/' + this.id + '/' + this.date);
+            return this.http.get('api/opl-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "Cache", {
+        get: function () {
+            return this.http.get('api/cache/' + this.id)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProductsService.prototype, "FicsFilter", {
+        get: function () {
+            console.log('api/fondos-de-inversion-report/' + this.id + '/' + this.date);
+            return this.http.get('api/fondos-de-inversion-report/' + this.id + '/' + this.date)
+                .map(function (response) { return response.json(); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ProductsService;
+}());
 ProductsService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])

@@ -9,21 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const personal_service_1 = require("./personal.service");
-const router_1 = require("@angular/router");
-const http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var personal_service_1 = require("./personal.service");
+var router_1 = require("@angular/router");
+var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-let UserInfoComponent = class UserInfoComponent {
-    constructor(productsService, activatedRoute, http, Router) {
+var UserInfoComponent = (function () {
+    function UserInfoComponent(productsService, activatedRoute, http, Router) {
+        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.Router = Router;
         productsService.user_info
-            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
+            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
     }
-};
+    return UserInfoComponent;
+}());
 UserInfoComponent = __decorate([
     core_1.Component({
         selector: 'user-info',

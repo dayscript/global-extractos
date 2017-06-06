@@ -9,12 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const personal_service_1 = require("./personal.service");
-const router_1 = require("@angular/router");
-const http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var personal_service_1 = require("./personal.service");
+var router_1 = require("@angular/router");
+var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-let ResumenPortafolioComponent = class ResumenPortafolioComponent {
+var ResumenPortafolioComponent = (function () {
     /*public pieCharColors:Array<any> = [
       {
         backgroundColor: '#000000',
@@ -26,7 +26,8 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
         backgroundColor: 'rgba(204, 153, 51)',
       }
     ]*/
-    constructor(productsService, activatedRoute, http, Router) {
+    function ResumenPortafolioComponent(productsService, activatedRoute, http, Router) {
+        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -48,12 +49,12 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
                 bodyFontSize: 1,
             },
         };
-        this.activatedRoute.params.subscribe(params => {
-            this.id_identificacion = +params['id'],
-                this.fecha = params['date'];
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id_identificacion = +params['id'],
+                _this.fecha = params['date'];
         });
         productsService.Data
-            .subscribe(data => { this.products = data; }, error => console.error(`Error: ${error}`), () => this.setParamsPie());
+            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
         this.showPie = 1;
         this.showExtrac = 0;
         setTimeout(function () {
@@ -64,9 +65,9 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
             });
         }, 1000);
         productsService.user_info
-            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
+            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
     }
-    setParamsPie() {
+    ResumenPortafolioComponent.prototype.setParamsPie = function () {
         var PieData = [];
         var cont = 0;
         if (this.products['error']) {
@@ -85,30 +86,31 @@ let ResumenPortafolioComponent = class ResumenPortafolioComponent {
         if (this.products.hasOwnProperty('access')) {
             console.log(this.products['access']);
         }
-    }
+    };
     // events
-    chartClicked(e) {
+    ResumenPortafolioComponent.prototype.chartClicked = function (e) {
         //    console.log(e);
         console.log(this.pieChartOptions);
-    }
-    chartHovered(e) {
+    };
+    ResumenPortafolioComponent.prototype.chartHovered = function (e) {
         //console.log(e);
-    }
-    show_pie() {
+    };
+    ResumenPortafolioComponent.prototype.show_pie = function () {
         event.preventDefault();
         this.showPie = 1;
         this.showExtrac = 0;
-    }
-    show_extrac() {
+    };
+    ResumenPortafolioComponent.prototype.show_extrac = function () {
         event.preventDefault();
         this.showExtrac = 1;
         this.showPie = 0;
-    }
-    search() {
+    };
+    ResumenPortafolioComponent.prototype.search = function () {
         this.fecha = $('#datepicker').val();
         window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
-    }
-};
+    };
+    return ResumenPortafolioComponent;
+}());
 ResumenPortafolioComponent = __decorate([
     core_1.Component({
         selector: 'my-app',

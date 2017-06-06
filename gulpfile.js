@@ -28,7 +28,7 @@ elixir(mix => {
         {
           source: "/**/*.ts",
           destination: "public/app",
-          target: "es6",
+          target: "es5",
           module: "commonjs",
           moduleResolution: "node",
           sourceMap: true,
