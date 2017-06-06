@@ -263,13 +263,13 @@ section {
 .header {
   display: inline-block;
   width: 100%;
-  margin: 20px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 .personal-data {
   display: inline-block;
   width: 100%;
-  margin: 20px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 nav {
