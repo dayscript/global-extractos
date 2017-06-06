@@ -46,7 +46,7 @@ var ExtractosCertificaciones = (function () {
     ExtractosCertificaciones.prototype.download_firma = function () {
         this.fecha_select_firma = $('#fecha_select_firma').val();
         if (this.fecha_select_firma == 'NA') {
-            $('#fecha_select_firma').css('border', 'solid 1px red;');
+            $('#fecha_select_firma').css('border', '1px solid rgb(255, 0, 0)');
             return;
         }
         window.location.replace('/download-firma-extrac/' + this.id_identificacion + '/' + this.fecha_select_firma);
@@ -55,6 +55,8 @@ var ExtractosCertificaciones = (function () {
         this.fecha_select = $('#fecha_select').val();
         this.option_select = $('#option_select').val();
         if (this.fecha_select == 'NA' || this.option_select == 'NA') {
+            $('#option_select').css('border', '1px solid rgb(255, 0, 0)');
+            $('#fecha_select').css('border', '1px solid rgb(255, 0, 0)');
             return;
         }
         var fecha = this.fecha_select;
@@ -66,7 +68,7 @@ var ExtractosCertificaciones = (function () {
     ExtractosCertificaciones.prototype.download_renta = function () {
         this.download = $('#download_cert').val();
         if (this.download == 'NA') {
-            alert('Por favor seleccione un año');
+            $('#download_cert').css('border', '1px solid rgb(255, 0, 0)');
             return;
         }
         //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
