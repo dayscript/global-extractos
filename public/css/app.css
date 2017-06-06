@@ -52,7 +52,7 @@ th.right-text {
 }
 
 .table {
-  margin: 5px 0 0 0;
+  margin: 5px 0 0 0 !important;
 }
 
 section.table {
