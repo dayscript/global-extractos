@@ -23,7 +23,7 @@ export class ExtractosCertificaciones {
   option_select = 'NA'
   fecha_select_firma = 'NA'
   fecha_select = 'NA'
-
+  download = 'NA'
   fechas = []
   info_movimientos:Observable<Array<string>>;
   fondo:any;
@@ -84,6 +84,11 @@ export class ExtractosCertificaciones {
 
   }
   download_renta(){
+    this.download = $('#download_cert').val()
+    if(this.download == 'NA'){
+      alert('Por favor seleccione un año')
+      return;
+    }
     //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
     var url = '/download-renta/2016'
     window.location.replace(url)
