@@ -45,8 +45,12 @@ th.right-text{
   text-align: right;
 }
 .table{
-  margin: 20px 0 0 0;
+  margin: 5px 0 0 0;
 
+}
+
+section.table{
+  height: auto;
 }
 
 .page-pie{
@@ -226,8 +230,8 @@ ul.navbar-nav{
   margin: 25px 0 0 0;
 }
 .download-xls{
-  margin-top: 10px;
-  margin-bottom: 50px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 input{
   width: 90px;
