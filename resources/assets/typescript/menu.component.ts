@@ -13,12 +13,12 @@ declare var $: any
 })
 
 export class MenuComponent {
-  id_identificacion:number = 123456;
+  id_identificacion:string;
   fecha:string;
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id_identificacion = +params['id'],
+      params=>{ this.id_identificacion = params['id'],
                 this.fecha = params['date']
               }
     )

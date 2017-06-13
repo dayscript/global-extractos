@@ -21,9 +21,8 @@ var MenuComponent = (function () {
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.Router = Router;
-        this.id_identificacion = 123456;
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id_identificacion = +params['id'],
+            _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
     }

@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/var/www/html/global-extractos"
+      "C:\\wamp64\\www\\global-extractos"
     ]
   ],
   "_from": "@angular/platform-browser-dynamic@2.4.1",
@@ -44,7 +44,7 @@
   "_shasum": "5fb72038f76c1e3646cea95f5b4722d67a4419dd",
   "_shrinkwrap": null,
   "_spec": "@angular/platform-browser-dynamic@2.4.1",
-  "_where": "/var/www/html/global-extractos",
+  "_where": "C:\\wamp64\\www\\global-extractos",
   "author": {
     "name": "angular"
   },

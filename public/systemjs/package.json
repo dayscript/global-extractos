@@ -10,7 +10,7 @@
         "spec": "0.19.27",
         "type": "version"
       },
-      "/var/www/html/global-extractos"
+      "C:\\wamp64\\www\\global-extractos"
     ]
   ],
   "_from": "systemjs@0.19.27",
@@ -44,7 +44,7 @@
   "_shasum": "f1740d565ce64371ac0de7072a4d1e5471ba7ba2",
   "_shrinkwrap": null,
   "_spec": "systemjs@0.19.27",
-  "_where": "/var/www/html/global-extractos",
+  "_where": "C:\\wamp64\\www\\global-extractos",
   "author": {
     "name": "Guy Bedford"
   },

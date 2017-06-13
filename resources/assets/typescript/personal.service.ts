@@ -14,7 +14,7 @@ export class ProductsService {
 
   constructor(private http: Http, private activatedRoute:ActivatedRoute) {
     this.activatedRoute.params.subscribe(
-      params=>{ this.id = +params['id'],
+      params=>{ this.id = params['id'],
                 this.date = params['date']
               }
     );

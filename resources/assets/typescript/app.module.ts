@@ -8,6 +8,9 @@ import {FormsModule} from "@angular/forms";
 import { AppComponent }   from './app.component';
 import { MenuComponent }   from './menu.component';
 import { UserInfoComponent }   from './user-info.component';
+import { AyudaComponet }   from './ayuda.component';
+import { SalirComponet }   from './salir.component';
+
 import { ProductsService } from './personal.service';
 
 import { ResumenPortafolioComponent }   from './resumen-portafolio.component';
@@ -17,12 +20,15 @@ import { ExtractosCertificaciones } from './extractos-y-certificaciones.componen
 import { NotFoundPageComponent }   from './notfound.component';
 import { ChartsModule } from 'ng2-charts';
 
+
 const appRoutes: Routes = [
     { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
     { path:'report/:id/:date/resumen-de-portafolio', component:ResumenPortafolioComponent },
     { path:'report/:id/:date/saldos-y-movimientos-de-la-firma', component:SaldosMovimientosComponent },
     { path:'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component:SaldosMovimientosFondosComponent },
     { path:'report/:id/:date/extractos-y-certificaciones', component:ExtractosCertificaciones },
+    { path:'ayuda', component:AyudaComponet },
+    { path:'salir', component:SalirComponet },
  ];
 
 @Pipe({
@@ -58,7 +64,9 @@ export class KeysPipe implements PipeTransform {
                   AsyncPipe,
                   SaldosMovimientosComponent,
                   SaldosMovimientosFondosComponent,
-                  ExtractosCertificaciones
+                  ExtractosCertificaciones,
+                  AyudaComponet,
+                  SalirComponet
                 ],
   bootstrap:    [ AppComponent ]
 })
