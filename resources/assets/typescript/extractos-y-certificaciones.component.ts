@@ -15,7 +15,7 @@ declare var $: any
   providers: [ProductsService],
 })
 export class ExtractosCertificaciones {
-  id_identificacion = 0
+  id_identificacion:string = ''
   fecha:string = ''
   user_info:Observable<Array<string>>;
   fics_filter:Observable<Array<string>>;

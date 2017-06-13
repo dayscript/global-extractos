@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/var/www/html/global-extractos"
+      "C:\\wamp64\\www\\global-extractos"
     ]
   ],
   "_from": "@angular/core@2.4.1",
@@ -44,7 +44,7 @@
   "_shasum": "3a6d2dc7fd86fdebe4febae7eb28abad7d04c76a",
   "_shrinkwrap": null,
   "_spec": "@angular/core@2.4.1",
-  "_where": "/var/www/html/global-extractos",
+  "_where": "C:\\wamp64\\www\\global-extractos",
   "author": {
     "name": "angular"
   },

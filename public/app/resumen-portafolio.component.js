@@ -32,7 +32,6 @@ var ResumenPortafolioComponent = (function () {
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.Router = Router;
-        this.id_identificacion = 123456;
         this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
         this.pieChartType = 'pie';
         this.pieChartOptions = {
@@ -50,7 +49,7 @@ var ResumenPortafolioComponent = (function () {
             },
         };
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id_identificacion = +params['id'],
+            _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
         productsService.Data

@@ -19,7 +19,7 @@ var ProductsService = (function () {
         this.http = http;
         this.activatedRoute = activatedRoute;
         this.activatedRoute.params.subscribe(function (params) {
-            _this.id = +params['id'],
+            _this.id = params['id'],
                 _this.date = params['date'];
         });
         var regex = /^[0-9]+$/g;

@@ -15,6 +15,8 @@ var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
 var menu_component_1 = require("./menu.component");
 var user_info_component_1 = require("./user-info.component");
+var ayuda_component_1 = require("./ayuda.component");
+var salir_component_1 = require("./salir.component");
 var resumen_portafolio_component_1 = require("./resumen-portafolio.component");
 var saldos_y_movimientos_component_1 = require("./saldos-y-movimientos.component");
 var saldos_y_movimientos_fondos_component_1 = require("./saldos-y-movimientos-fondos.component");
@@ -27,6 +29,8 @@ var appRoutes = [
     { path: 'report/:id/:date/saldos-y-movimientos-de-la-firma', component: saldos_y_movimientos_component_1.SaldosMovimientosComponent },
     { path: 'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component: saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent },
     { path: 'report/:id/:date/extractos-y-certificaciones', component: extractos_y_certificaciones_component_1.ExtractosCertificaciones },
+    { path: 'ayuda', component: ayuda_component_1.AyudaComponet },
+    { path: 'salir', component: salir_component_1.SalirComponet },
 ];
 var AsyncPipe = (function () {
     function AsyncPipe() {
@@ -77,7 +81,9 @@ AppModule = __decorate([
             AsyncPipe,
             saldos_y_movimientos_component_1.SaldosMovimientosComponent,
             saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent,
-            extractos_y_certificaciones_component_1.ExtractosCertificaciones
+            extractos_y_certificaciones_component_1.ExtractosCertificaciones,
+            ayuda_component_1.AyudaComponet,
+            salir_component_1.SalirComponet
         ],
         bootstrap: [app_component_1.AppComponent]
     })

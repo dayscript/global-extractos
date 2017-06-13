@@ -15,7 +15,7 @@ declare var $: any
   providers: [ProductsService],
 })
 export class SaldosMovimientosFondosComponent {
-  id_identificacion = 0;
+  id_identificacion:string = '';
   fecha:string = ''
   fecha_inicio = ''
   fecha_final = ''
