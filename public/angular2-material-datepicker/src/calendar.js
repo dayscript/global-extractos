@@ -1,30 +1,28 @@
+"use strict";
 /*!
  * calendar: a port of the calendar module from Python
  * Copyright(c) 2011 Luciano Ramalho <luciano@ramalho.org>
  * MIT Licensed
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // const CalendarException = message => {
 //    this.message = message;
 //    this.toString = function() {
 //        return this.message
 //    };
 // }
-var Calendar = (function () {
-    function Calendar(firstWeekDay) {
-        if (firstWeekDay === void 0) { firstWeekDay = 0; }
+class Calendar {
+    constructor(firstWeekDay = 0) {
         this.firstWeekDay = firstWeekDay; // 0 = Sunday
     }
-    Calendar.prototype.weekStartDate = function (date) {
+    weekStartDate(date) {
         var startDate = new Date(date.getTime());
         while (startDate.getDay() !== this.firstWeekDay) {
             startDate.setDate(startDate.getDate() - 1);
         }
         return startDate;
-    };
-    Calendar.prototype.monthDates = function (year, month, dayFormatter, weekFormatter) {
-        if (dayFormatter === void 0) { dayFormatter = null; }
-        if (weekFormatter === void 0) { weekFormatter = null; }
+    }
+    monthDates(year, month, dayFormatter = null, weekFormatter = null) {
         if ((typeof year !== "number") || (year < 1970)) {
             throw ('year must be a number >= 1970');
         }
@@ -44,14 +42,14 @@ var Calendar = (function () {
             week = [];
         } while ((date.getMonth() <= month) && (date.getFullYear() === year));
         return weeks;
-    };
-    Calendar.prototype.monthDays = function (year, month) {
+    }
+    monthDays(year, month) {
         var getDayOrZero = function getDayOrZero(date) {
             return date.getMonth() === month ? date : 0;
         };
         return this.monthDates(year, month, getDayOrZero);
-    };
-    Calendar.prototype.monthText = function (year, month) {
+    }
+    monthText(year, month) {
         if (typeof year === "undefined") {
             var now = new Date();
             year = now.getFullYear();
@@ -66,11 +64,10 @@ var Calendar = (function () {
         };
         var weeks = this.monthDates(year, month, getDayOrBlank, function (week) { return week.join(" "); });
         return weeks.join("\n");
-    };
-    return Calendar;
-}());
+    }
+}
 exports.Calendar = Calendar;
-var months = "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split(" ");
+const months = "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split(" ");
 for (var i = 0; i < months.length; i++) {
     Calendar[months[i]] = i;
 }

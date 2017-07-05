@@ -17,7 +17,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@types/core-js": "^0.9.35",
+    "@types/core-js": "^0.9.36",
     "@types/jquery": "^2.0.40",
     "axios": "^0.15.2",
     "bootstrap": "^4.0.0-alpha.3",

@@ -11,16 +11,12 @@ require("rxjs/add/operator/map");
 var SalirComponet = (function () {
     function SalirComponet() {
     }
-    SalirComponet.prototype.log = function () { };
-    ;
-    SalirComponet.prototype.redirectTo = function () { };
-    ;
     return SalirComponet;
 }());
 SalirComponet = __decorate([
     core_1.Component({
         selector: 'my-app',
-        templateUrl: '/app/templates/index.html',
+        templateUrl: '/app/templates/login.html',
     })
 ], SalirComponet);
 exports.SalirComponet = SalirComponet;
