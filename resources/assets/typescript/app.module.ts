@@ -8,8 +8,6 @@ import {FormsModule} from "@angular/forms";
 import { AppComponent }   from './app.component';
 import { MenuComponent }   from './menu.component';
 import { UserInfoComponent }   from './user-info.component';
-import { AyudaComponet }   from './ayuda.component';
-import { SalirComponet }   from './salir.component';
 
 import { ProductsService } from './personal.service';
 
@@ -19,7 +17,8 @@ import { SaldosMovimientosFondosComponent } from './saldos-y-movimientos-fondos.
 import { ExtractosCertificaciones } from './extractos-y-certificaciones.component';
 import { NotFoundPageComponent }   from './notfound.component';
 import { ChartsModule } from 'ng2-charts';
-
+import { AyudaComponet }   from './ayuda.component';
+import { SalirComponet }   from './salir.component';
 
 const appRoutes: Routes = [
     { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
@@ -27,7 +26,7 @@ const appRoutes: Routes = [
     { path:'report/:id/:date/saldos-y-movimientos-de-la-firma', component:SaldosMovimientosComponent },
     { path:'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component:SaldosMovimientosFondosComponent },
     { path:'report/:id/:date/extractos-y-certificaciones', component:ExtractosCertificaciones },
-    { path:'ayuda', component:AyudaComponet },
+    { path:'ayuda/:id/:date', component:AyudaComponet },
     { path:'salir', component:SalirComponet },
  ];
 
