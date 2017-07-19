@@ -10,13 +10,13 @@ var core_1 = require("@angular/core");
 var NotFoundPageComponent = (function () {
     function NotFoundPageComponent() {
     }
+    NotFoundPageComponent = __decorate([
+        core_1.Component({
+            templateUrl: '/app/templates/error404.html',
+        })
+    ], NotFoundPageComponent);
     return NotFoundPageComponent;
 }());
-NotFoundPageComponent = __decorate([
-    core_1.Component({
-        templateUrl: '/app/templates/error404.html',
-    })
-], NotFoundPageComponent);
 exports.NotFoundPageComponent = NotFoundPageComponent;
 
 //# sourceMappingURL=notfound.component.js.map

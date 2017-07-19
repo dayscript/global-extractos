@@ -52,7 +52,7 @@ export class ExtractosCertificaciones {
     productsService.FicsFilter.subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
-      () => console.log(this.fics_filter)
+      () => { console.log( 'FicsFilter=> ', this.fics_filter); }
     )
 
     for (var i = 1; i <= 6; i++) {
@@ -81,7 +81,6 @@ export class ExtractosCertificaciones {
     var fecha  = this.fecha_select
     var split = this.option_select.split('|')
     var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
-    console.log(url)
     window.location.replace(url)
 
   }
@@ -94,6 +93,20 @@ export class ExtractosCertificaciones {
     //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
     var url = '/download-renta/2016'
     window.location.replace(url)
+  }
+
+  downloadCert( link: string){
+    window.location.replace(link)
+  }
+
+  validateCodeFics(value: object, code: number) {
+    let validate;
+    Object.keys(value).forEach(function (key){
+       if (value[key].Fondo == code){
+         validate = true;
+       }
+    });
+    return validate;
   }
 
 }

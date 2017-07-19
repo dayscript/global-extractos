@@ -26,16 +26,16 @@ var MenuComponent = (function () {
                 _this.fecha = params['date'];
         });
     }
+    MenuComponent = __decorate([
+        core_1.Component({
+            selector: 'menu',
+            templateUrl: '/app/templates/menu.html',
+            providers: [personal_service_1.ProductsService],
+        }),
+        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+    ], MenuComponent);
     return MenuComponent;
 }());
-MenuComponent = __decorate([
-    core_1.Component({
-        selector: 'menu',
-        templateUrl: '/app/templates/menu.html',
-        providers: [personal_service_1.ProductsService],
-    }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
-], MenuComponent);
 exports.MenuComponent = MenuComponent;
 
 //# sourceMappingURL=menu.component.js.map

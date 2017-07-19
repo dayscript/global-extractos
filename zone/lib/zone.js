@@ -793,7 +793,7 @@ const Zone = (function (global) {
      *   - It ignores un-needed stack frames.
      *   - It Shows the associated Zone for reach frame.
      */
-    var FrameType;
+    let FrameType;
     (function (FrameType) {
         /// Skip this frame when printing out stack
         FrameType[FrameType["blackList"] = 0] = "blackList";

@@ -13,7 +13,7 @@ let SalirComponet = class SalirComponet {
 SalirComponet = __decorate([
     core_1.Component({
         selector: 'my-app',
-        templateUrl: '/app/templates/index.html',
+        templateUrl: '/app/templates/login.html',
     })
 ], SalirComponet);
 exports.SalirComponet = SalirComponet;

@@ -113,12 +113,12 @@ var ProductsService = (function () {
         enumerable: true,
         configurable: true
     });
+    ProductsService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])
+    ], ProductsService);
     return ProductsService;
 }());
-ProductsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])
-], ProductsService);
 exports.ProductsService = ProductsService;
 
 //# sourceMappingURL=personal.service.js.map

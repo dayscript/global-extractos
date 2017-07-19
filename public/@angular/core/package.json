@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "C:\\wamp64\\www\\global-extractos"
+      "/var/www/html/global-extractos"
     ]
   ],
   "_from": "@angular/core@2.4.1",
@@ -38,14 +38,13 @@
     "type": "version"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/@angular/core/-/core-2.4.1.tgz",
   "_shasum": "3a6d2dc7fd86fdebe4febae7eb28abad7d04c76a",
   "_shrinkwrap": null,
   "_spec": "@angular/core@2.4.1",
-  "_where": "C:\\wamp64\\www\\global-extractos",
+  "_where": "/var/www/html/global-extractos",
   "author": {
     "name": "angular"
   },

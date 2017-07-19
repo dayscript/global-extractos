@@ -15,21 +15,21 @@ const forms_1 = require("@angular/forms");
 const app_component_1 = require("./app.component");
 const menu_component_1 = require("./menu.component");
 const user_info_component_1 = require("./user-info.component");
-const ayuda_component_1 = require("./ayuda.component");
-const salir_component_1 = require("./salir.component");
 const resumen_portafolio_component_1 = require("./resumen-portafolio.component");
 const saldos_y_movimientos_component_1 = require("./saldos-y-movimientos.component");
 const saldos_y_movimientos_fondos_component_1 = require("./saldos-y-movimientos-fondos.component");
 const extractos_y_certificaciones_component_1 = require("./extractos-y-certificaciones.component");
 const notfound_component_1 = require("./notfound.component");
 const ng2_charts_1 = require("ng2-charts");
+const ayuda_component_1 = require("./ayuda.component");
+const salir_component_1 = require("./salir.component");
 const appRoutes = [
     { path: 'report/:id/:date', redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
     { path: 'report/:id/:date/resumen-de-portafolio', component: resumen_portafolio_component_1.ResumenPortafolioComponent },
     { path: 'report/:id/:date/saldos-y-movimientos-de-la-firma', component: saldos_y_movimientos_component_1.SaldosMovimientosComponent },
     { path: 'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component: saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent },
     { path: 'report/:id/:date/extractos-y-certificaciones', component: extractos_y_certificaciones_component_1.ExtractosCertificaciones },
-    { path: 'ayuda', component: ayuda_component_1.AyudaComponet },
+    { path: 'ayuda/:id/:date', component: ayuda_component_1.AyudaComponet },
     { path: 'salir', component: salir_component_1.SalirComponet },
 ];
 let AsyncPipe = class AsyncPipe {

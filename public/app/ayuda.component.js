@@ -11,14 +11,14 @@ require("rxjs/add/operator/map");
 var AyudaComponet = (function () {
     function AyudaComponet() {
     }
+    AyudaComponet = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/ayuda.html',
+        })
+    ], AyudaComponet);
     return AyudaComponet;
 }());
-AyudaComponet = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/ayuda.html',
-    })
-], AyudaComponet);
 exports.AyudaComponet = AyudaComponet;
 
 //# sourceMappingURL=ayuda.component.js.map

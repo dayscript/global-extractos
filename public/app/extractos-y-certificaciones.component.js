@@ -36,7 +36,7 @@ var ExtractosCertificaciones = (function () {
         });
         productsService.user_info
             .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
-        productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return console.log(_this.fics_filter); });
+        productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
             date.setMonth(date.getMonth() - i);
@@ -62,7 +62,6 @@ var ExtractosCertificaciones = (function () {
         var fecha = this.fecha_select;
         var split = this.option_select.split('|');
         var url = '/download-fics-extrac/' + this.id_identificacion + '/' + split[0] + '/' + split[2] + '/' + fecha;
-        console.log(url);
         window.location.replace(url);
     };
     ExtractosCertificaciones.prototype.download_renta = function () {
@@ -75,18 +74,30 @@ var ExtractosCertificaciones = (function () {
         var url = '/download-renta/2016';
         window.location.replace(url);
     };
+    ExtractosCertificaciones.prototype.downloadCert = function (link) {
+        window.location.replace(link);
+    };
+    ExtractosCertificaciones.prototype.validateCodeFics = function (value, code) {
+        var validate;
+        Object.keys(value).forEach(function (key) {
+            if (value[key].Fondo == code) {
+                validate = true;
+            }
+        });
+        return validate;
+    };
+    ExtractosCertificaciones = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/extractos-y-certificaciones.html',
+            providers: [personal_service_1.ProductsService],
+        }),
+        __metadata("design:paramtypes", [personal_service_1.ProductsService,
+            router_1.ActivatedRoute,
+            http_1.Http])
+    ], ExtractosCertificaciones);
     return ExtractosCertificaciones;
 }());
-ExtractosCertificaciones = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/extractos-y-certificaciones.html',
-        providers: [personal_service_1.ProductsService],
-    }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService,
-        router_1.ActivatedRoute,
-        http_1.Http])
-], ExtractosCertificaciones);
 exports.ExtractosCertificaciones = ExtractosCertificaciones;
 
 //# sourceMappingURL=extractos-y-certificaciones.component.js.map

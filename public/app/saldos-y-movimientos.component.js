@@ -61,18 +61,18 @@ var SaldosMovimientosComponent = (function () {
             .map(function (response) { return response.json(); })
             .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });
     };
+    SaldosMovimientosComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/saldos-y-movimientos.html',
+            providers: [personal_service_1.ProductsService],
+        }),
+        __metadata("design:paramtypes", [personal_service_1.ProductsService,
+            router_1.ActivatedRoute,
+            http_1.Http])
+    ], SaldosMovimientosComponent);
     return SaldosMovimientosComponent;
 }());
-SaldosMovimientosComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/saldos-y-movimientos.html',
-        providers: [personal_service_1.ProductsService],
-    }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService,
-        router_1.ActivatedRoute,
-        http_1.Http])
-], SaldosMovimientosComponent);
 exports.SaldosMovimientosComponent = SaldosMovimientosComponent;
 
 //# sourceMappingURL=saldos-y-movimientos.component.js.map

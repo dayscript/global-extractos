@@ -11,14 +11,14 @@ require("rxjs/add/operator/map");
 var AppComponent = (function () {
     function AppComponent() {
     }
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/index.html',
+        })
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/index.html',
-    })
-], AppComponent);
 exports.AppComponent = AppComponent;
 
 //# sourceMappingURL=app.component.js.map

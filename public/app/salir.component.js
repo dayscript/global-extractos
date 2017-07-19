@@ -11,14 +11,14 @@ require("rxjs/add/operator/map");
 var SalirComponet = (function () {
     function SalirComponet() {
     }
+    SalirComponet = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/login.html',
+        })
+    ], SalirComponet);
     return SalirComponet;
 }());
-SalirComponet = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/login.html',
-    })
-], SalirComponet);
 exports.SalirComponet = SalirComponet;
 
 //# sourceMappingURL=salir.component.js.map

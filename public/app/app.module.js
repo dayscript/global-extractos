@@ -40,13 +40,13 @@ var AsyncPipe = (function () {
             return obj[args[0]][args[1]];
         }
     };
+    AsyncPipe = __decorate([
+        core_2.Pipe({
+            name: 'asyncPipe'
+        })
+    ], AsyncPipe);
     return AsyncPipe;
 }());
-AsyncPipe = __decorate([
-    core_2.Pipe({
-        name: 'asyncPipe'
-    })
-], AsyncPipe);
 exports.AsyncPipe = AsyncPipe;
 var KeysPipe = (function () {
     function KeysPipe() {
@@ -58,36 +58,36 @@ var KeysPipe = (function () {
         }
         return keys;
     };
+    KeysPipe = __decorate([
+        core_2.Pipe({ name: 'keys' }) // permite convertir un objeto en un arreglo
+    ], KeysPipe);
     return KeysPipe;
 }());
-KeysPipe = __decorate([
-    core_2.Pipe({ name: 'keys' }) // permite convertir un objeto en un arreglo
-], KeysPipe);
 exports.KeysPipe = KeysPipe;
 var AppModule = (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        core_1.NgModule({
+            imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
+            declarations: [app_component_1.AppComponent,
+                menu_component_1.MenuComponent,
+                user_info_component_1.UserInfoComponent,
+                KeysPipe,
+                notfound_component_1.NotFoundPageComponent,
+                resumen_portafolio_component_1.ResumenPortafolioComponent,
+                AsyncPipe,
+                saldos_y_movimientos_component_1.SaldosMovimientosComponent,
+                saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent,
+                extractos_y_certificaciones_component_1.ExtractosCertificaciones,
+                ayuda_component_1.AyudaComponet,
+                salir_component_1.SalirComponet
+            ],
+            bootstrap: [app_component_1.AppComponent]
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, ng2_charts_1.ChartsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes), forms_1.FormsModule],
-        declarations: [app_component_1.AppComponent,
-            menu_component_1.MenuComponent,
-            user_info_component_1.UserInfoComponent,
-            KeysPipe,
-            notfound_component_1.NotFoundPageComponent,
-            resumen_portafolio_component_1.ResumenPortafolioComponent,
-            AsyncPipe,
-            saldos_y_movimientos_component_1.SaldosMovimientosComponent,
-            saldos_y_movimientos_fondos_component_1.SaldosMovimientosFondosComponent,
-            extractos_y_certificaciones_component_1.ExtractosCertificaciones,
-            ayuda_component_1.AyudaComponet,
-            salir_component_1.SalirComponet
-        ],
-        bootstrap: [app_component_1.AppComponent]
-    })
-], AppModule);
 exports.AppModule = AppModule;
 
 //# sourceMappingURL=app.module.js.map

@@ -24,16 +24,16 @@ var UserInfoComponent = (function () {
         productsService.user_info
             .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
     }
+    UserInfoComponent = __decorate([
+        core_1.Component({
+            selector: 'user-info',
+            templateUrl: '/app/templates/info-usuario.html',
+            providers: [personal_service_1.ProductsService],
+        }),
+        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+    ], UserInfoComponent);
     return UserInfoComponent;
 }());
-UserInfoComponent = __decorate([
-    core_1.Component({
-        selector: 'user-info',
-        templateUrl: '/app/templates/info-usuario.html',
-        providers: [personal_service_1.ProductsService],
-    }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
-], UserInfoComponent);
 exports.UserInfoComponent = UserInfoComponent;
 
 //# sourceMappingURL=user-info.component.js.map

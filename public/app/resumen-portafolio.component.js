@@ -108,16 +108,16 @@ var ResumenPortafolioComponent = (function () {
         this.fecha = $('#datepicker').val();
         window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
     };
+    ResumenPortafolioComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            templateUrl: '/app/templates/resumen-de-portafolio.html',
+            providers: [personal_service_1.ProductsService],
+        }),
+        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+    ], ResumenPortafolioComponent);
     return ResumenPortafolioComponent;
 }());
-ResumenPortafolioComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        templateUrl: '/app/templates/resumen-de-portafolio.html',
-        providers: [personal_service_1.ProductsService],
-    }),
-    __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
-], ResumenPortafolioComponent);
 exports.ResumenPortafolioComponent = ResumenPortafolioComponent;
 
 //# sourceMappingURL=resumen-portafolio.component.js.map

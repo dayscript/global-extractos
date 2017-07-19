@@ -33,9 +33,9 @@
         </div>
       </form>
     </section>
-    <!--<section class="header">
+    <section class="header">
       <label for="">CERTIFICACIONES</label>
-      <form class="" action="index.html" method="post">
+    <!--  <form class="" action="index.html" method="post">
         <div class="left-aling-content">
           <label  style="width:250px" for="">Certificado para declaración de renta</label>
           <select style="width:100px" id="download_cert" class="download" name="download_cert">
@@ -44,7 +44,20 @@
           </select>
           <button type="button" name="button" (click)=download_renta()>Consultar</button>
         </div>
-      </form>
-    </section>-->
+      </form>-->
+      <div *ngIf="fics_filter?.fics" class="certificates-wrapper">
+
+          <div *ngIf="validateCodeFics(fics_filter?.fics,2)"> <label sytle="text-transform: capitalize; ">Informe  C.E 054 SFC FIC G.S. Credit Opportunities Fund Facturas</label>
+            <button (click)="downloadCert('https://www.globalcdb.com/servlet/Download.php?idExternalFile=47509&name=C054_900876912.pdf')">  Descargar</button>
+          </div>
+          <div *ngIf="validateCodeFics(fics_filter?.fics,5)"><label  sytle="text-transform: capitalize; "> Informe  C.E 054 SFC FIC G.S. Credit Opportunities Fund Titulos Valores</label>
+            <button (click)="downloadCert('https://www.globalcdb.com/servlet/Download.php?idExternalFile=47511&name=C054_900281850.pdf')">  Descargar</button>
+          </div>
+          <div *ngIf="validateCodeFics(fics_filter?.fics,10)"><label  sytle="text-transform: capitalize; "> Informe  C.E 054 SFC FIC G.S. Credit Opportunities Fund Libranzas</label>
+             <button (click)="downloadCert('https://www.globalcdb.com/servlet/Download.php?idExternalFile=47512&name=C054_900876955.pdf')">  Descargar</button>
+          </div>
+
+      </div>
+    </section>
   </div>
 </div>
