@@ -15,4 +15,4 @@ bootstrap/cache/
 .rocketeer/
 
 storage/json/*
- 
+public/documentos_ayuda/* 
