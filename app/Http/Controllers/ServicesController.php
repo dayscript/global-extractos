@@ -22,6 +22,8 @@ class ServicesController extends Controller
     if(isset($user_load[0])){
       $user['nombre'] = $user_load[0]->nombre;
       $user['identification'] = $user_load[0]->identification;
+      $user['codigo'] = $user_load[0]->codeoyd;
+
     }
     return response()->json($user);
   }
