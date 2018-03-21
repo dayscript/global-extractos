@@ -547,7 +547,7 @@ function extract_renta(){
 
 function verifyFile($CodigoOyd){
   $exists = Storage::disk('public')->exists('/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'.$CodigoOyd.'.pdf');
-  #dd('/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'.$CodigoOyd.'.pdf');
+  dd('/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'.$CodigoOyd.'.pdf');
   #dd($exists);
   if( $exists ){
     return array(true);
