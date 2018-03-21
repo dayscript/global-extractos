@@ -17,7 +17,7 @@ declare var $: any
 export class ExtractosCertificaciones {
   id_identificacion:string = ''
   fecha:string = ''
-  user_info:Observable<Array<string>>;
+  user_info:any;
   fics_filter:Observable<Array<string>>;
   today:any;
   option_select = 'NA'
@@ -28,7 +28,7 @@ export class ExtractosCertificaciones {
   info_movimientos:Observable<Array<string>>;
   fondo:any;
   encargo:any;
-
+  downloadCertificate: string,
 
   constructor(
     private productsService:ProductsService,
@@ -48,7 +48,7 @@ export class ExtractosCertificaciones {
         error => console.log( 'Error: ${error}' ),
         () => {
             this.today = new Date()
-            console.log(this.user_info); 
+            this.downloadCertificate = '/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'+ this.user_info.codigo +'.pdf'
         }
       );
 

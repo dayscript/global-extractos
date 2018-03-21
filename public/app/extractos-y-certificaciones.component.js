@@ -37,7 +37,7 @@ var ExtractosCertificaciones = /** @class */ (function () {
         productsService.user_info
             .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () {
             _this.today = new Date();
-            console.log(_this.user_info);
+            _this.downloadCertificate = '/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_' + _this.user_info.codigo + '.pdf';
         });
         productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
         for (var i = 1; i <= 6; i++) {
