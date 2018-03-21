@@ -544,4 +544,11 @@ function extract_renta(){
     return redirect('https://globalextractos.demodayscript.com/images/FC_certificado_renta_2016.pdf');
 }
 
+function verifyFile($CodigoOyd){
+  $exists = Storage::disk('public')->exists('/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'+$CodigoOyd+'.pdf');
+  if( $exists ){
+    return true;
+  }
+}
+
 }

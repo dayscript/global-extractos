@@ -53,5 +53,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');
     Route::get('cache/{CodigoOyd}', 'ServicesController@CACHE');
     Route::get('/query','HomeController@query');
+    Route::get('/file-exist/{CodigoOyd}','HomeController@verifyFile');
 
 });
