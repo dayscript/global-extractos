@@ -14,6 +14,7 @@ use \App\Movimientos;
 use \App\Extractos_fics;
 use \App\Extractos_firma;
 use Excel;
+use Storage;
 class HomeController extends Controller
 {
     /**
