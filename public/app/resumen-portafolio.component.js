@@ -14,7 +14,7 @@ var personal_service_1 = require("./personal.service");
 var router_1 = require("@angular/router");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-var ResumenPortafolioComponent = (function () {
+var ResumenPortafolioComponent = /** @class */ (function () {
     /*public pieCharColors:Array<any> = [
       {
         backgroundColor: '#000000',

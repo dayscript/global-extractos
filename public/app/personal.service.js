@@ -13,7 +13,7 @@ var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var router_1 = require("@angular/router");
-var ProductsService = (function () {
+var ProductsService = /** @class */ (function () {
     function ProductsService(http, activatedRoute) {
         var _this = this;
         this.http = http;

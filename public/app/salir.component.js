@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 require("rxjs/add/operator/map");
-var SalirComponet = (function () {
+var SalirComponet = /** @class */ (function () {
     function SalirComponet() {
     }
     SalirComponet = __decorate([

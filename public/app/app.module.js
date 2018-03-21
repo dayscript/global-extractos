@@ -32,7 +32,7 @@ var appRoutes = [
     { path: 'ayuda/:id/:date', component: ayuda_component_1.AyudaComponet },
     { path: 'salir', component: salir_component_1.SalirComponet },
 ];
-var AsyncPipe = (function () {
+var AsyncPipe = /** @class */ (function () {
     function AsyncPipe() {
     }
     AsyncPipe.prototype.transform = function (obj, args) {
@@ -48,7 +48,7 @@ var AsyncPipe = (function () {
     return AsyncPipe;
 }());
 exports.AsyncPipe = AsyncPipe;
-var KeysPipe = (function () {
+var KeysPipe = /** @class */ (function () {
     function KeysPipe() {
     }
     KeysPipe.prototype.transform = function (value, args) {
@@ -64,7 +64,7 @@ var KeysPipe = (function () {
     return KeysPipe;
 }());
 exports.KeysPipe = KeysPipe;
-var AppModule = (function () {
+var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([

@@ -46,7 +46,10 @@ export class ExtractosCertificaciones {
       .subscribe(
         data => { this.user_info = data },
         error => console.log( 'Error: ${error}' ),
-        () => this.today = new Date(),
+        () => {
+            this.today = new Date()
+            console.log(this.user_info); 
+        }
       );
 
     productsService.FicsFilter.subscribe(

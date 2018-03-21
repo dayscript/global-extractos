@@ -34,8 +34,11 @@ let ExtractosCertificaciones = class ExtractosCertificaciones {
                 this.fecha = params['date'];
         });
         productsService.user_info
-            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => this.today = new Date());
-        productsService.FicsFilter.subscribe(data => { this.fics_filter = data; }, error => console.log('Error: ${error}'), () => console.log(this.fics_filter));
+            .subscribe(data => { this.user_info = data; }, error => console.log('Error: ${error}'), () => {
+            this.today = new Date();
+            console.log(this.user_info);
+        });
+        productsService.FicsFilter.subscribe(data => { this.fics_filter = data; }, error => console.log('Error: ${error}'), () => { console.log('FicsFilter=> ', this.fics_filter); });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
             date.setMonth(date.getMonth() - i);
@@ -61,7 +64,6 @@ let ExtractosCertificaciones = class ExtractosCertificaciones {
         var fecha = this.fecha_select;
         var split = this.option_select.split('|');
         var url = '/download-fics-extrac/' + this.id_identificacion + '/' + split[0] + '/' + split[2] + '/' + fecha;
-        console.log(url);
         window.location.replace(url);
     }
     download_renta() {
@@ -73,6 +75,18 @@ let ExtractosCertificaciones = class ExtractosCertificaciones {
         //var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
         var url = '/download-renta/2016';
         window.location.replace(url);
+    }
+    downloadCert(link) {
+        window.location.replace(link);
+    }
+    validateCodeFics(value, code) {
+        let validate;
+        Object.keys(value).forEach(function (key) {
+            if (value[key].Fondo == code) {
+                validate = true;
+            }
+        });
+        return validate;
     }
 };
 ExtractosCertificaciones = __decorate([

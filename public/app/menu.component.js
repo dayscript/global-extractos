@@ -14,7 +14,7 @@ var personal_service_1 = require("./personal.service");
 var router_1 = require("@angular/router");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-var MenuComponent = (function () {
+var MenuComponent = /** @class */ (function () {
     function MenuComponent(productsService, activatedRoute, http, Router) {
         var _this = this;
         this.productsService = productsService;

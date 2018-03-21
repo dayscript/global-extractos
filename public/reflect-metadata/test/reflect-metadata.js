@@ -1,33 +1,34 @@
+"use strict";
 // 4.1.2 Reflect.metadata ( metadataKey, metadataValue )
 // https://rbuckton.github.io/reflect-metadata/#reflect.metadata
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 require("../Reflect");
-var chai_1 = require("chai");
-describe("Reflect.metadata", function () {
-    it("ReturnsDecoratorFunction", function () {
-        var result = Reflect.metadata("key", "value");
+const chai_1 = require("chai");
+describe("Reflect.metadata", () => {
+    it("ReturnsDecoratorFunction", () => {
+        let result = Reflect.metadata("key", "value");
         chai_1.assert.equal(typeof result, "function");
     });
-    it("DecoratorThrowsWithInvalidTargetWithTargetKey", function () {
-        var decorator = Reflect.metadata("key", "value");
-        chai_1.assert.throws(function () { return decorator(undefined, "name"); }, TypeError);
+    it("DecoratorThrowsWithInvalidTargetWithTargetKey", () => {
+        let decorator = Reflect.metadata("key", "value");
+        chai_1.assert.throws(() => decorator(undefined, "name"), TypeError);
     });
-    it("DecoratorThrowsWithInvalidTargetKey", function () {
-        var decorator = Reflect.metadata("key", "value");
-        chai_1.assert.throws(function () { return decorator({}, {}); }, TypeError);
+    it("DecoratorThrowsWithInvalidTargetKey", () => {
+        let decorator = Reflect.metadata("key", "value");
+        chai_1.assert.throws(() => decorator({}, {}), TypeError);
     });
-    it("OnTargetWithoutTargetKey", function () {
-        var decorator = Reflect.metadata("key", "value");
-        var target = function () { };
+    it("OnTargetWithoutTargetKey", () => {
+        let decorator = Reflect.metadata("key", "value");
+        let target = function () { };
         decorator(target);
-        var result = Reflect.hasOwnMetadata("key", target, undefined);
+        let result = Reflect.hasOwnMetadata("key", target, undefined);
         chai_1.assert.equal(result, true);
     });
-    it("OnTargetWithTargetKey", function () {
-        var decorator = Reflect.metadata("key", "value");
-        var target = {};
+    it("OnTargetWithTargetKey", () => {
+        let decorator = Reflect.metadata("key", "value");
+        let target = {};
         decorator(target, "name");
-        var result = Reflect.hasOwnMetadata("key", target, "name");
+        let result = Reflect.hasOwnMetadata("key", target, "name");
         chai_1.assert.equal(result, true);
     });
 });

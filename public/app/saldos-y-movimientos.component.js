@@ -17,7 +17,7 @@ var http_1 = require("@angular/http");
 /**
  * Componente para la pagina de salfos y movimientos firma
  */
-var SaldosMovimientosComponent = (function () {
+var SaldosMovimientosComponent = /** @class */ (function () {
     function SaldosMovimientosComponent(productsService, activatedRoute, http) {
         var _this = this;
         this.productsService = productsService;

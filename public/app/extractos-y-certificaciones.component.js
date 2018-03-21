@@ -17,7 +17,7 @@ var http_1 = require("@angular/http");
 /**
  * Componente para la pagina de salfos y movimientos firma
  */
-var ExtractosCertificaciones = (function () {
+var ExtractosCertificaciones = /** @class */ (function () {
     function ExtractosCertificaciones(productsService, activatedRoute, http) {
         var _this = this;
         this.productsService = productsService;
@@ -35,7 +35,10 @@ var ExtractosCertificaciones = (function () {
                 _this.fecha = params['date'];
         });
         productsService.user_info
-            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
+            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () {
+            _this.today = new Date();
+            console.log(_this.user_info);
+        });
         productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
