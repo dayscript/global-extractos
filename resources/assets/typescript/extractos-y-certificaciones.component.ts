@@ -48,7 +48,13 @@ export class ExtractosCertificaciones {
         error => console.log( 'Error: ${error}' ),
         () => {
             this.today = new Date()
-            this.downloadCertificate = '/documentos_ayuda/certificaciones/archivos/CertificadoCarteras_'+ this.user_info.codigo +'.pdf'
+            productsService.verifyFile(this.user_info.codigo).subscribe(
+              response => {
+                  if(response.response){
+                    this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_'+ this.user_info.codigo +'.pdf'
+                  }
+              }
+            )
         }
       );
 
@@ -111,5 +117,7 @@ export class ExtractosCertificaciones {
     });
     return validate;
   }
+
+
 
 }

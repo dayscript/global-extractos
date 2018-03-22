@@ -83,4 +83,9 @@ export class ProductsService {
     return this.http.get('api/fondos-de-inversion-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
   }
+
+  verifyFile( codeoyd:number ):Observable<any>{
+    return this.http.get('/api/file-exist/'+ codeoyd)
+             .map( response => response.json() );
+  }
 }

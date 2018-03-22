@@ -38,7 +38,7 @@
       <br>
       <ul style="text-align:left;">
         <li>
-          <a type="button" name="button" download href="{{downloadCertificate}}" > Descargar Certificado de Retención en la Fuente  </a>
+          <a *ngIf="downloadCertificate" type="button" name="button" download href="{{downloadCertificate}}" > Descargar Certificado de Retención en la Fuente  </a>
           <br>
           <em>
             <small>
