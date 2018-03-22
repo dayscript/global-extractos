@@ -38,13 +38,15 @@
       <br>
       <ul style="text-align:left;">
         <li>
-          <a *ngIf="downloadCertificate" type="button" name="button" download href="{{downloadCertificate}}" > Descargar Certificado de Retención en la Fuente  </a>
-          <br>
-          <em>
-            <small>
-              Por su seguridad el archivo está  protegido. Para abrirlo debe digitar el número de su documento de identificación.
-            </small>
-          </em>
+          <div *ngIf="downloadCertificate" >
+            <a type="button" name="button" download href="{{downloadCertificate}}" > Descargar Certificado de Retención en la Fuente  </a>
+            <br>
+            <em>
+              <small>
+                Por su seguridad el archivo está  protegido. Para abrirlo debe digitar el número de su documento de identificación.
+              </small>
+            </em>
+          </div>
         </li>
       </ul>
 
