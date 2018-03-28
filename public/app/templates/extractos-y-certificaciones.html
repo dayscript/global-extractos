@@ -46,6 +46,15 @@
               </small>
             </em>
         </li>
+        <li *ngIf="downloadOperations" >
+            <a type="button" name="button" download href="{{downloadOperations}}" > Descargar Resumen de Operaciones 2017</a>
+            <br>
+            <em>
+              <small>
+                Por su seguridad el archivo está  protegido. Para abrirlo debe digitar el número de su documento de identificación.
+              </small>
+            </em>
+        </li>
       </ul>
 
 

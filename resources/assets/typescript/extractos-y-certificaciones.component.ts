@@ -28,7 +28,9 @@ export class ExtractosCertificaciones {
   info_movimientos:Observable<Array<string>>;
   fondo:any;
   encargo:any;
-  downloadCertificate: string,
+  downloadCertificate: string;
+  downloadOperations: string;
+
 
   constructor(
     private productsService:ProductsService,
@@ -55,6 +57,15 @@ export class ExtractosCertificaciones {
                   }
               }
             )
+            productsService.verifyFileOperations(this.user_info.codigo).subscribe(
+              response => {
+                  if(response.response){
+                    this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_'+ this.user_info.codigo +'.pdf'
+                  }
+              }
+            )
+
+
         }
       );
 

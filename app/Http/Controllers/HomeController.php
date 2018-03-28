@@ -549,5 +549,9 @@ function verifyFile($CodigoOyd){
   $exists = Storage::disk('public')->exists('/documentos_ayuda/certificados_cartera/CertificadoCarteras_'.$CodigoOyd.'.pdf');
   return ($exists) ? array('response'=> true):array('response'=> false);
 }
+function verifyFileOperations($CodigoOyd){
+  $exists = Storage::disk('public')->exists('/documentos_ayuda/resumen_operaciones_anual/Certificado_'.$CodigoOyd.'.pdf');
+  return ($exists) ? array('response'=> true):array('response'=> false);
+}
 
 }

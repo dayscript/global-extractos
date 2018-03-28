@@ -42,6 +42,11 @@ var ExtractosCertificaciones = /** @class */ (function () {
                     _this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_' + _this.user_info.codigo + '.pdf';
                 }
             });
+            productsService.verifyFileOperations(_this.user_info.codigo).subscribe(function (response) {
+                if (response.response) {
+                    _this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_' + _this.user_info.codigo + '.pdf';
+                }
+            });
         });
         productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
         for (var i = 1; i <= 6; i++) {

@@ -117,6 +117,10 @@ var ProductsService = /** @class */ (function () {
         return this.http.get('/api/file-exist/' + codeoyd)
             .map(function (response) { return response.json(); });
     };
+    ProductsService.prototype.verifyFileOperations = function (codeoyd) {
+        return this.http.get('/api/file-exist-operations/' + codeoyd)
+            .map(function (response) { return response.json(); });
+    };
     ProductsService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])

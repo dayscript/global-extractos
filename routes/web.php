@@ -54,5 +54,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('cache/{CodigoOyd}', 'ServicesController@CACHE');
     Route::get('/query','HomeController@query');
     Route::get('/file-exist/{CodigoOyd}','HomeController@verifyFile');
+    Route::get('/file-exist-operations/{CodigoOyd}','HomeController@verifyFileOperations');
+
+
 
 });

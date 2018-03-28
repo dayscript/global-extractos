@@ -88,4 +88,8 @@ export class ProductsService {
     return this.http.get('/api/file-exist/'+ codeoyd)
              .map( response => response.json() );
   }
+  verifyFileOperations( codeoyd:number ):Observable<any>{
+    return this.http.get('/api/file-exist-operations/'+ codeoyd)
+             .map( response => response.json() );
+  }
 }
