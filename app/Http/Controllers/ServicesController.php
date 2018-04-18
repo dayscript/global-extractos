@@ -694,7 +694,7 @@ function create_movimiento_fics($data,$fecha_inicio,$fecha_fin){
 function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   try{
     #Comentar en produccion
-    $info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
+    $info = DB::connection('sqlsrv')->select('SET ANSI_NULLS ON;SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
 
   }catch( \Exception $e ){
