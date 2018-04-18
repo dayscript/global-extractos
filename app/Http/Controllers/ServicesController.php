@@ -699,7 +699,6 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
   }catch( \Exception $e ){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
-  dd($info);
   return $info;
 }
 
