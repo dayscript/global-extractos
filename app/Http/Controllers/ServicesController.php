@@ -708,7 +708,7 @@ function exec_PieRVClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC PieRVClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch ( \Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -719,7 +719,7 @@ function exec_PieRFClienteDado($CodigoOyd,$Fecha){
   try{
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC PieRFClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   }catch(\Exception $e){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -730,7 +730,7 @@ function exec_PieCarterasClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -741,7 +741,7 @@ function exec_TraerOperacionesPorCumplirClienteDado($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC TraerOperacionesPorCumplirClienteDadoDayScript :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -752,7 +752,7 @@ function exec_OperacionesLiquidez($CodigoOyd,$Fecha){
   try {
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv')->select('EXEC [TraerOperacionesLiquidezClienteDadoDayScript] :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC [TraerOperacionesLiquidezClienteDadoDayScript] :Fecha,:CodigoOyd',array('Fecha'=>$Fecha,'CodigoOyd'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -764,7 +764,7 @@ function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
     if($_SERVER['HTTP_HOST'] != 'extractos.local'){
         $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
     }else{
-        $info = DB::connection('sqlsrv')->select('EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
+        $info = DB::connection('sqlsrv')->select('SET NOCOUNT ON;EXEC ExtractoClienteDado :CodigoOyd, :Fecha_start, :Fecha_end',array('Fecha_start'=>$Fecha_start,'Fecha_end'=>$Fecha_end,'CodigoOyd'=>$CodigoOyd) );
     }
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
@@ -775,7 +775,7 @@ function exec_ExtractoClienteDado($CodigoOyd, $Fecha_start, $Fecha_end){
 function exec_FideicomisosVigentesClienteDado($CodigoOyd){
   try {
     #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv2')->select('EXEC FideicomisosVigentesClienteDado :Consecutivo',array('Consecutivo'=>$CodigoOyd) );
+    $info = DB::connection('sqlsrv2')->select('SET NOCOUNT ON;EXEC FideicomisosVigentesClienteDado :Consecutivo',array('Consecutivo'=>$CodigoOyd) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
@@ -785,7 +785,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
 function exec_ExtractoFondoyFideicomisoDados($Fondo,$Encargo,$Fecha_start,$Fecha_end){
   try {
     #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv2')->select('EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',array('Fondo'=>$Fondo,'Encargo'=>$Encargo,'FechaInicial'=>$Fecha_start,'FechaFinal'=>$Fecha_end) );
+    $info = DB::connection('sqlsrv2')->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',array('Fondo'=>$Fondo,'Encargo'=>$Encargo,'FechaInicial'=>$Fecha_start,'FechaFinal'=>$Fecha_end) );
   } catch (Exception $e) {
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }

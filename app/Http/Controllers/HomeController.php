@@ -127,7 +127,7 @@ class HomeController extends Controller
    public function query()
    {
      $stmt = DB::select('SET ANSI_WARNINGS ON;');
-     $stmt = DB::select('EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>'29539','Fecha'=>'2016-12-31'));
+     $stmt = DB::select('SET NOCOUNT ON;EXEC PieCarterasClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>'29539','Fecha'=>'2016-12-31'));
      dd($stmt);
        #return response()->json(['error' => 'ok.'],403);
    }
