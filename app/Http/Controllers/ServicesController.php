@@ -49,7 +49,6 @@ class ServicesController extends Controller
                                   ->get();
           if( isset($portafolio[0]) ){
               $output = $portafolio[0];
-              dd($output);
           }else{
             # consultar informacion en sqlsrv
             $user = User::where('identification',$cc)->get();
