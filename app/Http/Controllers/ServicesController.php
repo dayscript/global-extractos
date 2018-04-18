@@ -54,7 +54,7 @@ class ServicesController extends Controller
             # consultar informacion en sqlsrv
             $user = User::where('identification',$cc)->get();
             $user = $user[0];
-            dd($user);
+
             $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
             if(isset($info_portafolio['error'])){
               return response()->json($info_portafolio);
@@ -696,10 +696,11 @@ function exec_PieResumidoClienteDado($CodigoOyd,$Fecha){
     #Comentar en produccion
     #$info = DB::connection('sqlsrv')->select('SET ANSI_WARNINGS ON;');
     $info = DB::connection('sqlsrv')->select('EXEC PieResumidoClienteDado :CodigoOyd,:Fecha',array('CodigoOyd'=>$CodigoOyd,'Fecha'=>$Fecha));
-    dd($info);
+
   }catch( \Exception $e ){
     $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
   }
+  dd($info);
   return $info;
 }
 
