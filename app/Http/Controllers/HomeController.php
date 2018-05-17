@@ -15,6 +15,7 @@ use \App\Extractos_fics;
 use \App\Extractos_firma;
 use Excel;
 use Storage;
+use PDF;
 class HomeController extends Controller
 {
     /**
@@ -552,6 +553,15 @@ function verifyFile($CodigoOyd){
 function verifyFileOperations($CodigoOyd){
   $exists = Storage::disk('public')->exists('/documentos_ayuda/resumen_operaciones_anual/Certificado_'.$CodigoOyd.'.pdf');
   return ($exists) ? array('response'=> true):array('response'=> false);
+}
+
+function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
+  $data = ['title' => 'Welcome to HDTuto.com'];
+
+   $pdf = PDF::loadView('certificadoTenencia', $data);
+
+   return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');
+
 }
 
 }
