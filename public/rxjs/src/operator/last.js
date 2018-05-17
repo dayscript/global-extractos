@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const EmptyError_1 = require("../util/EmptyError");
+var Subscriber_1 = require("../Subscriber");
+var EmptyError_1 = require("../util/EmptyError");
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
  * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -23,38 +33,41 @@ function last(predicate, resultSelector, defaultValue) {
     return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 exports.last = last;
-class LastOperator {
-    constructor(predicate, resultSelector, defaultValue, source) {
+var LastOperator = /** @class */ (function () {
+    function LastOperator(predicate, resultSelector, defaultValue, source) {
         this.predicate = predicate;
         this.resultSelector = resultSelector;
         this.defaultValue = defaultValue;
         this.source = source;
     }
-    call(observer, source) {
+    LastOperator.prototype.call = function (observer, source) {
         return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
-    }
-}
+    };
+    return LastOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class LastSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, resultSelector, defaultValue, source) {
-        super(destination);
-        this.predicate = predicate;
-        this.resultSelector = resultSelector;
-        this.defaultValue = defaultValue;
-        this.source = source;
-        this.hasValue = false;
-        this.index = 0;
+var LastSubscriber = /** @class */ (function (_super) {
+    __extends(LastSubscriber, _super);
+    function LastSubscriber(destination, predicate, resultSelector, defaultValue, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.resultSelector = resultSelector;
+        _this.defaultValue = defaultValue;
+        _this.source = source;
+        _this.hasValue = false;
+        _this.index = 0;
         if (typeof defaultValue !== 'undefined') {
-            this.lastValue = defaultValue;
-            this.hasValue = true;
+            _this.lastValue = defaultValue;
+            _this.hasValue = true;
         }
+        return _this;
     }
-    _next(value) {
-        const index = this.index++;
+    LastSubscriber.prototype._next = function (value) {
+        var index = this.index++;
         if (this.predicate) {
             this._tryPredicate(value, index);
         }
@@ -66,9 +79,9 @@ class LastSubscriber extends Subscriber_1.Subscriber {
             this.lastValue = value;
             this.hasValue = true;
         }
-    }
-    _tryPredicate(value, index) {
-        let result;
+    };
+    LastSubscriber.prototype._tryPredicate = function (value, index) {
+        var result;
         try {
             result = this.predicate(value, index, this.source);
         }
@@ -84,9 +97,9 @@ class LastSubscriber extends Subscriber_1.Subscriber {
             this.lastValue = value;
             this.hasValue = true;
         }
-    }
-    _tryResultSelector(value, index) {
-        let result;
+    };
+    LastSubscriber.prototype._tryResultSelector = function (value, index) {
+        var result;
         try {
             result = this.resultSelector(value, index);
         }
@@ -96,9 +109,9 @@ class LastSubscriber extends Subscriber_1.Subscriber {
         }
         this.lastValue = result;
         this.hasValue = true;
-    }
-    _complete() {
-        const destination = this.destination;
+    };
+    LastSubscriber.prototype._complete = function () {
+        var destination = this.destination;
         if (this.hasValue) {
             destination.next(this.lastValue);
             destination.complete();
@@ -106,6 +119,7 @@ class LastSubscriber extends Subscriber_1.Subscriber {
         else {
             destination.error(new EmptyError_1.EmptyError);
         }
-    }
-}
+    };
+    return LastSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=last.js.map

@@ -16,8 +16,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *
  * @class Scheduler
  */
-class Scheduler {
-    constructor(SchedulerAction, now = Scheduler.now) {
+var Scheduler = /** @class */ (function () {
+    function Scheduler(SchedulerAction, now) {
+        if (now === void 0) { now = Scheduler.now; }
         this.SchedulerAction = SchedulerAction;
         this.now = now;
     }
@@ -38,10 +39,12 @@ class Scheduler {
      * @return {Subscription} A subscription in order to be able to unsubscribe
      * the scheduled work.
      */
-    schedule(work, delay = 0, state) {
+    Scheduler.prototype.schedule = function (work, delay, state) {
+        if (delay === void 0) { delay = 0; }
         return new this.SchedulerAction(this, work).schedule(state, delay);
-    }
-}
-Scheduler.now = Date.now ? Date.now : () => +new Date();
+    };
+    Scheduler.now = Date.now ? Date.now : function () { return +new Date(); };
+    return Scheduler;
+}());
 exports.Scheduler = Scheduler;
 //# sourceMappingURL=Scheduler.js.map

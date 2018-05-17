@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const ignoreElements_1 = require("../../operator/ignoreElements");
+var Observable_1 = require("../../Observable");
+var ignoreElements_1 = require("../../operator/ignoreElements");
 Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
 //# sourceMappingURL=ignoreElements.js.map

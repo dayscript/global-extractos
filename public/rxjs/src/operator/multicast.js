@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const MulticastObservable_1 = require("../observable/MulticastObservable");
-const ConnectableObservable_1 = require("../observable/ConnectableObservable");
+var MulticastObservable_1 = require("../observable/MulticastObservable");
+var ConnectableObservable_1 = require("../observable/ConnectableObservable");
 /**
  * Returns an Observable that emits the results of invoking a specified selector on items
  * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
@@ -22,7 +22,7 @@ const ConnectableObservable_1 = require("../observable/ConnectableObservable");
  * @owner Observable
  */
 function multicast(subjectOrSubjectFactory, selector) {
-    let subjectFactory;
+    var subjectFactory;
     if (typeof subjectOrSubjectFactory === 'function') {
         subjectFactory = subjectOrSubjectFactory;
     }

@@ -1,32 +1,44 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("../util/root");
-const Observable_1 = require("../Observable");
-const iterator_1 = require("../symbol/iterator");
+var root_1 = require("../util/root");
+var Observable_1 = require("../Observable");
+var iterator_1 = require("../symbol/iterator");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class IteratorObservable extends Observable_1.Observable {
-    constructor(iterator, scheduler) {
-        super();
-        this.scheduler = scheduler;
+var IteratorObservable = /** @class */ (function (_super) {
+    __extends(IteratorObservable, _super);
+    function IteratorObservable(iterator, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.scheduler = scheduler;
         if (iterator == null) {
             throw new Error('iterator cannot be null.');
         }
-        this.iterator = getIterator(iterator);
+        _this.iterator = getIterator(iterator);
+        return _this;
     }
-    static create(iterator, scheduler) {
+    IteratorObservable.create = function (iterator, scheduler) {
         return new IteratorObservable(iterator, scheduler);
-    }
-    static dispatch(state) {
-        const { index, hasError, iterator, subscriber } = state;
+    };
+    IteratorObservable.dispatch = function (state) {
+        var index = state.index, hasError = state.hasError, iterator = state.iterator, subscriber = state.subscriber;
         if (hasError) {
             subscriber.error(state.error);
             return;
         }
-        let result = iterator.next();
+        var result = iterator.next();
         if (result.done) {
             subscriber.complete();
             return;
@@ -37,18 +49,18 @@ class IteratorObservable extends Observable_1.Observable {
             return;
         }
         this.schedule(state);
-    }
-    _subscribe(subscriber) {
-        let index = 0;
-        const { iterator, scheduler } = this;
+    };
+    IteratorObservable.prototype._subscribe = function (subscriber) {
+        var index = 0;
+        var _a = this, iterator = _a.iterator, scheduler = _a.scheduler;
         if (scheduler) {
             return scheduler.schedule(IteratorObservable.dispatch, 0, {
-                index, iterator, subscriber
+                index: index, iterator: iterator, subscriber: subscriber
             });
         }
         else {
             do {
-                let result = iterator.next();
+                var result = iterator.next();
                 if (result.done) {
                     subscriber.complete();
                     break;
@@ -61,17 +73,20 @@ class IteratorObservable extends Observable_1.Observable {
                 }
             } while (true);
         }
-    }
-}
+    };
+    return IteratorObservable;
+}(Observable_1.Observable));
 exports.IteratorObservable = IteratorObservable;
-class StringIterator {
-    constructor(str, idx = 0, len = str.length) {
+var StringIterator = /** @class */ (function () {
+    function StringIterator(str, idx, len) {
+        if (idx === void 0) { idx = 0; }
+        if (len === void 0) { len = str.length; }
         this.str = str;
         this.idx = idx;
         this.len = len;
     }
-    [iterator_1.$$iterator]() { return (this); }
-    next() {
+    StringIterator.prototype[iterator_1.$$iterator] = function () { return (this); };
+    StringIterator.prototype.next = function () {
         return this.idx < this.len ? {
             done: false,
             value: this.str.charAt(this.idx++)
@@ -79,16 +94,19 @@ class StringIterator {
             done: true,
             value: undefined
         };
-    }
-}
-class ArrayIterator {
-    constructor(arr, idx = 0, len = toLength(arr)) {
+    };
+    return StringIterator;
+}());
+var ArrayIterator = /** @class */ (function () {
+    function ArrayIterator(arr, idx, len) {
+        if (idx === void 0) { idx = 0; }
+        if (len === void 0) { len = toLength(arr); }
         this.arr = arr;
         this.idx = idx;
         this.len = len;
     }
-    [iterator_1.$$iterator]() { return this; }
-    next() {
+    ArrayIterator.prototype[iterator_1.$$iterator] = function () { return this; };
+    ArrayIterator.prototype.next = function () {
         return this.idx < this.len ? {
             done: false,
             value: this.arr[this.idx++]
@@ -96,10 +114,11 @@ class ArrayIterator {
             done: true,
             value: undefined
         };
-    }
-}
+    };
+    return ArrayIterator;
+}());
 function getIterator(obj) {
-    const i = obj[iterator_1.$$iterator];
+    var i = obj[iterator_1.$$iterator];
     if (!i && typeof obj === 'string') {
         return new StringIterator(obj);
     }
@@ -111,9 +130,9 @@ function getIterator(obj) {
     }
     return obj[iterator_1.$$iterator]();
 }
-const maxSafeInteger = Math.pow(2, 53) - 1;
+var maxSafeInteger = Math.pow(2, 53) - 1;
 function toLength(o) {
-    let len = +o.length;
+    var len = +o.length;
     if (isNaN(len)) {
         return 0;
     }
@@ -133,7 +152,7 @@ function numberIsFinite(value) {
     return typeof value === 'number' && root_1.root.isFinite(value);
 }
 function sign(value) {
-    let valueAsNumber = +value;
+    var valueAsNumber = +value;
     if (valueAsNumber === 0) {
         return valueAsNumber;
     }

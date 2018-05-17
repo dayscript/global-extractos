@@ -1,15 +1,26 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const noop_1 = require("../util/noop");
+var Observable_1 = require("../Observable");
+var noop_1 = require("../util/noop");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class NeverObservable extends Observable_1.Observable {
-    constructor() {
-        super();
+var NeverObservable = /** @class */ (function (_super) {
+    __extends(NeverObservable, _super);
+    function NeverObservable() {
+        return _super.call(this) || this;
     }
     /**
      * Creates an Observable that emits no items to the Observer.
@@ -42,12 +53,13 @@ class NeverObservable extends Observable_1.Observable {
      * @name never
      * @owner Observable
      */
-    static create() {
+    NeverObservable.create = function () {
         return new NeverObservable();
-    }
-    _subscribe(subscriber) {
+    };
+    NeverObservable.prototype._subscribe = function (subscriber) {
         noop_1.noop();
-    }
-}
+    };
+    return NeverObservable;
+}(Observable_1.Observable));
 exports.NeverObservable = NeverObservable;
 //# sourceMappingURL=NeverObservable.js.map

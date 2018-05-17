@@ -6,16 +6,16 @@
  * found in the LICENSE file at https://angular.io/license
  */
 'use strict';
-((context) => {
-    const Mocha = context.Mocha;
+(function (context) {
+    var Mocha = context.Mocha;
     if (typeof Mocha === 'undefined') {
         throw new Error('Missing Mocha.js');
     }
     if (typeof Zone === 'undefined') {
         throw new Error('Missing Zone.js');
     }
-    const ProxyZoneSpec = Zone['ProxyZoneSpec'];
-    const SyncTestZoneSpec = Zone['SyncTestZoneSpec'];
+    var ProxyZoneSpec = Zone['ProxyZoneSpec'];
+    var SyncTestZoneSpec = Zone['SyncTestZoneSpec'];
     if (!ProxyZoneSpec) {
         throw new Error('Missing ProxyZoneSpec');
     }
@@ -23,11 +23,11 @@
         throw new Error('"Mocha" has already been patched with "Zone".');
     }
     Mocha['__zone_patch__'] = true;
-    const rootZone = Zone.current;
-    const syncZone = rootZone.fork(new SyncTestZoneSpec('Mocha.describe'));
-    let testZone = null;
-    const suiteZone = rootZone.fork(new ProxyZoneSpec());
-    const mochaOriginal = {
+    var rootZone = Zone.current;
+    var syncZone = rootZone.fork(new SyncTestZoneSpec('Mocha.describe'));
+    var testZone = null;
+    var suiteZone = rootZone.fork(new ProxyZoneSpec());
+    var mochaOriginal = {
         after: Mocha.after,
         afterEach: Mocha.afterEach,
         before: Mocha.before,
@@ -36,8 +36,8 @@
         it: Mocha.it
     };
     function modifyArguments(args, syncTest, asyncTest) {
-        for (let i = 0; i < args.length; i++) {
-            let arg = args[i];
+        var _loop_1 = function (i) {
+            var arg = args[i];
             if (typeof arg === 'function') {
                 // The `done` callback is only passed through if the function expects at
                 // least one argument.
@@ -51,11 +51,14 @@
                     return arg.toString();
                 };
             }
+        };
+        for (var i = 0; i < args.length; i++) {
+            _loop_1(i);
         }
         return args;
     }
     function wrapDescribeInZone(args) {
-        const syncTest = function (fn) {
+        var syncTest = function (fn) {
             return function () {
                 return syncZone.run(fn, this, arguments);
             };
@@ -63,12 +66,12 @@
         return modifyArguments(args, syncTest);
     }
     function wrapTestInZone(args) {
-        const asyncTest = function (fn) {
+        var asyncTest = function (fn) {
             return function (done) {
                 return testZone.run(fn, this, [done]);
             };
         };
-        const syncTest = function (fn) {
+        var syncTest = function (fn) {
             return function () {
                 return testZone.run(fn, this);
             };
@@ -76,12 +79,12 @@
         return modifyArguments(args, syncTest, asyncTest);
     }
     function wrapSuiteInZone(args) {
-        const asyncTest = function (fn) {
+        var asyncTest = function (fn) {
             return function (done) {
                 return suiteZone.run(fn, this, [done]);
             };
         };
-        const syncTest = function (fn) {
+        var syncTest = function (fn) {
             return function () {
                 return suiteZone.run(fn, this);
             };
@@ -119,14 +122,15 @@
     context.beforeEach = context.setup = Mocha.beforeEach = function () {
         return mochaOriginal.beforeEach.apply(this, wrapTestInZone(arguments));
     };
-    ((originalRunTest, originalRun) => {
+    (function (originalRunTest, originalRun) {
         Mocha.Runner.prototype.runTest = function (fn) {
-            Zone.current.scheduleMicroTask('mocha.forceTask', () => {
-                originalRunTest.call(this, fn);
+            var _this = this;
+            Zone.current.scheduleMicroTask('mocha.forceTask', function () {
+                originalRunTest.call(_this, fn);
             });
         };
         Mocha.Runner.prototype.run = function (fn) {
-            this.on('test', (e) => {
+            this.on('test', function (e) {
                 if (Zone.current !== rootZone) {
                     throw new Error('Unexpected zone: ' + Zone.current.name);
                 }

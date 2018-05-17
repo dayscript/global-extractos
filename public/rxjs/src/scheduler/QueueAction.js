@@ -1,39 +1,54 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const AsyncAction_1 = require("./AsyncAction");
+var AsyncAction_1 = require("./AsyncAction");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class QueueAction extends AsyncAction_1.AsyncAction {
-    constructor(scheduler, work) {
-        super(scheduler, work);
-        this.scheduler = scheduler;
-        this.work = work;
+var QueueAction = /** @class */ (function (_super) {
+    __extends(QueueAction, _super);
+    function QueueAction(scheduler, work) {
+        var _this = _super.call(this, scheduler, work) || this;
+        _this.scheduler = scheduler;
+        _this.work = work;
+        return _this;
     }
-    schedule(state, delay = 0) {
+    QueueAction.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
         if (delay > 0) {
-            return super.schedule(state, delay);
+            return _super.prototype.schedule.call(this, state, delay);
         }
         this.delay = delay;
         this.state = state;
         this.scheduler.flush(this);
         return this;
-    }
-    execute(state, delay) {
+    };
+    QueueAction.prototype.execute = function (state, delay) {
         return (delay > 0 || this.closed) ?
-            super.execute(state, delay) :
+            _super.prototype.execute.call(this, state, delay) :
             this._execute(state, delay);
-    }
-    requestAsyncId(scheduler, id, delay = 0) {
+    };
+    QueueAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
         // If delay is greater than 0, enqueue as an async action.
         if (delay !== null && delay > 0) {
-            return super.requestAsyncId(scheduler, id, delay);
+            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
         }
         // Otherwise flush the scheduler starting with this action.
         return scheduler.flush(this);
-    }
-}
+    };
+    return QueueAction;
+}(AsyncAction_1.AsyncAction));
 exports.QueueAction = QueueAction;
 //# sourceMappingURL=QueueAction.js.map

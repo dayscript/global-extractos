@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const async_1 = require("../scheduler/async");
-const Subscriber_1 = require("../Subscriber");
+var async_1 = require("../scheduler/async");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
  * value from the source Observable, then repeats this process.
@@ -44,40 +54,44 @@ const Subscriber_1 = require("../Subscriber");
  * @method auditTime
  * @owner Observable
  */
-function auditTime(duration, scheduler = async_1.async) {
+function auditTime(duration, scheduler) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
     return this.lift(new AuditTimeOperator(duration, scheduler));
 }
 exports.auditTime = auditTime;
-class AuditTimeOperator {
-    constructor(duration, scheduler) {
+var AuditTimeOperator = /** @class */ (function () {
+    function AuditTimeOperator(duration, scheduler) {
         this.duration = duration;
         this.scheduler = scheduler;
     }
-    call(subscriber, source) {
+    AuditTimeOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
-    }
-}
+    };
+    return AuditTimeOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class AuditTimeSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, duration, scheduler) {
-        super(destination);
-        this.duration = duration;
-        this.scheduler = scheduler;
-        this.hasValue = false;
+var AuditTimeSubscriber = /** @class */ (function (_super) {
+    __extends(AuditTimeSubscriber, _super);
+    function AuditTimeSubscriber(destination, duration, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.duration = duration;
+        _this.scheduler = scheduler;
+        _this.hasValue = false;
+        return _this;
     }
-    _next(value) {
+    AuditTimeSubscriber.prototype._next = function (value) {
         this.value = value;
         this.hasValue = true;
         if (!this.throttled) {
             this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.duration, this));
         }
-    }
-    clearThrottle() {
-        const { value, hasValue, throttled } = this;
+    };
+    AuditTimeSubscriber.prototype.clearThrottle = function () {
+        var _a = this, value = _a.value, hasValue = _a.hasValue, throttled = _a.throttled;
         if (throttled) {
             this.remove(throttled);
             this.throttled = null;
@@ -88,8 +102,9 @@ class AuditTimeSubscriber extends Subscriber_1.Subscriber {
             this.hasValue = false;
             this.destination.next(value);
         }
-    }
-}
+    };
+    return AuditTimeSubscriber;
+}(Subscriber_1.Subscriber));
 function dispatchNext(subscriber) {
     subscriber.clearThrottle();
 }

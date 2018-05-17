@@ -1,26 +1,38 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const isArray_1 = require("../util/isArray");
-const isPromise_1 = require("../util/isPromise");
-const PromiseObservable_1 = require("./PromiseObservable");
-const IteratorObservable_1 = require("./IteratorObservable");
-const ArrayObservable_1 = require("./ArrayObservable");
-const ArrayLikeObservable_1 = require("./ArrayLikeObservable");
-const iterator_1 = require("../symbol/iterator");
-const Observable_1 = require("../Observable");
-const observeOn_1 = require("../operator/observeOn");
-const observable_1 = require("../symbol/observable");
-const isArrayLike = ((x) => x && typeof x.length === 'number');
+var isArray_1 = require("../util/isArray");
+var isPromise_1 = require("../util/isPromise");
+var PromiseObservable_1 = require("./PromiseObservable");
+var IteratorObservable_1 = require("./IteratorObservable");
+var ArrayObservable_1 = require("./ArrayObservable");
+var ArrayLikeObservable_1 = require("./ArrayLikeObservable");
+var iterator_1 = require("../symbol/iterator");
+var Observable_1 = require("../Observable");
+var observeOn_1 = require("../operator/observeOn");
+var observable_1 = require("../symbol/observable");
+var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class FromObservable extends Observable_1.Observable {
-    constructor(ish, scheduler) {
-        super(null);
-        this.ish = ish;
-        this.scheduler = scheduler;
+var FromObservable = /** @class */ (function (_super) {
+    __extends(FromObservable, _super);
+    function FromObservable(ish, scheduler) {
+        var _this = _super.call(this, null) || this;
+        _this.ish = ish;
+        _this.scheduler = scheduler;
+        return _this;
     }
     /**
      * Creates an Observable from an Array, an array-like object, a Promise, an
@@ -72,7 +84,7 @@ class FromObservable extends Observable_1.Observable {
      * @name from
      * @owner Observable
      */
-    static create(ish, scheduler) {
+    FromObservable.create = function (ish, scheduler) {
         if (ish != null) {
             if (typeof ish[observable_1.$$observable] === 'function') {
                 if (ish instanceof Observable_1.Observable && !scheduler) {
@@ -94,17 +106,18 @@ class FromObservable extends Observable_1.Observable {
             }
         }
         throw new TypeError((ish !== null && typeof ish || ish) + ' is not observable');
-    }
-    _subscribe(subscriber) {
-        const ish = this.ish;
-        const scheduler = this.scheduler;
+    };
+    FromObservable.prototype._subscribe = function (subscriber) {
+        var ish = this.ish;
+        var scheduler = this.scheduler;
         if (scheduler == null) {
             return ish[observable_1.$$observable]().subscribe(subscriber);
         }
         else {
             return ish[observable_1.$$observable]().subscribe(new observeOn_1.ObserveOnSubscriber(subscriber, scheduler, 0));
         }
-    }
-}
+    };
+    return FromObservable;
+}(Observable_1.Observable));
 exports.FromObservable = FromObservable;
 //# sourceMappingURL=FromObservable.js.map

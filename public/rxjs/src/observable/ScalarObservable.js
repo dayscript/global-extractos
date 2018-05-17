@@ -1,26 +1,38 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
+var Observable_1 = require("../Observable");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class ScalarObservable extends Observable_1.Observable {
-    constructor(value, scheduler) {
-        super();
-        this.value = value;
-        this.scheduler = scheduler;
-        this._isScalar = true;
+var ScalarObservable = /** @class */ (function (_super) {
+    __extends(ScalarObservable, _super);
+    function ScalarObservable(value, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.value = value;
+        _this.scheduler = scheduler;
+        _this._isScalar = true;
         if (scheduler) {
-            this._isScalar = false;
+            _this._isScalar = false;
         }
+        return _this;
     }
-    static create(value, scheduler) {
+    ScalarObservable.create = function (value, scheduler) {
         return new ScalarObservable(value, scheduler);
-    }
-    static dispatch(state) {
-        const { done, value, subscriber } = state;
+    };
+    ScalarObservable.dispatch = function (state) {
+        var done = state.done, value = state.value, subscriber = state.subscriber;
         if (done) {
             subscriber.complete();
             return;
@@ -31,13 +43,13 @@ class ScalarObservable extends Observable_1.Observable {
         }
         state.done = true;
         this.schedule(state);
-    }
-    _subscribe(subscriber) {
-        const value = this.value;
-        const scheduler = this.scheduler;
+    };
+    ScalarObservable.prototype._subscribe = function (subscriber) {
+        var value = this.value;
+        var scheduler = this.scheduler;
         if (scheduler) {
             return scheduler.schedule(ScalarObservable.dispatch, 0, {
-                done: false, value, subscriber
+                done: false, value: value, subscriber: subscriber
             });
         }
         else {
@@ -46,7 +58,8 @@ class ScalarObservable extends Observable_1.Observable {
                 subscriber.complete();
             }
         }
-    }
-}
+    };
+    return ScalarObservable;
+}(Observable_1.Observable));
 exports.ScalarObservable = ScalarObservable;
 //# sourceMappingURL=ScalarObservable.js.map

@@ -119,6 +119,18 @@ export class ExtractosCertificaciones {
     window.location.replace(link)
   }
 
+  downloadCertTenencia(){
+    let destinatario = $('#destinatario').val();
+    if(destinatario == ''){
+      alert('Debe escribir el destinatario');
+      $('#destinatario').css('border','1px solid rgb(255, 0, 0)');
+      return false;
+    }
+    this.user_info.codigo
+    window.location.replace('/api/certificado-tenencia/'+this.user_info.codigo+'/'+'2018-05-16'+'/'+'Roberto Gomez Bolaños');
+
+  }
+
   validateCodeFics(value: object, code: number) {
     let validate;
     Object.keys(value).forEach(function (key){

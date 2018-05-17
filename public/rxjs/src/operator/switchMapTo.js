@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Projects each source value to the same Observable which is flattened multiple
  * times with {@link switch} in the output Observable.
@@ -50,62 +60,65 @@ function switchMapTo(innerObservable, resultSelector) {
     return this.lift(new SwitchMapToOperator(innerObservable, resultSelector));
 }
 exports.switchMapTo = switchMapTo;
-class SwitchMapToOperator {
-    constructor(observable, resultSelector) {
+var SwitchMapToOperator = /** @class */ (function () {
+    function SwitchMapToOperator(observable, resultSelector) {
         this.observable = observable;
         this.resultSelector = resultSelector;
     }
-    call(subscriber, source) {
+    SwitchMapToOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
-    }
-}
+    };
+    return SwitchMapToOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SwitchMapToSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, inner, resultSelector) {
-        super(destination);
-        this.inner = inner;
-        this.resultSelector = resultSelector;
-        this.index = 0;
+var SwitchMapToSubscriber = /** @class */ (function (_super) {
+    __extends(SwitchMapToSubscriber, _super);
+    function SwitchMapToSubscriber(destination, inner, resultSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.inner = inner;
+        _this.resultSelector = resultSelector;
+        _this.index = 0;
+        return _this;
     }
-    _next(value) {
-        const innerSubscription = this.innerSubscription;
+    SwitchMapToSubscriber.prototype._next = function (value) {
+        var innerSubscription = this.innerSubscription;
         if (innerSubscription) {
             innerSubscription.unsubscribe();
         }
         this.add(this.innerSubscription = subscribeToResult_1.subscribeToResult(this, this.inner, value, this.index++));
-    }
-    _complete() {
-        const { innerSubscription } = this;
+    };
+    SwitchMapToSubscriber.prototype._complete = function () {
+        var innerSubscription = this.innerSubscription;
         if (!innerSubscription || innerSubscription.closed) {
-            super._complete();
+            _super.prototype._complete.call(this);
         }
-    }
-    _unsubscribe() {
+    };
+    SwitchMapToSubscriber.prototype._unsubscribe = function () {
         this.innerSubscription = null;
-    }
-    notifyComplete(innerSub) {
+    };
+    SwitchMapToSubscriber.prototype.notifyComplete = function (innerSub) {
         this.remove(innerSub);
         this.innerSubscription = null;
         if (this.isStopped) {
-            super._complete();
+            _super.prototype._complete.call(this);
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        const { resultSelector, destination } = this;
+    };
+    SwitchMapToSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        var _a = this, resultSelector = _a.resultSelector, destination = _a.destination;
         if (resultSelector) {
             this.tryResultSelector(outerValue, innerValue, outerIndex, innerIndex);
         }
         else {
             destination.next(innerValue);
         }
-    }
-    tryResultSelector(outerValue, innerValue, outerIndex, innerIndex) {
-        const { resultSelector, destination } = this;
-        let result;
+    };
+    SwitchMapToSubscriber.prototype.tryResultSelector = function (outerValue, innerValue, outerIndex, innerIndex) {
+        var _a = this, resultSelector = _a.resultSelector, destination = _a.destination;
+        var result;
         try {
             result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
         }
@@ -114,6 +127,7 @@ class SwitchMapToSubscriber extends OuterSubscriber_1.OuterSubscriber {
             return;
         }
         destination.next(result);
-    }
-}
+    };
+    return SwitchMapToSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=switchMapTo.js.map

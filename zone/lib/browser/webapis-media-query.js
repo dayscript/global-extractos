@@ -5,15 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-((_global) => {
+(function (_global) {
     // patch MediaQuery
     patchMediaQuery(_global);
     function patchMediaQuery(_global) {
         if (!_global['MediaQueryList']) {
             return;
         }
-        const patchEventTargetMethods = Zone[Zone['__symbol__']('patchEventTargetMethods')];
-        patchEventTargetMethods(_global['MediaQueryList'].prototype, 'addListener', 'removeListener', (self, args) => {
+        var patchEventTargetMethods = Zone[Zone['__symbol__']('patchEventTargetMethods')];
+        patchEventTargetMethods(_global['MediaQueryList'].prototype, 'addListener', 'removeListener', function (self, args) {
             return {
                 useCapturing: false,
                 eventName: 'mediaQuery',

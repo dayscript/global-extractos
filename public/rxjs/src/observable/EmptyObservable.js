@@ -1,15 +1,27 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
+var Observable_1 = require("../Observable");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class EmptyObservable extends Observable_1.Observable {
-    constructor(scheduler) {
-        super();
-        this.scheduler = scheduler;
+var EmptyObservable = /** @class */ (function (_super) {
+    __extends(EmptyObservable, _super);
+    function EmptyObservable(scheduler) {
+        var _this = _super.call(this) || this;
+        _this.scheduler = scheduler;
+        return _this;
     }
     /**
      * Creates an Observable that emits no items to the Observer and immediately
@@ -48,22 +60,23 @@ class EmptyObservable extends Observable_1.Observable {
      * @name empty
      * @owner Observable
      */
-    static create(scheduler) {
+    EmptyObservable.create = function (scheduler) {
         return new EmptyObservable(scheduler);
-    }
-    static dispatch(arg) {
-        const { subscriber } = arg;
+    };
+    EmptyObservable.dispatch = function (arg) {
+        var subscriber = arg.subscriber;
         subscriber.complete();
-    }
-    _subscribe(subscriber) {
-        const scheduler = this.scheduler;
+    };
+    EmptyObservable.prototype._subscribe = function (subscriber) {
+        var scheduler = this.scheduler;
         if (scheduler) {
-            return scheduler.schedule(EmptyObservable.dispatch, 0, { subscriber });
+            return scheduler.schedule(EmptyObservable.dispatch, 0, { subscriber: subscriber });
         }
         else {
             subscriber.complete();
         }
-    }
-}
+    };
+    return EmptyObservable;
+}(Observable_1.Observable));
 exports.EmptyObservable = EmptyObservable;
 //# sourceMappingURL=EmptyObservable.js.map

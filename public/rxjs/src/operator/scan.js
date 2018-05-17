@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Applies an accumulator function over the source Observable, and returns each
  * intermediate result, with an optional seed value.
@@ -42,37 +52,44 @@ function scan(accumulator, seed) {
     return this.lift(new ScanOperator(accumulator, seed));
 }
 exports.scan = scan;
-class ScanOperator {
-    constructor(accumulator, seed) {
+var ScanOperator = /** @class */ (function () {
+    function ScanOperator(accumulator, seed) {
         this.accumulator = accumulator;
         this.seed = seed;
     }
-    call(subscriber, source) {
+    ScanOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed));
-    }
-}
+    };
+    return ScanOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ScanSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, accumulator, seed) {
-        super(destination);
-        this.accumulator = accumulator;
-        this.index = 0;
-        this.accumulatorSet = false;
-        this.seed = seed;
-        this.accumulatorSet = typeof seed !== 'undefined';
+var ScanSubscriber = /** @class */ (function (_super) {
+    __extends(ScanSubscriber, _super);
+    function ScanSubscriber(destination, accumulator, seed) {
+        var _this = _super.call(this, destination) || this;
+        _this.accumulator = accumulator;
+        _this.index = 0;
+        _this.accumulatorSet = false;
+        _this.seed = seed;
+        _this.accumulatorSet = typeof seed !== 'undefined';
+        return _this;
     }
-    get seed() {
-        return this._seed;
-    }
-    set seed(value) {
-        this.accumulatorSet = true;
-        this._seed = value;
-    }
-    _next(value) {
+    Object.defineProperty(ScanSubscriber.prototype, "seed", {
+        get: function () {
+            return this._seed;
+        },
+        set: function (value) {
+            this.accumulatorSet = true;
+            this._seed = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ScanSubscriber.prototype._next = function (value) {
         if (!this.accumulatorSet) {
             this.seed = value;
             this.destination.next(value);
@@ -80,10 +97,10 @@ class ScanSubscriber extends Subscriber_1.Subscriber {
         else {
             return this._tryNext(value);
         }
-    }
-    _tryNext(value) {
-        const index = this.index++;
-        let result;
+    };
+    ScanSubscriber.prototype._tryNext = function (value) {
+        var index = this.index++;
+        var result;
         try {
             result = this.accumulator(this.seed, value, index);
         }
@@ -92,6 +109,7 @@ class ScanSubscriber extends Subscriber_1.Subscriber {
         }
         this.seed = result;
         this.destination.next(result);
-    }
-}
+    };
+    return ScanSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=scan.js.map

@@ -3,37 +3,37 @@
 // - https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#reflectdeletemetadata--metadatakey-target--propertykey-
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../../Reflect");
-const assert = require("assert");
+var assert = require("assert");
 function ReflectDeleteMetadataInvalidTarget() {
-    assert.throws(() => Reflect.deleteMetadata("key", undefined, undefined), TypeError);
+    assert.throws(function () { return Reflect.deleteMetadata("key", undefined, undefined); }, TypeError);
 }
 exports.ReflectDeleteMetadataInvalidTarget = ReflectDeleteMetadataInvalidTarget;
 function ReflectDeleteMetadataWhenNotDefinedWithoutTargetKey() {
-    let obj = {};
-    let result = Reflect.deleteMetadata("key", obj, undefined);
+    var obj = {};
+    var result = Reflect.deleteMetadata("key", obj, undefined);
     assert.equal(result, false);
 }
 exports.ReflectDeleteMetadataWhenNotDefinedWithoutTargetKey = ReflectDeleteMetadataWhenNotDefinedWithoutTargetKey;
 function ReflectDeleteMetadataWhenDefinedWithoutTargetKey() {
-    let obj = {};
+    var obj = {};
     Reflect.defineMetadata("key", "value", obj, undefined);
-    let result = Reflect.deleteMetadata("key", obj, undefined);
+    var result = Reflect.deleteMetadata("key", obj, undefined);
     assert.equal(result, true);
 }
 exports.ReflectDeleteMetadataWhenDefinedWithoutTargetKey = ReflectDeleteMetadataWhenDefinedWithoutTargetKey;
 function ReflectDeleteMetadataWhenDefinedOnPrototypeWithoutTargetKey() {
-    let prototype = {};
+    var prototype = {};
     Reflect.defineMetadata("key", "value", prototype, undefined);
-    let obj = Object.create(prototype);
-    let result = Reflect.deleteMetadata("key", obj, undefined);
+    var obj = Object.create(prototype);
+    var result = Reflect.deleteMetadata("key", obj, undefined);
     assert.equal(result, false);
 }
 exports.ReflectDeleteMetadataWhenDefinedOnPrototypeWithoutTargetKey = ReflectDeleteMetadataWhenDefinedOnPrototypeWithoutTargetKey;
 function ReflectHasOwnMetadataAfterDeleteMetadata() {
-    let obj = {};
+    var obj = {};
     Reflect.defineMetadata("key", "value", obj, undefined);
     Reflect.deleteMetadata("key", obj, undefined);
-    let result = Reflect.hasOwnMetadata("key", obj, undefined);
+    var result = Reflect.hasOwnMetadata("key", obj, undefined);
     assert.equal(result, false);
 }
 exports.ReflectHasOwnMetadataAfterDeleteMetadata = ReflectHasOwnMetadataAfterDeleteMetadata;

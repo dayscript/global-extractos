@@ -1,8 +1,18 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subject_1 = require("../Subject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Branch out the source Observable values as a nested Observable whenever
  * `windowBoundaries` emits.
@@ -43,61 +53,65 @@ function window(windowBoundaries) {
     return this.lift(new WindowOperator(windowBoundaries));
 }
 exports.window = window;
-class WindowOperator {
-    constructor(windowBoundaries) {
+var WindowOperator = /** @class */ (function () {
+    function WindowOperator(windowBoundaries) {
         this.windowBoundaries = windowBoundaries;
     }
-    call(subscriber, source) {
-        const windowSubscriber = new WindowSubscriber(subscriber);
-        const sourceSubscription = source._subscribe(windowSubscriber);
+    WindowOperator.prototype.call = function (subscriber, source) {
+        var windowSubscriber = new WindowSubscriber(subscriber);
+        var sourceSubscription = source._subscribe(windowSubscriber);
         if (!sourceSubscription.closed) {
             windowSubscriber.add(subscribeToResult_1.subscribeToResult(windowSubscriber, this.windowBoundaries));
         }
         return sourceSubscription;
-    }
-}
+    };
+    return WindowOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class WindowSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination) {
-        super(destination);
-        this.window = new Subject_1.Subject();
-        destination.next(this.window);
+var WindowSubscriber = /** @class */ (function (_super) {
+    __extends(WindowSubscriber, _super);
+    function WindowSubscriber(destination) {
+        var _this = _super.call(this, destination) || this;
+        _this.window = new Subject_1.Subject();
+        destination.next(_this.window);
+        return _this;
     }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    WindowSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.openWindow();
-    }
-    notifyError(error, innerSub) {
+    };
+    WindowSubscriber.prototype.notifyError = function (error, innerSub) {
         this._error(error);
-    }
-    notifyComplete(innerSub) {
+    };
+    WindowSubscriber.prototype.notifyComplete = function (innerSub) {
         this._complete();
-    }
-    _next(value) {
+    };
+    WindowSubscriber.prototype._next = function (value) {
         this.window.next(value);
-    }
-    _error(err) {
+    };
+    WindowSubscriber.prototype._error = function (err) {
         this.window.error(err);
         this.destination.error(err);
-    }
-    _complete() {
+    };
+    WindowSubscriber.prototype._complete = function () {
         this.window.complete();
         this.destination.complete();
-    }
-    _unsubscribe() {
+    };
+    WindowSubscriber.prototype._unsubscribe = function () {
         this.window = null;
-    }
-    openWindow() {
-        const prevWindow = this.window;
+    };
+    WindowSubscriber.prototype.openWindow = function () {
+        var prevWindow = this.window;
         if (prevWindow) {
             prevWindow.complete();
         }
-        const destination = this.destination;
-        const newWindow = this.window = new Subject_1.Subject();
+        var destination = this.destination;
+        var newWindow = this.window = new Subject_1.Subject();
         destination.next(newWindow);
-    }
-}
+    };
+    return WindowSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=window.js.map

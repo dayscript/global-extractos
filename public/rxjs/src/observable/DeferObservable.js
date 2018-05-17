@@ -1,17 +1,29 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const subscribeToResult_1 = require("../util/subscribeToResult");
-const OuterSubscriber_1 = require("../OuterSubscriber");
+var Observable_1 = require("../Observable");
+var subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class DeferObservable extends Observable_1.Observable {
-    constructor(observableFactory) {
-        super();
-        this.observableFactory = observableFactory;
+var DeferObservable = /** @class */ (function (_super) {
+    __extends(DeferObservable, _super);
+    function DeferObservable(observableFactory) {
+        var _this = _super.call(this) || this;
+        _this.observableFactory = observableFactory;
+        return _this;
     }
     /**
      * Creates an Observable that, on subscribe, calls an Observable factory to
@@ -53,33 +65,37 @@ class DeferObservable extends Observable_1.Observable {
      * @name defer
      * @owner Observable
      */
-    static create(observableFactory) {
+    DeferObservable.create = function (observableFactory) {
         return new DeferObservable(observableFactory);
-    }
-    _subscribe(subscriber) {
+    };
+    DeferObservable.prototype._subscribe = function (subscriber) {
         return new DeferSubscriber(subscriber, this.observableFactory);
-    }
-}
+    };
+    return DeferObservable;
+}(Observable_1.Observable));
 exports.DeferObservable = DeferObservable;
-class DeferSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, factory) {
-        super(destination);
-        this.factory = factory;
-        this.tryDefer();
+var DeferSubscriber = /** @class */ (function (_super) {
+    __extends(DeferSubscriber, _super);
+    function DeferSubscriber(destination, factory) {
+        var _this = _super.call(this, destination) || this;
+        _this.factory = factory;
+        _this.tryDefer();
+        return _this;
     }
-    tryDefer() {
+    DeferSubscriber.prototype.tryDefer = function () {
         try {
             this._callFactory();
         }
         catch (err) {
             this._error(err);
         }
-    }
-    _callFactory() {
-        const result = this.factory();
+    };
+    DeferSubscriber.prototype._callFactory = function () {
+        var result = this.factory();
         if (result) {
             this.add(subscribeToResult_1.subscribeToResult(this, result));
         }
-    }
-}
+    };
+    return DeferSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=DeferObservable.js.map

@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Emits a given value if the source Observable completes without emitting any
  * `next` value, otherwise mirrors the source Observable.
@@ -31,38 +41,43 @@ const Subscriber_1 = require("../Subscriber");
  * @method defaultIfEmpty
  * @owner Observable
  */
-function defaultIfEmpty(defaultValue = null) {
+function defaultIfEmpty(defaultValue) {
+    if (defaultValue === void 0) { defaultValue = null; }
     return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 exports.defaultIfEmpty = defaultIfEmpty;
-class DefaultIfEmptyOperator {
-    constructor(defaultValue) {
+var DefaultIfEmptyOperator = /** @class */ (function () {
+    function DefaultIfEmptyOperator(defaultValue) {
         this.defaultValue = defaultValue;
     }
-    call(subscriber, source) {
+    DefaultIfEmptyOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
-    }
-}
+    };
+    return DefaultIfEmptyOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DefaultIfEmptySubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, defaultValue) {
-        super(destination);
-        this.defaultValue = defaultValue;
-        this.isEmpty = true;
+var DefaultIfEmptySubscriber = /** @class */ (function (_super) {
+    __extends(DefaultIfEmptySubscriber, _super);
+    function DefaultIfEmptySubscriber(destination, defaultValue) {
+        var _this = _super.call(this, destination) || this;
+        _this.defaultValue = defaultValue;
+        _this.isEmpty = true;
+        return _this;
     }
-    _next(value) {
+    DefaultIfEmptySubscriber.prototype._next = function (value) {
         this.isEmpty = false;
         this.destination.next(value);
-    }
-    _complete() {
+    };
+    DefaultIfEmptySubscriber.prototype._complete = function () {
         if (this.isEmpty) {
             this.destination.next(this.defaultValue);
         }
         this.destination.complete();
-    }
-}
+    };
+    return DefaultIfEmptySubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=defaultIfEmpty.js.map

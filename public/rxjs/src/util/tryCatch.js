@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const errorObject_1 = require("./errorObject");
-let tryCatchTarget;
+var errorObject_1 = require("./errorObject");
+var tryCatchTarget;
 function tryCatcher() {
     try {
         return tryCatchTarget.apply(this, arguments);

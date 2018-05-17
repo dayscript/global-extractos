@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const reduce_1 = require("./reduce");
+var reduce_1 = require("./reduce");
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
  * and when source Observable completes it emits a single item: the item with the smallest number.
@@ -13,9 +13,9 @@ const reduce_1 = require("./reduce");
  * @owner Observable
  */
 function min(comparer) {
-    const min = (typeof comparer === 'function')
-        ? (x, y) => comparer(x, y) < 0 ? x : y
-        : (x, y) => x < y ? x : y;
+    var min = (typeof comparer === 'function')
+        ? function (x, y) { return comparer(x, y) < 0 ? x : y; }
+        : function (x, y) { return x < y ? x : y; };
     return this.lift(new reduce_1.ReduceOperator(min));
 }
 exports.min = min;

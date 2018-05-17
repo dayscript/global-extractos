@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Emits a value from the source Observable only after a particular time span
  * determined by another Observable has passed without another source emission.
@@ -48,29 +58,32 @@ function debounce(durationSelector) {
     return this.lift(new DebounceOperator(durationSelector));
 }
 exports.debounce = debounce;
-class DebounceOperator {
-    constructor(durationSelector) {
+var DebounceOperator = /** @class */ (function () {
+    function DebounceOperator(durationSelector) {
         this.durationSelector = durationSelector;
     }
-    call(subscriber, source) {
+    DebounceOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
-    }
-}
+    };
+    return DebounceOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DebounceSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, durationSelector) {
-        super(destination);
-        this.durationSelector = durationSelector;
-        this.hasValue = false;
-        this.durationSubscription = null;
+var DebounceSubscriber = /** @class */ (function (_super) {
+    __extends(DebounceSubscriber, _super);
+    function DebounceSubscriber(destination, durationSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.durationSelector = durationSelector;
+        _this.hasValue = false;
+        _this.durationSubscription = null;
+        return _this;
     }
-    _next(value) {
+    DebounceSubscriber.prototype._next = function (value) {
         try {
-            const result = this.durationSelector.call(this, value);
+            var result = this.durationSelector.call(this, value);
             if (result) {
                 this._tryNext(value, result);
             }
@@ -78,13 +91,13 @@ class DebounceSubscriber extends OuterSubscriber_1.OuterSubscriber {
         catch (err) {
             this.destination.error(err);
         }
-    }
-    _complete() {
+    };
+    DebounceSubscriber.prototype._complete = function () {
         this.emitValue();
         this.destination.complete();
-    }
-    _tryNext(value, duration) {
-        let subscription = this.durationSubscription;
+    };
+    DebounceSubscriber.prototype._tryNext = function (value, duration) {
+        var subscription = this.durationSubscription;
         this.value = value;
         this.hasValue = true;
         if (subscription) {
@@ -95,17 +108,17 @@ class DebounceSubscriber extends OuterSubscriber_1.OuterSubscriber {
         if (!subscription.closed) {
             this.add(this.durationSubscription = subscription);
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    DebounceSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.emitValue();
-    }
-    notifyComplete() {
+    };
+    DebounceSubscriber.prototype.notifyComplete = function () {
         this.emitValue();
-    }
-    emitValue() {
+    };
+    DebounceSubscriber.prototype.emitValue = function () {
         if (this.hasValue) {
-            const value = this.value;
-            const subscription = this.durationSubscription;
+            var value = this.value;
+            var subscription = this.durationSubscription;
             if (subscription) {
                 this.durationSubscription = null;
                 subscription.unsubscribe();
@@ -113,8 +126,9 @@ class DebounceSubscriber extends OuterSubscriber_1.OuterSubscriber {
             }
             this.value = null;
             this.hasValue = false;
-            super._next(value);
+            _super.prototype._next.call(this, value);
         }
-    }
-}
+    };
+    return DebounceSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=debounce.js.map

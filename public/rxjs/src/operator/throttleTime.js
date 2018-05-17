@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const async_1 = require("../scheduler/async");
+var Subscriber_1 = require("../Subscriber");
+var async_1 = require("../scheduler/async");
 /**
  * Emits a value from the source Observable, then ignores subsequent source
  * values for `duration` milliseconds, then repeats this process.
@@ -41,47 +51,52 @@ const async_1 = require("../scheduler/async");
  * @method throttleTime
  * @owner Observable
  */
-function throttleTime(duration, scheduler = async_1.async) {
+function throttleTime(duration, scheduler) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
     return this.lift(new ThrottleTimeOperator(duration, scheduler));
 }
 exports.throttleTime = throttleTime;
-class ThrottleTimeOperator {
-    constructor(duration, scheduler) {
+var ThrottleTimeOperator = /** @class */ (function () {
+    function ThrottleTimeOperator(duration, scheduler) {
         this.duration = duration;
         this.scheduler = scheduler;
     }
-    call(subscriber, source) {
+    ThrottleTimeOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
-    }
-}
+    };
+    return ThrottleTimeOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ThrottleTimeSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, duration, scheduler) {
-        super(destination);
-        this.duration = duration;
-        this.scheduler = scheduler;
+var ThrottleTimeSubscriber = /** @class */ (function (_super) {
+    __extends(ThrottleTimeSubscriber, _super);
+    function ThrottleTimeSubscriber(destination, duration, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.duration = duration;
+        _this.scheduler = scheduler;
+        return _this;
     }
-    _next(value) {
+    ThrottleTimeSubscriber.prototype._next = function (value) {
         if (!this.throttled) {
             this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.duration, { subscriber: this }));
             this.destination.next(value);
         }
-    }
-    clearThrottle() {
-        const throttled = this.throttled;
+    };
+    ThrottleTimeSubscriber.prototype.clearThrottle = function () {
+        var throttled = this.throttled;
         if (throttled) {
             throttled.unsubscribe();
             this.remove(throttled);
             this.throttled = null;
         }
-    }
-}
+    };
+    return ThrottleTimeSubscriber;
+}(Subscriber_1.Subscriber));
 function dispatchNext(arg) {
-    const { subscriber } = arg;
+    var subscriber = arg.subscriber;
     subscriber.clearThrottle();
 }
 //# sourceMappingURL=throttleTime.js.map

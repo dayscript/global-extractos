@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const isArray_1 = require("./util/isArray");
-const isObject_1 = require("./util/isObject");
-const isFunction_1 = require("./util/isFunction");
-const tryCatch_1 = require("./util/tryCatch");
-const errorObject_1 = require("./util/errorObject");
-const UnsubscriptionError_1 = require("./util/UnsubscriptionError");
+var isArray_1 = require("./util/isArray");
+var isObject_1 = require("./util/isObject");
+var isFunction_1 = require("./util/isFunction");
+var tryCatch_1 = require("./util/tryCatch");
+var errorObject_1 = require("./util/errorObject");
+var UnsubscriptionError_1 = require("./util/UnsubscriptionError");
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -18,12 +18,12 @@ const UnsubscriptionError_1 = require("./util/UnsubscriptionError");
  *
  * @class Subscription
  */
-class Subscription {
+var Subscription = /** @class */ (function () {
     /**
      * @param {function(): void} [unsubscribe] A function describing how to
      * perform the disposal of resources when the `unsubscribe` method is called.
      */
-    constructor(unsubscribe) {
+    function Subscription(unsubscribe) {
         /**
          * A flag to indicate whether this Subscription has already been unsubscribed.
          * @type {boolean}
@@ -39,33 +39,33 @@ class Subscription {
      * started when the Subscription was created.
      * @return {void}
      */
-    unsubscribe() {
-        let hasErrors = false;
-        let errors;
+    Subscription.prototype.unsubscribe = function () {
+        var hasErrors = false;
+        var errors;
         if (this.closed) {
             return;
         }
         this.closed = true;
-        const { _unsubscribe, _subscriptions } = this;
+        var _a = this, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
         this._subscriptions = null;
         if (isFunction_1.isFunction(_unsubscribe)) {
-            let trial = tryCatch_1.tryCatch(_unsubscribe).call(this);
+            var trial = tryCatch_1.tryCatch(_unsubscribe).call(this);
             if (trial === errorObject_1.errorObject) {
                 hasErrors = true;
                 (errors = errors || []).push(errorObject_1.errorObject.e);
             }
         }
         if (isArray_1.isArray(_subscriptions)) {
-            let index = -1;
-            const len = _subscriptions.length;
+            var index = -1;
+            var len = _subscriptions.length;
             while (++index < len) {
-                const sub = _subscriptions[index];
+                var sub = _subscriptions[index];
                 if (isObject_1.isObject(sub)) {
-                    let trial = tryCatch_1.tryCatch(sub.unsubscribe).call(sub);
+                    var trial = tryCatch_1.tryCatch(sub.unsubscribe).call(sub);
                     if (trial === errorObject_1.errorObject) {
                         hasErrors = true;
                         errors = errors || [];
-                        let err = errorObject_1.errorObject.e;
+                        var err = errorObject_1.errorObject.e;
                         if (err instanceof UnsubscriptionError_1.UnsubscriptionError) {
                             errors = errors.concat(err.errors);
                         }
@@ -79,7 +79,7 @@ class Subscription {
         if (hasErrors) {
             throw new UnsubscriptionError_1.UnsubscriptionError(errors);
         }
-    }
+    };
     /**
      * Adds a tear down to be called during the unsubscribe() of this
      * Subscription.
@@ -98,14 +98,14 @@ class Subscription {
      * `remove()` to remove the passed teardown logic from the inner subscriptions
      * list.
      */
-    add(teardown) {
+    Subscription.prototype.add = function (teardown) {
         if (!teardown || (teardown === Subscription.EMPTY)) {
             return Subscription.EMPTY;
         }
         if (teardown === this) {
             return this;
         }
-        let sub = teardown;
+        var sub = teardown;
         switch (typeof teardown) {
             case 'function':
                 sub = new Subscription(teardown);
@@ -124,30 +124,31 @@ class Subscription {
                 throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
         }
         return sub;
-    }
+    };
     /**
      * Removes a Subscription from the internal list of subscriptions that will
      * unsubscribe during the unsubscribe process of this Subscription.
      * @param {Subscription} subscription The subscription to remove.
      * @return {void}
      */
-    remove(subscription) {
+    Subscription.prototype.remove = function (subscription) {
         // HACK: This might be redundant because of the logic in `add()`
         if (subscription == null || (subscription === this) || (subscription === Subscription.EMPTY)) {
             return;
         }
-        const subscriptions = this._subscriptions;
+        var subscriptions = this._subscriptions;
         if (subscriptions) {
-            const subscriptionIndex = subscriptions.indexOf(subscription);
+            var subscriptionIndex = subscriptions.indexOf(subscription);
             if (subscriptionIndex !== -1) {
                 subscriptions.splice(subscriptionIndex, 1);
             }
         }
-    }
-}
-Subscription.EMPTY = (function (empty) {
-    empty.closed = true;
-    return empty;
-}(new Subscription()));
+    };
+    Subscription.EMPTY = (function (empty) {
+        empty.closed = true;
+        return empty;
+    }(new Subscription()));
+    return Subscription;
+}());
 exports.Subscription = Subscription;
 //# sourceMappingURL=Subscription.js.map

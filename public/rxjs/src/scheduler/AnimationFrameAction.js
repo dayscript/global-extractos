@@ -1,22 +1,35 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const AsyncAction_1 = require("./AsyncAction");
-const AnimationFrame_1 = require("../util/AnimationFrame");
+var AsyncAction_1 = require("./AsyncAction");
+var AnimationFrame_1 = require("../util/AnimationFrame");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class AnimationFrameAction extends AsyncAction_1.AsyncAction {
-    constructor(scheduler, work) {
-        super(scheduler, work);
-        this.scheduler = scheduler;
-        this.work = work;
+var AnimationFrameAction = /** @class */ (function (_super) {
+    __extends(AnimationFrameAction, _super);
+    function AnimationFrameAction(scheduler, work) {
+        var _this = _super.call(this, scheduler, work) || this;
+        _this.scheduler = scheduler;
+        _this.work = work;
+        return _this;
     }
-    requestAsyncId(scheduler, id, delay = 0) {
+    AnimationFrameAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
         // If delay is greater than 0, request as an async action.
         if (delay !== null && delay > 0) {
-            return super.requestAsyncId(scheduler, id, delay);
+            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
         }
         // Push the action to the end of the scheduler queue.
         scheduler.actions.push(this);
@@ -24,11 +37,12 @@ class AnimationFrameAction extends AsyncAction_1.AsyncAction {
         // one. If an animation frame hasn't been requested yet, request one. Return
         // the current animation frame request id.
         return scheduler.scheduled || (scheduler.scheduled = AnimationFrame_1.AnimationFrame.requestAnimationFrame(scheduler.flush.bind(scheduler, null)));
-    }
-    recycleAsyncId(scheduler, id, delay = 0) {
+    };
+    AnimationFrameAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
         // If delay exists and is greater than 0, recycle as an async action.
         if (delay !== null && delay > 0) {
-            return super.recycleAsyncId(scheduler, id, delay);
+            return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay);
         }
         // If the scheduler queue is empty, cancel the requested animation frame and
         // set the scheduled flag to undefined so the next AnimationFrameAction will
@@ -39,7 +53,8 @@ class AnimationFrameAction extends AsyncAction_1.AsyncAction {
         }
         // Return undefined so the action knows to request a new async id if it's rescheduled.
         return undefined;
-    }
-}
+    };
+    return AnimationFrameAction;
+}(AsyncAction_1.AsyncAction));
 exports.AnimationFrameAction = AnimationFrameAction;
 //# sourceMappingURL=AnimationFrameAction.js.map

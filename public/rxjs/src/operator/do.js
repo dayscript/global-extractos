@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Perform a side effect for every emission on the source Observable, but return
  * an Observable that is identical to the source.
@@ -48,31 +58,34 @@ function _do(nextOrObserver, error, complete) {
     return this.lift(new DoOperator(nextOrObserver, error, complete));
 }
 exports._do = _do;
-class DoOperator {
-    constructor(nextOrObserver, error, complete) {
+var DoOperator = /** @class */ (function () {
+    function DoOperator(nextOrObserver, error, complete) {
         this.nextOrObserver = nextOrObserver;
         this.error = error;
         this.complete = complete;
     }
-    call(subscriber, source) {
+    DoOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
-    }
-}
+    };
+    return DoOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DoSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, nextOrObserver, error, complete) {
-        super(destination);
-        const safeSubscriber = new Subscriber_1.Subscriber(nextOrObserver, error, complete);
+var DoSubscriber = /** @class */ (function (_super) {
+    __extends(DoSubscriber, _super);
+    function DoSubscriber(destination, nextOrObserver, error, complete) {
+        var _this = _super.call(this, destination) || this;
+        var safeSubscriber = new Subscriber_1.Subscriber(nextOrObserver, error, complete);
         safeSubscriber.syncErrorThrowable = true;
-        this.add(safeSubscriber);
-        this.safeSubscriber = safeSubscriber;
+        _this.add(safeSubscriber);
+        _this.safeSubscriber = safeSubscriber;
+        return _this;
     }
-    _next(value) {
-        const { safeSubscriber } = this;
+    DoSubscriber.prototype._next = function (value) {
+        var safeSubscriber = this.safeSubscriber;
         safeSubscriber.next(value);
         if (safeSubscriber.syncErrorThrown) {
             this.destination.error(safeSubscriber.syncErrorValue);
@@ -80,9 +93,9 @@ class DoSubscriber extends Subscriber_1.Subscriber {
         else {
             this.destination.next(value);
         }
-    }
-    _error(err) {
-        const { safeSubscriber } = this;
+    };
+    DoSubscriber.prototype._error = function (err) {
+        var safeSubscriber = this.safeSubscriber;
         safeSubscriber.error(err);
         if (safeSubscriber.syncErrorThrown) {
             this.destination.error(safeSubscriber.syncErrorValue);
@@ -90,9 +103,9 @@ class DoSubscriber extends Subscriber_1.Subscriber {
         else {
             this.destination.error(err);
         }
-    }
-    _complete() {
-        const { safeSubscriber } = this;
+    };
+    DoSubscriber.prototype._complete = function () {
+        var safeSubscriber = this.safeSubscriber;
         safeSubscriber.complete();
         if (safeSubscriber.syncErrorThrown) {
             this.destination.error(safeSubscriber.syncErrorValue);
@@ -100,6 +113,7 @@ class DoSubscriber extends Subscriber_1.Subscriber {
         else {
             this.destination.complete();
         }
-    }
-}
+    };
+    return DoSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=do.js.map

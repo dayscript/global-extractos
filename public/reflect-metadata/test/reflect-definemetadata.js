@@ -3,16 +3,16 @@
 // https://rbuckton.github.io/reflect-metadata/#reflect.definemetadata
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../Reflect");
-const chai_1 = require("chai");
-describe("Reflect.defineMetadata", () => {
-    it("InvalidTarget", () => {
-        chai_1.assert.throws(() => Reflect.defineMetadata("key", "value", undefined, undefined), TypeError);
+var chai_1 = require("chai");
+describe("Reflect.defineMetadata", function () {
+    it("InvalidTarget", function () {
+        chai_1.assert.throws(function () { return Reflect.defineMetadata("key", "value", undefined, undefined); }, TypeError);
     });
-    it("ValidTargetWithoutTargetKey", () => {
-        chai_1.assert.doesNotThrow(() => Reflect.defineMetadata("key", "value", {}, undefined));
+    it("ValidTargetWithoutTargetKey", function () {
+        chai_1.assert.doesNotThrow(function () { return Reflect.defineMetadata("key", "value", {}, undefined); });
     });
-    it("ValidTargetWithTargetKey", () => {
-        chai_1.assert.doesNotThrow(() => Reflect.defineMetadata("key", "value", {}, "name"));
+    it("ValidTargetWithTargetKey", function () {
+        chai_1.assert.doesNotThrow(function () { return Reflect.defineMetadata("key", "value", {}, "name"); });
     });
 });
 //# sourceMappingURL=reflect-definemetadata.js.map

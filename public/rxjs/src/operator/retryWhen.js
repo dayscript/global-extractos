@@ -1,10 +1,20 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subject_1 = require("../Subject");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Returns an Observable that emits the same values as the source observable with the exception of an `error`.
  * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
@@ -25,36 +35,39 @@ function retryWhen(notifier) {
     return this.lift(new RetryWhenOperator(notifier, this));
 }
 exports.retryWhen = retryWhen;
-class RetryWhenOperator {
-    constructor(notifier, source) {
+var RetryWhenOperator = /** @class */ (function () {
+    function RetryWhenOperator(notifier, source) {
         this.notifier = notifier;
         this.source = source;
     }
-    call(subscriber, source) {
+    RetryWhenOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
-    }
-}
+    };
+    return RetryWhenOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class RetryWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, notifier, source) {
-        super(destination);
-        this.notifier = notifier;
-        this.source = source;
+var RetryWhenSubscriber = /** @class */ (function (_super) {
+    __extends(RetryWhenSubscriber, _super);
+    function RetryWhenSubscriber(destination, notifier, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.notifier = notifier;
+        _this.source = source;
+        return _this;
     }
-    error(err) {
+    RetryWhenSubscriber.prototype.error = function (err) {
         if (!this.isStopped) {
-            let errors = this.errors;
-            let retries = this.retries;
-            let retriesSubscription = this.retriesSubscription;
+            var errors = this.errors;
+            var retries = this.retries;
+            var retriesSubscription = this.retriesSubscription;
             if (!retries) {
                 errors = new Subject_1.Subject();
                 retries = tryCatch_1.tryCatch(this.notifier)(errors);
                 if (retries === errorObject_1.errorObject) {
-                    return super.error(errorObject_1.errorObject.e);
+                    return _super.prototype.error.call(this, errorObject_1.errorObject.e);
                 }
                 retriesSubscription = subscribeToResult_1.subscribeToResult(this, retries);
             }
@@ -69,9 +82,9 @@ class RetryWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
             this.retriesSubscription = retriesSubscription;
             errors.next(err);
         }
-    }
-    _unsubscribe() {
-        const { errors, retriesSubscription } = this;
+    };
+    RetryWhenSubscriber.prototype._unsubscribe = function () {
+        var _a = this, errors = _a.errors, retriesSubscription = _a.retriesSubscription;
         if (errors) {
             errors.unsubscribe();
             this.errors = null;
@@ -81,9 +94,9 @@ class RetryWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
             this.retriesSubscription = null;
         }
         this.retries = null;
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        const { errors, retries, retriesSubscription } = this;
+    };
+    RetryWhenSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        var _a = this, errors = _a.errors, retries = _a.retries, retriesSubscription = _a.retriesSubscription;
         this.errors = null;
         this.retries = null;
         this.retriesSubscription = null;
@@ -94,6 +107,7 @@ class RetryWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
         this.retries = retries;
         this.retriesSubscription = retriesSubscription;
         this.source.subscribe(this);
-    }
-}
+    };
+    return RetryWhenSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=retryWhen.js.map

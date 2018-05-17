@@ -1,16 +1,28 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
+var Observable_1 = require("../Observable");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class ErrorObservable extends Observable_1.Observable {
-    constructor(error, scheduler) {
-        super();
-        this.error = error;
-        this.scheduler = scheduler;
+var ErrorObservable = /** @class */ (function (_super) {
+    __extends(ErrorObservable, _super);
+    function ErrorObservable(error, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.error = error;
+        _this.scheduler = scheduler;
+        return _this;
     }
     /**
      * Creates an Observable that emits no items to the Observer and immediately
@@ -52,25 +64,26 @@ class ErrorObservable extends Observable_1.Observable {
      * @name throw
      * @owner Observable
      */
-    static create(error, scheduler) {
+    ErrorObservable.create = function (error, scheduler) {
         return new ErrorObservable(error, scheduler);
-    }
-    static dispatch(arg) {
-        const { error, subscriber } = arg;
+    };
+    ErrorObservable.dispatch = function (arg) {
+        var error = arg.error, subscriber = arg.subscriber;
         subscriber.error(error);
-    }
-    _subscribe(subscriber) {
-        const error = this.error;
-        const scheduler = this.scheduler;
+    };
+    ErrorObservable.prototype._subscribe = function (subscriber) {
+        var error = this.error;
+        var scheduler = this.scheduler;
         if (scheduler) {
             return scheduler.schedule(ErrorObservable.dispatch, 0, {
-                error, subscriber
+                error: error, subscriber: subscriber
             });
         }
         else {
             subscriber.error(error);
         }
-    }
-}
+    };
+    return ErrorObservable;
+}(Observable_1.Observable));
 exports.ErrorObservable = ErrorObservable;
 //# sourceMappingURL=ErrorObservable.js.map

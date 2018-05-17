@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
  * inner Observables while the previous inner Observable has not yet completed.
@@ -42,40 +52,46 @@ function exhaust() {
     return this.lift(new SwitchFirstOperator());
 }
 exports.exhaust = exhaust;
-class SwitchFirstOperator {
-    call(subscriber, source) {
-        return source._subscribe(new SwitchFirstSubscriber(subscriber));
+var SwitchFirstOperator = /** @class */ (function () {
+    function SwitchFirstOperator() {
     }
-}
+    SwitchFirstOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new SwitchFirstSubscriber(subscriber));
+    };
+    return SwitchFirstOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SwitchFirstSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination) {
-        super(destination);
-        this.hasCompleted = false;
-        this.hasSubscription = false;
+var SwitchFirstSubscriber = /** @class */ (function (_super) {
+    __extends(SwitchFirstSubscriber, _super);
+    function SwitchFirstSubscriber(destination) {
+        var _this = _super.call(this, destination) || this;
+        _this.hasCompleted = false;
+        _this.hasSubscription = false;
+        return _this;
     }
-    _next(value) {
+    SwitchFirstSubscriber.prototype._next = function (value) {
         if (!this.hasSubscription) {
             this.hasSubscription = true;
             this.add(subscribeToResult_1.subscribeToResult(this, value));
         }
-    }
-    _complete() {
+    };
+    SwitchFirstSubscriber.prototype._complete = function () {
         this.hasCompleted = true;
         if (!this.hasSubscription) {
             this.destination.complete();
         }
-    }
-    notifyComplete(innerSub) {
+    };
+    SwitchFirstSubscriber.prototype.notifyComplete = function (innerSub) {
         this.remove(innerSub);
         this.hasSubscription = false;
         if (this.hasCompleted) {
             this.destination.complete();
         }
-    }
-}
+    };
+    return SwitchFirstSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=exhaust.js.map

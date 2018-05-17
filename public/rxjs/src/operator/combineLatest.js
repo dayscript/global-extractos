@@ -1,10 +1,20 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArrayObservable_1 = require("../observable/ArrayObservable");
-const isArray_1 = require("../util/isArray");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
-const none = {};
+var ArrayObservable_1 = require("../observable/ArrayObservable");
+var isArray_1 = require("../util/isArray");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
+var none = {};
 /**
  * Combines multiple Observables to create an Observable whose values are
  * calculated from the latest values of each of its input Observables.
@@ -43,8 +53,12 @@ const none = {};
  * @method combineLatest
  * @owner Observable
  */
-function combineLatest(...observables) {
-    let project = null;
+function combineLatest() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
+    var project = null;
     if (typeof observables[observables.length - 1] === 'function') {
         project = observables.pop();
     }
@@ -58,56 +72,59 @@ function combineLatest(...observables) {
 }
 exports.combineLatest = combineLatest;
 /* tslint:enable:max-line-length */
-class CombineLatestOperator {
-    constructor(project) {
+var CombineLatestOperator = /** @class */ (function () {
+    function CombineLatestOperator(project) {
         this.project = project;
     }
-    call(subscriber, source) {
+    CombineLatestOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
-    }
-}
+    };
+    return CombineLatestOperator;
+}());
 exports.CombineLatestOperator = CombineLatestOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class CombineLatestSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, project) {
-        super(destination);
-        this.project = project;
-        this.active = 0;
-        this.values = [];
-        this.observables = [];
+var CombineLatestSubscriber = /** @class */ (function (_super) {
+    __extends(CombineLatestSubscriber, _super);
+    function CombineLatestSubscriber(destination, project) {
+        var _this = _super.call(this, destination) || this;
+        _this.project = project;
+        _this.active = 0;
+        _this.values = [];
+        _this.observables = [];
+        return _this;
     }
-    _next(observable) {
+    CombineLatestSubscriber.prototype._next = function (observable) {
         this.values.push(none);
         this.observables.push(observable);
-    }
-    _complete() {
-        const observables = this.observables;
-        const len = observables.length;
+    };
+    CombineLatestSubscriber.prototype._complete = function () {
+        var observables = this.observables;
+        var len = observables.length;
         if (len === 0) {
             this.destination.complete();
         }
         else {
             this.active = len;
             this.toRespond = len;
-            for (let i = 0; i < len; i++) {
-                const observable = observables[i];
+            for (var i = 0; i < len; i++) {
+                var observable = observables[i];
                 this.add(subscribeToResult_1.subscribeToResult(this, observable, observable, i));
             }
         }
-    }
-    notifyComplete(unused) {
+    };
+    CombineLatestSubscriber.prototype.notifyComplete = function (unused) {
         if ((this.active -= 1) === 0) {
             this.destination.complete();
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        const values = this.values;
-        const oldVal = values[outerIndex];
-        const toRespond = !this.toRespond
+    };
+    CombineLatestSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        var values = this.values;
+        var oldVal = values[outerIndex];
+        var toRespond = !this.toRespond
             ? 0
             : oldVal === none ? --this.toRespond : this.toRespond;
         values[outerIndex] = innerValue;
@@ -119,9 +136,9 @@ class CombineLatestSubscriber extends OuterSubscriber_1.OuterSubscriber {
                 this.destination.next(values.slice());
             }
         }
-    }
-    _tryProject(values) {
-        let result;
+    };
+    CombineLatestSubscriber.prototype._tryProject = function (values) {
+        var result;
         try {
             result = this.project.apply(this, values);
         }
@@ -130,7 +147,8 @@ class CombineLatestSubscriber extends OuterSubscriber_1.OuterSubscriber {
             return;
         }
         this.destination.next(result);
-    }
-}
+    };
+    return CombineLatestSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 exports.CombineLatestSubscriber = CombineLatestSubscriber;
 //# sourceMappingURL=combineLatest.js.map

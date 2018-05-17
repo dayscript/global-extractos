@@ -3,87 +3,87 @@
 // https://rbuckton.github.io/reflect-metadata/#reflect.getmetadatakeys
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../Reflect");
-const chai_1 = require("chai");
-describe("Reflect.getMetadataKeys", () => {
-    it("KeysInvalidTarget", () => {
+var chai_1 = require("chai");
+describe("Reflect.getMetadataKeys", function () {
+    it("KeysInvalidTarget", function () {
         // 1. If Type(target) is not Object, throw a TypeError exception.
-        chai_1.assert.throws(() => Reflect.getMetadataKeys(undefined, undefined), TypeError);
+        chai_1.assert.throws(function () { return Reflect.getMetadataKeys(undefined, undefined); }, TypeError);
     });
-    it("KeysWithoutTargetKeyWhenNotDefined", () => {
-        let obj = {};
-        let result = Reflect.getMetadataKeys(obj, undefined);
+    it("KeysWithoutTargetKeyWhenNotDefined", function () {
+        var obj = {};
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, []);
     });
-    it("KeysWithoutTargetKeyWhenDefined", () => {
-        let obj = {};
+    it("KeysWithoutTargetKeyWhenDefined", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, undefined);
-        let result = Reflect.getMetadataKeys(obj, undefined);
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, ["key"]);
     });
-    it("KeysWithoutTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
-        let obj = Object.create(prototype);
+    it("KeysWithoutTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key", "value", prototype, undefined);
-        let result = Reflect.getMetadataKeys(obj, undefined);
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, ["key"]);
     });
-    it("KeysOrderWithoutTargetKey", () => {
-        let obj = {};
+    it("KeysOrderWithoutTargetKey", function () {
+        var obj = {};
         Reflect.defineMetadata("key1", "value", obj, undefined);
         Reflect.defineMetadata("key0", "value", obj, undefined);
-        let result = Reflect.getMetadataKeys(obj, undefined);
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, ["key1", "key0"]);
     });
-    it("KeysOrderAfterRedefineWithoutTargetKey", () => {
-        let obj = {};
+    it("KeysOrderAfterRedefineWithoutTargetKey", function () {
+        var obj = {};
         Reflect.defineMetadata("key1", "value", obj, undefined);
         Reflect.defineMetadata("key0", "value", obj, undefined);
         Reflect.defineMetadata("key1", "value", obj, undefined);
-        let result = Reflect.getMetadataKeys(obj, undefined);
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, ["key1", "key0"]);
     });
-    it("KeysOrderWithoutTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
+    it("KeysOrderWithoutTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
         Reflect.defineMetadata("key2", "value", prototype, undefined);
-        let obj = Object.create(prototype);
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key1", "value", obj, undefined);
         Reflect.defineMetadata("key0", "value", obj, undefined);
-        let result = Reflect.getMetadataKeys(obj, undefined);
+        var result = Reflect.getMetadataKeys(obj, undefined);
         chai_1.assert.deepEqual(result, ["key1", "key0", "key2"]);
     });
-    it("KeysWithTargetKeyWhenNotDefined", () => {
-        let obj = {};
-        let result = Reflect.getMetadataKeys(obj, "name");
+    it("KeysWithTargetKeyWhenNotDefined", function () {
+        var obj = {};
+        var result = Reflect.getMetadataKeys(obj, "name");
         chai_1.assert.deepEqual(result, []);
     });
-    it("KeysWithTargetKeyWhenDefined", () => {
-        let obj = {};
+    it("KeysWithTargetKeyWhenDefined", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, "name");
-        let result = Reflect.getMetadataKeys(obj, "name");
+        var result = Reflect.getMetadataKeys(obj, "name");
         chai_1.assert.deepEqual(result, ["key"]);
     });
-    it("KeysWithTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
-        let obj = Object.create(prototype);
+    it("KeysWithTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key", "value", prototype, "name");
-        let result = Reflect.getMetadataKeys(obj, "name");
+        var result = Reflect.getMetadataKeys(obj, "name");
         chai_1.assert.deepEqual(result, ["key"]);
     });
-    it("KeysOrderAfterRedefineWithTargetKey", () => {
-        let obj = {};
+    it("KeysOrderAfterRedefineWithTargetKey", function () {
+        var obj = {};
         Reflect.defineMetadata("key1", "value", obj, "name");
         Reflect.defineMetadata("key0", "value", obj, "name");
         Reflect.defineMetadata("key1", "value", obj, "name");
-        let result = Reflect.getMetadataKeys(obj, "name");
+        var result = Reflect.getMetadataKeys(obj, "name");
         chai_1.assert.deepEqual(result, ["key1", "key0"]);
     });
-    it("KeysOrderWithTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
+    it("KeysOrderWithTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
         Reflect.defineMetadata("key2", "value", prototype, "name");
-        let obj = Object.create(prototype);
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key1", "value", obj, "name");
         Reflect.defineMetadata("key0", "value", obj, "name");
-        let result = Reflect.getMetadataKeys(obj, "name");
+        var result = Reflect.getMetadataKeys(obj, "name");
         chai_1.assert.deepEqual(result, ["key1", "key0", "key2"]);
     });
 });

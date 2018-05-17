@@ -7,15 +7,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./utils");
+var utils_1 = require("./utils");
 function patchTimer(window, setName, cancelName, nameSuffix) {
-    let setNative = null;
-    let clearNative = null;
+    var setNative = null;
+    var clearNative = null;
     setName += nameSuffix;
     cancelName += nameSuffix;
-    const tasksByHandleId = {};
+    var tasksByHandleId = {};
     function scheduleTask(task) {
-        const data = task.data;
+        var data = task.data;
         data.args[0] = function () {
             try {
                 task.invoke.apply(this, arguments);
@@ -33,21 +33,21 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
         return clearNative(task.data.handleId);
     }
     setNative =
-        utils_1.patchMethod(window, setName, (delegate) => function (self, args) {
+        utils_1.patchMethod(window, setName, function (delegate) { return function (self, args) {
             if (typeof args[0] === 'function') {
-                const zone = Zone.current;
-                const options = {
+                var zone = Zone.current;
+                var options = {
                     handleId: null,
                     isPeriodic: nameSuffix === 'Interval',
                     delay: (nameSuffix === 'Timeout' || nameSuffix === 'Interval') ? args[1] || 0 : null,
                     args: args
                 };
-                const task = zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
+                var task = zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
                 if (!task) {
                     return task;
                 }
                 // Node.js must additionally support the ref and unref functions.
-                const handle = task.data.handleId;
+                var handle = task.data.handleId;
                 // check whether handle is null, because some polyfill or browser
                 // may return undefined from setTimeout/setInterval/setImmediate/requestAnimationFrame
                 if (handle && handle.ref && handle.unref && typeof handle.ref === 'function' &&
@@ -61,10 +61,10 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 // cause an error by calling it directly.
                 return delegate.apply(window, args);
             }
-        });
+        }; });
     clearNative =
-        utils_1.patchMethod(window, cancelName, (delegate) => function (self, args) {
-            const task = typeof args[0] === 'number' ? tasksByHandleId[args[0]] : args[0];
+        utils_1.patchMethod(window, cancelName, function (delegate) { return function (self, args) {
+            var task = typeof args[0] === 'number' ? tasksByHandleId[args[0]] : args[0];
             if (task && typeof task.type === 'string') {
                 if (task.state !== 'notScheduled' &&
                     (task.cancelFn && task.data.isPeriodic || task.runCount === 0)) {
@@ -76,7 +76,7 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 // cause an error by calling it directly.
                 delegate.apply(window, args);
             }
-        });
+        }; });
 }
 exports.patchTimer = patchTimer;
 //# sourceMappingURL=timers.js.map

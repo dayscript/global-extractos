@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const windowToggle_1 = require("../../operator/windowToggle");
+var Observable_1 = require("../../Observable");
+var windowToggle_1 = require("../../operator/windowToggle");
 Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
 //# sourceMappingURL=windowToggle.js.map

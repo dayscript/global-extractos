@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
  *
@@ -18,47 +28,51 @@ function skipUntil(notifier) {
     return this.lift(new SkipUntilOperator(notifier));
 }
 exports.skipUntil = skipUntil;
-class SkipUntilOperator {
-    constructor(notifier) {
+var SkipUntilOperator = /** @class */ (function () {
+    function SkipUntilOperator(notifier) {
         this.notifier = notifier;
     }
-    call(subscriber, source) {
+    SkipUntilOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
-    }
-}
+    };
+    return SkipUntilOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SkipUntilSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, notifier) {
-        super(destination);
-        this.hasValue = false;
-        this.isInnerStopped = false;
-        this.add(subscribeToResult_1.subscribeToResult(this, notifier));
+var SkipUntilSubscriber = /** @class */ (function (_super) {
+    __extends(SkipUntilSubscriber, _super);
+    function SkipUntilSubscriber(destination, notifier) {
+        var _this = _super.call(this, destination) || this;
+        _this.hasValue = false;
+        _this.isInnerStopped = false;
+        _this.add(subscribeToResult_1.subscribeToResult(_this, notifier));
+        return _this;
     }
-    _next(value) {
+    SkipUntilSubscriber.prototype._next = function (value) {
         if (this.hasValue) {
-            super._next(value);
+            _super.prototype._next.call(this, value);
         }
-    }
-    _complete() {
+    };
+    SkipUntilSubscriber.prototype._complete = function () {
         if (this.isInnerStopped) {
-            super._complete();
+            _super.prototype._complete.call(this);
         }
         else {
             this.unsubscribe();
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    SkipUntilSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.hasValue = true;
-    }
-    notifyComplete() {
+    };
+    SkipUntilSubscriber.prototype.notifyComplete = function () {
         this.isInnerStopped = true;
         if (this.isStopped) {
-            super._complete();
+            _super.prototype._complete.call(this);
         }
-    }
-}
+    };
+    return SkipUntilSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=skipUntil.js.map

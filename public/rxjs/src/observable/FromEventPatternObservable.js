@@ -1,18 +1,30 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const Subscription_1 = require("../Subscription");
+var Observable_1 = require("../Observable");
+var Subscription_1 = require("../Subscription");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class FromEventPatternObservable extends Observable_1.Observable {
-    constructor(addHandler, removeHandler, selector) {
-        super();
-        this.addHandler = addHandler;
-        this.removeHandler = removeHandler;
-        this.selector = selector;
+var FromEventPatternObservable = /** @class */ (function (_super) {
+    __extends(FromEventPatternObservable, _super);
+    function FromEventPatternObservable(addHandler, removeHandler, selector) {
+        var _this = _super.call(this) || this;
+        _this.addHandler = addHandler;
+        _this.removeHandler = removeHandler;
+        _this.selector = selector;
+        return _this;
     }
     /**
      * Creates an Observable from an API based on addHandler/removeHandler
@@ -61,37 +73,43 @@ class FromEventPatternObservable extends Observable_1.Observable {
      * @name fromEventPattern
      * @owner Observable
      */
-    static create(addHandler, removeHandler, selector) {
+    FromEventPatternObservable.create = function (addHandler, removeHandler, selector) {
         return new FromEventPatternObservable(addHandler, removeHandler, selector);
-    }
-    _subscribe(subscriber) {
-        const removeHandler = this.removeHandler;
-        const handler = !!this.selector ? (...args) => {
-            this._callSelector(subscriber, args);
+    };
+    FromEventPatternObservable.prototype._subscribe = function (subscriber) {
+        var _this = this;
+        var removeHandler = this.removeHandler;
+        var handler = !!this.selector ? function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            _this._callSelector(subscriber, args);
         } : function (e) { subscriber.next(e); };
         this._callAddHandler(handler, subscriber);
-        subscriber.add(new Subscription_1.Subscription(() => {
+        subscriber.add(new Subscription_1.Subscription(function () {
             //TODO: determine whether or not to forward to error handler
             removeHandler(handler);
         }));
-    }
-    _callSelector(subscriber, args) {
+    };
+    FromEventPatternObservable.prototype._callSelector = function (subscriber, args) {
         try {
-            const result = this.selector(...args);
+            var result = this.selector.apply(this, args);
             subscriber.next(result);
         }
         catch (e) {
             subscriber.error(e);
         }
-    }
-    _callAddHandler(handler, errorSubscriber) {
+    };
+    FromEventPatternObservable.prototype._callAddHandler = function (handler, errorSubscriber) {
         try {
             this.addHandler(handler);
         }
         catch (e) {
             errorSubscriber.error(e);
         }
-    }
-}
+    };
+    return FromEventPatternObservable;
+}(Observable_1.Observable));
 exports.FromEventPatternObservable = FromEventPatternObservable;
 //# sourceMappingURL=FromEventPatternObservable.js.map

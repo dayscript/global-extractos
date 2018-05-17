@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const map_1 = require("./map");
+var map_1 = require("./map");
 /**
  * Maps each source value (an object) to its specified nested property.
  *
@@ -28,8 +28,12 @@ const map_1 = require("./map");
  * @method pluck
  * @owner Observable
  */
-function pluck(...properties) {
-    const length = properties.length;
+function pluck() {
+    var properties = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        properties[_i] = arguments[_i];
+    }
+    var length = properties.length;
     if (length === 0) {
         throw new Error('list of properties cannot be empty.');
     }
@@ -37,10 +41,10 @@ function pluck(...properties) {
 }
 exports.pluck = pluck;
 function plucker(props, length) {
-    const mapper = (x) => {
-        let currentProp = x;
-        for (let i = 0; i < length; i++) {
-            const p = currentProp[props[i]];
+    var mapper = function (x) {
+        var currentProp = x;
+        for (var i = 0; i < length; i++) {
+            var p = currentProp[props[i]];
             if (typeof p !== 'undefined') {
                 currentProp = p;
             }

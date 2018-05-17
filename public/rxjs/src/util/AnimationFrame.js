@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("./root");
-class RequestAnimationFrameDefinition {
-    constructor(root) {
+var root_1 = require("./root");
+var RequestAnimationFrameDefinition = /** @class */ (function () {
+    function RequestAnimationFrameDefinition(root) {
         if (root.requestAnimationFrame) {
             this.cancelAnimationFrame = root.cancelAnimationFrame.bind(root);
             this.requestAnimationFrame = root.requestAnimationFrame.bind(root);
@@ -28,7 +28,8 @@ class RequestAnimationFrameDefinition {
             this.requestAnimationFrame = function (cb) { return root.setTimeout(cb, 1000 / 60); };
         }
     }
-}
+    return RequestAnimationFrameDefinition;
+}());
 exports.RequestAnimationFrameDefinition = RequestAnimationFrameDefinition;
 exports.AnimationFrame = new RequestAnimationFrameDefinition(root_1.root);
 //# sourceMappingURL=AnimationFrame.js.map

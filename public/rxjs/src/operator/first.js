@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const EmptyError_1 = require("../util/EmptyError");
+var Subscriber_1 = require("../Subscriber");
+var EmptyError_1 = require("../util/EmptyError");
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -55,43 +65,46 @@ function first(predicate, resultSelector, defaultValue) {
     return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 exports.first = first;
-class FirstOperator {
-    constructor(predicate, resultSelector, defaultValue, source) {
+var FirstOperator = /** @class */ (function () {
+    function FirstOperator(predicate, resultSelector, defaultValue, source) {
         this.predicate = predicate;
         this.resultSelector = resultSelector;
         this.defaultValue = defaultValue;
         this.source = source;
     }
-    call(observer, source) {
+    FirstOperator.prototype.call = function (observer, source) {
         return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
-    }
-}
+    };
+    return FirstOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class FirstSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, resultSelector, defaultValue, source) {
-        super(destination);
-        this.predicate = predicate;
-        this.resultSelector = resultSelector;
-        this.defaultValue = defaultValue;
-        this.source = source;
-        this.index = 0;
-        this.hasCompleted = false;
+var FirstSubscriber = /** @class */ (function (_super) {
+    __extends(FirstSubscriber, _super);
+    function FirstSubscriber(destination, predicate, resultSelector, defaultValue, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.resultSelector = resultSelector;
+        _this.defaultValue = defaultValue;
+        _this.source = source;
+        _this.index = 0;
+        _this.hasCompleted = false;
+        return _this;
     }
-    _next(value) {
-        const index = this.index++;
+    FirstSubscriber.prototype._next = function (value) {
+        var index = this.index++;
         if (this.predicate) {
             this._tryPredicate(value, index);
         }
         else {
             this._emit(value, index);
         }
-    }
-    _tryPredicate(value, index) {
-        let result;
+    };
+    FirstSubscriber.prototype._tryPredicate = function (value, index) {
+        var result;
         try {
             result = this.predicate(value, index, this.source);
         }
@@ -102,16 +115,16 @@ class FirstSubscriber extends Subscriber_1.Subscriber {
         if (result) {
             this._emit(value, index);
         }
-    }
-    _emit(value, index) {
+    };
+    FirstSubscriber.prototype._emit = function (value, index) {
         if (this.resultSelector) {
             this._tryResultSelector(value, index);
             return;
         }
         this._emitFinal(value);
-    }
-    _tryResultSelector(value, index) {
-        let result;
+    };
+    FirstSubscriber.prototype._tryResultSelector = function (value, index) {
+        var result;
         try {
             result = this.resultSelector(value, index);
         }
@@ -120,15 +133,15 @@ class FirstSubscriber extends Subscriber_1.Subscriber {
             return;
         }
         this._emitFinal(result);
-    }
-    _emitFinal(value) {
-        const destination = this.destination;
+    };
+    FirstSubscriber.prototype._emitFinal = function (value) {
+        var destination = this.destination;
         destination.next(value);
         destination.complete();
         this.hasCompleted = true;
-    }
-    _complete() {
-        const destination = this.destination;
+    };
+    FirstSubscriber.prototype._complete = function () {
+        var destination = this.destination;
         if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
             destination.next(this.defaultValue);
             destination.complete();
@@ -136,6 +149,7 @@ class FirstSubscriber extends Subscriber_1.Subscriber {
         else if (!this.hasCompleted) {
             destination.error(new EmptyError_1.EmptyError);
         }
-    }
-}
+    };
+    return FirstSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=first.js.map

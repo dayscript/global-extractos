@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Converts an Observable of {@link Notification} objects into the emissions
  * that they represent.
@@ -40,22 +50,27 @@ function dematerialize() {
     return this.lift(new DeMaterializeOperator());
 }
 exports.dematerialize = dematerialize;
-class DeMaterializeOperator {
-    call(subscriber, source) {
-        return source._subscribe(new DeMaterializeSubscriber(subscriber));
+var DeMaterializeOperator = /** @class */ (function () {
+    function DeMaterializeOperator() {
     }
-}
+    DeMaterializeOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new DeMaterializeSubscriber(subscriber));
+    };
+    return DeMaterializeOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DeMaterializeSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination) {
-        super(destination);
+var DeMaterializeSubscriber = /** @class */ (function (_super) {
+    __extends(DeMaterializeSubscriber, _super);
+    function DeMaterializeSubscriber(destination) {
+        return _super.call(this, destination) || this;
     }
-    _next(value) {
+    DeMaterializeSubscriber.prototype._next = function (value) {
         value.observe(this.destination);
-    }
-}
+    };
+    return DeMaterializeSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=dematerialize.js.map

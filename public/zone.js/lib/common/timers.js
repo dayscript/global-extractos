@@ -7,15 +7,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./utils");
+var utils_1 = require("./utils");
 function patchTimer(window, setName, cancelName, nameSuffix) {
     var setNative = null;
     var clearNative = null;
     setName += nameSuffix;
     cancelName += nameSuffix;
-    const tasksByHandleId = {};
+    var tasksByHandleId = {};
     function scheduleTask(task) {
-        const data = task.data;
+        var data = task.data;
         data.args[0] = function () {
             task.invoke.apply(this, arguments);
             delete tasksByHandleId[data.handleId];
@@ -29,7 +29,7 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
         return clearNative(task.data.handleId);
     }
     setNative =
-        utils_1.patchMethod(window, setName, (delegate) => function (self, args) {
+        utils_1.patchMethod(window, setName, function (delegate) { return function (self, args) {
             if (typeof args[0] === 'function') {
                 var zone = Zone.current;
                 var options = {
@@ -54,9 +54,9 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 // cause an error by calling it directly.
                 return delegate.apply(window, args);
             }
-        });
+        }; });
     clearNative =
-        utils_1.patchMethod(window, cancelName, (delegate) => function (self, args) {
+        utils_1.patchMethod(window, cancelName, function (delegate) { return function (self, args) {
             var task = typeof args[0] === 'number' ? tasksByHandleId[args[0]] : args[0];
             if (task && typeof task.type === 'string') {
                 if (task.cancelFn && task.data.isPeriodic || task.runCount === 0) {
@@ -68,7 +68,7 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 // cause an error by calling it directly.
                 delegate.apply(window, args);
             }
-        });
+        }; });
 }
 exports.patchTimer = patchTimer;
 //# sourceMappingURL=timers.js.map

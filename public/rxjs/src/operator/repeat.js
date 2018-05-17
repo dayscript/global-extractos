@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const EmptyObservable_1 = require("../observable/EmptyObservable");
+var Subscriber_1 = require("../Subscriber");
+var EmptyObservable_1 = require("../observable/EmptyObservable");
 /**
  * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
  * on a particular Scheduler.
@@ -16,7 +26,8 @@ const EmptyObservable_1 = require("../observable/EmptyObservable");
  * @method repeat
  * @owner Observable
  */
-function repeat(count = -1) {
+function repeat(count) {
+    if (count === void 0) { count = -1; }
     if (count === 0) {
         return new EmptyObservable_1.EmptyObservable();
     }
@@ -28,31 +39,34 @@ function repeat(count = -1) {
     }
 }
 exports.repeat = repeat;
-class RepeatOperator {
-    constructor(count, source) {
+var RepeatOperator = /** @class */ (function () {
+    function RepeatOperator(count, source) {
         this.count = count;
         this.source = source;
     }
-    call(subscriber, source) {
+    RepeatOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
-    }
-}
+    };
+    return RepeatOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class RepeatSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, count, source) {
-        super(destination);
-        this.count = count;
-        this.source = source;
+var RepeatSubscriber = /** @class */ (function (_super) {
+    __extends(RepeatSubscriber, _super);
+    function RepeatSubscriber(destination, count, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.count = count;
+        _this.source = source;
+        return _this;
     }
-    complete() {
+    RepeatSubscriber.prototype.complete = function () {
         if (!this.isStopped) {
-            const { source, count } = this;
+            var _a = this, source = _a.source, count = _a.count;
             if (count === 0) {
-                return super.complete();
+                return _super.prototype.complete.call(this);
             }
             else if (count > -1) {
                 this.count = count - 1;
@@ -62,6 +76,7 @@ class RepeatSubscriber extends Subscriber_1.Subscriber {
             this.closed = false;
             source.subscribe(this);
         }
-    }
-}
+    };
+    return RepeatSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=repeat.js.map

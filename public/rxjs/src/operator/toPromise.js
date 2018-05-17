@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("../util/root");
+var root_1 = require("../util/root");
 /**
  * @param PromiseCtor
  * @return {Promise<T>}
@@ -8,6 +8,7 @@ const root_1 = require("../util/root");
  * @owner Observable
  */
 function toPromise(PromiseCtor) {
+    var _this = this;
     if (!PromiseCtor) {
         if (root_1.root.Rx && root_1.root.Rx.config && root_1.root.Rx.config.Promise) {
             PromiseCtor = root_1.root.Rx.config.Promise;
@@ -19,9 +20,9 @@ function toPromise(PromiseCtor) {
     if (!PromiseCtor) {
         throw new Error('no Promise impl found');
     }
-    return new PromiseCtor((resolve, reject) => {
-        let value;
-        this.subscribe((x) => value = x, (err) => reject(err), () => resolve(value));
+    return new PromiseCtor(function (resolve, reject) {
+        var value;
+        _this.subscribe(function (x) { return value = x; }, function (err) { return reject(err); }, function () { return resolve(value); });
     });
 }
 exports.toPromise = toPromise;

@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Applies an accumulator function over the source Observable, and returns the
  * accumulated result when the source completes, given an optional seed value.
@@ -50,31 +60,34 @@ function reduce(accumulator, seed) {
     return this.lift(new ReduceOperator(accumulator, seed));
 }
 exports.reduce = reduce;
-class ReduceOperator {
-    constructor(accumulator, seed) {
+var ReduceOperator = /** @class */ (function () {
+    function ReduceOperator(accumulator, seed) {
         this.accumulator = accumulator;
         this.seed = seed;
     }
-    call(subscriber, source) {
+    ReduceOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed));
-    }
-}
+    };
+    return ReduceOperator;
+}());
 exports.ReduceOperator = ReduceOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ReduceSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, accumulator, seed) {
-        super(destination);
-        this.accumulator = accumulator;
-        this.hasValue = false;
-        this.acc = seed;
-        this.accumulator = accumulator;
-        this.hasSeed = typeof seed !== 'undefined';
+var ReduceSubscriber = /** @class */ (function (_super) {
+    __extends(ReduceSubscriber, _super);
+    function ReduceSubscriber(destination, accumulator, seed) {
+        var _this = _super.call(this, destination) || this;
+        _this.accumulator = accumulator;
+        _this.hasValue = false;
+        _this.acc = seed;
+        _this.accumulator = accumulator;
+        _this.hasSeed = typeof seed !== 'undefined';
+        return _this;
     }
-    _next(value) {
+    ReduceSubscriber.prototype._next = function (value) {
         if (this.hasValue || (this.hasValue = this.hasSeed)) {
             this._tryReduce(value);
         }
@@ -82,9 +95,9 @@ class ReduceSubscriber extends Subscriber_1.Subscriber {
             this.acc = value;
             this.hasValue = true;
         }
-    }
-    _tryReduce(value) {
-        let result;
+    };
+    ReduceSubscriber.prototype._tryReduce = function (value) {
+        var result;
         try {
             result = this.accumulator(this.acc, value);
         }
@@ -93,13 +106,14 @@ class ReduceSubscriber extends Subscriber_1.Subscriber {
             return;
         }
         this.acc = result;
-    }
-    _complete() {
+    };
+    ReduceSubscriber.prototype._complete = function () {
         if (this.hasValue || this.hasSeed) {
             this.destination.next(this.acc);
         }
         this.destination.complete();
-    }
-}
+    };
+    return ReduceSubscriber;
+}(Subscriber_1.Subscriber));
 exports.ReduceSubscriber = ReduceSubscriber;
 //# sourceMappingURL=reduce.js.map

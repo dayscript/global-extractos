@@ -1,19 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const SubscriptionLog_1 = require("./SubscriptionLog");
-class SubscriptionLoggable {
-    constructor() {
+var SubscriptionLog_1 = require("./SubscriptionLog");
+var SubscriptionLoggable = /** @class */ (function () {
+    function SubscriptionLoggable() {
         this.subscriptions = [];
     }
-    logSubscribedFrame() {
+    SubscriptionLoggable.prototype.logSubscribedFrame = function () {
         this.subscriptions.push(new SubscriptionLog_1.SubscriptionLog(this.scheduler.now()));
         return this.subscriptions.length - 1;
-    }
-    logUnsubscribedFrame(index) {
-        const subscriptionLogs = this.subscriptions;
-        const oldSubscriptionLog = subscriptionLogs[index];
+    };
+    SubscriptionLoggable.prototype.logUnsubscribedFrame = function (index) {
+        var subscriptionLogs = this.subscriptions;
+        var oldSubscriptionLog = subscriptionLogs[index];
         subscriptionLogs[index] = new SubscriptionLog_1.SubscriptionLog(oldSubscriptionLog.subscribedFrame, this.scheduler.now());
-    }
-}
+    };
+    return SubscriptionLoggable;
+}());
 exports.SubscriptionLoggable = SubscriptionLoggable;
 //# sourceMappingURL=SubscriptionLoggable.js.map

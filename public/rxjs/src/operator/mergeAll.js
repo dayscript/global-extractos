@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -46,33 +56,37 @@ const subscribeToResult_1 = require("../util/subscribeToResult");
  * @method mergeAll
  * @owner Observable
  */
-function mergeAll(concurrent = Number.POSITIVE_INFINITY) {
+function mergeAll(concurrent) {
+    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
     return this.lift(new MergeAllOperator(concurrent));
 }
 exports.mergeAll = mergeAll;
-class MergeAllOperator {
-    constructor(concurrent) {
+var MergeAllOperator = /** @class */ (function () {
+    function MergeAllOperator(concurrent) {
         this.concurrent = concurrent;
     }
-    call(observer, source) {
+    MergeAllOperator.prototype.call = function (observer, source) {
         return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
-    }
-}
+    };
+    return MergeAllOperator;
+}());
 exports.MergeAllOperator = MergeAllOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class MergeAllSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, concurrent) {
-        super(destination);
-        this.concurrent = concurrent;
-        this.hasCompleted = false;
-        this.buffer = [];
-        this.active = 0;
+var MergeAllSubscriber = /** @class */ (function (_super) {
+    __extends(MergeAllSubscriber, _super);
+    function MergeAllSubscriber(destination, concurrent) {
+        var _this = _super.call(this, destination) || this;
+        _this.concurrent = concurrent;
+        _this.hasCompleted = false;
+        _this.buffer = [];
+        _this.active = 0;
+        return _this;
     }
-    _next(observable) {
+    MergeAllSubscriber.prototype._next = function (observable) {
         if (this.active < this.concurrent) {
             this.active++;
             this.add(subscribeToResult_1.subscribeToResult(this, observable));
@@ -80,15 +94,15 @@ class MergeAllSubscriber extends OuterSubscriber_1.OuterSubscriber {
         else {
             this.buffer.push(observable);
         }
-    }
-    _complete() {
+    };
+    MergeAllSubscriber.prototype._complete = function () {
         this.hasCompleted = true;
         if (this.active === 0 && this.buffer.length === 0) {
             this.destination.complete();
         }
-    }
-    notifyComplete(innerSub) {
-        const buffer = this.buffer;
+    };
+    MergeAllSubscriber.prototype.notifyComplete = function (innerSub) {
+        var buffer = this.buffer;
         this.remove(innerSub);
         this.active--;
         if (buffer.length > 0) {
@@ -97,7 +111,8 @@ class MergeAllSubscriber extends OuterSubscriber_1.OuterSubscriber {
         else if (this.active === 0 && this.hasCompleted) {
             this.destination.complete();
         }
-    }
-}
+    };
+    return MergeAllSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 exports.MergeAllSubscriber = MergeAllSubscriber;
 //# sourceMappingURL=mergeAll.js.map

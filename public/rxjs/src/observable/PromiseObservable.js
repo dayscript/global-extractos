@@ -1,17 +1,29 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("../util/root");
-const Observable_1 = require("../Observable");
+var root_1 = require("../util/root");
+var Observable_1 = require("../Observable");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class PromiseObservable extends Observable_1.Observable {
-    constructor(promise, scheduler) {
-        super();
-        this.promise = promise;
-        this.scheduler = scheduler;
+var PromiseObservable = /** @class */ (function (_super) {
+    __extends(PromiseObservable, _super);
+    function PromiseObservable(promise, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.promise = promise;
+        _this.scheduler = scheduler;
+        return _this;
     }
     /**
      * Converts a Promise to an Observable.
@@ -39,12 +51,13 @@ class PromiseObservable extends Observable_1.Observable {
      * @name fromPromise
      * @owner Observable
      */
-    static create(promise, scheduler) {
+    PromiseObservable.create = function (promise, scheduler) {
         return new PromiseObservable(promise, scheduler);
-    }
-    _subscribe(subscriber) {
-        const promise = this.promise;
-        const scheduler = this.scheduler;
+    };
+    PromiseObservable.prototype._subscribe = function (subscriber) {
+        var _this = this;
+        var promise = this.promise;
+        var scheduler = this.scheduler;
         if (scheduler == null) {
             if (this._isScalar) {
                 if (!subscriber.closed) {
@@ -53,60 +66,61 @@ class PromiseObservable extends Observable_1.Observable {
                 }
             }
             else {
-                promise.then((value) => {
-                    this.value = value;
-                    this._isScalar = true;
+                promise.then(function (value) {
+                    _this.value = value;
+                    _this._isScalar = true;
                     if (!subscriber.closed) {
                         subscriber.next(value);
                         subscriber.complete();
                     }
-                }, (err) => {
+                }, function (err) {
                     if (!subscriber.closed) {
                         subscriber.error(err);
                     }
                 })
-                    .then(null, err => {
+                    .then(null, function (err) {
                     // escape the promise trap, throw unhandled errors
-                    root_1.root.setTimeout(() => { throw err; });
+                    root_1.root.setTimeout(function () { throw err; });
                 });
             }
         }
         else {
             if (this._isScalar) {
                 if (!subscriber.closed) {
-                    return scheduler.schedule(dispatchNext, 0, { value: this.value, subscriber });
+                    return scheduler.schedule(dispatchNext, 0, { value: this.value, subscriber: subscriber });
                 }
             }
             else {
-                promise.then((value) => {
-                    this.value = value;
-                    this._isScalar = true;
+                promise.then(function (value) {
+                    _this.value = value;
+                    _this._isScalar = true;
                     if (!subscriber.closed) {
-                        subscriber.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
+                        subscriber.add(scheduler.schedule(dispatchNext, 0, { value: value, subscriber: subscriber }));
                     }
-                }, (err) => {
+                }, function (err) {
                     if (!subscriber.closed) {
-                        subscriber.add(scheduler.schedule(dispatchError, 0, { err, subscriber }));
+                        subscriber.add(scheduler.schedule(dispatchError, 0, { err: err, subscriber: subscriber }));
                     }
                 })
-                    .then(null, (err) => {
+                    .then(null, function (err) {
                     // escape the promise trap, throw unhandled errors
-                    root_1.root.setTimeout(() => { throw err; });
+                    root_1.root.setTimeout(function () { throw err; });
                 });
             }
         }
-    }
-}
+    };
+    return PromiseObservable;
+}(Observable_1.Observable));
 exports.PromiseObservable = PromiseObservable;
 function dispatchNext(arg) {
-    const { value, subscriber } = arg;
+    var value = arg.value, subscriber = arg.subscriber;
     if (!subscriber.closed) {
         subscriber.next(value);
         subscriber.complete();
     }
 }
 function dispatchError(arg) {
-    const { err, subscriber } = arg;
+    var err = arg.err, subscriber = arg.subscriber;
     if (!subscriber.closed) {
         subscriber.error(err);
     }

@@ -1,9 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const async_1 = require("../scheduler/async");
-const isDate_1 = require("../util/isDate");
-const Subscriber_1 = require("../Subscriber");
-const Notification_1 = require("../Notification");
+var async_1 = require("../scheduler/async");
+var isDate_1 = require("../util/isDate");
+var Subscriber_1 = require("../Subscriber");
+var Notification_1 = require("../Notification");
 /**
  * Delays the emission of items from the source Observable by a given timeout or
  * until a given Date.
@@ -43,84 +53,90 @@ const Notification_1 = require("../Notification");
  * @method delay
  * @owner Observable
  */
-function delay(delay, scheduler = async_1.async) {
-    const absoluteDelay = isDate_1.isDate(delay);
-    const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(delay);
+function delay(delay, scheduler) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
+    var absoluteDelay = isDate_1.isDate(delay);
+    var delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(delay);
     return this.lift(new DelayOperator(delayFor, scheduler));
 }
 exports.delay = delay;
-class DelayOperator {
-    constructor(delay, scheduler) {
+var DelayOperator = /** @class */ (function () {
+    function DelayOperator(delay, scheduler) {
         this.delay = delay;
         this.scheduler = scheduler;
     }
-    call(subscriber, source) {
+    DelayOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
-    }
-}
+    };
+    return DelayOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DelaySubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, delay, scheduler) {
-        super(destination);
-        this.delay = delay;
-        this.scheduler = scheduler;
-        this.queue = [];
-        this.active = false;
-        this.errored = false;
+var DelaySubscriber = /** @class */ (function (_super) {
+    __extends(DelaySubscriber, _super);
+    function DelaySubscriber(destination, delay, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.delay = delay;
+        _this.scheduler = scheduler;
+        _this.queue = [];
+        _this.active = false;
+        _this.errored = false;
+        return _this;
     }
-    static dispatch(state) {
-        const source = state.source;
-        const queue = source.queue;
-        const scheduler = state.scheduler;
-        const destination = state.destination;
+    DelaySubscriber.dispatch = function (state) {
+        var source = state.source;
+        var queue = source.queue;
+        var scheduler = state.scheduler;
+        var destination = state.destination;
         while (queue.length > 0 && (queue[0].time - scheduler.now()) <= 0) {
             queue.shift().notification.observe(destination);
         }
         if (queue.length > 0) {
-            const delay = Math.max(0, queue[0].time - scheduler.now());
-            this.schedule(state, delay);
+            var delay_1 = Math.max(0, queue[0].time - scheduler.now());
+            this.schedule(state, delay_1);
         }
         else {
             source.active = false;
         }
-    }
-    _schedule(scheduler) {
+    };
+    DelaySubscriber.prototype._schedule = function (scheduler) {
         this.active = true;
         this.add(scheduler.schedule(DelaySubscriber.dispatch, this.delay, {
             source: this, destination: this.destination, scheduler: scheduler
         }));
-    }
-    scheduleNotification(notification) {
+    };
+    DelaySubscriber.prototype.scheduleNotification = function (notification) {
         if (this.errored === true) {
             return;
         }
-        const scheduler = this.scheduler;
-        const message = new DelayMessage(scheduler.now() + this.delay, notification);
+        var scheduler = this.scheduler;
+        var message = new DelayMessage(scheduler.now() + this.delay, notification);
         this.queue.push(message);
         if (this.active === false) {
             this._schedule(scheduler);
         }
-    }
-    _next(value) {
+    };
+    DelaySubscriber.prototype._next = function (value) {
         this.scheduleNotification(Notification_1.Notification.createNext(value));
-    }
-    _error(err) {
+    };
+    DelaySubscriber.prototype._error = function (err) {
         this.errored = true;
         this.queue = [];
         this.destination.error(err);
-    }
-    _complete() {
+    };
+    DelaySubscriber.prototype._complete = function () {
         this.scheduleNotification(Notification_1.Notification.createComplete());
-    }
-}
-class DelayMessage {
-    constructor(time, notification) {
+    };
+    return DelaySubscriber;
+}(Subscriber_1.Subscriber));
+var DelayMessage = /** @class */ (function () {
+    function DelayMessage(time, notification) {
         this.time = time;
         this.notification = notification;
     }
-}
+    return DelayMessage;
+}());
 //# sourceMappingURL=delay.js.map

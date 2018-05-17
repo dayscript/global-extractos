@@ -1,27 +1,39 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const ScalarObservable_1 = require("./ScalarObservable");
-const EmptyObservable_1 = require("./EmptyObservable");
-const isScheduler_1 = require("../util/isScheduler");
+var Observable_1 = require("../Observable");
+var ScalarObservable_1 = require("./ScalarObservable");
+var EmptyObservable_1 = require("./EmptyObservable");
+var isScheduler_1 = require("../util/isScheduler");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class ArrayObservable extends Observable_1.Observable {
-    constructor(array, scheduler) {
-        super();
-        this.array = array;
-        this.scheduler = scheduler;
+var ArrayObservable = /** @class */ (function (_super) {
+    __extends(ArrayObservable, _super);
+    function ArrayObservable(array, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.array = array;
+        _this.scheduler = scheduler;
         if (!scheduler && array.length === 1) {
-            this._isScalar = true;
-            this.value = array[0];
+            _this._isScalar = true;
+            _this.value = array[0];
         }
+        return _this;
     }
-    static create(array, scheduler) {
+    ArrayObservable.create = function (array, scheduler) {
         return new ArrayObservable(array, scheduler);
-    }
+    };
     /**
      * Creates an Observable that emits some values you specify as arguments,
      * immediately one after the other, and then emits a complete notification.
@@ -58,15 +70,19 @@ class ArrayObservable extends Observable_1.Observable {
      * @name of
      * @owner Observable
      */
-    static of(...array) {
-        let scheduler = array[array.length - 1];
+    ArrayObservable.of = function () {
+        var array = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            array[_i] = arguments[_i];
+        }
+        var scheduler = array[array.length - 1];
         if (isScheduler_1.isScheduler(scheduler)) {
             array.pop();
         }
         else {
             scheduler = null;
         }
-        const len = array.length;
+        var len = array.length;
         if (len > 1) {
             return new ArrayObservable(array, scheduler);
         }
@@ -76,9 +92,9 @@ class ArrayObservable extends Observable_1.Observable {
         else {
             return new EmptyObservable_1.EmptyObservable(scheduler);
         }
-    }
-    static dispatch(state) {
-        const { array, index, count, subscriber } = state;
+    };
+    ArrayObservable.dispatch = function (state) {
+        var array = state.array, index = state.index, count = state.count, subscriber = state.subscriber;
         if (index >= count) {
             subscriber.complete();
             return;
@@ -89,24 +105,25 @@ class ArrayObservable extends Observable_1.Observable {
         }
         state.index = index + 1;
         this.schedule(state);
-    }
-    _subscribe(subscriber) {
-        let index = 0;
-        const array = this.array;
-        const count = array.length;
-        const scheduler = this.scheduler;
+    };
+    ArrayObservable.prototype._subscribe = function (subscriber) {
+        var index = 0;
+        var array = this.array;
+        var count = array.length;
+        var scheduler = this.scheduler;
         if (scheduler) {
             return scheduler.schedule(ArrayObservable.dispatch, 0, {
-                array, index, count, subscriber
+                array: array, index: index, count: count, subscriber: subscriber
             });
         }
         else {
-            for (let i = 0; i < count && !subscriber.closed; i++) {
+            for (var i = 0; i < count && !subscriber.closed; i++) {
                 subscriber.next(array[i]);
             }
             subscriber.complete();
         }
-    }
-}
+    };
+    return ArrayObservable;
+}(Observable_1.Observable));
 exports.ArrayObservable = ArrayObservable;
 //# sourceMappingURL=ArrayObservable.js.map

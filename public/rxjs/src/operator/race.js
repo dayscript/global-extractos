@@ -1,9 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const isArray_1 = require("../util/isArray");
-const ArrayObservable_1 = require("../observable/ArrayObservable");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var isArray_1 = require("../util/isArray");
+var ArrayObservable_1 = require("../observable/ArrayObservable");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item
  * from the combination of this Observable and supplied Observables
@@ -12,7 +22,11 @@ const subscribeToResult_1 = require("../util/subscribeToResult");
  * @method race
  * @owner Observable
  */
-function race(...observables) {
+function race() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
     // if the only argument is an array, it was most likely called with
     // `pair([obs1, obs2, ...])`
     if (observables.length === 1 && isArray_1.isArray(observables[0])) {
@@ -22,7 +36,11 @@ function race(...observables) {
     return raceStatic.apply(this, observables);
 }
 exports.race = race;
-function raceStatic(...observables) {
+function raceStatic() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
     // if the only argument is an array, it was most likely called with
     // `pair([obs1, obs2, ...])`
     if (observables.length === 1) {
@@ -36,37 +54,42 @@ function raceStatic(...observables) {
     return new ArrayObservable_1.ArrayObservable(observables).lift(new RaceOperator());
 }
 exports.raceStatic = raceStatic;
-class RaceOperator {
-    call(subscriber, source) {
-        return source._subscribe(new RaceSubscriber(subscriber));
+var RaceOperator = /** @class */ (function () {
+    function RaceOperator() {
     }
-}
+    RaceOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new RaceSubscriber(subscriber));
+    };
+    return RaceOperator;
+}());
 exports.RaceOperator = RaceOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class RaceSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination) {
-        super(destination);
-        this.hasFirst = false;
-        this.observables = [];
-        this.subscriptions = [];
+var RaceSubscriber = /** @class */ (function (_super) {
+    __extends(RaceSubscriber, _super);
+    function RaceSubscriber(destination) {
+        var _this = _super.call(this, destination) || this;
+        _this.hasFirst = false;
+        _this.observables = [];
+        _this.subscriptions = [];
+        return _this;
     }
-    _next(observable) {
+    RaceSubscriber.prototype._next = function (observable) {
         this.observables.push(observable);
-    }
-    _complete() {
-        const observables = this.observables;
-        const len = observables.length;
+    };
+    RaceSubscriber.prototype._complete = function () {
+        var observables = this.observables;
+        var len = observables.length;
         if (len === 0) {
             this.destination.complete();
         }
         else {
-            for (let i = 0; i < len; i++) {
-                let observable = observables[i];
-                let subscription = subscribeToResult_1.subscribeToResult(this, observable, observable, i);
+            for (var i = 0; i < len; i++) {
+                var observable = observables[i];
+                var subscription = subscribeToResult_1.subscribeToResult(this, observable, observable, i);
                 if (this.subscriptions) {
                     this.subscriptions.push(subscription);
                     this.add(subscription);
@@ -74,13 +97,13 @@ class RaceSubscriber extends OuterSubscriber_1.OuterSubscriber {
             }
             this.observables = null;
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    RaceSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         if (!this.hasFirst) {
             this.hasFirst = true;
-            for (let i = 0; i < this.subscriptions.length; i++) {
+            for (var i = 0; i < this.subscriptions.length; i++) {
                 if (i !== outerIndex) {
-                    let subscription = this.subscriptions[i];
+                    var subscription = this.subscriptions[i];
                     subscription.unsubscribe();
                     this.remove(subscription);
                 }
@@ -88,7 +111,8 @@ class RaceSubscriber extends OuterSubscriber_1.OuterSubscriber {
             this.subscriptions = null;
         }
         this.destination.next(innerValue);
-    }
-}
+    };
+    return RaceSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 exports.RaceSubscriber = RaceSubscriber;
 //# sourceMappingURL=race.js.map

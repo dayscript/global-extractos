@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscription_1 = require("../Subscription");
+var Subscription_1 = require("../Subscription");
 /**
  * A unit of work to be executed in a {@link Scheduler}. An action is typically
  * created from within a Scheduler and an RxJS user does not need to concern
@@ -15,9 +25,10 @@ const Subscription_1 = require("../Subscription");
  *
  * @class Action<T>
  */
-class Action extends Subscription_1.Subscription {
-    constructor(scheduler, work) {
-        super();
+var Action = /** @class */ (function (_super) {
+    __extends(Action, _super);
+    function Action(scheduler, work) {
+        return _super.call(this) || this;
     }
     /**
      * Schedules this action on its parent Scheduler for execution. May be passed
@@ -29,9 +40,11 @@ class Action extends Subscription_1.Subscription {
      * time unit is implicit and defined by the Scheduler.
      * @return {void}
      */
-    schedule(state, delay = 0) {
+    Action.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
         return this;
-    }
-}
+    };
+    return Action;
+}(Subscription_1.Subscription));
 exports.Action = Action;
 //# sourceMappingURL=Action.js.map

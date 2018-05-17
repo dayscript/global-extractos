@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const takeLast_1 = require("../../operator/takeLast");
+var Observable_1 = require("../../Observable");
+var takeLast_1 = require("../../operator/takeLast");
 Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
 //# sourceMappingURL=takeLast.js.map

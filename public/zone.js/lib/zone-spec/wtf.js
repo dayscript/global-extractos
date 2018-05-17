@@ -9,10 +9,10 @@
     ;
     ;
     // Detect and setup WTF.
-    let wtfTrace = null;
-    let wtfEvents = null;
-    const wtfEnabled = (function () {
-        const wtf = global['wtf'];
+    var wtfTrace = null;
+    var wtfEvents = null;
+    var wtfEnabled = (function () {
+        var wtf = global['wtf'];
         if (wtf) {
             wtfTrace = wtf.trace;
             if (wtfTrace) {
@@ -22,75 +22,76 @@
         }
         return false;
     })();
-    class WtfZoneSpec {
-        constructor() {
+    var WtfZoneSpec = /** @class */ (function () {
+        function WtfZoneSpec() {
             this.name = 'WTF';
         }
-        onFork(parentZoneDelegate, currentZone, targetZone, zoneSpec) {
-            const retValue = parentZoneDelegate.fork(targetZone, zoneSpec);
+        WtfZoneSpec.prototype.onFork = function (parentZoneDelegate, currentZone, targetZone, zoneSpec) {
+            var retValue = parentZoneDelegate.fork(targetZone, zoneSpec);
             WtfZoneSpec.forkInstance(zonePathName(targetZone), retValue.name);
             return retValue;
-        }
-        onInvoke(parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
-            let scope = WtfZoneSpec.invokeScope[source];
+        };
+        WtfZoneSpec.prototype.onInvoke = function (parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
+            var scope = WtfZoneSpec.invokeScope[source];
             if (!scope) {
                 scope = WtfZoneSpec.invokeScope[source] =
-                    wtfEvents.createScope(`Zone:invoke:${source}(ascii zone)`);
+                    wtfEvents.createScope("Zone:invoke:" + source + "(ascii zone)");
             }
             return wtfTrace.leaveScope(scope(zonePathName(targetZone)), parentZoneDelegate.invoke(targetZone, delegate, applyThis, applyArgs, source));
-        }
-        onHandleError(parentZoneDelegate, currentZone, targetZone, error) {
+        };
+        WtfZoneSpec.prototype.onHandleError = function (parentZoneDelegate, currentZone, targetZone, error) {
             return parentZoneDelegate.handleError(targetZone, error);
-        }
-        onScheduleTask(parentZoneDelegate, currentZone, targetZone, task) {
-            const key = task.type + ':' + task.source;
-            let instance = WtfZoneSpec.scheduleInstance[key];
+        };
+        WtfZoneSpec.prototype.onScheduleTask = function (parentZoneDelegate, currentZone, targetZone, task) {
+            var key = task.type + ':' + task.source;
+            var instance = WtfZoneSpec.scheduleInstance[key];
             if (!instance) {
                 instance = WtfZoneSpec.scheduleInstance[key] =
-                    wtfEvents.createInstance(`Zone:schedule:${key}(ascii zone, any data)`);
+                    wtfEvents.createInstance("Zone:schedule:" + key + "(ascii zone, any data)");
             }
-            const retValue = parentZoneDelegate.scheduleTask(targetZone, task);
+            var retValue = parentZoneDelegate.scheduleTask(targetZone, task);
             instance(zonePathName(targetZone), shallowObj(task.data, 2));
             return retValue;
-        }
-        onInvokeTask(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
-            const source = task.source;
-            let scope = WtfZoneSpec.invokeTaskScope[source];
+        };
+        WtfZoneSpec.prototype.onInvokeTask = function (parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
+            var source = task.source;
+            var scope = WtfZoneSpec.invokeTaskScope[source];
             if (!scope) {
                 scope = WtfZoneSpec.invokeTaskScope[source] =
-                    wtfEvents.createScope(`Zone:invokeTask:${source}(ascii zone)`);
+                    wtfEvents.createScope("Zone:invokeTask:" + source + "(ascii zone)");
             }
             return wtfTrace.leaveScope(scope(zonePathName(targetZone)), parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs));
-        }
-        onCancelTask(parentZoneDelegate, currentZone, targetZone, task) {
-            const key = task.source;
-            let instance = WtfZoneSpec.cancelInstance[key];
+        };
+        WtfZoneSpec.prototype.onCancelTask = function (parentZoneDelegate, currentZone, targetZone, task) {
+            var key = task.source;
+            var instance = WtfZoneSpec.cancelInstance[key];
             if (!instance) {
                 instance = WtfZoneSpec.cancelInstance[key] =
-                    wtfEvents.createInstance(`Zone:cancel:${key}(ascii zone, any options)`);
+                    wtfEvents.createInstance("Zone:cancel:" + key + "(ascii zone, any options)");
             }
-            const retValue = parentZoneDelegate.cancelTask(targetZone, task);
+            var retValue = parentZoneDelegate.cancelTask(targetZone, task);
             instance(zonePathName(targetZone), shallowObj(task.data, 2));
             return retValue;
-        }
+        };
         ;
-    }
-    WtfZoneSpec.forkInstance = wtfEnabled && wtfEvents.createInstance('Zone:fork(ascii zone, ascii newZone)');
-    WtfZoneSpec.scheduleInstance = {};
-    WtfZoneSpec.cancelInstance = {};
-    WtfZoneSpec.invokeScope = {};
-    WtfZoneSpec.invokeTaskScope = {};
+        WtfZoneSpec.forkInstance = wtfEnabled && wtfEvents.createInstance('Zone:fork(ascii zone, ascii newZone)');
+        WtfZoneSpec.scheduleInstance = {};
+        WtfZoneSpec.cancelInstance = {};
+        WtfZoneSpec.invokeScope = {};
+        WtfZoneSpec.invokeTaskScope = {};
+        return WtfZoneSpec;
+    }());
     function shallowObj(obj, depth) {
         if (!depth)
             return null;
-        const out = {};
-        for (const key in obj) {
+        var out = {};
+        for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
-                let value = obj[key];
+                var value = obj[key];
                 switch (typeof value) {
                     case 'object':
-                        const name = value && value.constructor && value.constructor.name;
-                        value = name == Object.name ? shallowObj(value, depth - 1) : name;
+                        var name_1 = value && value.constructor && value.constructor.name;
+                        value = name_1 == Object.name ? shallowObj(value, depth - 1) : name_1;
                         break;
                     case 'function':
                         value = value.name || undefined;
@@ -102,7 +103,7 @@
         return out;
     }
     function zonePathName(zone) {
-        let name = zone.name;
+        var name = zone.name;
         zone = zone.parent;
         while (zone != null) {
             name = zone.name + '::' + name;

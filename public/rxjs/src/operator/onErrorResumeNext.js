@@ -1,10 +1,24 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const FromObservable_1 = require("../observable/FromObservable");
-const isArray_1 = require("../util/isArray");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
-function onErrorResumeNext(...nextSources) {
+var FromObservable_1 = require("../observable/FromObservable");
+var isArray_1 = require("../util/isArray");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
+function onErrorResumeNext() {
+    var nextSources = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        nextSources[_i] = arguments[_i];
+    }
     if (nextSources.length === 1 && isArray_1.isArray(nextSources[0])) {
         nextSources = nextSources[0];
     }
@@ -12,8 +26,12 @@ function onErrorResumeNext(...nextSources) {
 }
 exports.onErrorResumeNext = onErrorResumeNext;
 /* tslint:enable:max-line-length */
-function onErrorResumeNextStatic(...nextSources) {
-    let source = null;
+function onErrorResumeNextStatic() {
+    var nextSources = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        nextSources[_i] = arguments[_i];
+    }
+    var source = null;
     if (nextSources.length === 1 && isArray_1.isArray(nextSources[0])) {
         nextSources = nextSources[0];
     }
@@ -21,40 +39,44 @@ function onErrorResumeNextStatic(...nextSources) {
     return new FromObservable_1.FromObservable(source, null).lift(new OnErrorResumeNextOperator(nextSources));
 }
 exports.onErrorResumeNextStatic = onErrorResumeNextStatic;
-class OnErrorResumeNextOperator {
-    constructor(nextSources) {
+var OnErrorResumeNextOperator = /** @class */ (function () {
+    function OnErrorResumeNextOperator(nextSources) {
         this.nextSources = nextSources;
     }
-    call(subscriber, source) {
+    OnErrorResumeNextOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
+    };
+    return OnErrorResumeNextOperator;
+}());
+var OnErrorResumeNextSubscriber = /** @class */ (function (_super) {
+    __extends(OnErrorResumeNextSubscriber, _super);
+    function OnErrorResumeNextSubscriber(destination, nextSources) {
+        var _this = _super.call(this, destination) || this;
+        _this.destination = destination;
+        _this.nextSources = nextSources;
+        return _this;
     }
-}
-class OnErrorResumeNextSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, nextSources) {
-        super(destination);
-        this.destination = destination;
-        this.nextSources = nextSources;
-    }
-    notifyError(error, innerSub) {
+    OnErrorResumeNextSubscriber.prototype.notifyError = function (error, innerSub) {
         this.subscribeToNextSource();
-    }
-    notifyComplete(innerSub) {
+    };
+    OnErrorResumeNextSubscriber.prototype.notifyComplete = function (innerSub) {
         this.subscribeToNextSource();
-    }
-    _error(err) {
+    };
+    OnErrorResumeNextSubscriber.prototype._error = function (err) {
         this.subscribeToNextSource();
-    }
-    _complete() {
+    };
+    OnErrorResumeNextSubscriber.prototype._complete = function () {
         this.subscribeToNextSource();
-    }
-    subscribeToNextSource() {
-        const next = this.nextSources.shift();
+    };
+    OnErrorResumeNextSubscriber.prototype.subscribeToNextSource = function () {
+        var next = this.nextSources.shift();
         if (next) {
             this.add(subscribeToResult_1.subscribeToResult(this, next));
         }
         else {
             this.destination.complete();
         }
-    }
-}
+    };
+    return OnErrorResumeNextSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=onErrorResumeNext.js.map

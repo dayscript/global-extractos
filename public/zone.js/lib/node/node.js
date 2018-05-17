@@ -10,23 +10,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("../zone");
 require("./events");
 require("./fs");
-const timers_1 = require("../common/timers");
-const set = 'set';
-const clear = 'clear';
-const _global = typeof window === 'object' && window || typeof self === 'object' && self || global;
+var timers_1 = require("../common/timers");
+var set = 'set';
+var clear = 'clear';
+var _global = typeof window === 'object' && window || typeof self === 'object' && self || global;
 // Timers
-const timers = require('timers');
+var timers = require('timers');
 timers_1.patchTimer(timers, set, clear, 'Timeout');
 timers_1.patchTimer(timers, set, clear, 'Interval');
 timers_1.patchTimer(timers, set, clear, 'Immediate');
-const shouldPatchGlobalTimers = global.setTimeout !== timers.setTimeout;
+var shouldPatchGlobalTimers = global.setTimeout !== timers.setTimeout;
 if (shouldPatchGlobalTimers) {
     timers_1.patchTimer(_global, set, clear, 'Timeout');
     timers_1.patchTimer(_global, set, clear, 'Interval');
     timers_1.patchTimer(_global, set, clear, 'Immediate');
 }
 // Crypto
-let crypto;
+var crypto;
 try {
     crypto = require('crypto');
 }
@@ -34,47 +34,51 @@ catch (err) {
 }
 // TODO(gdi2290): implement a better way to patch these methods
 if (crypto) {
-    let nativeRandomBytes = crypto.randomBytes;
+    var nativeRandomBytes_1 = crypto.randomBytes;
     crypto.randomBytes = function randomBytesZone(size, callback) {
         if (!callback) {
-            return nativeRandomBytes(size);
+            return nativeRandomBytes_1(size);
         }
         else {
-            let zone = Zone.current;
+            var zone = Zone.current;
             var source = crypto.constructor.name + '.randomBytes';
-            return nativeRandomBytes(size, zone.wrap(callback, source));
+            return nativeRandomBytes_1(size, zone.wrap(callback, source));
         }
     }.bind(crypto);
-    let nativePbkdf2 = crypto.pbkdf2;
-    crypto.pbkdf2 = function pbkdf2Zone(...args) {
-        let fn = args[args.length - 1];
+    var nativePbkdf2_1 = crypto.pbkdf2;
+    crypto.pbkdf2 = function pbkdf2Zone() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var fn = args[args.length - 1];
         if (typeof fn === 'function') {
-            let zone = Zone.current;
+            var zone = Zone.current;
             var source = crypto.constructor.name + '.pbkdf2';
             args[args.length - 1] = zone.wrap(fn, source);
-            return nativePbkdf2(...args);
+            return nativePbkdf2_1.apply(void 0, args);
         }
         else {
-            return nativePbkdf2(...args);
+            return nativePbkdf2_1.apply(void 0, args);
         }
     }.bind(crypto);
 }
 // HTTP Client
-let httpClient;
+var httpClient;
 try {
     httpClient = require('_http_client');
 }
 catch (err) {
 }
 if (httpClient && httpClient.ClientRequest) {
-    let ClientRequest = httpClient.ClientRequest.bind(httpClient);
+    var ClientRequest_1 = httpClient.ClientRequest.bind(httpClient);
     httpClient.ClientRequest = function (options, callback) {
         if (!callback) {
-            return new ClientRequest(options);
+            return new ClientRequest_1(options);
         }
         else {
-            let zone = Zone.current;
-            return new ClientRequest(options, zone.wrap(callback, 'http.ClientRequest'));
+            var zone = Zone.current;
+            return new ClientRequest_1(options, zone.wrap(callback, 'http.ClientRequest'));
         }
     };
 }

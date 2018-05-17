@@ -1,9 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const Observable_1 = require("../Observable");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subscriber_1 = require("../Subscriber");
+var Observable_1 = require("../Observable");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Delays the emission of items from the source Observable by a given time span
  * determined by the emissions of another Observable.
@@ -57,45 +67,48 @@ function delayWhen(delayDurationSelector, subscriptionDelay) {
     return this.lift(new DelayWhenOperator(delayDurationSelector));
 }
 exports.delayWhen = delayWhen;
-class DelayWhenOperator {
-    constructor(delayDurationSelector) {
+var DelayWhenOperator = /** @class */ (function () {
+    function DelayWhenOperator(delayDurationSelector) {
         this.delayDurationSelector = delayDurationSelector;
     }
-    call(subscriber, source) {
+    DelayWhenOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
-    }
-}
+    };
+    return DelayWhenOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DelayWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, delayDurationSelector) {
-        super(destination);
-        this.delayDurationSelector = delayDurationSelector;
-        this.completed = false;
-        this.delayNotifierSubscriptions = [];
-        this.values = [];
+var DelayWhenSubscriber = /** @class */ (function (_super) {
+    __extends(DelayWhenSubscriber, _super);
+    function DelayWhenSubscriber(destination, delayDurationSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.delayDurationSelector = delayDurationSelector;
+        _this.completed = false;
+        _this.delayNotifierSubscriptions = [];
+        _this.values = [];
+        return _this;
     }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    DelayWhenSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.destination.next(outerValue);
         this.removeSubscription(innerSub);
         this.tryComplete();
-    }
-    notifyError(error, innerSub) {
+    };
+    DelayWhenSubscriber.prototype.notifyError = function (error, innerSub) {
         this._error(error);
-    }
-    notifyComplete(innerSub) {
-        const value = this.removeSubscription(innerSub);
+    };
+    DelayWhenSubscriber.prototype.notifyComplete = function (innerSub) {
+        var value = this.removeSubscription(innerSub);
         if (value) {
             this.destination.next(value);
         }
         this.tryComplete();
-    }
-    _next(value) {
+    };
+    DelayWhenSubscriber.prototype._next = function (value) {
         try {
-            const delayNotifier = this.delayDurationSelector(value);
+            var delayNotifier = this.delayDurationSelector(value);
             if (delayNotifier) {
                 this.tryDelay(delayNotifier, value);
             }
@@ -103,77 +116,84 @@ class DelayWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
         catch (err) {
             this.destination.error(err);
         }
-    }
-    _complete() {
+    };
+    DelayWhenSubscriber.prototype._complete = function () {
         this.completed = true;
         this.tryComplete();
-    }
-    removeSubscription(subscription) {
+    };
+    DelayWhenSubscriber.prototype.removeSubscription = function (subscription) {
         subscription.unsubscribe();
-        const subscriptionIdx = this.delayNotifierSubscriptions.indexOf(subscription);
-        let value = null;
+        var subscriptionIdx = this.delayNotifierSubscriptions.indexOf(subscription);
+        var value = null;
         if (subscriptionIdx !== -1) {
             value = this.values[subscriptionIdx];
             this.delayNotifierSubscriptions.splice(subscriptionIdx, 1);
             this.values.splice(subscriptionIdx, 1);
         }
         return value;
-    }
-    tryDelay(delayNotifier, value) {
-        const notifierSubscription = subscribeToResult_1.subscribeToResult(this, delayNotifier, value);
+    };
+    DelayWhenSubscriber.prototype.tryDelay = function (delayNotifier, value) {
+        var notifierSubscription = subscribeToResult_1.subscribeToResult(this, delayNotifier, value);
         this.add(notifierSubscription);
         this.delayNotifierSubscriptions.push(notifierSubscription);
         this.values.push(value);
-    }
-    tryComplete() {
+    };
+    DelayWhenSubscriber.prototype.tryComplete = function () {
         if (this.completed && this.delayNotifierSubscriptions.length === 0) {
             this.destination.complete();
         }
-    }
-}
+    };
+    return DelayWhenSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SubscriptionDelayObservable extends Observable_1.Observable {
-    constructor(source, subscriptionDelay) {
-        super();
-        this.source = source;
-        this.subscriptionDelay = subscriptionDelay;
+var SubscriptionDelayObservable = /** @class */ (function (_super) {
+    __extends(SubscriptionDelayObservable, _super);
+    function SubscriptionDelayObservable(source, subscriptionDelay) {
+        var _this = _super.call(this) || this;
+        _this.source = source;
+        _this.subscriptionDelay = subscriptionDelay;
+        return _this;
     }
-    _subscribe(subscriber) {
+    SubscriptionDelayObservable.prototype._subscribe = function (subscriber) {
         this.subscriptionDelay.subscribe(new SubscriptionDelaySubscriber(subscriber, this.source));
-    }
-}
+    };
+    return SubscriptionDelayObservable;
+}(Observable_1.Observable));
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SubscriptionDelaySubscriber extends Subscriber_1.Subscriber {
-    constructor(parent, source) {
-        super();
-        this.parent = parent;
-        this.source = source;
-        this.sourceSubscribed = false;
+var SubscriptionDelaySubscriber = /** @class */ (function (_super) {
+    __extends(SubscriptionDelaySubscriber, _super);
+    function SubscriptionDelaySubscriber(parent, source) {
+        var _this = _super.call(this) || this;
+        _this.parent = parent;
+        _this.source = source;
+        _this.sourceSubscribed = false;
+        return _this;
     }
-    _next(unused) {
+    SubscriptionDelaySubscriber.prototype._next = function (unused) {
         this.subscribeToSource();
-    }
-    _error(err) {
+    };
+    SubscriptionDelaySubscriber.prototype._error = function (err) {
         this.unsubscribe();
         this.parent.error(err);
-    }
-    _complete() {
+    };
+    SubscriptionDelaySubscriber.prototype._complete = function () {
         this.subscribeToSource();
-    }
-    subscribeToSource() {
+    };
+    SubscriptionDelaySubscriber.prototype.subscribeToSource = function () {
         if (!this.sourceSubscribed) {
             this.sourceSubscribed = true;
             this.unsubscribe();
             this.source.subscribe(this.parent);
         }
-    }
-}
+    };
+    return SubscriptionDelaySubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=delayWhen.js.map

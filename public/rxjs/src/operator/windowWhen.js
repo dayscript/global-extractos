@@ -1,10 +1,20 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subject_1 = require("../Subject");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Branch out the source Observable values as a nested Observable using a
  * factory function of closing Observables to determine when to start a new
@@ -47,73 +57,78 @@ function windowWhen(closingSelector) {
     return this.lift(new WindowOperator(closingSelector));
 }
 exports.windowWhen = windowWhen;
-class WindowOperator {
-    constructor(closingSelector) {
+var WindowOperator = /** @class */ (function () {
+    function WindowOperator(closingSelector) {
         this.closingSelector = closingSelector;
     }
-    call(subscriber, source) {
+    WindowOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new WindowSubscriber(subscriber, this.closingSelector));
-    }
-}
+    };
+    return WindowOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class WindowSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, closingSelector) {
-        super(destination);
-        this.destination = destination;
-        this.closingSelector = closingSelector;
-        this.openWindow();
+var WindowSubscriber = /** @class */ (function (_super) {
+    __extends(WindowSubscriber, _super);
+    function WindowSubscriber(destination, closingSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.destination = destination;
+        _this.closingSelector = closingSelector;
+        _this.openWindow();
+        return _this;
     }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    WindowSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.openWindow(innerSub);
-    }
-    notifyError(error, innerSub) {
+    };
+    WindowSubscriber.prototype.notifyError = function (error, innerSub) {
         this._error(error);
-    }
-    notifyComplete(innerSub) {
+    };
+    WindowSubscriber.prototype.notifyComplete = function (innerSub) {
         this.openWindow(innerSub);
-    }
-    _next(value) {
+    };
+    WindowSubscriber.prototype._next = function (value) {
         this.window.next(value);
-    }
-    _error(err) {
+    };
+    WindowSubscriber.prototype._error = function (err) {
         this.window.error(err);
         this.destination.error(err);
         this.unsubscribeClosingNotification();
-    }
-    _complete() {
+    };
+    WindowSubscriber.prototype._complete = function () {
         this.window.complete();
         this.destination.complete();
         this.unsubscribeClosingNotification();
-    }
-    unsubscribeClosingNotification() {
+    };
+    WindowSubscriber.prototype.unsubscribeClosingNotification = function () {
         if (this.closingNotification) {
             this.closingNotification.unsubscribe();
         }
-    }
-    openWindow(innerSub = null) {
+    };
+    WindowSubscriber.prototype.openWindow = function (innerSub) {
+        if (innerSub === void 0) { innerSub = null; }
         if (innerSub) {
             this.remove(innerSub);
             innerSub.unsubscribe();
         }
-        const prevWindow = this.window;
+        var prevWindow = this.window;
         if (prevWindow) {
             prevWindow.complete();
         }
-        const window = this.window = new Subject_1.Subject();
+        var window = this.window = new Subject_1.Subject();
         this.destination.next(window);
-        const closingNotifier = tryCatch_1.tryCatch(this.closingSelector)();
+        var closingNotifier = tryCatch_1.tryCatch(this.closingSelector)();
         if (closingNotifier === errorObject_1.errorObject) {
-            const err = errorObject_1.errorObject.e;
+            var err = errorObject_1.errorObject.e;
             this.destination.error(err);
             this.window.error(err);
         }
         else {
             this.add(this.closingNotification = subscribeToResult_1.subscribeToResult(this, closingNotifier));
         }
-    }
-}
+    };
+    return WindowSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=windowWhen.js.map

@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Emits a value from the source Observable, then ignores subsequent source
  * values for a duration determined by another Observable, then repeats this
@@ -44,32 +54,35 @@ function throttle(durationSelector) {
     return this.lift(new ThrottleOperator(durationSelector));
 }
 exports.throttle = throttle;
-class ThrottleOperator {
-    constructor(durationSelector) {
+var ThrottleOperator = /** @class */ (function () {
+    function ThrottleOperator(durationSelector) {
         this.durationSelector = durationSelector;
     }
-    call(subscriber, source) {
+    ThrottleOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
-    }
-}
+    };
+    return ThrottleOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ThrottleSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, durationSelector) {
-        super(destination);
-        this.destination = destination;
-        this.durationSelector = durationSelector;
+var ThrottleSubscriber = /** @class */ (function (_super) {
+    __extends(ThrottleSubscriber, _super);
+    function ThrottleSubscriber(destination, durationSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.destination = destination;
+        _this.durationSelector = durationSelector;
+        return _this;
     }
-    _next(value) {
+    ThrottleSubscriber.prototype._next = function (value) {
         if (!this.throttled) {
             this.tryDurationSelector(value);
         }
-    }
-    tryDurationSelector(value) {
-        let duration = null;
+    };
+    ThrottleSubscriber.prototype.tryDurationSelector = function (value) {
+        var duration = null;
         try {
             duration = this.durationSelector(value);
         }
@@ -78,24 +91,25 @@ class ThrottleSubscriber extends OuterSubscriber_1.OuterSubscriber {
             return;
         }
         this.emitAndThrottle(value, duration);
-    }
-    emitAndThrottle(value, duration) {
+    };
+    ThrottleSubscriber.prototype.emitAndThrottle = function (value, duration) {
         this.add(this.throttled = subscribeToResult_1.subscribeToResult(this, duration));
         this.destination.next(value);
-    }
-    _unsubscribe() {
-        const throttled = this.throttled;
+    };
+    ThrottleSubscriber.prototype._unsubscribe = function () {
+        var throttled = this.throttled;
         if (throttled) {
             this.remove(throttled);
             this.throttled = null;
             throttled.unsubscribe();
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    ThrottleSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this._unsubscribe();
-    }
-    notifyComplete() {
+    };
+    ThrottleSubscriber.prototype.notifyComplete = function () {
         this._unsubscribe();
-    }
-}
+    };
+    return ThrottleSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=throttle.js.map

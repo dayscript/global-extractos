@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global) {
-    class Scheduler {
-        constructor() {
+    var Scheduler = /** @class */ (function () {
+        function Scheduler() {
             // Next scheduler id.
             this.nextId = 0;
             // Scheduler queue with the tuple of end time and callback function - sorted by end time.
@@ -15,42 +15,45 @@
             // Current simulated time in millis.
             this._currentTime = 0;
         }
-        scheduleFunction(cb, delay, args = [], id = -1) {
-            let currentId = id < 0 ? this.nextId++ : id;
-            let endTime = this._currentTime + delay;
+        Scheduler.prototype.scheduleFunction = function (cb, delay, args, id) {
+            if (args === void 0) { args = []; }
+            if (id === void 0) { id = -1; }
+            var currentId = id < 0 ? this.nextId++ : id;
+            var endTime = this._currentTime + delay;
             // Insert so that scheduler queue remains sorted by end time.
-            let newEntry = { endTime: endTime, id: currentId, func: cb, args: args, delay: delay };
-            let i = 0;
+            var newEntry = { endTime: endTime, id: currentId, func: cb, args: args, delay: delay };
+            var i = 0;
             for (; i < this._schedulerQueue.length; i++) {
-                let currentEntry = this._schedulerQueue[i];
+                var currentEntry = this._schedulerQueue[i];
                 if (newEntry.endTime < currentEntry.endTime) {
                     break;
                 }
             }
             this._schedulerQueue.splice(i, 0, newEntry);
             return currentId;
-        }
-        removeScheduledFunctionWithId(id) {
-            for (let i = 0; i < this._schedulerQueue.length; i++) {
+        };
+        Scheduler.prototype.removeScheduledFunctionWithId = function (id) {
+            for (var i = 0; i < this._schedulerQueue.length; i++) {
                 if (this._schedulerQueue[i].id == id) {
                     this._schedulerQueue.splice(i, 1);
                     break;
                 }
             }
-        }
-        tick(millis = 0) {
-            let finalTime = this._currentTime + millis;
+        };
+        Scheduler.prototype.tick = function (millis) {
+            if (millis === void 0) { millis = 0; }
+            var finalTime = this._currentTime + millis;
             while (this._schedulerQueue.length > 0) {
-                let current = this._schedulerQueue[0];
+                var current = this._schedulerQueue[0];
                 if (finalTime < current.endTime) {
                     // Done processing the queue since it's sorted by endTime.
                     break;
                 }
                 else {
                     // Time to run scheduled function. Remove it from the head of queue.
-                    let current = this._schedulerQueue.shift();
-                    this._currentTime = current.endTime;
-                    let retval = current.func.apply(global, current.args);
+                    var current_1 = this._schedulerQueue.shift();
+                    this._currentTime = current_1.endTime;
+                    var retval = current_1.func.apply(global, current_1.args);
                     if (!retval) {
                         // Uncaught exception in the current scheduled function. Stop processing the queue.
                         break;
@@ -58,10 +61,11 @@
                 }
             }
             this._currentTime = finalTime;
-        }
-    }
-    class FakeAsyncTestZoneSpec {
-        constructor(namePrefix) {
+        };
+        return Scheduler;
+    }());
+    var FakeAsyncTestZoneSpec = /** @class */ (function () {
+        function FakeAsyncTestZoneSpec(namePrefix) {
             this._scheduler = new Scheduler();
             this._microtasks = [];
             this._lastError = null;
@@ -71,20 +75,25 @@
             this.properties = { 'FakeAsyncTestZoneSpec': this };
             this.name = 'fakeAsyncTestZone for ' + namePrefix;
         }
-        static assertInZone() {
+        FakeAsyncTestZoneSpec.assertInZone = function () {
             if (Zone.current.get('FakeAsyncTestZoneSpec') == null) {
                 throw new Error('The code should be running in the fakeAsync zone to call this function');
             }
-        }
-        _fnAndFlush(fn, completers) {
-            return (...args) => {
+        };
+        FakeAsyncTestZoneSpec.prototype._fnAndFlush = function (fn, completers) {
+            var _this = this;
+            return function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
                 fn.apply(global, args);
-                if (this._lastError === null) {
+                if (_this._lastError === null) {
                     if (completers.onSuccess != null) {
                         completers.onSuccess.apply(global);
                     }
                     // Flush microtasks only on success.
-                    this.flushMicrotasks();
+                    _this.flushMicrotasks();
                 }
                 else {
                     if (completers.onError != null) {
@@ -92,89 +101,98 @@
                     }
                 }
                 // Return true if there were no errors, false otherwise.
-                return this._lastError === null;
+                return _this._lastError === null;
             };
-        }
-        static _removeTimer(timers, id) {
-            let index = timers.indexOf(id);
+        };
+        FakeAsyncTestZoneSpec._removeTimer = function (timers, id) {
+            var index = timers.indexOf(id);
             if (index > -1) {
                 timers.splice(index, 1);
             }
-        }
-        _dequeueTimer(id) {
-            return () => {
-                FakeAsyncTestZoneSpec._removeTimer(this.pendingTimers, id);
+        };
+        FakeAsyncTestZoneSpec.prototype._dequeueTimer = function (id) {
+            var _this = this;
+            return function () {
+                FakeAsyncTestZoneSpec._removeTimer(_this.pendingTimers, id);
             };
-        }
-        _requeuePeriodicTimer(fn, interval, args, id) {
-            return () => {
+        };
+        FakeAsyncTestZoneSpec.prototype._requeuePeriodicTimer = function (fn, interval, args, id) {
+            var _this = this;
+            return function () {
                 // Requeue the timer callback if it's not been canceled.
-                if (this.pendingPeriodicTimers.indexOf(id) !== -1) {
-                    this._scheduler.scheduleFunction(fn, interval, args, id);
+                if (_this.pendingPeriodicTimers.indexOf(id) !== -1) {
+                    _this._scheduler.scheduleFunction(fn, interval, args, id);
                 }
             };
-        }
-        _dequeuePeriodicTimer(id) {
-            return () => {
-                FakeAsyncTestZoneSpec._removeTimer(this.pendingPeriodicTimers, id);
+        };
+        FakeAsyncTestZoneSpec.prototype._dequeuePeriodicTimer = function (id) {
+            var _this = this;
+            return function () {
+                FakeAsyncTestZoneSpec._removeTimer(_this.pendingPeriodicTimers, id);
             };
-        }
-        _setTimeout(fn, delay, args) {
-            let removeTimerFn = this._dequeueTimer(this._scheduler.nextId);
+        };
+        FakeAsyncTestZoneSpec.prototype._setTimeout = function (fn, delay, args) {
+            var removeTimerFn = this._dequeueTimer(this._scheduler.nextId);
             // Queue the callback and dequeue the timer on success and error.
-            let cb = this._fnAndFlush(fn, { onSuccess: removeTimerFn, onError: removeTimerFn });
-            let id = this._scheduler.scheduleFunction(cb, delay, args);
+            var cb = this._fnAndFlush(fn, { onSuccess: removeTimerFn, onError: removeTimerFn });
+            var id = this._scheduler.scheduleFunction(cb, delay, args);
             this.pendingTimers.push(id);
             return id;
-        }
-        _clearTimeout(id) {
+        };
+        FakeAsyncTestZoneSpec.prototype._clearTimeout = function (id) {
             FakeAsyncTestZoneSpec._removeTimer(this.pendingTimers, id);
             this._scheduler.removeScheduledFunctionWithId(id);
-        }
-        _setInterval(fn, interval, ...args) {
-            let id = this._scheduler.nextId;
-            let completers = { onSuccess: null, onError: this._dequeuePeriodicTimer(id) };
-            let cb = this._fnAndFlush(fn, completers);
+        };
+        FakeAsyncTestZoneSpec.prototype._setInterval = function (fn, interval) {
+            var args = [];
+            for (var _i = 2; _i < arguments.length; _i++) {
+                args[_i - 2] = arguments[_i];
+            }
+            var id = this._scheduler.nextId;
+            var completers = { onSuccess: null, onError: this._dequeuePeriodicTimer(id) };
+            var cb = this._fnAndFlush(fn, completers);
             // Use the callback created above to requeue on success.
             completers.onSuccess = this._requeuePeriodicTimer(cb, interval, args, id);
             // Queue the callback and dequeue the periodic timer only on error.
             this._scheduler.scheduleFunction(cb, interval, args);
             this.pendingPeriodicTimers.push(id);
             return id;
-        }
-        _clearInterval(id) {
+        };
+        FakeAsyncTestZoneSpec.prototype._clearInterval = function (id) {
             FakeAsyncTestZoneSpec._removeTimer(this.pendingPeriodicTimers, id);
             this._scheduler.removeScheduledFunctionWithId(id);
-        }
-        _resetLastErrorAndThrow() {
-            let error = this._lastError || this._uncaughtPromiseErrors[0];
+        };
+        FakeAsyncTestZoneSpec.prototype._resetLastErrorAndThrow = function () {
+            var error = this._lastError || this._uncaughtPromiseErrors[0];
             this._uncaughtPromiseErrors.length = 0;
             this._lastError = null;
             throw error;
-        }
-        tick(millis = 0) {
+        };
+        FakeAsyncTestZoneSpec.prototype.tick = function (millis) {
+            if (millis === void 0) { millis = 0; }
             FakeAsyncTestZoneSpec.assertInZone();
             this.flushMicrotasks();
             this._scheduler.tick(millis);
             if (this._lastError !== null) {
                 this._resetLastErrorAndThrow();
             }
-        }
-        flushMicrotasks() {
+        };
+        FakeAsyncTestZoneSpec.prototype.flushMicrotasks = function () {
+            var _this = this;
             FakeAsyncTestZoneSpec.assertInZone();
-            const flushErrors = () => {
-                if (this._lastError !== null || this._uncaughtPromiseErrors.length) {
+            var flushErrors = function () {
+                if (_this._lastError !== null || _this._uncaughtPromiseErrors.length) {
                     // If there is an error stop processing the microtask queue and rethrow the error.
-                    this._resetLastErrorAndThrow();
+                    _this._resetLastErrorAndThrow();
                 }
             };
             while (this._microtasks.length > 0) {
-                let microtask = this._microtasks.shift();
+                var microtask = this._microtasks.shift();
                 microtask();
             }
             flushErrors();
-        }
-        onScheduleTask(delegate, current, target, task) {
+        };
+        FakeAsyncTestZoneSpec.prototype.onScheduleTask = function (delegate, current, target, task) {
             switch (task.type) {
                 case 'microTask':
                     this._microtasks.push(task.invoke);
@@ -200,8 +218,8 @@
                     break;
             }
             return task;
-        }
-        onCancelTask(delegate, current, target, task) {
+        };
+        FakeAsyncTestZoneSpec.prototype.onCancelTask = function (delegate, current, target, task) {
             switch (task.source) {
                 case 'setTimeout':
                     return this._clearTimeout(task.data['handleId']);
@@ -210,12 +228,13 @@
                 default:
                     return delegate.cancelTask(target, task);
             }
-        }
-        onHandleError(parentZoneDelegate, currentZone, targetZone, error) {
+        };
+        FakeAsyncTestZoneSpec.prototype.onHandleError = function (parentZoneDelegate, currentZone, targetZone, error) {
             this._lastError = error;
             return false; // Don't propagate error to parent zone.
-        }
-    }
+        };
+        return FakeAsyncTestZoneSpec;
+    }());
     // Export the class so that new instances can be created with proper
     // constructor params.
     Zone['FakeAsyncTestZoneSpec'] = FakeAsyncTestZoneSpec;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const multicast_1 = require("./multicast");
-const Subject_1 = require("../Subject");
+var multicast_1 = require("./multicast");
+var Subject_1 = require("../Subject");
 function shareSubjectFactory() {
     return new Subject_1.Subject();
 }

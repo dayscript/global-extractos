@@ -1,12 +1,30 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
+var Observable_1 = require("../Observable");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class RangeObservable extends Observable_1.Observable {
+var RangeObservable = /** @class */ (function (_super) {
+    __extends(RangeObservable, _super);
+    function RangeObservable(start, count, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.start = start;
+        _this._count = count;
+        _this.scheduler = scheduler;
+        return _this;
+    }
     /**
      * Creates an Observable that emits a sequence of numbers within a specified
      * range.
@@ -37,11 +55,13 @@ class RangeObservable extends Observable_1.Observable {
      * @name range
      * @owner Observable
      */
-    static create(start = 0, count = 0, scheduler) {
+    RangeObservable.create = function (start, count, scheduler) {
+        if (start === void 0) { start = 0; }
+        if (count === void 0) { count = 0; }
         return new RangeObservable(start, count, scheduler);
-    }
-    static dispatch(state) {
-        const { start, index, count, subscriber } = state;
+    };
+    RangeObservable.dispatch = function (state) {
+        var start = state.start, index = state.index, count = state.count, subscriber = state.subscriber;
         if (index >= count) {
             subscriber.complete();
             return;
@@ -53,21 +73,15 @@ class RangeObservable extends Observable_1.Observable {
         state.index = index + 1;
         state.start = start + 1;
         this.schedule(state);
-    }
-    constructor(start, count, scheduler) {
-        super();
-        this.start = start;
-        this._count = count;
-        this.scheduler = scheduler;
-    }
-    _subscribe(subscriber) {
-        let index = 0;
-        let start = this.start;
-        const count = this._count;
-        const scheduler = this.scheduler;
+    };
+    RangeObservable.prototype._subscribe = function (subscriber) {
+        var index = 0;
+        var start = this.start;
+        var count = this._count;
+        var scheduler = this.scheduler;
         if (scheduler) {
             return scheduler.schedule(RangeObservable.dispatch, 0, {
-                index, count, start, subscriber
+                index: index, count: count, start: start, subscriber: subscriber
             });
         }
         else {
@@ -82,7 +96,8 @@ class RangeObservable extends Observable_1.Observable {
                 }
             } while (true);
         }
-    }
-}
+    };
+    return RangeObservable;
+}(Observable_1.Observable));
 exports.RangeObservable = RangeObservable;
 //# sourceMappingURL=RangeObservable.js.map

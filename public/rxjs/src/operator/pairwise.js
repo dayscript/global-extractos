@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
  * two values.
@@ -40,22 +50,27 @@ function pairwise() {
     return this.lift(new PairwiseOperator());
 }
 exports.pairwise = pairwise;
-class PairwiseOperator {
-    call(subscriber, source) {
-        return source._subscribe(new PairwiseSubscriber(subscriber));
+var PairwiseOperator = /** @class */ (function () {
+    function PairwiseOperator() {
     }
-}
+    PairwiseOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new PairwiseSubscriber(subscriber));
+    };
+    return PairwiseOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class PairwiseSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination) {
-        super(destination);
-        this.hasPrev = false;
+var PairwiseSubscriber = /** @class */ (function (_super) {
+    __extends(PairwiseSubscriber, _super);
+    function PairwiseSubscriber(destination) {
+        var _this = _super.call(this, destination) || this;
+        _this.hasPrev = false;
+        return _this;
     }
-    _next(value) {
+    PairwiseSubscriber.prototype._next = function (value) {
         if (this.hasPrev) {
             this.destination.next([this.prev, value]);
         }
@@ -63,6 +78,7 @@ class PairwiseSubscriber extends Subscriber_1.Subscriber {
             this.hasPrev = true;
         }
         this.prev = value;
-    }
-}
+    };
+    return PairwiseSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=pairwise.js.map

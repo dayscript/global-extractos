@@ -1,31 +1,43 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Scheduler_1 = require("../Scheduler");
-class AsyncScheduler extends Scheduler_1.Scheduler {
-    constructor() {
-        super(...arguments);
-        this.actions = [];
+var Scheduler_1 = require("../Scheduler");
+var AsyncScheduler = /** @class */ (function (_super) {
+    __extends(AsyncScheduler, _super);
+    function AsyncScheduler() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.actions = [];
         /**
          * A flag to indicate whether the Scheduler is currently executing a batch of
          * queued actions.
          * @type {boolean}
          */
-        this.active = false;
+        _this.active = false;
         /**
          * An internal ID used to track the latest asynchronous task such as those
          * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
          * others.
          * @type {any}
          */
-        this.scheduled = undefined;
+        _this.scheduled = undefined;
+        return _this;
     }
-    flush(action) {
-        const { actions } = this;
+    AsyncScheduler.prototype.flush = function (action) {
+        var actions = this.actions;
         if (this.active) {
             actions.push(action);
             return;
         }
-        let error;
+        var error;
         this.active = true;
         do {
             if (error = action.execute(action.state, action.delay)) {
@@ -39,7 +51,8 @@ class AsyncScheduler extends Scheduler_1.Scheduler {
             }
             throw error;
         }
-    }
-}
+    };
+    return AsyncScheduler;
+}(Scheduler_1.Scheduler));
 exports.AsyncScheduler = AsyncScheduler;
 //# sourceMappingURL=AsyncScheduler.js.map

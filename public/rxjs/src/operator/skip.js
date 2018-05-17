@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Returns an Observable that skips `n` items emitted by an Observable.
  *
@@ -16,29 +26,33 @@ function skip(total) {
     return this.lift(new SkipOperator(total));
 }
 exports.skip = skip;
-class SkipOperator {
-    constructor(total) {
+var SkipOperator = /** @class */ (function () {
+    function SkipOperator(total) {
         this.total = total;
     }
-    call(subscriber, source) {
+    SkipOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new SkipSubscriber(subscriber, this.total));
-    }
-}
+    };
+    return SkipOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SkipSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, total) {
-        super(destination);
-        this.total = total;
-        this.count = 0;
+var SkipSubscriber = /** @class */ (function (_super) {
+    __extends(SkipSubscriber, _super);
+    function SkipSubscriber(destination, total) {
+        var _this = _super.call(this, destination) || this;
+        _this.total = total;
+        _this.count = 0;
+        return _this;
     }
-    _next(x) {
+    SkipSubscriber.prototype._next = function (x) {
         if (++this.count > this.total) {
             this.destination.next(x);
         }
-    }
-}
+    };
+    return SkipSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=skip.js.map

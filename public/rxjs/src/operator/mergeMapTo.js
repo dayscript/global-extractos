@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in the output Observable.
@@ -45,7 +55,8 @@ const subscribeToResult_1 = require("../util/subscribeToResult");
  * @method mergeMapTo
  * @owner Observable
  */
-function mergeMapTo(innerObservable, resultSelector, concurrent = Number.POSITIVE_INFINITY) {
+function mergeMapTo(innerObservable, resultSelector, concurrent) {
+    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
     if (typeof resultSelector === 'number') {
         concurrent = resultSelector;
         resultSelector = null;
@@ -55,67 +66,72 @@ function mergeMapTo(innerObservable, resultSelector, concurrent = Number.POSITIV
 exports.mergeMapTo = mergeMapTo;
 // TODO: Figure out correct signature here: an Operator<Observable<T>, R>
 //       needs to implement call(observer: Subscriber<R>): Subscriber<Observable<T>>
-class MergeMapToOperator {
-    constructor(ish, resultSelector, concurrent = Number.POSITIVE_INFINITY) {
+var MergeMapToOperator = /** @class */ (function () {
+    function MergeMapToOperator(ish, resultSelector, concurrent) {
+        if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
         this.ish = ish;
         this.resultSelector = resultSelector;
         this.concurrent = concurrent;
     }
-    call(observer, source) {
+    MergeMapToOperator.prototype.call = function (observer, source) {
         return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
-    }
-}
+    };
+    return MergeMapToOperator;
+}());
 exports.MergeMapToOperator = MergeMapToOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class MergeMapToSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, ish, resultSelector, concurrent = Number.POSITIVE_INFINITY) {
-        super(destination);
-        this.ish = ish;
-        this.resultSelector = resultSelector;
-        this.concurrent = concurrent;
-        this.hasCompleted = false;
-        this.buffer = [];
-        this.active = 0;
-        this.index = 0;
+var MergeMapToSubscriber = /** @class */ (function (_super) {
+    __extends(MergeMapToSubscriber, _super);
+    function MergeMapToSubscriber(destination, ish, resultSelector, concurrent) {
+        if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
+        var _this = _super.call(this, destination) || this;
+        _this.ish = ish;
+        _this.resultSelector = resultSelector;
+        _this.concurrent = concurrent;
+        _this.hasCompleted = false;
+        _this.buffer = [];
+        _this.active = 0;
+        _this.index = 0;
+        return _this;
     }
-    _next(value) {
+    MergeMapToSubscriber.prototype._next = function (value) {
         if (this.active < this.concurrent) {
-            const resultSelector = this.resultSelector;
-            const index = this.index++;
-            const ish = this.ish;
-            const destination = this.destination;
+            var resultSelector = this.resultSelector;
+            var index = this.index++;
+            var ish = this.ish;
+            var destination = this.destination;
             this.active++;
             this._innerSub(ish, destination, resultSelector, value, index);
         }
         else {
             this.buffer.push(value);
         }
-    }
-    _innerSub(ish, destination, resultSelector, value, index) {
+    };
+    MergeMapToSubscriber.prototype._innerSub = function (ish, destination, resultSelector, value, index) {
         this.add(subscribeToResult_1.subscribeToResult(this, ish, value, index));
-    }
-    _complete() {
+    };
+    MergeMapToSubscriber.prototype._complete = function () {
         this.hasCompleted = true;
         if (this.active === 0 && this.buffer.length === 0) {
             this.destination.complete();
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        const { resultSelector, destination } = this;
+    };
+    MergeMapToSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        var _a = this, resultSelector = _a.resultSelector, destination = _a.destination;
         if (resultSelector) {
             this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);
         }
         else {
             destination.next(innerValue);
         }
-    }
-    trySelectResult(outerValue, innerValue, outerIndex, innerIndex) {
-        const { resultSelector, destination } = this;
-        let result;
+    };
+    MergeMapToSubscriber.prototype.trySelectResult = function (outerValue, innerValue, outerIndex, innerIndex) {
+        var _a = this, resultSelector = _a.resultSelector, destination = _a.destination;
+        var result;
         try {
             result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
         }
@@ -124,12 +140,12 @@ class MergeMapToSubscriber extends OuterSubscriber_1.OuterSubscriber {
             return;
         }
         destination.next(result);
-    }
-    notifyError(err) {
+    };
+    MergeMapToSubscriber.prototype.notifyError = function (err) {
         this.destination.error(err);
-    }
-    notifyComplete(innerSub) {
-        const buffer = this.buffer;
+    };
+    MergeMapToSubscriber.prototype.notifyComplete = function (innerSub) {
+        var buffer = this.buffer;
         this.remove(innerSub);
         this.active--;
         if (buffer.length > 0) {
@@ -138,7 +154,8 @@ class MergeMapToSubscriber extends OuterSubscriber_1.OuterSubscriber {
         else if (this.active === 0 && this.hasCompleted) {
             this.destination.complete();
         }
-    }
-}
+    };
+    return MergeMapToSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 exports.MergeMapToSubscriber = MergeMapToSubscriber;
 //# sourceMappingURL=mergeMapTo.js.map

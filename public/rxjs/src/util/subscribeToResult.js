@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("./root");
-const isArray_1 = require("./isArray");
-const isPromise_1 = require("./isPromise");
-const Observable_1 = require("../Observable");
-const iterator_1 = require("../symbol/iterator");
-const InnerSubscriber_1 = require("../InnerSubscriber");
-const observable_1 = require("../symbol/observable");
+var root_1 = require("./root");
+var isArray_1 = require("./isArray");
+var isPromise_1 = require("./isPromise");
+var Observable_1 = require("../Observable");
+var iterator_1 = require("../symbol/iterator");
+var InnerSubscriber_1 = require("../InnerSubscriber");
+var observable_1 = require("../symbol/observable");
 function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
-    let destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
     if (destination.closed) {
         return null;
     }
@@ -23,7 +23,7 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
         }
     }
     if (isArray_1.isArray(result)) {
-        for (let i = 0, len = result.length; i < len && !destination.closed; i++) {
+        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
             destination.next(result[i]);
         }
         if (!destination.closed) {
@@ -31,22 +31,22 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
         }
     }
     else if (isPromise_1.isPromise(result)) {
-        result.then((value) => {
+        result.then(function (value) {
             if (!destination.closed) {
                 destination.next(value);
                 destination.complete();
             }
-        }, (err) => destination.error(err))
-            .then(null, (err) => {
+        }, function (err) { return destination.error(err); })
+            .then(null, function (err) {
             // Escaping the Promise trap: globally throw unhandled errors
-            root_1.root.setTimeout(() => { throw err; });
+            root_1.root.setTimeout(function () { throw err; });
         });
         return destination;
     }
     else if (typeof result[iterator_1.$$iterator] === 'function') {
-        const iterator = result[iterator_1.$$iterator]();
+        var iterator = result[iterator_1.$$iterator]();
         do {
-            let item = iterator.next();
+            var item = iterator.next();
             if (item.done) {
                 destination.complete();
                 break;
@@ -58,7 +58,7 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
         } while (true);
     }
     else if (typeof result[observable_1.$$observable] === 'function') {
-        const obs = result[observable_1.$$observable]();
+        var obs = result[observable_1.$$observable]();
         if (typeof obs.subscribe !== 'function') {
             destination.error(new Error('invalid observable'));
         }

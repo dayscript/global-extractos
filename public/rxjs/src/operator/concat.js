@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const isScheduler_1 = require("../util/isScheduler");
-const ArrayObservable_1 = require("../observable/ArrayObservable");
-const mergeAll_1 = require("./mergeAll");
+var isScheduler_1 = require("../util/isScheduler");
+var ArrayObservable_1 = require("../observable/ArrayObservable");
+var mergeAll_1 = require("./mergeAll");
 /**
  * Creates an output Observable which sequentially emits all values from every
  * given input Observable after the current Observable.
@@ -43,8 +43,12 @@ const mergeAll_1 = require("./mergeAll");
  * @method concat
  * @owner Observable
  */
-function concat(...observables) {
-    return concatStatic(this, ...observables);
+function concat() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
+    return concatStatic.apply(void 0, [this].concat(observables));
 }
 exports.concat = concat;
 /* tslint:enable:max-line-length */
@@ -89,9 +93,13 @@ exports.concat = concat;
  * @name concat
  * @owner Observable
  */
-function concatStatic(...observables) {
-    let scheduler = null;
-    let args = observables;
+function concatStatic() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
+    var scheduler = null;
+    var args = observables;
     if (isScheduler_1.isScheduler(args[observables.length - 1])) {
         scheduler = args.pop();
     }

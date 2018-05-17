@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-class AsyncTestZoneSpec {
-    constructor(finishCallback, failCallback, namePrefix) {
+var AsyncTestZoneSpec = /** @class */ (function () {
+    function AsyncTestZoneSpec(finishCallback, failCallback, namePrefix) {
         this._pendingMicroTasks = false;
         this._pendingMacroTasks = false;
         this._alreadyErrored = false;
@@ -15,39 +15,40 @@ class AsyncTestZoneSpec {
         this._failCallback = failCallback;
         this.name = 'asyncTestZone for ' + namePrefix;
     }
-    _finishCallbackIfDone() {
+    AsyncTestZoneSpec.prototype._finishCallbackIfDone = function () {
+        var _this = this;
         if (!(this._pendingMicroTasks || this._pendingMacroTasks)) {
             // We do this because we would like to catch unhandled rejected promises.
-            this.runZone.run(() => {
-                setTimeout(() => {
-                    if (!this._alreadyErrored && !(this._pendingMicroTasks || this._pendingMacroTasks)) {
-                        this._finishCallback();
+            this.runZone.run(function () {
+                setTimeout(function () {
+                    if (!_this._alreadyErrored && !(_this._pendingMicroTasks || _this._pendingMacroTasks)) {
+                        _this._finishCallback();
                     }
                 }, 0);
             });
         }
-    }
+    };
     // Note - we need to use onInvoke at the moment to call finish when a test is
     // fully synchronous. TODO(juliemr): remove this when the logic for
     // onHasTask changes and it calls whenever the task queues are dirty.
-    onInvoke(parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
+    AsyncTestZoneSpec.prototype.onInvoke = function (parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
         try {
             return parentZoneDelegate.invoke(targetZone, delegate, applyThis, applyArgs, source);
         }
         finally {
             this._finishCallbackIfDone();
         }
-    }
-    onHandleError(parentZoneDelegate, currentZone, targetZone, error) {
+    };
+    AsyncTestZoneSpec.prototype.onHandleError = function (parentZoneDelegate, currentZone, targetZone, error) {
         // Let the parent try to handle the error.
-        const result = parentZoneDelegate.handleError(targetZone, error);
+        var result = parentZoneDelegate.handleError(targetZone, error);
         if (result) {
             this._failCallback(error);
             this._alreadyErrored = true;
         }
         return false;
-    }
-    onHasTask(delegate, current, target, hasTaskState) {
+    };
+    AsyncTestZoneSpec.prototype.onHasTask = function (delegate, current, target, hasTaskState) {
         delegate.hasTask(target, hasTaskState);
         if (hasTaskState.change == 'microTask') {
             this._pendingMicroTasks = hasTaskState.microTask;
@@ -57,8 +58,9 @@ class AsyncTestZoneSpec {
             this._pendingMacroTasks = hasTaskState.macroTask;
             this._finishCallbackIfDone();
         }
-    }
-}
+    };
+    return AsyncTestZoneSpec;
+}());
 // Export the class so that new instances can be created with proper
 // constructor params.
 Zone['AsyncTestZoneSpec'] = AsyncTestZoneSpec;

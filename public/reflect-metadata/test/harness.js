@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function runTests(fixture) {
-    let results = { passed: [], failed: [] };
-    for (let testName in fixture) {
-        let test = fixture[testName];
+    var results = { passed: [], failed: [] };
+    for (var testName in fixture) {
+        var test = fixture[testName];
         if (typeof test === "function") {
             try {
                 test();
@@ -18,14 +18,15 @@ function runTests(fixture) {
 }
 exports.runTests = runTests;
 function printResults(results) {
-    for (let [testName, error] of results.failed) {
-        let message = "stack" in error ? error.stack : String(error);
-        console.error(`${testName} failed.\n${message}`);
+    for (var _i = 0, _a = results.failed; _i < _a.length; _i++) {
+        var _b = _a[_i], testName = _b[0], error_1 = _b[1];
+        var message_1 = "stack" in error_1 ? error_1.stack : String(error_1);
+        console.error(testName + " failed.\n" + message_1);
     }
-    let passedCount = results.passed.length;
-    let failedCount = results.failed.length;
-    let totalCount = passedCount + failedCount;
-    let message = `Run ${failedCount > 0 ? "failed" : "succeeded"}: passed: ${passedCount}, failed: ${failedCount}, total: ${totalCount}.`;
+    var passedCount = results.passed.length;
+    var failedCount = results.failed.length;
+    var totalCount = passedCount + failedCount;
+    var message = "Run " + (failedCount > 0 ? "failed" : "succeeded") + ": passed: " + passedCount + ", failed: " + failedCount + ", total: " + totalCount + ".";
     if (results.failed.length) {
         console.error(message);
     }

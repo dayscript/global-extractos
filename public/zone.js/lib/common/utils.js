@@ -8,9 +8,9 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.zoneSymbol = Zone['__symbol__'];
-const _global = typeof window === 'object' && window || typeof self === 'object' && self || global;
+var _global = typeof window === 'object' && window || typeof self === 'object' && self || global;
 function bindArguments(args, source) {
-    for (let i = args.length - 1; i >= 0; i--) {
+    for (var i = args.length - 1; i >= 0; i--) {
         if (typeof args[i] === 'function') {
             args[i] = Zone.current.wrap(args[i], source + '_' + i);
         }
@@ -20,17 +20,20 @@ function bindArguments(args, source) {
 exports.bindArguments = bindArguments;
 ;
 function patchPrototype(prototype, fnNames) {
-    const source = prototype.constructor['name'];
-    for (let i = 0; i < fnNames.length; i++) {
-        const name = fnNames[i];
-        const delegate = prototype[name];
+    var source = prototype.constructor['name'];
+    var _loop_1 = function (i) {
+        var name_1 = fnNames[i];
+        var delegate = prototype[name_1];
         if (delegate) {
-            prototype[name] = ((delegate) => {
+            prototype[name_1] = (function (delegate) {
                 return function () {
-                    return delegate.apply(this, bindArguments(arguments, source + '.' + name));
+                    return delegate.apply(this, bindArguments(arguments, source + '.' + name_1));
                 };
             })(delegate);
         }
+    };
+    for (var i = 0; i < fnNames.length; i++) {
+        _loop_1(i);
     }
 }
 exports.patchPrototype = patchPrototype;
@@ -39,7 +42,7 @@ exports.isWebWorker = (typeof WorkerGlobalScope !== 'undefined' && self instance
 exports.isNode = (typeof process !== 'undefined' && {}.toString.call(process) === '[object process]');
 exports.isBrowser = !exports.isNode && !exports.isWebWorker && !!(typeof window !== 'undefined' && window['HTMLElement']);
 function patchProperty(obj, prop) {
-    const desc = Object.getOwnPropertyDescriptor(obj, prop) || { enumerable: true, configurable: true };
+    var desc = Object.getOwnPropertyDescriptor(obj, prop) || { enumerable: true, configurable: true };
     // A property descriptor cannot have getter/setter and be writable
     // deleting the writable and value properties avoids this error:
     //
@@ -48,15 +51,15 @@ function patchProperty(obj, prop) {
     delete desc.writable;
     delete desc.value;
     // substr(2) cuz 'onclick' -> 'click', etc
-    const eventName = prop.substr(2);
-    const _prop = '_' + prop;
+    var eventName = prop.substr(2);
+    var _prop = '_' + prop;
     desc.set = function (fn) {
         if (this[_prop]) {
             this.removeEventListener(eventName, this[_prop]);
         }
         if (typeof fn === 'function') {
-            const wrapFn = function (event) {
-                let result;
+            var wrapFn = function (event) {
+                var result;
                 result = fn.apply(this, arguments);
                 if (result != undefined && !result)
                     event.preventDefault();
@@ -78,33 +81,33 @@ function patchProperty(obj, prop) {
 exports.patchProperty = patchProperty;
 ;
 function patchOnProperties(obj, properties) {
-    const onProperties = [];
-    for (const prop in obj) {
+    var onProperties = [];
+    for (var prop in obj) {
         if (prop.substr(0, 2) == 'on') {
             onProperties.push(prop);
         }
     }
-    for (let j = 0; j < onProperties.length; j++) {
+    for (var j = 0; j < onProperties.length; j++) {
         patchProperty(obj, onProperties[j]);
     }
     if (properties) {
-        for (let i = 0; i < properties.length; i++) {
+        for (var i = 0; i < properties.length; i++) {
             patchProperty(obj, 'on' + properties[i]);
         }
     }
 }
 exports.patchOnProperties = patchOnProperties;
 ;
-const EVENT_TASKS = exports.zoneSymbol('eventTasks');
+var EVENT_TASKS = exports.zoneSymbol('eventTasks');
 // For EventTarget
-const ADD_EVENT_LISTENER = 'addEventListener';
-const REMOVE_EVENT_LISTENER = 'removeEventListener';
+var ADD_EVENT_LISTENER = 'addEventListener';
+var REMOVE_EVENT_LISTENER = 'removeEventListener';
 function findExistingRegisteredTask(target, handler, name, capture, remove) {
-    const eventTasks = target[EVENT_TASKS];
+    var eventTasks = target[EVENT_TASKS];
     if (eventTasks) {
-        for (let i = 0; i < eventTasks.length; i++) {
-            const eventTask = eventTasks[i];
-            const data = eventTask.data;
+        for (var i = 0; i < eventTasks.length; i++) {
+            var eventTask = eventTasks[i];
+            var data = eventTask.data;
             if (data.handler === handler && data.useCapturing === capture && data.eventName === name) {
                 if (remove) {
                     eventTasks.splice(i, 1);
@@ -116,40 +119,42 @@ function findExistingRegisteredTask(target, handler, name, capture, remove) {
     return null;
 }
 function attachRegisteredEvent(target, eventTask) {
-    let eventTasks = target[EVENT_TASKS];
+    var eventTasks = target[EVENT_TASKS];
     if (!eventTasks) {
         eventTasks = target[EVENT_TASKS] = [];
     }
     eventTasks.push(eventTask);
 }
-function makeZoneAwareAddListener(addFnName, removeFnName, useCapturingParam = true, allowDuplicates = false) {
-    const addFnSymbol = exports.zoneSymbol(addFnName);
-    const removeFnSymbol = exports.zoneSymbol(removeFnName);
-    const defaultUseCapturing = useCapturingParam ? false : undefined;
+function makeZoneAwareAddListener(addFnName, removeFnName, useCapturingParam, allowDuplicates) {
+    if (useCapturingParam === void 0) { useCapturingParam = true; }
+    if (allowDuplicates === void 0) { allowDuplicates = false; }
+    var addFnSymbol = exports.zoneSymbol(addFnName);
+    var removeFnSymbol = exports.zoneSymbol(removeFnName);
+    var defaultUseCapturing = useCapturingParam ? false : undefined;
     function scheduleEventListener(eventTask) {
-        const meta = eventTask.data;
+        var meta = eventTask.data;
         attachRegisteredEvent(meta.target, eventTask);
         return meta.target[addFnSymbol](meta.eventName, eventTask.invoke, meta.useCapturing);
     }
     function cancelEventListener(eventTask) {
-        const meta = eventTask.data;
+        var meta = eventTask.data;
         findExistingRegisteredTask(meta.target, eventTask.invoke, meta.eventName, meta.useCapturing, true);
         meta.target[removeFnSymbol](meta.eventName, eventTask.invoke, meta.useCapturing);
     }
     return function zoneAwareAddListener(self, args) {
-        const eventName = args[0];
-        const handler = args[1];
-        const useCapturing = args[2] || defaultUseCapturing;
+        var eventName = args[0];
+        var handler = args[1];
+        var useCapturing = args[2] || defaultUseCapturing;
         // - Inside a Web Worker, `this` is undefined, the context is `global`
         // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
         // see https://github.com/angular/zone.js/issues/190
-        const target = self || _global;
-        let delegate = null;
+        var target = self || _global;
+        var delegate = null;
         if (typeof handler == 'function') {
             delegate = handler;
         }
         else if (handler && handler.handleEvent) {
-            delegate = (event) => handler.handleEvent(event);
+            delegate = function (event) { return handler.handleEvent(event); };
         }
         var validZoneHandler = false;
         try {
@@ -168,15 +173,15 @@ function makeZoneAwareAddListener(addFnName, removeFnName, useCapturingParam = t
             return target[addFnSymbol](eventName, handler, useCapturing);
         }
         if (!allowDuplicates) {
-            const eventTask = findExistingRegisteredTask(target, handler, eventName, useCapturing, false);
+            var eventTask = findExistingRegisteredTask(target, handler, eventName, useCapturing, false);
             if (eventTask) {
                 // we already registered, so this will have noop.
                 return target[addFnSymbol](eventName, eventTask.invoke, useCapturing);
             }
         }
-        const zone = Zone.current;
-        const source = target.constructor['name'] + '.' + addFnName + ':' + eventName;
-        const data = {
+        var zone = Zone.current;
+        var source = target.constructor['name'] + '.' + addFnName + ':' + eventName;
+        var data = {
             target: target,
             eventName: eventName,
             name: eventName,
@@ -187,18 +192,19 @@ function makeZoneAwareAddListener(addFnName, removeFnName, useCapturingParam = t
     };
 }
 exports.makeZoneAwareAddListener = makeZoneAwareAddListener;
-function makeZoneAwareRemoveListener(fnName, useCapturingParam = true) {
-    const symbol = exports.zoneSymbol(fnName);
-    const defaultUseCapturing = useCapturingParam ? false : undefined;
+function makeZoneAwareRemoveListener(fnName, useCapturingParam) {
+    if (useCapturingParam === void 0) { useCapturingParam = true; }
+    var symbol = exports.zoneSymbol(fnName);
+    var defaultUseCapturing = useCapturingParam ? false : undefined;
     return function zoneAwareRemoveListener(self, args) {
-        const eventName = args[0];
-        const handler = args[1];
-        const useCapturing = args[2] || defaultUseCapturing;
+        var eventName = args[0];
+        var handler = args[1];
+        var useCapturing = args[2] || defaultUseCapturing;
         // - Inside a Web Worker, `this` is undefined, the context is `global`
         // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
         // see https://github.com/angular/zone.js/issues/190
-        const target = self || _global;
-        const eventTask = findExistingRegisteredTask(target, handler, eventName, useCapturing, true);
+        var target = self || _global;
+        var eventTask = findExistingRegisteredTask(target, handler, eventName, useCapturing, true);
         if (eventTask) {
             eventTask.zone.cancelTask(eventTask);
         }
@@ -209,25 +215,25 @@ function makeZoneAwareRemoveListener(fnName, useCapturingParam = true) {
 }
 exports.makeZoneAwareRemoveListener = makeZoneAwareRemoveListener;
 function makeZoneAwareListeners(fnName) {
-    const symbol = exports.zoneSymbol(fnName);
+    var symbol = exports.zoneSymbol(fnName);
     return function zoneAwareEventListeners(self, args) {
-        const eventName = args[0];
-        const target = self || _global;
+        var eventName = args[0];
+        var target = self || _global;
         if (!target[EVENT_TASKS]) {
             return [];
         }
         return target[EVENT_TASKS]
-            .filter(task => task.data.eventName === eventName)
-            .map(task => task.data.handler);
+            .filter(function (task) { return task.data.eventName === eventName; })
+            .map(function (task) { return task.data.handler; });
     };
 }
 exports.makeZoneAwareListeners = makeZoneAwareListeners;
-const zoneAwareAddEventListener = makeZoneAwareAddListener(ADD_EVENT_LISTENER, REMOVE_EVENT_LISTENER);
-const zoneAwareRemoveEventListener = makeZoneAwareRemoveListener(REMOVE_EVENT_LISTENER);
+var zoneAwareAddEventListener = makeZoneAwareAddListener(ADD_EVENT_LISTENER, REMOVE_EVENT_LISTENER);
+var zoneAwareRemoveEventListener = makeZoneAwareRemoveListener(REMOVE_EVENT_LISTENER);
 function patchEventTargetMethods(obj) {
     if (obj && obj.addEventListener) {
-        patchMethod(obj, ADD_EVENT_LISTENER, () => zoneAwareAddEventListener);
-        patchMethod(obj, REMOVE_EVENT_LISTENER, () => zoneAwareRemoveEventListener);
+        patchMethod(obj, ADD_EVENT_LISTENER, function () { return zoneAwareAddEventListener; });
+        patchMethod(obj, REMOVE_EVENT_LISTENER, function () { return zoneAwareRemoveEventListener; });
         return true;
     }
     else {
@@ -235,14 +241,14 @@ function patchEventTargetMethods(obj) {
     }
 }
 exports.patchEventTargetMethods = patchEventTargetMethods;
-const originalInstanceKey = exports.zoneSymbol('originalInstance');
+var originalInstanceKey = exports.zoneSymbol('originalInstance');
 // wrap some native API on `window`
 function patchClass(className) {
-    const OriginalClass = _global[className];
+    var OriginalClass = _global[className];
     if (!OriginalClass)
         return;
     _global[className] = function () {
-        const a = bindArguments(arguments, className);
+        var a = bindArguments(arguments, className);
         switch (a.length) {
             case 0:
                 this[originalInstanceKey] = new OriginalClass();
@@ -263,8 +269,8 @@ function patchClass(className) {
                 throw new Error('Arg list too long.');
         }
     };
-    const instance = new OriginalClass(function () { });
-    let prop;
+    var instance = new OriginalClass(function () { });
+    var prop;
     for (prop in instance) {
         // https://bugs.webkit.org/show_bug.cgi?id=44721
         if (className === 'XMLHttpRequest' && prop === 'responseBlob')
@@ -302,7 +308,7 @@ exports.patchClass = patchClass;
 ;
 function createNamedFn(name, delegate) {
     try {
-        return (Function('f', `return function ${name}(){return f(this, arguments)}`))(delegate);
+        return (Function('f', "return function " + name + "(){return f(this, arguments)}"))(delegate);
     }
     catch (e) {
         // if we fail, we must be CSP, just return delegate.
@@ -313,7 +319,7 @@ function createNamedFn(name, delegate) {
 }
 exports.createNamedFn = createNamedFn;
 function patchMethod(target, name, patchFn) {
-    let proto = target;
+    var proto = target;
     while (proto && Object.getOwnPropertyNames(proto).indexOf(name) === -1) {
         proto = Object.getPrototypeOf(proto);
     }
@@ -321,8 +327,8 @@ function patchMethod(target, name, patchFn) {
         // somehow we did not find it, but we can see it. This happens on IE for Window properties.
         proto = target;
     }
-    const delegateName = exports.zoneSymbol(name);
-    let delegate;
+    var delegateName = exports.zoneSymbol(name);
+    var delegate;
     if (proto && !(delegate = proto[delegateName])) {
         delegate = proto[delegateName] = proto[name];
         proto[name] = createNamedFn(name, patchFn(delegate, delegateName, name));

@@ -1,9 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Ignores source values for a duration determined by another Observable, then
  * emits the most recent value from the source Observable, then repeats this
@@ -48,30 +58,33 @@ function audit(durationSelector) {
     return this.lift(new AuditOperator(durationSelector));
 }
 exports.audit = audit;
-class AuditOperator {
-    constructor(durationSelector) {
+var AuditOperator = /** @class */ (function () {
+    function AuditOperator(durationSelector) {
         this.durationSelector = durationSelector;
     }
-    call(subscriber, source) {
+    AuditOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new AuditSubscriber(subscriber, this.durationSelector));
-    }
-}
+    };
+    return AuditOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class AuditSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, durationSelector) {
-        super(destination);
-        this.durationSelector = durationSelector;
-        this.hasValue = false;
+var AuditSubscriber = /** @class */ (function (_super) {
+    __extends(AuditSubscriber, _super);
+    function AuditSubscriber(destination, durationSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.durationSelector = durationSelector;
+        _this.hasValue = false;
+        return _this;
     }
-    _next(value) {
+    AuditSubscriber.prototype._next = function (value) {
         this.value = value;
         this.hasValue = true;
         if (!this.throttled) {
-            const duration = tryCatch_1.tryCatch(this.durationSelector)(value);
+            var duration = tryCatch_1.tryCatch(this.durationSelector)(value);
             if (duration === errorObject_1.errorObject) {
                 this.destination.error(errorObject_1.errorObject.e);
             }
@@ -79,9 +92,9 @@ class AuditSubscriber extends OuterSubscriber_1.OuterSubscriber {
                 this.add(this.throttled = subscribeToResult_1.subscribeToResult(this, duration));
             }
         }
-    }
-    clearThrottle() {
-        const { value, hasValue, throttled } = this;
+    };
+    AuditSubscriber.prototype.clearThrottle = function () {
+        var _a = this, value = _a.value, hasValue = _a.hasValue, throttled = _a.throttled;
         if (throttled) {
             this.remove(throttled);
             this.throttled = null;
@@ -92,12 +105,13 @@ class AuditSubscriber extends OuterSubscriber_1.OuterSubscriber {
             this.hasValue = false;
             this.destination.next(value);
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex) {
+    };
+    AuditSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex) {
         this.clearThrottle();
-    }
-    notifyComplete() {
+    };
+    AuditSubscriber.prototype.notifyComplete = function () {
         this.clearThrottle();
-    }
-}
+    };
+    return AuditSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=audit.js.map

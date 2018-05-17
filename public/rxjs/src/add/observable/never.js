@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const never_1 = require("../../observable/never");
+var Observable_1 = require("../../Observable");
+var never_1 = require("../../observable/never");
 Observable_1.Observable.never = never_1.never;
 //# sourceMappingURL=never.js.map

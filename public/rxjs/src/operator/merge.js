@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArrayObservable_1 = require("../observable/ArrayObservable");
-const mergeAll_1 = require("./mergeAll");
-const isScheduler_1 = require("../util/isScheduler");
+var ArrayObservable_1 = require("../observable/ArrayObservable");
+var mergeAll_1 = require("./mergeAll");
+var isScheduler_1 = require("../util/isScheduler");
 /**
  * Creates an output Observable which concurrently emits all values from every
  * given input Observable.
@@ -49,7 +49,11 @@ const isScheduler_1 = require("../util/isScheduler");
  * @method merge
  * @owner Observable
  */
-function merge(...observables) {
+function merge() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
     observables.unshift(this);
     return mergeStatic.apply(this, observables);
 }
@@ -101,10 +105,14 @@ exports.merge = merge;
  * @name merge
  * @owner Observable
  */
-function mergeStatic(...observables) {
-    let concurrent = Number.POSITIVE_INFINITY;
-    let scheduler = null;
-    let last = observables[observables.length - 1];
+function mergeStatic() {
+    var observables = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        observables[_i] = arguments[_i];
+    }
+    var concurrent = Number.POSITIVE_INFINITY;
+    var scheduler = null;
+    var last = observables[observables.length - 1];
     if (isScheduler_1.isScheduler(last)) {
         scheduler = observables.pop();
         if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {

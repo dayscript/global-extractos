@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 'use strict';
-(() => {
+(function () {
     var __extends = function (d, b) {
         for (var p in b)
             if (b.hasOwnProperty(p))
@@ -25,17 +25,17 @@
     if (jasmine['__zone_patch__'])
         throw new Error('\'jasmine\' has already been patched with \'Zone\'.');
     jasmine['__zone_patch__'] = true;
-    const SyncTestZoneSpec = Zone['SyncTestZoneSpec'];
-    const ProxyZoneSpec = Zone['ProxyZoneSpec'];
+    var SyncTestZoneSpec = Zone['SyncTestZoneSpec'];
+    var ProxyZoneSpec = Zone['ProxyZoneSpec'];
     if (!SyncTestZoneSpec)
         throw new Error('Missing: SyncTestZoneSpec');
     if (!ProxyZoneSpec)
         throw new Error('Missing: ProxyZoneSpec');
-    const ambientZone = Zone.current;
+    var ambientZone = Zone.current;
     // Create a synchronous-only zone in which to run `describe` blocks in order to raise an
     // error if any asynchronous operations are attempted inside of a `describe` but outside of
     // a `beforeEach` or `it`.
-    const syncZone = ambientZone.fork(new SyncTestZoneSpec('jasmine.describe'));
+    var syncZone = ambientZone.fork(new SyncTestZoneSpec('jasmine.describe'));
     // This is the zone which will be used for running individual tests.
     // It will be a proxy zone, so that the tests function can retroactively install
     // different zones.
@@ -45,24 +45,24 @@
     //     zone outside of fakeAsync it will be able to escope the fakeAsync rules.
     //   - Because ProxyZone is parent fo `childZone` fakeAsync can retroactively add
     //     fakeAsync behavior to the childZone.
-    let testProxyZone = null;
+    var testProxyZone = null;
     // Monkey patch all of the jasmine DSL so that each function runs in appropriate zone.
-    const jasmineEnv = jasmine.getEnv();
-    ['describe', 'xdescribe', 'fdescribe'].forEach((methodName) => {
-        let originalJasmineFn = jasmineEnv[methodName];
+    var jasmineEnv = jasmine.getEnv();
+    ['describe', 'xdescribe', 'fdescribe'].forEach(function (methodName) {
+        var originalJasmineFn = jasmineEnv[methodName];
         jasmineEnv[methodName] = function (description, specDefinitions) {
             return originalJasmineFn.call(this, description, wrapDescribeInZone(specDefinitions));
         };
     });
-    ['it', 'xit', 'fit'].forEach((methodName) => {
-        let originalJasmineFn = jasmineEnv[methodName];
+    ['it', 'xit', 'fit'].forEach(function (methodName) {
+        var originalJasmineFn = jasmineEnv[methodName];
         jasmineEnv[methodName] = function (description, specDefinitions, timeout) {
             arguments[1] = wrapTestInZone(specDefinitions);
             return originalJasmineFn.apply(this, arguments);
         };
     });
-    ['beforeEach', 'afterEach'].forEach((methodName) => {
-        let originalJasmineFn = jasmineEnv[methodName];
+    ['beforeEach', 'afterEach'].forEach(function (methodName) {
+        var originalJasmineFn = jasmineEnv[methodName];
         jasmineEnv[methodName] = function (specDefinitions, timeout) {
             arguments[0] = wrapTestInZone(specDefinitions);
             return originalJasmineFn.apply(this, arguments);
@@ -92,18 +92,19 @@
             return testProxyZone.run(testBody, this, [done]);
         };
     }
-    const QueueRunner = jasmine.QueueRunner;
+    var QueueRunner = jasmine.QueueRunner;
     jasmine.QueueRunner = (function (_super) {
         __extends(ZoneQueueRunner, _super);
         function ZoneQueueRunner(attrs) {
-            attrs.onComplete = ((fn) => () => {
+            attrs.onComplete = (function (fn) { return function () {
                 // All functions are done, clear the test zone.
                 testProxyZone = null;
                 ambientZone.scheduleMicroTask('jasmine.onComplete', fn);
-            })(attrs.onComplete);
+            }; })(attrs.onComplete);
             _super.call(this, attrs);
         }
         ZoneQueueRunner.prototype.execute = function () {
+            var _this = this;
             if (Zone.current !== ambientZone)
                 throw new Error('Unexpected Zone: ' + Zone.current.name);
             testProxyZone = ambientZone.fork(new ProxyZoneSpec());
@@ -113,7 +114,7 @@
                 // addEventListener callback would think that it is the top most task and would
                 // drain the microtask queue on element.click() which would be incorrect.
                 // For this reason we always force a task when running jasmine tests.
-                Zone.current.scheduleMicroTask('jasmine.execute().forceTask', () => QueueRunner.prototype.execute.call(this));
+                Zone.current.scheduleMicroTask('jasmine.execute().forceTask', function () { return QueueRunner.prototype.execute.call(_this); });
             }
             else {
                 _super.prototype.execute.call(this);

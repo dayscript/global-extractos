@@ -1,26 +1,42 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("./Subject");
-const ObjectUnsubscribedError_1 = require("./util/ObjectUnsubscribedError");
+var Subject_1 = require("./Subject");
+var ObjectUnsubscribedError_1 = require("./util/ObjectUnsubscribedError");
 /**
  * @class BehaviorSubject<T>
  */
-class BehaviorSubject extends Subject_1.Subject {
-    constructor(_value) {
-        super();
-        this._value = _value;
+var BehaviorSubject = /** @class */ (function (_super) {
+    __extends(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        var _this = _super.call(this) || this;
+        _this._value = _value;
+        return _this;
     }
-    get value() {
-        return this.getValue();
-    }
-    _subscribe(subscriber) {
-        const subscription = super._subscribe(subscriber);
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
         if (subscription && !subscription.closed) {
             subscriber.next(this._value);
         }
         return subscription;
-    }
-    getValue() {
+    };
+    BehaviorSubject.prototype.getValue = function () {
         if (this.hasError) {
             throw this.thrownError;
         }
@@ -30,10 +46,11 @@ class BehaviorSubject extends Subject_1.Subject {
         else {
             return this._value;
         }
-    }
-    next(value) {
-        super.next(this._value = value);
-    }
-}
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, this._value = value);
+    };
+    return BehaviorSubject;
+}(Subject_1.Subject));
 exports.BehaviorSubject = BehaviorSubject;
 //# sourceMappingURL=BehaviorSubject.js.map

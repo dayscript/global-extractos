@@ -1,21 +1,33 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const AsyncSubject_1 = require("../AsyncSubject");
+var Observable_1 = require("../Observable");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var AsyncSubject_1 = require("../AsyncSubject");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class BoundNodeCallbackObservable extends Observable_1.Observable {
-    constructor(callbackFunc, selector, args, scheduler) {
-        super();
-        this.callbackFunc = callbackFunc;
-        this.selector = selector;
-        this.args = args;
-        this.scheduler = scheduler;
+var BoundNodeCallbackObservable = /** @class */ (function (_super) {
+    __extends(BoundNodeCallbackObservable, _super);
+    function BoundNodeCallbackObservable(callbackFunc, selector, args, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.callbackFunc = callbackFunc;
+        _this.selector = selector;
+        _this.args = args;
+        _this.scheduler = scheduler;
+        return _this;
     }
     /* tslint:enable:max-line-length */
     /**
@@ -57,33 +69,42 @@ class BoundNodeCallbackObservable extends Observable_1.Observable {
      * @name bindNodeCallback
      * @owner Observable
      */
-    static create(func, selector = undefined, scheduler) {
-        return (...args) => {
+    BoundNodeCallbackObservable.create = function (func, selector, scheduler) {
+        if (selector === void 0) { selector = undefined; }
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
             return new BoundNodeCallbackObservable(func, selector, args, scheduler);
         };
-    }
-    _subscribe(subscriber) {
-        const callbackFunc = this.callbackFunc;
-        const args = this.args;
-        const scheduler = this.scheduler;
-        let subject = this.subject;
+    };
+    BoundNodeCallbackObservable.prototype._subscribe = function (subscriber) {
+        var callbackFunc = this.callbackFunc;
+        var args = this.args;
+        var scheduler = this.scheduler;
+        var subject = this.subject;
         if (!scheduler) {
             if (!subject) {
                 subject = this.subject = new AsyncSubject_1.AsyncSubject();
-                const handler = function handlerFn(...innerArgs) {
-                    const source = handlerFn.source;
-                    const { selector, subject } = source;
-                    const err = innerArgs.shift();
+                var handler = function handlerFn() {
+                    var innerArgs = [];
+                    for (var _i = 0; _i < arguments.length; _i++) {
+                        innerArgs[_i] = arguments[_i];
+                    }
+                    var source = handlerFn.source;
+                    var selector = source.selector, subject = source.subject;
+                    var err = innerArgs.shift();
                     if (err) {
                         subject.error(err);
                     }
                     else if (selector) {
-                        const result = tryCatch_1.tryCatch(selector).apply(this, innerArgs);
-                        if (result === errorObject_1.errorObject) {
+                        var result_1 = tryCatch_1.tryCatch(selector).apply(this, innerArgs);
+                        if (result_1 === errorObject_1.errorObject) {
                             subject.error(errorObject_1.errorObject.e);
                         }
                         else {
-                            subject.next(result);
+                            subject.next(result_1);
                             subject.complete();
                         }
                     }
@@ -94,7 +115,7 @@ class BoundNodeCallbackObservable extends Observable_1.Observable {
                 };
                 // use named function instance to avoid closure.
                 handler.source = this;
-                const result = tryCatch_1.tryCatch(callbackFunc).apply(this, args.concat(handler));
+                var result = tryCatch_1.tryCatch(callbackFunc).apply(this, args.concat(handler));
                 if (result === errorObject_1.errorObject) {
                     subject.error(errorObject_1.errorObject.e);
                 }
@@ -102,43 +123,48 @@ class BoundNodeCallbackObservable extends Observable_1.Observable {
             return subject.subscribe(subscriber);
         }
         else {
-            return scheduler.schedule(dispatch, 0, { source: this, subscriber });
+            return scheduler.schedule(dispatch, 0, { source: this, subscriber: subscriber });
         }
-    }
-}
+    };
+    return BoundNodeCallbackObservable;
+}(Observable_1.Observable));
 exports.BoundNodeCallbackObservable = BoundNodeCallbackObservable;
 function dispatch(state) {
-    const self = this;
-    const { source, subscriber } = state;
+    var self = this;
+    var source = state.source, subscriber = state.subscriber;
     // XXX: cast to `any` to access to the private field in `source`.
-    const { callbackFunc, args, scheduler } = source;
-    let subject = source.subject;
+    var _a = source, callbackFunc = _a.callbackFunc, args = _a.args, scheduler = _a.scheduler;
+    var subject = source.subject;
     if (!subject) {
         subject = source.subject = new AsyncSubject_1.AsyncSubject();
-        const handler = function handlerFn(...innerArgs) {
-            const source = handlerFn.source;
-            const { selector, subject } = source;
-            const err = innerArgs.shift();
+        var handler = function handlerFn() {
+            var innerArgs = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                innerArgs[_i] = arguments[_i];
+            }
+            var source = handlerFn.source;
+            var selector = source.selector, subject = source.subject;
+            var err = innerArgs.shift();
             if (err) {
                 subject.error(err);
             }
             else if (selector) {
-                const result = tryCatch_1.tryCatch(selector).apply(this, innerArgs);
-                if (result === errorObject_1.errorObject) {
-                    self.add(scheduler.schedule(dispatchError, 0, { err: errorObject_1.errorObject.e, subject }));
+                var result_2 = tryCatch_1.tryCatch(selector).apply(this, innerArgs);
+                if (result_2 === errorObject_1.errorObject) {
+                    self.add(scheduler.schedule(dispatchError, 0, { err: errorObject_1.errorObject.e, subject: subject }));
                 }
                 else {
-                    self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+                    self.add(scheduler.schedule(dispatchNext, 0, { value: result_2, subject: subject }));
                 }
             }
             else {
-                const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
-                self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
+                var value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+                self.add(scheduler.schedule(dispatchNext, 0, { value: value, subject: subject }));
             }
         };
         // use named function to pass values in without closure
         handler.source = source;
-        const result = tryCatch_1.tryCatch(callbackFunc).apply(this, args.concat(handler));
+        var result = tryCatch_1.tryCatch(callbackFunc).apply(this, args.concat(handler));
         if (result === errorObject_1.errorObject) {
             subject.error(errorObject_1.errorObject.e);
         }
@@ -146,12 +172,12 @@ function dispatch(state) {
     self.add(subject.subscribe(subscriber));
 }
 function dispatchNext(arg) {
-    const { value, subject } = arg;
+    var value = arg.value, subject = arg.subject;
     subject.next(value);
     subject.complete();
 }
 function dispatchError(arg) {
-    const { err, subject } = arg;
+    var err = arg.err, subject = arg.subject;
     subject.error(err);
 }
 //# sourceMappingURL=BoundNodeCallbackObservable.js.map

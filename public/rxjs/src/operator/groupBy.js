@@ -1,11 +1,21 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const Subscription_1 = require("../Subscription");
-const Observable_1 = require("../Observable");
-const Subject_1 = require("../Subject");
-const Map_1 = require("../util/Map");
-const FastMap_1 = require("../util/FastMap");
+var Subscriber_1 = require("../Subscriber");
+var Subscription_1 = require("../Subscription");
+var Observable_1 = require("../Observable");
+var Subject_1 = require("../Subject");
+var Map_1 = require("../util/Map");
+var FastMap_1 = require("../util/FastMap");
 /**
  * Groups the items emitted by an Observable according to a specified criterion,
  * and emits these grouped items as `GroupedObservables`, one
@@ -31,34 +41,37 @@ function groupBy(keySelector, elementSelector, durationSelector) {
     return this.lift(new GroupByOperator(this, keySelector, elementSelector, durationSelector));
 }
 exports.groupBy = groupBy;
-class GroupByOperator {
-    constructor(source, keySelector, elementSelector, durationSelector) {
+var GroupByOperator = /** @class */ (function () {
+    function GroupByOperator(source, keySelector, elementSelector, durationSelector) {
         this.source = source;
         this.keySelector = keySelector;
         this.elementSelector = elementSelector;
         this.durationSelector = durationSelector;
     }
-    call(subscriber, source) {
+    GroupByOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector));
-    }
-}
+    };
+    return GroupByOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class GroupBySubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, keySelector, elementSelector, durationSelector) {
-        super(destination);
-        this.keySelector = keySelector;
-        this.elementSelector = elementSelector;
-        this.durationSelector = durationSelector;
-        this.groups = null;
-        this.attemptedToUnsubscribe = false;
-        this.count = 0;
+var GroupBySubscriber = /** @class */ (function (_super) {
+    __extends(GroupBySubscriber, _super);
+    function GroupBySubscriber(destination, keySelector, elementSelector, durationSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.keySelector = keySelector;
+        _this.elementSelector = elementSelector;
+        _this.durationSelector = durationSelector;
+        _this.groups = null;
+        _this.attemptedToUnsubscribe = false;
+        _this.count = 0;
+        return _this;
     }
-    _next(value) {
-        let key;
+    GroupBySubscriber.prototype._next = function (value) {
+        var key;
         try {
             key = this.keySelector(value);
         }
@@ -67,14 +80,14 @@ class GroupBySubscriber extends Subscriber_1.Subscriber {
             return;
         }
         this._group(value, key);
-    }
-    _group(value, key) {
-        let groups = this.groups;
+    };
+    GroupBySubscriber.prototype._group = function (value, key) {
+        var groups = this.groups;
         if (!groups) {
             groups = this.groups = typeof key === 'string' ? new FastMap_1.FastMap() : new Map_1.Map();
         }
-        let group = groups.get(key);
-        let element;
+        var group = groups.get(key);
+        var element;
         if (this.elementSelector) {
             try {
                 element = this.elementSelector(value);
@@ -88,10 +101,10 @@ class GroupBySubscriber extends Subscriber_1.Subscriber {
         }
         if (!group) {
             groups.set(key, group = new Subject_1.Subject());
-            const groupedObservable = new GroupedObservable(key, group, this);
+            var groupedObservable = new GroupedObservable(key, group, this);
             this.destination.next(groupedObservable);
             if (this.durationSelector) {
-                let duration;
+                var duration = void 0;
                 try {
                     duration = this.durationSelector(new GroupedObservable(key, group));
                 }
@@ -105,69 +118,73 @@ class GroupBySubscriber extends Subscriber_1.Subscriber {
         if (!group.closed) {
             group.next(element);
         }
-    }
-    _error(err) {
-        const groups = this.groups;
+    };
+    GroupBySubscriber.prototype._error = function (err) {
+        var groups = this.groups;
         if (groups) {
-            groups.forEach((group, key) => {
+            groups.forEach(function (group, key) {
                 group.error(err);
             });
             groups.clear();
         }
         this.destination.error(err);
-    }
-    _complete() {
-        const groups = this.groups;
+    };
+    GroupBySubscriber.prototype._complete = function () {
+        var groups = this.groups;
         if (groups) {
-            groups.forEach((group, key) => {
+            groups.forEach(function (group, key) {
                 group.complete();
             });
             groups.clear();
         }
         this.destination.complete();
-    }
-    removeGroup(key) {
+    };
+    GroupBySubscriber.prototype.removeGroup = function (key) {
         this.groups.delete(key);
-    }
-    unsubscribe() {
+    };
+    GroupBySubscriber.prototype.unsubscribe = function () {
         if (!this.closed && !this.attemptedToUnsubscribe) {
             this.attemptedToUnsubscribe = true;
             if (this.count === 0) {
-                super.unsubscribe();
+                _super.prototype.unsubscribe.call(this);
             }
         }
-    }
-}
+    };
+    return GroupBySubscriber;
+}(Subscriber_1.Subscriber));
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class GroupDurationSubscriber extends Subscriber_1.Subscriber {
-    constructor(key, group, parent) {
-        super();
-        this.key = key;
-        this.group = group;
-        this.parent = parent;
+var GroupDurationSubscriber = /** @class */ (function (_super) {
+    __extends(GroupDurationSubscriber, _super);
+    function GroupDurationSubscriber(key, group, parent) {
+        var _this = _super.call(this) || this;
+        _this.key = key;
+        _this.group = group;
+        _this.parent = parent;
+        return _this;
     }
-    _next(value) {
+    GroupDurationSubscriber.prototype._next = function (value) {
         this._complete();
-    }
-    _error(err) {
-        const group = this.group;
+    };
+    GroupDurationSubscriber.prototype._error = function (err) {
+        var group = this.group;
         if (!group.closed) {
             group.error(err);
         }
         this.parent.removeGroup(this.key);
-    }
-    _complete() {
-        const group = this.group;
+    };
+    GroupDurationSubscriber.prototype._complete = function () {
+        var group = this.group;
         if (!group.closed) {
             group.complete();
         }
         this.parent.removeGroup(this.key);
-    }
-}
+    };
+    return GroupDurationSubscriber;
+}(Subscriber_1.Subscriber));
 /**
  * An Observable representing values belonging to the same group represented by
  * a common key. The values emitted by a GroupedObservable come from the source
@@ -176,44 +193,50 @@ class GroupDurationSubscriber extends Subscriber_1.Subscriber {
  *
  * @class GroupedObservable<K, T>
  */
-class GroupedObservable extends Observable_1.Observable {
-    constructor(key, groupSubject, refCountSubscription) {
-        super();
-        this.key = key;
-        this.groupSubject = groupSubject;
-        this.refCountSubscription = refCountSubscription;
+var GroupedObservable = /** @class */ (function (_super) {
+    __extends(GroupedObservable, _super);
+    function GroupedObservable(key, groupSubject, refCountSubscription) {
+        var _this = _super.call(this) || this;
+        _this.key = key;
+        _this.groupSubject = groupSubject;
+        _this.refCountSubscription = refCountSubscription;
+        return _this;
     }
-    _subscribe(subscriber) {
-        const subscription = new Subscription_1.Subscription();
-        const { refCountSubscription, groupSubject } = this;
+    GroupedObservable.prototype._subscribe = function (subscriber) {
+        var subscription = new Subscription_1.Subscription();
+        var _a = this, refCountSubscription = _a.refCountSubscription, groupSubject = _a.groupSubject;
         if (refCountSubscription && !refCountSubscription.closed) {
             subscription.add(new InnerRefCountSubscription(refCountSubscription));
         }
         subscription.add(groupSubject.subscribe(subscriber));
         return subscription;
-    }
-}
+    };
+    return GroupedObservable;
+}(Observable_1.Observable));
 exports.GroupedObservable = GroupedObservable;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class InnerRefCountSubscription extends Subscription_1.Subscription {
-    constructor(parent) {
-        super();
-        this.parent = parent;
+var InnerRefCountSubscription = /** @class */ (function (_super) {
+    __extends(InnerRefCountSubscription, _super);
+    function InnerRefCountSubscription(parent) {
+        var _this = _super.call(this) || this;
+        _this.parent = parent;
         parent.count++;
+        return _this;
     }
-    unsubscribe() {
-        const parent = this.parent;
+    InnerRefCountSubscription.prototype.unsubscribe = function () {
+        var parent = this.parent;
         if (!parent.closed && !this.closed) {
-            super.unsubscribe();
+            _super.prototype.unsubscribe.call(this);
             parent.count -= 1;
             if (parent.count === 0 && parent.attemptedToUnsubscribe) {
                 parent.unsubscribe();
             }
         }
-    }
-}
+    };
+    return InnerRefCountSubscription;
+}(Subscription_1.Subscription));
 //# sourceMappingURL=groupBy.js.map

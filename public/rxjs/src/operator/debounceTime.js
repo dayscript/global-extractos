@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const async_1 = require("../scheduler/async");
+var Subscriber_1 = require("../Subscriber");
+var async_1 = require("../scheduler/async");
 /**
  * Emits a value from the source Observable only after a particular time span
  * has passed without another source emission.
@@ -48,60 +58,65 @@ const async_1 = require("../scheduler/async");
  * @method debounceTime
  * @owner Observable
  */
-function debounceTime(dueTime, scheduler = async_1.async) {
+function debounceTime(dueTime, scheduler) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
     return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 exports.debounceTime = debounceTime;
-class DebounceTimeOperator {
-    constructor(dueTime, scheduler) {
+var DebounceTimeOperator = /** @class */ (function () {
+    function DebounceTimeOperator(dueTime, scheduler) {
         this.dueTime = dueTime;
         this.scheduler = scheduler;
     }
-    call(subscriber, source) {
+    DebounceTimeOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
-    }
-}
+    };
+    return DebounceTimeOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DebounceTimeSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, dueTime, scheduler) {
-        super(destination);
-        this.dueTime = dueTime;
-        this.scheduler = scheduler;
-        this.debouncedSubscription = null;
-        this.lastValue = null;
-        this.hasValue = false;
+var DebounceTimeSubscriber = /** @class */ (function (_super) {
+    __extends(DebounceTimeSubscriber, _super);
+    function DebounceTimeSubscriber(destination, dueTime, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.dueTime = dueTime;
+        _this.scheduler = scheduler;
+        _this.debouncedSubscription = null;
+        _this.lastValue = null;
+        _this.hasValue = false;
+        return _this;
     }
-    _next(value) {
+    DebounceTimeSubscriber.prototype._next = function (value) {
         this.clearDebounce();
         this.lastValue = value;
         this.hasValue = true;
         this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
-    }
-    _complete() {
+    };
+    DebounceTimeSubscriber.prototype._complete = function () {
         this.debouncedNext();
         this.destination.complete();
-    }
-    debouncedNext() {
+    };
+    DebounceTimeSubscriber.prototype.debouncedNext = function () {
         this.clearDebounce();
         if (this.hasValue) {
             this.destination.next(this.lastValue);
             this.lastValue = null;
             this.hasValue = false;
         }
-    }
-    clearDebounce() {
-        const debouncedSubscription = this.debouncedSubscription;
+    };
+    DebounceTimeSubscriber.prototype.clearDebounce = function () {
+        var debouncedSubscription = this.debouncedSubscription;
         if (debouncedSubscription !== null) {
             this.remove(debouncedSubscription);
             debouncedSubscription.unsubscribe();
             this.debouncedSubscription = null;
         }
-    }
-}
+    };
+    return DebounceTimeSubscriber;
+}(Subscriber_1.Subscriber));
 function dispatchNext(subscriber) {
     subscriber.debouncedNext();
 }

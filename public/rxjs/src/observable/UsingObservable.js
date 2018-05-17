@@ -1,25 +1,37 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const subscribeToResult_1 = require("../util/subscribeToResult");
-const OuterSubscriber_1 = require("../OuterSubscriber");
+var Observable_1 = require("../Observable");
+var subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class UsingObservable extends Observable_1.Observable {
-    constructor(resourceFactory, observableFactory) {
-        super();
-        this.resourceFactory = resourceFactory;
-        this.observableFactory = observableFactory;
+var UsingObservable = /** @class */ (function (_super) {
+    __extends(UsingObservable, _super);
+    function UsingObservable(resourceFactory, observableFactory) {
+        var _this = _super.call(this) || this;
+        _this.resourceFactory = resourceFactory;
+        _this.observableFactory = observableFactory;
+        return _this;
     }
-    static create(resourceFactory, observableFactory) {
+    UsingObservable.create = function (resourceFactory, observableFactory) {
         return new UsingObservable(resourceFactory, observableFactory);
-    }
-    _subscribe(subscriber) {
-        const { resourceFactory, observableFactory } = this;
-        let resource;
+    };
+    UsingObservable.prototype._subscribe = function (subscriber) {
+        var _a = this, resourceFactory = _a.resourceFactory, observableFactory = _a.observableFactory;
+        var resource;
         try {
             resource = resourceFactory();
             return new UsingSubscriber(subscriber, resource, observableFactory);
@@ -27,20 +39,23 @@ class UsingObservable extends Observable_1.Observable {
         catch (err) {
             subscriber.error(err);
         }
-    }
-}
+    };
+    return UsingObservable;
+}(Observable_1.Observable));
 exports.UsingObservable = UsingObservable;
-class UsingSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, resource, observableFactory) {
-        super(destination);
-        this.resource = resource;
-        this.observableFactory = observableFactory;
+var UsingSubscriber = /** @class */ (function (_super) {
+    __extends(UsingSubscriber, _super);
+    function UsingSubscriber(destination, resource, observableFactory) {
+        var _this = _super.call(this, destination) || this;
+        _this.resource = resource;
+        _this.observableFactory = observableFactory;
         destination.add(resource);
-        this.tryUse();
+        _this.tryUse();
+        return _this;
     }
-    tryUse() {
+    UsingSubscriber.prototype.tryUse = function () {
         try {
-            const source = this.observableFactory.call(this, this.resource);
+            var source = this.observableFactory.call(this, this.resource);
             if (source) {
                 this.add(subscribeToResult_1.subscribeToResult(this, source));
             }
@@ -48,6 +63,7 @@ class UsingSubscriber extends OuterSubscriber_1.OuterSubscriber {
         catch (err) {
             this._error(err);
         }
-    }
-}
+    };
+    return UsingSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=UsingObservable.js.map

@@ -1,9 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const isFunction_1 = require("./util/isFunction");
-const Subscription_1 = require("./Subscription");
-const Observer_1 = require("./Observer");
-const rxSubscriber_1 = require("./symbol/rxSubscriber");
+var isFunction_1 = require("./util/isFunction");
+var Subscription_1 = require("./Subscription");
+var Observer_1 = require("./Observer");
+var rxSubscriber_1 = require("./symbol/rxSubscriber");
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -14,7 +24,8 @@ const rxSubscriber_1 = require("./symbol/rxSubscriber");
  *
  * @class Subscriber<T>
  */
-class Subscriber extends Subscription_1.Subscription {
+var Subscriber = /** @class */ (function (_super) {
+    __extends(Subscriber, _super);
     /**
      * @param {Observer|function(value: T): void} [destinationOrNext] A partially
      * defined Observer or a `next` callback function.
@@ -23,39 +34,40 @@ class Subscriber extends Subscription_1.Subscription {
      * @param {function(): void} [complete] The `complete` callback of an
      * Observer.
      */
-    constructor(destinationOrNext, error, complete) {
-        super();
-        this.syncErrorValue = null;
-        this.syncErrorThrown = false;
-        this.syncErrorThrowable = false;
-        this.isStopped = false;
+    function Subscriber(destinationOrNext, error, complete) {
+        var _this = _super.call(this) || this;
+        _this.syncErrorValue = null;
+        _this.syncErrorThrown = false;
+        _this.syncErrorThrowable = false;
+        _this.isStopped = false;
         switch (arguments.length) {
             case 0:
-                this.destination = Observer_1.empty;
+                _this.destination = Observer_1.empty;
                 break;
             case 1:
                 if (!destinationOrNext) {
-                    this.destination = Observer_1.empty;
+                    _this.destination = Observer_1.empty;
                     break;
                 }
                 if (typeof destinationOrNext === 'object') {
                     if (destinationOrNext instanceof Subscriber) {
-                        this.destination = destinationOrNext;
-                        this.destination.add(this);
+                        _this.destination = destinationOrNext;
+                        _this.destination.add(_this);
                     }
                     else {
-                        this.syncErrorThrowable = true;
-                        this.destination = new SafeSubscriber(this, destinationOrNext);
+                        _this.syncErrorThrowable = true;
+                        _this.destination = new SafeSubscriber(_this, destinationOrNext);
                     }
                     break;
                 }
             default:
-                this.syncErrorThrowable = true;
-                this.destination = new SafeSubscriber(this, destinationOrNext, error, complete);
+                _this.syncErrorThrowable = true;
+                _this.destination = new SafeSubscriber(_this, destinationOrNext, error, complete);
                 break;
         }
+        return _this;
     }
-    [rxSubscriber_1.$$rxSubscriber]() { return this; }
+    Subscriber.prototype[rxSubscriber_1.$$rxSubscriber] = function () { return this; };
     /**
      * A static factory for a Subscriber, given a (potentially partial) definition
      * of an Observer.
@@ -67,11 +79,11 @@ class Subscriber extends Subscription_1.Subscription {
      * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
      * Observer represented by the given arguments.
      */
-    static create(next, error, complete) {
-        const subscriber = new Subscriber(next, error, complete);
+    Subscriber.create = function (next, error, complete) {
+        var subscriber = new Subscriber(next, error, complete);
         subscriber.syncErrorThrowable = false;
         return subscriber;
-    }
+    };
     /**
      * The {@link Observer} callback to receive notifications of type `next` from
      * the Observable, with a value. The Observable may call this method 0 or more
@@ -79,11 +91,11 @@ class Subscriber extends Subscription_1.Subscription {
      * @param {T} [value] The `next` value.
      * @return {void}
      */
-    next(value) {
+    Subscriber.prototype.next = function (value) {
         if (!this.isStopped) {
             this._next(value);
         }
-    }
+    };
     /**
      * The {@link Observer} callback to receive notifications of type `error` from
      * the Observable, with an attached {@link Error}. Notifies the Observer that
@@ -91,55 +103,57 @@ class Subscriber extends Subscription_1.Subscription {
      * @param {any} [err] The `error` exception.
      * @return {void}
      */
-    error(err) {
+    Subscriber.prototype.error = function (err) {
         if (!this.isStopped) {
             this.isStopped = true;
             this._error(err);
         }
-    }
+    };
     /**
      * The {@link Observer} callback to receive a valueless notification of type
      * `complete` from the Observable. Notifies the Observer that the Observable
      * has finished sending push-based notifications.
      * @return {void}
      */
-    complete() {
+    Subscriber.prototype.complete = function () {
         if (!this.isStopped) {
             this.isStopped = true;
             this._complete();
         }
-    }
-    unsubscribe() {
+    };
+    Subscriber.prototype.unsubscribe = function () {
         if (this.closed) {
             return;
         }
         this.isStopped = true;
-        super.unsubscribe();
-    }
-    _next(value) {
+        _super.prototype.unsubscribe.call(this);
+    };
+    Subscriber.prototype._next = function (value) {
         this.destination.next(value);
-    }
-    _error(err) {
+    };
+    Subscriber.prototype._error = function (err) {
         this.destination.error(err);
         this.unsubscribe();
-    }
-    _complete() {
+    };
+    Subscriber.prototype._complete = function () {
         this.destination.complete();
         this.unsubscribe();
-    }
-}
+    };
+    return Subscriber;
+}(Subscription_1.Subscription));
 exports.Subscriber = Subscriber;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SafeSubscriber extends Subscriber {
-    constructor(_parent, observerOrNext, error, complete) {
-        super();
-        this._parent = _parent;
-        let next;
-        let context = this;
+var SafeSubscriber = /** @class */ (function (_super) {
+    __extends(SafeSubscriber, _super);
+    function SafeSubscriber(_parent, observerOrNext, error, complete) {
+        var _this = _super.call(this) || this;
+        _this._parent = _parent;
+        var next;
+        var context = _this;
         if (isFunction_1.isFunction(observerOrNext)) {
             next = observerOrNext;
         }
@@ -149,18 +163,19 @@ class SafeSubscriber extends Subscriber {
             error = observerOrNext.error;
             complete = observerOrNext.complete;
             if (isFunction_1.isFunction(context.unsubscribe)) {
-                this.add(context.unsubscribe.bind(context));
+                _this.add(context.unsubscribe.bind(context));
             }
-            context.unsubscribe = this.unsubscribe.bind(this);
+            context.unsubscribe = _this.unsubscribe.bind(_this);
         }
-        this._context = context;
-        this._next = next;
-        this._error = error;
-        this._complete = complete;
+        _this._context = context;
+        _this._next = next;
+        _this._error = error;
+        _this._complete = complete;
+        return _this;
     }
-    next(value) {
+    SafeSubscriber.prototype.next = function (value) {
         if (!this.isStopped && this._next) {
-            const { _parent } = this;
+            var _parent = this._parent;
             if (!_parent.syncErrorThrowable) {
                 this.__tryOrUnsub(this._next, value);
             }
@@ -168,10 +183,10 @@ class SafeSubscriber extends Subscriber {
                 this.unsubscribe();
             }
         }
-    }
-    error(err) {
+    };
+    SafeSubscriber.prototype.error = function (err) {
         if (!this.isStopped) {
-            const { _parent } = this;
+            var _parent = this._parent;
             if (this._error) {
                 if (!_parent.syncErrorThrowable) {
                     this.__tryOrUnsub(this._error, err);
@@ -192,10 +207,10 @@ class SafeSubscriber extends Subscriber {
                 this.unsubscribe();
             }
         }
-    }
-    complete() {
+    };
+    SafeSubscriber.prototype.complete = function () {
         if (!this.isStopped) {
-            const { _parent } = this;
+            var _parent = this._parent;
             if (this._complete) {
                 if (!_parent.syncErrorThrowable) {
                     this.__tryOrUnsub(this._complete);
@@ -210,8 +225,8 @@ class SafeSubscriber extends Subscriber {
                 this.unsubscribe();
             }
         }
-    }
-    __tryOrUnsub(fn, value) {
+    };
+    SafeSubscriber.prototype.__tryOrUnsub = function (fn, value) {
         try {
             fn.call(this._context, value);
         }
@@ -219,8 +234,8 @@ class SafeSubscriber extends Subscriber {
             this.unsubscribe();
             throw err;
         }
-    }
-    __tryOrSetError(parent, fn, value) {
+    };
+    SafeSubscriber.prototype.__tryOrSetError = function (parent, fn, value) {
         try {
             fn.call(this._context, value);
         }
@@ -230,12 +245,13 @@ class SafeSubscriber extends Subscriber {
             return true;
         }
         return false;
-    }
-    _unsubscribe() {
-        const { _parent } = this;
+    };
+    SafeSubscriber.prototype._unsubscribe = function () {
+        var _parent = this._parent;
         this._context = null;
         this._parent = null;
         _parent.unsubscribe();
-    }
-}
+    };
+    return SafeSubscriber;
+}(Subscriber));
 //# sourceMappingURL=Subscriber.js.map

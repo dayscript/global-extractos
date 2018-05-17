@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const ArgumentOutOfRangeError_1 = require("../util/ArgumentOutOfRangeError");
+var Subscriber_1 = require("../Subscriber");
+var ArgumentOutOfRangeError_1 = require("../util/ArgumentOutOfRangeError");
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
  * from the source Observable.
@@ -43,37 +53,40 @@ function elementAt(index, defaultValue) {
     return this.lift(new ElementAtOperator(index, defaultValue));
 }
 exports.elementAt = elementAt;
-class ElementAtOperator {
-    constructor(index, defaultValue) {
+var ElementAtOperator = /** @class */ (function () {
+    function ElementAtOperator(index, defaultValue) {
         this.index = index;
         this.defaultValue = defaultValue;
         if (index < 0) {
             throw new ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
         }
     }
-    call(subscriber, source) {
+    ElementAtOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
-    }
-}
+    };
+    return ElementAtOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ElementAtSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, index, defaultValue) {
-        super(destination);
-        this.index = index;
-        this.defaultValue = defaultValue;
+var ElementAtSubscriber = /** @class */ (function (_super) {
+    __extends(ElementAtSubscriber, _super);
+    function ElementAtSubscriber(destination, index, defaultValue) {
+        var _this = _super.call(this, destination) || this;
+        _this.index = index;
+        _this.defaultValue = defaultValue;
+        return _this;
     }
-    _next(x) {
+    ElementAtSubscriber.prototype._next = function (x) {
         if (this.index-- === 0) {
             this.destination.next(x);
             this.destination.complete();
         }
-    }
-    _complete() {
-        const destination = this.destination;
+    };
+    ElementAtSubscriber.prototype._complete = function () {
+        var destination = this.destination;
         if (this.index >= 0) {
             if (typeof this.defaultValue !== 'undefined') {
                 destination.next(this.defaultValue);
@@ -83,6 +96,7 @@ class ElementAtSubscriber extends Subscriber_1.Subscriber {
             }
         }
         destination.complete();
-    }
-}
+    };
+    return ElementAtSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=elementAt.js.map

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const timeout_1 = require("../../operator/timeout");
+var Observable_1 = require("../../Observable");
+var timeout_1 = require("../../operator/timeout");
 Observable_1.Observable.prototype.timeout = timeout_1.timeout;
 //# sourceMappingURL=timeout.js.map

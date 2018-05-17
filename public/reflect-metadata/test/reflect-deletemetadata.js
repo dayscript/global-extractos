@@ -3,34 +3,34 @@
 // https://rbuckton.github.io/reflect-metadata/#reflect.deletemetadata
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../Reflect");
-const chai_1 = require("chai");
-describe("Reflect.deleteMetadata", () => {
-    it("InvalidTarget", () => {
-        chai_1.assert.throws(() => Reflect.deleteMetadata("key", undefined, undefined), TypeError);
+var chai_1 = require("chai");
+describe("Reflect.deleteMetadata", function () {
+    it("InvalidTarget", function () {
+        chai_1.assert.throws(function () { return Reflect.deleteMetadata("key", undefined, undefined); }, TypeError);
     });
-    it("WhenNotDefinedWithoutTargetKey", () => {
-        let obj = {};
-        let result = Reflect.deleteMetadata("key", obj, undefined);
+    it("WhenNotDefinedWithoutTargetKey", function () {
+        var obj = {};
+        var result = Reflect.deleteMetadata("key", obj, undefined);
         chai_1.assert.equal(result, false);
     });
-    it("WhenDefinedWithoutTargetKey", () => {
-        let obj = {};
+    it("WhenDefinedWithoutTargetKey", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, undefined);
-        let result = Reflect.deleteMetadata("key", obj, undefined);
+        var result = Reflect.deleteMetadata("key", obj, undefined);
         chai_1.assert.equal(result, true);
     });
-    it("WhenDefinedOnPrototypeWithoutTargetKey", () => {
-        let prototype = {};
+    it("WhenDefinedOnPrototypeWithoutTargetKey", function () {
+        var prototype = {};
         Reflect.defineMetadata("key", "value", prototype, undefined);
-        let obj = Object.create(prototype);
-        let result = Reflect.deleteMetadata("key", obj, undefined);
+        var obj = Object.create(prototype);
+        var result = Reflect.deleteMetadata("key", obj, undefined);
         chai_1.assert.equal(result, false);
     });
-    it("AfterDeleteMetadata", () => {
-        let obj = {};
+    it("AfterDeleteMetadata", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, undefined);
         Reflect.deleteMetadata("key", obj, undefined);
-        let result = Reflect.hasOwnMetadata("key", obj, undefined);
+        var result = Reflect.hasOwnMetadata("key", obj, undefined);
         chai_1.assert.equal(result, false);
     });
 });

@@ -6,43 +6,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-let AppComponent = class AppComponent {
-    onSelect(date) {
+var core_1 = require("@angular/core");
+var AppComponent = /** @class */ (function () {
+    function AppComponent() {
+    }
+    AppComponent.prototype.onSelect = function (date) {
         console.log("onSelect: ", date);
-    }
-    clearDate() {
+    };
+    AppComponent.prototype.clearDate = function () {
         this.date = null;
-    }
-    setToday() {
+    };
+    AppComponent.prototype.setToday = function () {
         this.date = new Date();
-    }
-};
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        template: `
-      <material-datepicker
-        [(date)]="date"
-        (onSelect)="onSelect($event)"
-        dateFormat="YYYY-MM-DD"
-      ></material-datepicker>
-
-      <button (click)="setToday()">today</button>
-      <button (click)="clearDate()">reset</button>
-      <hr>
-      {{ date }}
-      <p>
-      Mirror(disabled, DD-MM-YYYY):
-      <material-datepicker
-        placeholder="nothing is selected"
-        disabled="true"
-        [(date)]="date"
-        dateFormat="DD-MM-YYYY"
-      ></material-datepicker>
-
-    `
-    })
-], AppComponent);
+    };
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            template: "\n      <material-datepicker\n        [(date)]=\"date\"\n        (onSelect)=\"onSelect($event)\"\n        dateFormat=\"YYYY-MM-DD\"\n      ></material-datepicker>\n\n      <button (click)=\"setToday()\">today</button>\n      <button (click)=\"clearDate()\">reset</button>\n      <hr>\n      {{ date }}\n      <p>\n      Mirror(disabled, DD-MM-YYYY):\n      <material-datepicker\n        placeholder=\"nothing is selected\"\n        disabled=\"true\"\n        [(date)]=\"date\"\n        dateFormat=\"DD-MM-YYYY\"\n      ></material-datepicker>\n\n    "
+        })
+    ], AppComponent);
+    return AppComponent;
+}());
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

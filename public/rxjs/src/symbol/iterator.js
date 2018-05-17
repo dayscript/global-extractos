@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("../util/root");
-const Symbol = root_1.root.Symbol;
+var root_1 = require("../util/root");
+var Symbol = root_1.root.Symbol;
 if (typeof Symbol === 'function') {
     if (Symbol.iterator) {
         exports.$$iterator = Symbol.iterator;
@@ -17,9 +17,9 @@ else {
     }
     else if (root_1.root.Map) {
         // es6-shim specific logic
-        let keys = Object.getOwnPropertyNames(root_1.root.Map.prototype);
-        for (let i = 0; i < keys.length; ++i) {
-            let key = keys[i];
+        var keys = Object.getOwnPropertyNames(root_1.root.Map.prototype);
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
             if (key !== 'entries' && key !== 'size' && root_1.root.Map.prototype[key] === root_1.root.Map.prototype['entries']) {
                 exports.$$iterator = key;
                 break;

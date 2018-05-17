@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("./root");
-const MapPolyfill_1 = require("./MapPolyfill");
-exports.Map = root_1.root.Map || (() => MapPolyfill_1.MapPolyfill)();
+var root_1 = require("./root");
+var MapPolyfill_1 = require("./MapPolyfill");
+exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 //# sourceMappingURL=Map.js.map

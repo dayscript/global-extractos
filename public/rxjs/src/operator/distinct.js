@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
@@ -18,43 +28,46 @@ function distinct(compare, flushes) {
     return this.lift(new DistinctOperator(compare, flushes));
 }
 exports.distinct = distinct;
-class DistinctOperator {
-    constructor(compare, flushes) {
+var DistinctOperator = /** @class */ (function () {
+    function DistinctOperator(compare, flushes) {
         this.compare = compare;
         this.flushes = flushes;
     }
-    call(subscriber, source) {
+    DistinctOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new DistinctSubscriber(subscriber, this.compare, this.flushes));
-    }
-}
+    };
+    return DistinctOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class DistinctSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, compare, flushes) {
-        super(destination);
-        this.values = [];
+var DistinctSubscriber = /** @class */ (function (_super) {
+    __extends(DistinctSubscriber, _super);
+    function DistinctSubscriber(destination, compare, flushes) {
+        var _this = _super.call(this, destination) || this;
+        _this.values = [];
         if (typeof compare === 'function') {
-            this.compare = compare;
+            _this.compare = compare;
         }
         if (flushes) {
-            this.add(subscribeToResult_1.subscribeToResult(this, flushes));
+            _this.add(subscribeToResult_1.subscribeToResult(_this, flushes));
         }
+        return _this;
     }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    DistinctSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.values.length = 0;
-    }
-    notifyError(error, innerSub) {
+    };
+    DistinctSubscriber.prototype.notifyError = function (error, innerSub) {
         this._error(error);
-    }
-    _next(value) {
-        let found = false;
-        const values = this.values;
-        const len = values.length;
+    };
+    DistinctSubscriber.prototype._next = function (value) {
+        var found = false;
+        var values = this.values;
+        var len = values.length;
         try {
-            for (let i = 0; i < len; i++) {
+            for (var i = 0; i < len; i++) {
                 if (this.compare(values[i], value)) {
                     found = true;
                     return;
@@ -67,10 +80,11 @@ class DistinctSubscriber extends OuterSubscriber_1.OuterSubscriber {
         }
         this.values.push(value);
         this.destination.next(value);
-    }
-    compare(x, y) {
+    };
+    DistinctSubscriber.prototype.compare = function (x, y) {
         return x === y;
-    }
-}
+    };
+    return DistinctSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 exports.DistinctSubscriber = DistinctSubscriber;
 //# sourceMappingURL=distinct.js.map

@@ -1,11 +1,21 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const Subscription_1 = require("../Subscription");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subject_1 = require("../Subject");
+var Subscription_1 = require("../Subscription");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Branch out the source Observable values as a nested Observable starting from
  * an emission from `openings` and ending when the output of `closingSelector`
@@ -51,91 +61,94 @@ function windowToggle(openings, closingSelector) {
     return this.lift(new WindowToggleOperator(openings, closingSelector));
 }
 exports.windowToggle = windowToggle;
-class WindowToggleOperator {
-    constructor(openings, closingSelector) {
+var WindowToggleOperator = /** @class */ (function () {
+    function WindowToggleOperator(openings, closingSelector) {
         this.openings = openings;
         this.closingSelector = closingSelector;
     }
-    call(subscriber, source) {
+    WindowToggleOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
-    }
-}
+    };
+    return WindowToggleOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class WindowToggleSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, openings, closingSelector) {
-        super(destination);
-        this.openings = openings;
-        this.closingSelector = closingSelector;
-        this.contexts = [];
-        this.add(this.openSubscription = subscribeToResult_1.subscribeToResult(this, openings, openings));
+var WindowToggleSubscriber = /** @class */ (function (_super) {
+    __extends(WindowToggleSubscriber, _super);
+    function WindowToggleSubscriber(destination, openings, closingSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.openings = openings;
+        _this.closingSelector = closingSelector;
+        _this.contexts = [];
+        _this.add(_this.openSubscription = subscribeToResult_1.subscribeToResult(_this, openings, openings));
+        return _this;
     }
-    _next(value) {
-        const { contexts } = this;
+    WindowToggleSubscriber.prototype._next = function (value) {
+        var contexts = this.contexts;
         if (contexts) {
-            const len = contexts.length;
-            for (let i = 0; i < len; i++) {
+            var len = contexts.length;
+            for (var i = 0; i < len; i++) {
                 contexts[i].window.next(value);
             }
         }
-    }
-    _error(err) {
-        const { contexts } = this;
+    };
+    WindowToggleSubscriber.prototype._error = function (err) {
+        var contexts = this.contexts;
         this.contexts = null;
         if (contexts) {
-            const len = contexts.length;
-            let index = -1;
+            var len = contexts.length;
+            var index = -1;
             while (++index < len) {
-                const context = contexts[index];
+                var context = contexts[index];
                 context.window.error(err);
                 context.subscription.unsubscribe();
             }
         }
-        super._error(err);
-    }
-    _complete() {
-        const { contexts } = this;
+        _super.prototype._error.call(this, err);
+    };
+    WindowToggleSubscriber.prototype._complete = function () {
+        var contexts = this.contexts;
         this.contexts = null;
         if (contexts) {
-            const len = contexts.length;
-            let index = -1;
+            var len = contexts.length;
+            var index = -1;
             while (++index < len) {
-                const context = contexts[index];
+                var context = contexts[index];
                 context.window.complete();
                 context.subscription.unsubscribe();
             }
         }
-        super._complete();
-    }
-    _unsubscribe() {
-        const { contexts } = this;
+        _super.prototype._complete.call(this);
+    };
+    WindowToggleSubscriber.prototype._unsubscribe = function () {
+        var contexts = this.contexts;
         this.contexts = null;
         if (contexts) {
-            const len = contexts.length;
-            let index = -1;
+            var len = contexts.length;
+            var index = -1;
             while (++index < len) {
-                const context = contexts[index];
+                var context = contexts[index];
                 context.window.unsubscribe();
                 context.subscription.unsubscribe();
             }
         }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    WindowToggleSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         if (outerValue === this.openings) {
-            const { closingSelector } = this;
-            const closingNotifier = tryCatch_1.tryCatch(closingSelector)(innerValue);
+            var closingSelector = this.closingSelector;
+            var closingNotifier = tryCatch_1.tryCatch(closingSelector)(innerValue);
             if (closingNotifier === errorObject_1.errorObject) {
                 return this.error(errorObject_1.errorObject.e);
             }
             else {
-                const window = new Subject_1.Subject();
-                const subscription = new Subscription_1.Subscription();
-                const context = { window, subscription };
+                var window_1 = new Subject_1.Subject();
+                var subscription = new Subscription_1.Subscription();
+                var context = { window: window_1, subscription: subscription };
                 this.contexts.push(context);
-                const innerSubscription = subscribeToResult_1.subscribeToResult(this, closingNotifier, context);
+                var innerSubscription = subscribeToResult_1.subscribeToResult(this, closingNotifier, context);
                 if (innerSubscription.closed) {
                     this.closeWindow(this.contexts.length - 1);
                 }
@@ -143,31 +156,32 @@ class WindowToggleSubscriber extends OuterSubscriber_1.OuterSubscriber {
                     innerSubscription.context = context;
                     subscription.add(innerSubscription);
                 }
-                this.destination.next(window);
+                this.destination.next(window_1);
             }
         }
         else {
             this.closeWindow(this.contexts.indexOf(outerValue));
         }
-    }
-    notifyError(err) {
+    };
+    WindowToggleSubscriber.prototype.notifyError = function (err) {
         this.error(err);
-    }
-    notifyComplete(inner) {
+    };
+    WindowToggleSubscriber.prototype.notifyComplete = function (inner) {
         if (inner !== this.openSubscription) {
             this.closeWindow(this.contexts.indexOf(inner.context));
         }
-    }
-    closeWindow(index) {
+    };
+    WindowToggleSubscriber.prototype.closeWindow = function (index) {
         if (index === -1) {
             return;
         }
-        const { contexts } = this;
-        const context = contexts[index];
-        const { window, subscription } = context;
+        var contexts = this.contexts;
+        var context = contexts[index];
+        var window = context.window, subscription = context.subscription;
         contexts.splice(index, 1);
         window.complete();
         subscription.unsubscribe();
-    }
-}
+    };
+    return WindowToggleSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=windowToggle.js.map

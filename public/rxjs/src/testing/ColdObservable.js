@@ -1,37 +1,53 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const Subscription_1 = require("../Subscription");
-const SubscriptionLoggable_1 = require("./SubscriptionLoggable");
-const applyMixins_1 = require("../util/applyMixins");
+var Observable_1 = require("../Observable");
+var Subscription_1 = require("../Subscription");
+var SubscriptionLoggable_1 = require("./SubscriptionLoggable");
+var applyMixins_1 = require("../util/applyMixins");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class ColdObservable extends Observable_1.Observable {
-    constructor(messages, scheduler) {
-        super(function (subscriber) {
-            const observable = this;
-            const index = observable.logSubscribedFrame();
-            subscriber.add(new Subscription_1.Subscription(() => {
+var ColdObservable = /** @class */ (function (_super) {
+    __extends(ColdObservable, _super);
+    function ColdObservable(messages, scheduler) {
+        var _this = _super.call(this, function (subscriber) {
+            var observable = this;
+            var index = observable.logSubscribedFrame();
+            subscriber.add(new Subscription_1.Subscription(function () {
                 observable.logUnsubscribedFrame(index);
             }));
             observable.scheduleMessages(subscriber);
             return subscriber;
-        });
-        this.messages = messages;
-        this.subscriptions = [];
-        this.scheduler = scheduler;
+        }) || this;
+        _this.messages = messages;
+        _this.subscriptions = [];
+        _this.scheduler = scheduler;
+        return _this;
     }
-    scheduleMessages(subscriber) {
-        const messagesLength = this.messages.length;
-        for (let i = 0; i < messagesLength; i++) {
-            const message = this.messages[i];
-            subscriber.add(this.scheduler.schedule(({ message, subscriber }) => { message.notification.observe(subscriber); }, message.frame, { message, subscriber }));
+    ColdObservable.prototype.scheduleMessages = function (subscriber) {
+        var messagesLength = this.messages.length;
+        for (var i = 0; i < messagesLength; i++) {
+            var message = this.messages[i];
+            subscriber.add(this.scheduler.schedule(function (_a) {
+                var message = _a.message, subscriber = _a.subscriber;
+                message.notification.observe(subscriber);
+            }, message.frame, { message: message, subscriber: subscriber }));
         }
-    }
-}
+    };
+    return ColdObservable;
+}(Observable_1.Observable));
 exports.ColdObservable = ColdObservable;
 applyMixins_1.applyMixins(ColdObservable, [SubscriptionLoggable_1.SubscriptionLoggable]);
 //# sourceMappingURL=ColdObservable.js.map

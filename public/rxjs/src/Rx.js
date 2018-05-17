@@ -178,13 +178,13 @@ var AjaxObservable_1 = require("./observable/dom/AjaxObservable");
 exports.AjaxResponse = AjaxObservable_1.AjaxResponse;
 exports.AjaxError = AjaxObservable_1.AjaxError;
 exports.AjaxTimeoutError = AjaxObservable_1.AjaxTimeoutError;
-const asap_1 = require("./scheduler/asap");
-const async_1 = require("./scheduler/async");
-const queue_1 = require("./scheduler/queue");
-const animationFrame_1 = require("./scheduler/animationFrame");
-const rxSubscriber_1 = require("./symbol/rxSubscriber");
-const iterator_1 = require("./symbol/iterator");
-const observable_1 = require("./symbol/observable");
+var asap_1 = require("./scheduler/asap");
+var async_1 = require("./scheduler/async");
+var queue_1 = require("./scheduler/queue");
+var animationFrame_1 = require("./scheduler/animationFrame");
+var rxSubscriber_1 = require("./symbol/rxSubscriber");
+var iterator_1 = require("./symbol/iterator");
+var observable_1 = require("./symbol/observable");
 /* tslint:enable:no-unused-variable */
 /**
  * @typedef {Object} Rx.Scheduler
@@ -199,7 +199,7 @@ const observable_1 = require("./symbol/observable");
  * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
  * Use this for synchronizing with the platform's painting
  */
-let Scheduler = {
+var Scheduler = {
     asap: asap_1.asap,
     queue: queue_1.queue,
     animationFrame: animationFrame_1.animationFrame,
@@ -219,7 +219,7 @@ exports.Scheduler = Scheduler;
  * @property {Symbol|string} iterator The ES6 symbol to use as a property name
  * to retrieve an iterator from an object.
  */
-let Symbol = {
+var Symbol = {
     rxSubscriber: rxSubscriber_1.$$rxSubscriber,
     observable: observable_1.$$observable,
     iterator: iterator_1.$$iterator

@@ -1,8 +1,18 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const ArgumentOutOfRangeError_1 = require("../util/ArgumentOutOfRangeError");
-const EmptyObservable_1 = require("../observable/EmptyObservable");
+var Subscriber_1 = require("../Subscriber");
+var ArgumentOutOfRangeError_1 = require("../util/ArgumentOutOfRangeError");
+var EmptyObservable_1 = require("../observable/EmptyObservable");
 /**
  * Emits only the last `count` values emitted by the source Observable.
  *
@@ -48,53 +58,57 @@ function takeLast(count) {
     }
 }
 exports.takeLast = takeLast;
-class TakeLastOperator {
-    constructor(total) {
+var TakeLastOperator = /** @class */ (function () {
+    function TakeLastOperator(total) {
         this.total = total;
         if (this.total < 0) {
             throw new ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
         }
     }
-    call(subscriber, source) {
+    TakeLastOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
-    }
-}
+    };
+    return TakeLastOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class TakeLastSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, total) {
-        super(destination);
-        this.total = total;
-        this.ring = new Array();
-        this.count = 0;
+var TakeLastSubscriber = /** @class */ (function (_super) {
+    __extends(TakeLastSubscriber, _super);
+    function TakeLastSubscriber(destination, total) {
+        var _this = _super.call(this, destination) || this;
+        _this.total = total;
+        _this.ring = new Array();
+        _this.count = 0;
+        return _this;
     }
-    _next(value) {
-        const ring = this.ring;
-        const total = this.total;
-        const count = this.count++;
+    TakeLastSubscriber.prototype._next = function (value) {
+        var ring = this.ring;
+        var total = this.total;
+        var count = this.count++;
         if (ring.length < total) {
             ring.push(value);
         }
         else {
-            const index = count % total;
+            var index = count % total;
             ring[index] = value;
         }
-    }
-    _complete() {
-        const destination = this.destination;
-        let count = this.count;
+    };
+    TakeLastSubscriber.prototype._complete = function () {
+        var destination = this.destination;
+        var count = this.count;
         if (count > 0) {
-            const total = this.count >= this.total ? this.total : this.count;
-            const ring = this.ring;
-            for (let i = 0; i < total; i++) {
-                const idx = (count++) % total;
+            var total = this.count >= this.total ? this.total : this.count;
+            var ring = this.ring;
+            for (var i = 0; i < total; i++) {
+                var idx = (count++) % total;
                 destination.next(ring[idx]);
             }
         }
         destination.complete();
-    }
-}
+    };
+    return TakeLastSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=takeLast.js.map

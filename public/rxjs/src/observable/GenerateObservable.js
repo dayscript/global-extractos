@@ -1,23 +1,35 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
-const isScheduler_1 = require("../util/isScheduler");
-const selfSelector = (value) => value;
+var Observable_1 = require("../Observable");
+var isScheduler_1 = require("../util/isScheduler");
+var selfSelector = function (value) { return value; };
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class GenerateObservable extends Observable_1.Observable {
-    constructor(initialState, condition, iterate, resultSelector, scheduler) {
-        super();
-        this.initialState = initialState;
-        this.condition = condition;
-        this.iterate = iterate;
-        this.resultSelector = resultSelector;
-        this.scheduler = scheduler;
+var GenerateObservable = /** @class */ (function (_super) {
+    __extends(GenerateObservable, _super);
+    function GenerateObservable(initialState, condition, iterate, resultSelector, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.initialState = initialState;
+        _this.condition = condition;
+        _this.iterate = iterate;
+        _this.resultSelector = resultSelector;
+        _this.scheduler = scheduler;
+        return _this;
     }
-    static create(initialStateOrOptions, condition, iterate, resultSelectorOrObservable, scheduler) {
+    GenerateObservable.create = function (initialStateOrOptions, condition, iterate, resultSelectorOrObservable, scheduler) {
         if (arguments.length == 1) {
             return new GenerateObservable(initialStateOrOptions.initialState, initialStateOrOptions.condition, initialStateOrOptions.iterate, initialStateOrOptions.resultSelector || selfSelector, initialStateOrOptions.scheduler);
         }
@@ -25,22 +37,22 @@ class GenerateObservable extends Observable_1.Observable {
             return new GenerateObservable(initialStateOrOptions, condition, iterate, selfSelector, resultSelectorOrObservable);
         }
         return new GenerateObservable(initialStateOrOptions, condition, iterate, resultSelectorOrObservable, scheduler);
-    }
-    _subscribe(subscriber) {
-        let state = this.initialState;
+    };
+    GenerateObservable.prototype._subscribe = function (subscriber) {
+        var state = this.initialState;
         if (this.scheduler) {
             return this.scheduler.schedule(GenerateObservable.dispatch, 0, {
-                subscriber,
+                subscriber: subscriber,
                 iterate: this.iterate,
                 condition: this.condition,
                 resultSelector: this.resultSelector,
-                state
+                state: state
             });
         }
-        const { condition, resultSelector, iterate } = this;
+        var _a = this, condition = _a.condition, resultSelector = _a.resultSelector, iterate = _a.iterate;
         do {
             if (condition) {
-                let conditionResult;
+                var conditionResult = void 0;
                 try {
                     conditionResult = condition(state);
                 }
@@ -53,7 +65,7 @@ class GenerateObservable extends Observable_1.Observable {
                     break;
                 }
             }
-            let value;
+            var value = void 0;
             try {
                 value = resultSelector(state);
             }
@@ -73,9 +85,9 @@ class GenerateObservable extends Observable_1.Observable {
                 return;
             }
         } while (true);
-    }
-    static dispatch(state) {
-        const { subscriber, condition } = state;
+    };
+    GenerateObservable.dispatch = function (state) {
+        var subscriber = state.subscriber, condition = state.condition;
         if (subscriber.closed) {
             return;
         }
@@ -92,7 +104,7 @@ class GenerateObservable extends Observable_1.Observable {
             state.needIterate = true;
         }
         if (condition) {
-            let conditionResult;
+            var conditionResult = void 0;
             try {
                 conditionResult = condition(state.state);
             }
@@ -108,7 +120,7 @@ class GenerateObservable extends Observable_1.Observable {
                 return;
             }
         }
-        let value;
+        var value;
         try {
             value = state.resultSelector(state.state);
         }
@@ -124,7 +136,8 @@ class GenerateObservable extends Observable_1.Observable {
             return;
         }
         return this.schedule(state);
-    }
-}
+    };
+    return GenerateObservable;
+}(Observable_1.Observable));
 exports.GenerateObservable = GenerateObservable;
 //# sourceMappingURL=GenerateObservable.js.map

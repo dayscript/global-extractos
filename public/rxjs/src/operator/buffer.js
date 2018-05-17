@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
  *
@@ -38,32 +48,36 @@ function buffer(closingNotifier) {
     return this.lift(new BufferOperator(closingNotifier));
 }
 exports.buffer = buffer;
-class BufferOperator {
-    constructor(closingNotifier) {
+var BufferOperator = /** @class */ (function () {
+    function BufferOperator(closingNotifier) {
         this.closingNotifier = closingNotifier;
     }
-    call(subscriber, source) {
+    BufferOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
-    }
-}
+    };
+    return BufferOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class BufferSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, closingNotifier) {
-        super(destination);
-        this.buffer = [];
-        this.add(subscribeToResult_1.subscribeToResult(this, closingNotifier));
+var BufferSubscriber = /** @class */ (function (_super) {
+    __extends(BufferSubscriber, _super);
+    function BufferSubscriber(destination, closingNotifier) {
+        var _this = _super.call(this, destination) || this;
+        _this.buffer = [];
+        _this.add(subscribeToResult_1.subscribeToResult(_this, closingNotifier));
+        return _this;
     }
-    _next(value) {
+    BufferSubscriber.prototype._next = function (value) {
         this.buffer.push(value);
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        const buffer = this.buffer;
+    };
+    BufferSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        var buffer = this.buffer;
         this.buffer = [];
         this.destination.next(buffer);
-    }
-}
+    };
+    return BufferSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=buffer.js.map

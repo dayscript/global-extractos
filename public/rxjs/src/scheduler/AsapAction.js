@@ -1,22 +1,35 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Immediate_1 = require("../util/Immediate");
-const AsyncAction_1 = require("./AsyncAction");
+var Immediate_1 = require("../util/Immediate");
+var AsyncAction_1 = require("./AsyncAction");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class AsapAction extends AsyncAction_1.AsyncAction {
-    constructor(scheduler, work) {
-        super(scheduler, work);
-        this.scheduler = scheduler;
-        this.work = work;
+var AsapAction = /** @class */ (function (_super) {
+    __extends(AsapAction, _super);
+    function AsapAction(scheduler, work) {
+        var _this = _super.call(this, scheduler, work) || this;
+        _this.scheduler = scheduler;
+        _this.work = work;
+        return _this;
     }
-    requestAsyncId(scheduler, id, delay = 0) {
+    AsapAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
         // If delay is greater than 0, request as an async action.
         if (delay !== null && delay > 0) {
-            return super.requestAsyncId(scheduler, id, delay);
+            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
         }
         // Push the action to the end of the scheduler queue.
         scheduler.actions.push(this);
@@ -24,11 +37,12 @@ class AsapAction extends AsyncAction_1.AsyncAction {
         // one. If a microtask hasn't been scheduled yet, schedule one now. Return
         // the current scheduled microtask id.
         return scheduler.scheduled || (scheduler.scheduled = Immediate_1.Immediate.setImmediate(scheduler.flush.bind(scheduler, null)));
-    }
-    recycleAsyncId(scheduler, id, delay = 0) {
+    };
+    AsapAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
         // If delay exists and is greater than 0, recycle as an async action.
         if (delay !== null && delay > 0) {
-            return super.recycleAsyncId(scheduler, id, delay);
+            return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay);
         }
         // If the scheduler queue is empty, cancel the requested microtask and
         // set the scheduled flag to undefined so the next AsapAction will schedule
@@ -39,7 +53,8 @@ class AsapAction extends AsyncAction_1.AsyncAction {
         }
         // Return undefined so the action knows to request a new async id if it's rescheduled.
         return undefined;
-    }
-}
+    };
+    return AsapAction;
+}(AsyncAction_1.AsyncAction));
 exports.AsapAction = AsapAction;
 //# sourceMappingURL=AsapAction.js.map

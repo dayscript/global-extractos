@@ -7,8 +7,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../common/utils");
-let fs;
+var utils_1 = require("../common/utils");
+var fs;
 try {
     fs = require('fs');
 }
@@ -16,7 +16,7 @@ catch (err) {
 }
 // watch, watchFile, unwatchFile has been patched
 // because EventEmitter has been patched
-const TO_PATCH_MACROTASK_METHODS = [
+var TO_PATCH_MACROTASK_METHODS = [
     'access', 'appendFile', 'chmod', 'chown', 'close', 'exists', 'fchmod',
     'fchown', 'fdatasync', 'fstat', 'fsync', 'ftruncate', 'futimes', 'lchmod',
     'lchown', 'link', 'lstat', 'mkdir', 'mkdtemp', 'open', 'read',
@@ -24,9 +24,9 @@ const TO_PATCH_MACROTASK_METHODS = [
     'symlink', 'truncate', 'unlink', 'utimes', 'write', 'writeFile',
 ];
 if (fs) {
-    TO_PATCH_MACROTASK_METHODS.filter(name => !!fs[name] && typeof fs[name] === 'function')
-        .forEach(name => {
-        utils_1.patchMacroTask(fs, name, (self, args) => {
+    TO_PATCH_MACROTASK_METHODS.filter(function (name) { return !!fs[name] && typeof fs[name] === 'function'; })
+        .forEach(function (name) {
+        utils_1.patchMacroTask(fs, name, function (self, args) {
             return {
                 name: 'fs.' + name,
                 args: args,

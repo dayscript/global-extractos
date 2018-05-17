@@ -1,31 +1,43 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const Observable_1 = require("../Observable");
-const Subscriber_1 = require("../Subscriber");
-const Subscription_1 = require("../Subscription");
+var Subject_1 = require("../Subject");
+var Observable_1 = require("../Observable");
+var Subscriber_1 = require("../Subscriber");
+var Subscription_1 = require("../Subscription");
 /**
  * @class ConnectableObservable<T>
  */
-class ConnectableObservable extends Observable_1.Observable {
-    constructor(source, subjectFactory) {
-        super();
-        this.source = source;
-        this.subjectFactory = subjectFactory;
-        this._refCount = 0;
+var ConnectableObservable = /** @class */ (function (_super) {
+    __extends(ConnectableObservable, _super);
+    function ConnectableObservable(source, subjectFactory) {
+        var _this = _super.call(this) || this;
+        _this.source = source;
+        _this.subjectFactory = subjectFactory;
+        _this._refCount = 0;
+        return _this;
     }
-    _subscribe(subscriber) {
+    ConnectableObservable.prototype._subscribe = function (subscriber) {
         return this.getSubject().subscribe(subscriber);
-    }
-    getSubject() {
-        const subject = this._subject;
+    };
+    ConnectableObservable.prototype.getSubject = function () {
+        var subject = this._subject;
         if (!subject || subject.isStopped) {
             this._subject = this.subjectFactory();
         }
         return this._subject;
-    }
-    connect() {
-        let connection = this._connection;
+    };
+    ConnectableObservable.prototype.connect = function () {
+        var connection = this._connection;
         if (!connection) {
             connection = this._connection = new Subscription_1.Subscription();
             connection.add(this.source
@@ -39,30 +51,33 @@ class ConnectableObservable extends Observable_1.Observable {
             }
         }
         return connection;
-    }
-    refCount() {
+    };
+    ConnectableObservable.prototype.refCount = function () {
         return this.lift(new RefCountOperator(this));
-    }
-}
+    };
+    return ConnectableObservable;
+}(Observable_1.Observable));
 exports.ConnectableObservable = ConnectableObservable;
-class ConnectableSubscriber extends Subject_1.SubjectSubscriber {
-    constructor(destination, connectable) {
-        super(destination);
-        this.connectable = connectable;
+var ConnectableSubscriber = /** @class */ (function (_super) {
+    __extends(ConnectableSubscriber, _super);
+    function ConnectableSubscriber(destination, connectable) {
+        var _this = _super.call(this, destination) || this;
+        _this.connectable = connectable;
+        return _this;
     }
-    _error(err) {
+    ConnectableSubscriber.prototype._error = function (err) {
         this._unsubscribe();
-        super._error(err);
-    }
-    _complete() {
+        _super.prototype._error.call(this, err);
+    };
+    ConnectableSubscriber.prototype._complete = function () {
         this._unsubscribe();
-        super._complete();
-    }
-    _unsubscribe() {
-        const { connectable } = this;
+        _super.prototype._complete.call(this);
+    };
+    ConnectableSubscriber.prototype._unsubscribe = function () {
+        var connectable = this.connectable;
         if (connectable) {
             this.connectable = null;
-            const connection = connectable._connection;
+            var connection = connectable._connection;
             connectable._refCount = 0;
             connectable._subject = null;
             connectable._connection = null;
@@ -70,36 +85,40 @@ class ConnectableSubscriber extends Subject_1.SubjectSubscriber {
                 connection.unsubscribe();
             }
         }
-    }
-}
-class RefCountOperator {
-    constructor(connectable) {
+    };
+    return ConnectableSubscriber;
+}(Subject_1.SubjectSubscriber));
+var RefCountOperator = /** @class */ (function () {
+    function RefCountOperator(connectable) {
         this.connectable = connectable;
     }
-    call(subscriber, source) {
-        const { connectable } = this;
+    RefCountOperator.prototype.call = function (subscriber, source) {
+        var connectable = this.connectable;
         connectable._refCount++;
-        const refCounter = new RefCountSubscriber(subscriber, connectable);
-        const subscription = source._subscribe(refCounter);
+        var refCounter = new RefCountSubscriber(subscriber, connectable);
+        var subscription = source._subscribe(refCounter);
         if (!refCounter.closed) {
             refCounter.connection = connectable.connect();
         }
         return subscription;
+    };
+    return RefCountOperator;
+}());
+var RefCountSubscriber = /** @class */ (function (_super) {
+    __extends(RefCountSubscriber, _super);
+    function RefCountSubscriber(destination, connectable) {
+        var _this = _super.call(this, destination) || this;
+        _this.connectable = connectable;
+        return _this;
     }
-}
-class RefCountSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, connectable) {
-        super(destination);
-        this.connectable = connectable;
-    }
-    _unsubscribe() {
-        const { connectable } = this;
+    RefCountSubscriber.prototype._unsubscribe = function () {
+        var connectable = this.connectable;
         if (!connectable) {
             this.connection = null;
             return;
         }
         this.connectable = null;
-        const refCount = connectable._refCount;
+        var refCount = connectable._refCount;
         if (refCount <= 0) {
             this.connection = null;
             return;
@@ -132,12 +151,13 @@ class RefCountSubscriber extends Subscriber_1.Subscriber {
         //   b. RefCountSubscriber's connection Subscription reference is identical
         //      to the shared connection Subscription
         ///
-        const { connection } = this;
-        const sharedConnection = connectable._connection;
+        var connection = this.connection;
+        var sharedConnection = connectable._connection;
         this.connection = null;
         if (sharedConnection && (!connection || sharedConnection === connection)) {
             sharedConnection.unsubscribe();
         }
-    }
-}
+    };
+    return RefCountSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=ConnectableObservable.js.map

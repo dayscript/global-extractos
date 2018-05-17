@@ -1,50 +1,66 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const async_1 = require("../scheduler/async");
+var Subscriber_1 = require("../Subscriber");
+var async_1 = require("../scheduler/async");
 /**
  * @param scheduler
  * @return {Observable<TimeInterval<any>>|WebSocketSubject<T>|Observable<T>}
  * @method timeInterval
  * @owner Observable
  */
-function timeInterval(scheduler = async_1.async) {
+function timeInterval(scheduler) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
     return this.lift(new TimeIntervalOperator(scheduler));
 }
 exports.timeInterval = timeInterval;
-class TimeInterval {
-    constructor(value, interval) {
+var TimeInterval = /** @class */ (function () {
+    function TimeInterval(value, interval) {
         this.value = value;
         this.interval = interval;
     }
-}
+    return TimeInterval;
+}());
 exports.TimeInterval = TimeInterval;
 ;
-class TimeIntervalOperator {
-    constructor(scheduler) {
+var TimeIntervalOperator = /** @class */ (function () {
+    function TimeIntervalOperator(scheduler) {
         this.scheduler = scheduler;
     }
-    call(observer, source) {
+    TimeIntervalOperator.prototype.call = function (observer, source) {
         return source._subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
-    }
-}
+    };
+    return TimeIntervalOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class TimeIntervalSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, scheduler) {
-        super(destination);
-        this.scheduler = scheduler;
-        this.lastTime = 0;
-        this.lastTime = scheduler.now();
+var TimeIntervalSubscriber = /** @class */ (function (_super) {
+    __extends(TimeIntervalSubscriber, _super);
+    function TimeIntervalSubscriber(destination, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.scheduler = scheduler;
+        _this.lastTime = 0;
+        _this.lastTime = scheduler.now();
+        return _this;
     }
-    _next(value) {
-        let now = this.scheduler.now();
-        let span = now - this.lastTime;
+    TimeIntervalSubscriber.prototype._next = function (value) {
+        var now = this.scheduler.now();
+        var span = now - this.lastTime;
         this.lastTime = now;
         this.destination.next(new TimeInterval(value, span));
-    }
-}
+    };
+    return TimeIntervalSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=timeInterval.js.map

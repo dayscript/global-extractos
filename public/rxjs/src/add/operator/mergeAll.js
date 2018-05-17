@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../../Observable");
-const mergeAll_1 = require("../../operator/mergeAll");
+var Observable_1 = require("../../Observable");
+var mergeAll_1 = require("../../operator/mergeAll");
 Observable_1.Observable.prototype.mergeAll = mergeAll_1.mergeAll;
 //# sourceMappingURL=mergeAll.js.map

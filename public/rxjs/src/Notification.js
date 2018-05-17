@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("./Observable");
+var Observable_1 = require("./Observable");
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
  * This class is particularly useful for operators that manage notifications,
@@ -15,8 +15,8 @@ const Observable_1 = require("./Observable");
  *
  * @class Notification<T>
  */
-class Notification {
-    constructor(kind, value, exception) {
+var Notification = /** @class */ (function () {
+    function Notification(kind, value, exception) {
         this.kind = kind;
         this.value = value;
         this.exception = exception;
@@ -27,7 +27,7 @@ class Notification {
      * @param {Observer} observer
      * @return
      */
-    observe(observer) {
+    Notification.prototype.observe = function (observer) {
         switch (this.kind) {
             case 'N':
                 return observer.next && observer.next(this.value);
@@ -36,7 +36,7 @@ class Notification {
             case 'C':
                 return observer.complete && observer.complete();
         }
-    }
+    };
     /**
      * Given some {@link Observer} callbacks, deliver the value represented by the
      * current Notification to the correctly corresponding callback.
@@ -45,8 +45,8 @@ class Notification {
      * @param {function(): void} [complete] An Observer `complete` callback.
      * @return {any}
      */
-    do(next, error, complete) {
-        const kind = this.kind;
+    Notification.prototype.do = function (next, error, complete) {
+        var kind = this.kind;
         switch (kind) {
             case 'N':
                 return next && next(this.value);
@@ -55,7 +55,7 @@ class Notification {
             case 'C':
                 return complete && complete();
         }
-    }
+    };
     /**
      * Takes an Observer or its individual callback functions, and calls `observe`
      * or `do` methods accordingly.
@@ -65,21 +65,21 @@ class Notification {
      * @param {function(): void} [complete] An Observer `complete` callback.
      * @return {any}
      */
-    accept(nextOrObserver, error, complete) {
+    Notification.prototype.accept = function (nextOrObserver, error, complete) {
         if (nextOrObserver && typeof nextOrObserver.next === 'function') {
             return this.observe(nextOrObserver);
         }
         else {
             return this.do(nextOrObserver, error, complete);
         }
-    }
+    };
     /**
      * Returns a simple Observable that just delivers the notification represented
      * by this Notification instance.
      * @return {any}
      */
-    toObservable() {
-        const kind = this.kind;
+    Notification.prototype.toObservable = function () {
+        var kind = this.kind;
         switch (kind) {
             case 'N':
                 return Observable_1.Observable.of(this.value);
@@ -89,7 +89,7 @@ class Notification {
                 return Observable_1.Observable.empty();
         }
         throw new Error('unexpected notification kind value');
-    }
+    };
     /**
      * A shortcut to create a Notification instance of the type `next` from a
      * given value.
@@ -97,12 +97,12 @@ class Notification {
      * @return {Notification<T>} The "next" Notification representing the
      * argument.
      */
-    static createNext(value) {
+    Notification.createNext = function (value) {
         if (typeof value !== 'undefined') {
             return new Notification('N', value);
         }
         return this.undefinedValueNotification;
-    }
+    };
     /**
      * A shortcut to create a Notification instance of the type `error` from a
      * given error.
@@ -110,18 +110,19 @@ class Notification {
      * @return {Notification<T>} The "error" Notification representing the
      * argument.
      */
-    static createError(err) {
+    Notification.createError = function (err) {
         return new Notification('E', undefined, err);
-    }
+    };
     /**
      * A shortcut to create a Notification instance of the type `complete`.
      * @return {Notification<any>} The valueless "complete" Notification.
      */
-    static createComplete() {
+    Notification.createComplete = function () {
         return this.completeNotification;
-    }
-}
-Notification.completeNotification = new Notification('C');
-Notification.undefinedValueNotification = new Notification('N', undefined);
+    };
+    Notification.completeNotification = new Notification('C');
+    Notification.undefinedValueNotification = new Notification('N', undefined);
+    return Notification;
+}());
 exports.Notification = Notification;
 //# sourceMappingURL=Notification.js.map

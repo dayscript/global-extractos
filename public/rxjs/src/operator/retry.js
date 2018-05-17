@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Returns an Observable that mirrors the source Observable, resubscribing to it if it calls `error` and the
  * predicate returns true for that specific exception and retry count.
@@ -18,35 +28,39 @@ const Subscriber_1 = require("../Subscriber");
  * @method retry
  * @owner Observable
  */
-function retry(count = -1) {
+function retry(count) {
+    if (count === void 0) { count = -1; }
     return this.lift(new RetryOperator(count, this));
 }
 exports.retry = retry;
-class RetryOperator {
-    constructor(count, source) {
+var RetryOperator = /** @class */ (function () {
+    function RetryOperator(count, source) {
         this.count = count;
         this.source = source;
     }
-    call(subscriber, source) {
+    RetryOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
-    }
-}
+    };
+    return RetryOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class RetrySubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, count, source) {
-        super(destination);
-        this.count = count;
-        this.source = source;
+var RetrySubscriber = /** @class */ (function (_super) {
+    __extends(RetrySubscriber, _super);
+    function RetrySubscriber(destination, count, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.count = count;
+        _this.source = source;
+        return _this;
     }
-    error(err) {
+    RetrySubscriber.prototype.error = function (err) {
         if (!this.isStopped) {
-            const { source, count } = this;
+            var _a = this, source = _a.source, count = _a.count;
             if (count === 0) {
-                return super.error(err);
+                return _super.prototype.error.call(this, err);
             }
             else if (count > -1) {
                 this.count = count - 1;
@@ -56,6 +70,7 @@ class RetrySubscriber extends Subscriber_1.Subscriber {
             this.closed = false;
             source.subscribe(this);
         }
-    }
-}
+    };
+    return RetrySubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=retry.js.map

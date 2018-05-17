@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArrayObservable_1 = require("../observable/ArrayObservable");
-const ScalarObservable_1 = require("../observable/ScalarObservable");
-const EmptyObservable_1 = require("../observable/EmptyObservable");
-const concat_1 = require("./concat");
-const isScheduler_1 = require("../util/isScheduler");
+var ArrayObservable_1 = require("../observable/ArrayObservable");
+var ScalarObservable_1 = require("../observable/ScalarObservable");
+var EmptyObservable_1 = require("../observable/EmptyObservable");
+var concat_1 = require("./concat");
+var isScheduler_1 = require("../util/isScheduler");
 /**
  * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
  * source Observable.
@@ -17,15 +17,19 @@ const isScheduler_1 = require("../util/isScheduler");
  * @method startWith
  * @owner Observable
  */
-function startWith(...array) {
-    let scheduler = array[array.length - 1];
+function startWith() {
+    var array = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        array[_i] = arguments[_i];
+    }
+    var scheduler = array[array.length - 1];
     if (isScheduler_1.isScheduler(scheduler)) {
         array.pop();
     }
     else {
         scheduler = null;
     }
-    const len = array.length;
+    var len = array.length;
     if (len === 1) {
         return concat_1.concatStatic(new ScalarObservable_1.ScalarObservable(array[0], scheduler), this);
     }

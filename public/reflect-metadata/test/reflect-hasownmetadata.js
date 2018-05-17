@@ -3,45 +3,45 @@
 // https://rbuckton.github.io/reflect-metadata/#reflect.hasownmetadata
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../Reflect");
-const chai_1 = require("chai");
-describe("Reflect.hasOwnMetadata", () => {
-    it("InvalidTarget", () => {
-        chai_1.assert.throws(() => Reflect.hasOwnMetadata("key", undefined, undefined), TypeError);
+var chai_1 = require("chai");
+describe("Reflect.hasOwnMetadata", function () {
+    it("InvalidTarget", function () {
+        chai_1.assert.throws(function () { return Reflect.hasOwnMetadata("key", undefined, undefined); }, TypeError);
     });
-    it("WithoutTargetKeyWhenNotDefined", () => {
-        let obj = {};
-        let result = Reflect.hasOwnMetadata("key", obj, undefined);
+    it("WithoutTargetKeyWhenNotDefined", function () {
+        var obj = {};
+        var result = Reflect.hasOwnMetadata("key", obj, undefined);
         chai_1.assert.equal(result, false);
     });
-    it("WithoutTargetKeyWhenDefined", () => {
-        let obj = {};
+    it("WithoutTargetKeyWhenDefined", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, undefined);
-        let result = Reflect.hasOwnMetadata("key", obj, undefined);
+        var result = Reflect.hasOwnMetadata("key", obj, undefined);
         chai_1.assert.equal(result, true);
     });
-    it("WithoutTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
-        let obj = Object.create(prototype);
+    it("WithoutTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key", "value", prototype, undefined);
-        let result = Reflect.hasOwnMetadata("key", obj, undefined);
+        var result = Reflect.hasOwnMetadata("key", obj, undefined);
         chai_1.assert.equal(result, false);
     });
-    it("WithTargetKeyWhenNotDefined", () => {
-        let obj = {};
-        let result = Reflect.hasOwnMetadata("key", obj, "name");
+    it("WithTargetKeyWhenNotDefined", function () {
+        var obj = {};
+        var result = Reflect.hasOwnMetadata("key", obj, "name");
         chai_1.assert.equal(result, false);
     });
-    it("WithTargetKeyWhenDefined", () => {
-        let obj = {};
+    it("WithTargetKeyWhenDefined", function () {
+        var obj = {};
         Reflect.defineMetadata("key", "value", obj, "name");
-        let result = Reflect.hasOwnMetadata("key", obj, "name");
+        var result = Reflect.hasOwnMetadata("key", obj, "name");
         chai_1.assert.equal(result, true);
     });
-    it("WithTargetKeyWhenDefinedOnPrototype", () => {
-        let prototype = {};
-        let obj = Object.create(prototype);
+    it("WithTargetKeyWhenDefinedOnPrototype", function () {
+        var prototype = {};
+        var obj = Object.create(prototype);
         Reflect.defineMetadata("key", "value", prototype, "name");
-        let result = Reflect.hasOwnMetadata("key", obj, "name");
+        var result = Reflect.hasOwnMetadata("key", obj, "name");
         chai_1.assert.equal(result, false);
     });
 });

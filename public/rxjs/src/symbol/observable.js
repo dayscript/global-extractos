@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const root_1 = require("../util/root");
+var root_1 = require("../util/root");
 function getSymbolObservable(context) {
-    let $$observable;
-    let Symbol = context.Symbol;
+    var $$observable;
+    var Symbol = context.Symbol;
     if (typeof Symbol === 'function') {
         if (Symbol.observable) {
             $$observable = Symbol.observable;

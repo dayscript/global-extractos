@@ -1,8 +1,18 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const async_1 = require("../scheduler/async");
-const Subscriber_1 = require("../Subscriber");
+var Subject_1 = require("../Subject");
+var async_1 = require("../scheduler/async");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Branch out the source Observable values as a nested Observable periodically
  * in time.
@@ -52,88 +62,94 @@ const Subscriber_1 = require("../Subscriber");
  * @method windowTime
  * @owner Observable
  */
-function windowTime(windowTimeSpan, windowCreationInterval = null, scheduler = async_1.async) {
+function windowTime(windowTimeSpan, windowCreationInterval, scheduler) {
+    if (windowCreationInterval === void 0) { windowCreationInterval = null; }
+    if (scheduler === void 0) { scheduler = async_1.async; }
     return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 exports.windowTime = windowTime;
-class WindowTimeOperator {
-    constructor(windowTimeSpan, windowCreationInterval, scheduler) {
+var WindowTimeOperator = /** @class */ (function () {
+    function WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler) {
         this.windowTimeSpan = windowTimeSpan;
         this.windowCreationInterval = windowCreationInterval;
         this.scheduler = scheduler;
     }
-    call(subscriber, source) {
+    WindowTimeOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler));
-    }
-}
+    };
+    return WindowTimeOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class WindowTimeSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, windowTimeSpan, windowCreationInterval, scheduler) {
-        super(destination);
-        this.destination = destination;
-        this.windowTimeSpan = windowTimeSpan;
-        this.windowCreationInterval = windowCreationInterval;
-        this.scheduler = scheduler;
-        this.windows = [];
+var WindowTimeSubscriber = /** @class */ (function (_super) {
+    __extends(WindowTimeSubscriber, _super);
+    function WindowTimeSubscriber(destination, windowTimeSpan, windowCreationInterval, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.destination = destination;
+        _this.windowTimeSpan = windowTimeSpan;
+        _this.windowCreationInterval = windowCreationInterval;
+        _this.scheduler = scheduler;
+        _this.windows = [];
         if (windowCreationInterval !== null && windowCreationInterval >= 0) {
-            let window = this.openWindow();
-            const closeState = { subscriber: this, window, context: null };
-            const creationState = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
-            this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
-            this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
+            var window_1 = _this.openWindow();
+            var closeState = { subscriber: _this, window: window_1, context: null };
+            var creationState = { windowTimeSpan: windowTimeSpan, windowCreationInterval: windowCreationInterval, subscriber: _this, scheduler: scheduler };
+            _this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
+            _this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
         }
         else {
-            let window = this.openWindow();
-            const timeSpanOnlyState = { subscriber: this, window, windowTimeSpan };
-            this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
+            var window_2 = _this.openWindow();
+            var timeSpanOnlyState = { subscriber: _this, window: window_2, windowTimeSpan: windowTimeSpan };
+            _this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
         }
+        return _this;
     }
-    _next(value) {
-        const windows = this.windows;
-        const len = windows.length;
-        for (let i = 0; i < len; i++) {
-            const window = windows[i];
-            if (!window.closed) {
-                window.next(value);
+    WindowTimeSubscriber.prototype._next = function (value) {
+        var windows = this.windows;
+        var len = windows.length;
+        for (var i = 0; i < len; i++) {
+            var window_3 = windows[i];
+            if (!window_3.closed) {
+                window_3.next(value);
             }
         }
-    }
-    _error(err) {
-        const windows = this.windows;
+    };
+    WindowTimeSubscriber.prototype._error = function (err) {
+        var windows = this.windows;
         while (windows.length > 0) {
             windows.shift().error(err);
         }
         this.destination.error(err);
-    }
-    _complete() {
-        const windows = this.windows;
+    };
+    WindowTimeSubscriber.prototype._complete = function () {
+        var windows = this.windows;
         while (windows.length > 0) {
-            const window = windows.shift();
-            if (!window.closed) {
-                window.complete();
+            var window_4 = windows.shift();
+            if (!window_4.closed) {
+                window_4.complete();
             }
         }
         this.destination.complete();
-    }
-    openWindow() {
-        const window = new Subject_1.Subject();
+    };
+    WindowTimeSubscriber.prototype.openWindow = function () {
+        var window = new Subject_1.Subject();
         this.windows.push(window);
-        const destination = this.destination;
+        var destination = this.destination;
         destination.next(window);
         return window;
-    }
-    closeWindow(window) {
+    };
+    WindowTimeSubscriber.prototype.closeWindow = function (window) {
         window.complete();
-        const windows = this.windows;
+        var windows = this.windows;
         windows.splice(windows.indexOf(window), 1);
-    }
-}
+    };
+    return WindowTimeSubscriber;
+}(Subscriber_1.Subscriber));
 function dispatchWindowTimeSpanOnly(state) {
-    const { subscriber, windowTimeSpan, window } = state;
+    var subscriber = state.subscriber, windowTimeSpan = state.windowTimeSpan, window = state.window;
     if (window) {
         window.complete();
     }
@@ -141,17 +157,17 @@ function dispatchWindowTimeSpanOnly(state) {
     this.schedule(state, windowTimeSpan);
 }
 function dispatchWindowCreation(state) {
-    let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
-    let window = subscriber.openWindow();
-    let action = this;
-    let context = { action, subscription: null };
-    const timeSpanState = { subscriber, window, context };
+    var windowTimeSpan = state.windowTimeSpan, subscriber = state.subscriber, scheduler = state.scheduler, windowCreationInterval = state.windowCreationInterval;
+    var window = subscriber.openWindow();
+    var action = this;
+    var context = { action: action, subscription: null };
+    var timeSpanState = { subscriber: subscriber, window: window, context: context };
     context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
     action.add(context.subscription);
     action.schedule(state, windowCreationInterval);
 }
 function dispatchWindowClose(arg) {
-    const { subscriber, window, context } = arg;
+    var subscriber = arg.subscriber, window = arg.window, context = arg.context;
     if (context && context.action && context.subscription) {
         context.action.remove(context.subscription);
     }

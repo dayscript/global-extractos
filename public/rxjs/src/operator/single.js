@@ -1,7 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const EmptyError_1 = require("../util/EmptyError");
+var Subscriber_1 = require("../Subscriber");
+var EmptyError_1 = require("../util/EmptyError");
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified
  * predicate, if that Observable emits one such item. If the source Observable emits more than one such item or no
@@ -22,29 +32,32 @@ function single(predicate) {
     return this.lift(new SingleOperator(predicate, this));
 }
 exports.single = single;
-class SingleOperator {
-    constructor(predicate, source) {
+var SingleOperator = /** @class */ (function () {
+    function SingleOperator(predicate, source) {
         this.predicate = predicate;
         this.source = source;
     }
-    call(subscriber, source) {
+    SingleOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
-    }
-}
+    };
+    return SingleOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SingleSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, source) {
-        super(destination);
-        this.predicate = predicate;
-        this.source = source;
-        this.seenValue = false;
-        this.index = 0;
+var SingleSubscriber = /** @class */ (function (_super) {
+    __extends(SingleSubscriber, _super);
+    function SingleSubscriber(destination, predicate, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.source = source;
+        _this.seenValue = false;
+        _this.index = 0;
+        return _this;
     }
-    applySingleValue(value) {
+    SingleSubscriber.prototype.applySingleValue = function (value) {
         if (this.seenValue) {
             this.destination.error('Sequence contains more than one element');
         }
@@ -52,9 +65,9 @@ class SingleSubscriber extends Subscriber_1.Subscriber {
             this.seenValue = true;
             this.singleValue = value;
         }
-    }
-    _next(value) {
-        const predicate = this.predicate;
+    };
+    SingleSubscriber.prototype._next = function (value) {
+        var predicate = this.predicate;
         this.index++;
         if (predicate) {
             this.tryNext(value);
@@ -62,10 +75,10 @@ class SingleSubscriber extends Subscriber_1.Subscriber {
         else {
             this.applySingleValue(value);
         }
-    }
-    tryNext(value) {
+    };
+    SingleSubscriber.prototype.tryNext = function (value) {
         try {
-            const result = this.predicate(value, this.index, this.source);
+            var result = this.predicate(value, this.index, this.source);
             if (result) {
                 this.applySingleValue(value);
             }
@@ -73,9 +86,9 @@ class SingleSubscriber extends Subscriber_1.Subscriber {
         catch (err) {
             this.destination.error(err);
         }
-    }
-    _complete() {
-        const destination = this.destination;
+    };
+    SingleSubscriber.prototype._complete = function () {
+        var destination = this.destination;
         if (this.index > 0) {
             destination.next(this.seenValue ? this.singleValue : undefined);
             destination.complete();
@@ -83,6 +96,7 @@ class SingleSubscriber extends Subscriber_1.Subscriber {
         else {
             destination.error(new EmptyError_1.EmptyError);
         }
-    }
-}
+    };
+    return SingleSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=single.js.map

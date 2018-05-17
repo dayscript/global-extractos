@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
@@ -41,42 +51,45 @@ function find(predicate, thisArg) {
     return this.lift(new FindValueOperator(predicate, this, false, thisArg));
 }
 exports.find = find;
-class FindValueOperator {
-    constructor(predicate, source, yieldIndex, thisArg) {
+var FindValueOperator = /** @class */ (function () {
+    function FindValueOperator(predicate, source, yieldIndex, thisArg) {
         this.predicate = predicate;
         this.source = source;
         this.yieldIndex = yieldIndex;
         this.thisArg = thisArg;
     }
-    call(observer, source) {
+    FindValueOperator.prototype.call = function (observer, source) {
         return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
-    }
-}
+    };
+    return FindValueOperator;
+}());
 exports.FindValueOperator = FindValueOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class FindValueSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, source, yieldIndex, thisArg) {
-        super(destination);
-        this.predicate = predicate;
-        this.source = source;
-        this.yieldIndex = yieldIndex;
-        this.thisArg = thisArg;
-        this.index = 0;
+var FindValueSubscriber = /** @class */ (function (_super) {
+    __extends(FindValueSubscriber, _super);
+    function FindValueSubscriber(destination, predicate, source, yieldIndex, thisArg) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.source = source;
+        _this.yieldIndex = yieldIndex;
+        _this.thisArg = thisArg;
+        _this.index = 0;
+        return _this;
     }
-    notifyComplete(value) {
-        const destination = this.destination;
+    FindValueSubscriber.prototype.notifyComplete = function (value) {
+        var destination = this.destination;
         destination.next(value);
         destination.complete();
-    }
-    _next(value) {
-        const { predicate, thisArg } = this;
-        const index = this.index++;
+    };
+    FindValueSubscriber.prototype._next = function (value) {
+        var _a = this, predicate = _a.predicate, thisArg = _a.thisArg;
+        var index = this.index++;
         try {
-            const result = predicate.call(thisArg || this, value, index, this.source);
+            var result = predicate.call(thisArg || this, value, index, this.source);
             if (result) {
                 this.notifyComplete(this.yieldIndex ? index : value);
             }
@@ -84,10 +97,11 @@ class FindValueSubscriber extends Subscriber_1.Subscriber {
         catch (err) {
             this.destination.error(err);
         }
-    }
-    _complete() {
+    };
+    FindValueSubscriber.prototype._complete = function () {
         this.notifyComplete(this.yieldIndex ? -1 : undefined);
-    }
-}
+    };
+    return FindValueSubscriber;
+}(Subscriber_1.Subscriber));
 exports.FindValueSubscriber = FindValueSubscriber;
 //# sourceMappingURL=find.js.map

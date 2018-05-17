@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const multicast_1 = require("./multicast");
+var Subject_1 = require("../Subject");
+var multicast_1 = require("./multicast");
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
  * before it begins emitting items to those Observers that have subscribed to it.
@@ -16,7 +16,7 @@ const multicast_1 = require("./multicast");
  * @owner Observable
  */
 function publish(selector) {
-    return selector ? multicast_1.multicast.call(this, () => new Subject_1.Subject(), selector) :
+    return selector ? multicast_1.multicast.call(this, function () { return new Subject_1.Subject(); }, selector) :
         multicast_1.multicast.call(this, new Subject_1.Subject());
 }
 exports.publish = publish;

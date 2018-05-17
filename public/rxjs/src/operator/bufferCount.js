@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Buffers the source Observable values until the size hits the maximum
  * `bufferSize` given.
@@ -42,45 +52,49 @@ const Subscriber_1 = require("../Subscriber");
  * @method bufferCount
  * @owner Observable
  */
-function bufferCount(bufferSize, startBufferEvery = null) {
+function bufferCount(bufferSize, startBufferEvery) {
+    if (startBufferEvery === void 0) { startBufferEvery = null; }
     return this.lift(new BufferCountOperator(bufferSize, startBufferEvery));
 }
 exports.bufferCount = bufferCount;
-class BufferCountOperator {
-    constructor(bufferSize, startBufferEvery) {
+var BufferCountOperator = /** @class */ (function () {
+    function BufferCountOperator(bufferSize, startBufferEvery) {
         this.bufferSize = bufferSize;
         this.startBufferEvery = startBufferEvery;
     }
-    call(subscriber, source) {
+    BufferCountOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
-    }
-}
+    };
+    return BufferCountOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class BufferCountSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, bufferSize, startBufferEvery) {
-        super(destination);
-        this.bufferSize = bufferSize;
-        this.startBufferEvery = startBufferEvery;
-        this.buffers = [[]];
-        this.count = 0;
+var BufferCountSubscriber = /** @class */ (function (_super) {
+    __extends(BufferCountSubscriber, _super);
+    function BufferCountSubscriber(destination, bufferSize, startBufferEvery) {
+        var _this = _super.call(this, destination) || this;
+        _this.bufferSize = bufferSize;
+        _this.startBufferEvery = startBufferEvery;
+        _this.buffers = [[]];
+        _this.count = 0;
+        return _this;
     }
-    _next(value) {
-        const count = (this.count += 1);
-        const destination = this.destination;
-        const bufferSize = this.bufferSize;
-        const startBufferEvery = (this.startBufferEvery == null) ? bufferSize : this.startBufferEvery;
-        const buffers = this.buffers;
-        const len = buffers.length;
-        let remove = -1;
+    BufferCountSubscriber.prototype._next = function (value) {
+        var count = (this.count += 1);
+        var destination = this.destination;
+        var bufferSize = this.bufferSize;
+        var startBufferEvery = (this.startBufferEvery == null) ? bufferSize : this.startBufferEvery;
+        var buffers = this.buffers;
+        var len = buffers.length;
+        var remove = -1;
         if (count % startBufferEvery === 0) {
             buffers.push([]);
         }
-        for (let i = 0; i < len; i++) {
-            const buffer = buffers[i];
+        for (var i = 0; i < len; i++) {
+            var buffer = buffers[i];
             buffer.push(value);
             if (buffer.length === bufferSize) {
                 remove = i;
@@ -90,17 +104,18 @@ class BufferCountSubscriber extends Subscriber_1.Subscriber {
         if (remove !== -1) {
             buffers.splice(remove, 1);
         }
-    }
-    _complete() {
-        const destination = this.destination;
-        const buffers = this.buffers;
+    };
+    BufferCountSubscriber.prototype._complete = function () {
+        var destination = this.destination;
+        var buffers = this.buffers;
         while (buffers.length > 0) {
-            let buffer = buffers.shift();
+            var buffer = buffers.shift();
             if (buffer.length > 0) {
                 destination.next(buffer);
             }
         }
-        super._complete();
-    }
-}
+        _super.prototype._complete.call(this);
+    };
+    return BufferCountSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=bufferCount.js.map

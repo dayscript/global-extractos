@@ -1,42 +1,55 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subject_1 = require("../Subject");
-const Subscription_1 = require("../Subscription");
-const SubscriptionLoggable_1 = require("./SubscriptionLoggable");
-const applyMixins_1 = require("../util/applyMixins");
+var Subject_1 = require("../Subject");
+var Subscription_1 = require("../Subscription");
+var SubscriptionLoggable_1 = require("./SubscriptionLoggable");
+var applyMixins_1 = require("../util/applyMixins");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class HotObservable extends Subject_1.Subject {
-    constructor(messages, scheduler) {
-        super();
-        this.messages = messages;
-        this.subscriptions = [];
-        this.scheduler = scheduler;
+var HotObservable = /** @class */ (function (_super) {
+    __extends(HotObservable, _super);
+    function HotObservable(messages, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.messages = messages;
+        _this.subscriptions = [];
+        _this.scheduler = scheduler;
+        return _this;
     }
-    _subscribe(subscriber) {
-        const subject = this;
-        const index = subject.logSubscribedFrame();
-        subscriber.add(new Subscription_1.Subscription(() => {
+    HotObservable.prototype._subscribe = function (subscriber) {
+        var subject = this;
+        var index = subject.logSubscribedFrame();
+        subscriber.add(new Subscription_1.Subscription(function () {
             subject.logUnsubscribedFrame(index);
         }));
-        return super._subscribe(subscriber);
-    }
-    setup() {
-        const subject = this;
-        const messagesLength = subject.messages.length;
+        return _super.prototype._subscribe.call(this, subscriber);
+    };
+    HotObservable.prototype.setup = function () {
+        var subject = this;
+        var messagesLength = subject.messages.length;
         /* tslint:disable:no-var-keyword */
         for (var i = 0; i < messagesLength; i++) {
-            (() => {
+            (function () {
                 var message = subject.messages[i];
                 /* tslint:enable */
-                subject.scheduler.schedule(() => { message.notification.observe(subject); }, message.frame);
+                subject.scheduler.schedule(function () { message.notification.observe(subject); }, message.frame);
             })();
         }
-    }
-}
+    };
+    return HotObservable;
+}(Subject_1.Subject));
 exports.HotObservable = HotObservable;
 applyMixins_1.applyMixins(HotObservable, [SubscriptionLoggable_1.SubscriptionLoggable]);
 //# sourceMappingURL=HotObservable.js.map

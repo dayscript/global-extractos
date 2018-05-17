@@ -1,8 +1,18 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
+var Subscriber_1 = require("../Subscriber");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
 /**
  * Compares all values of two observables in sequence using an optional comparor function
  * and returns an observable of a single boolean value representing whether or not the two sequences
@@ -59,32 +69,35 @@ function sequenceEqual(compareTo, comparor) {
     return this.lift(new SequenceEqualOperator(compareTo, comparor));
 }
 exports.sequenceEqual = sequenceEqual;
-class SequenceEqualOperator {
-    constructor(compareTo, comparor) {
+var SequenceEqualOperator = /** @class */ (function () {
+    function SequenceEqualOperator(compareTo, comparor) {
         this.compareTo = compareTo;
         this.comparor = comparor;
     }
-    call(subscriber, source) {
+    SequenceEqualOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
-    }
-}
+    };
+    return SequenceEqualOperator;
+}());
 exports.SequenceEqualOperator = SequenceEqualOperator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class SequenceEqualSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, compareTo, comparor) {
-        super(destination);
-        this.compareTo = compareTo;
-        this.comparor = comparor;
-        this._a = [];
-        this._b = [];
-        this._oneComplete = false;
-        this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
+var SequenceEqualSubscriber = /** @class */ (function (_super) {
+    __extends(SequenceEqualSubscriber, _super);
+    function SequenceEqualSubscriber(destination, compareTo, comparor) {
+        var _this = _super.call(this, destination) || this;
+        _this.compareTo = compareTo;
+        _this.comparor = comparor;
+        _this._a = [];
+        _this._b = [];
+        _this._oneComplete = false;
+        _this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, _this)));
+        return _this;
     }
-    _next(value) {
+    SequenceEqualSubscriber.prototype._next = function (value) {
         if (this._oneComplete && this._b.length === 0) {
             this.emit(false);
         }
@@ -92,21 +105,21 @@ class SequenceEqualSubscriber extends Subscriber_1.Subscriber {
             this._a.push(value);
             this.checkValues();
         }
-    }
-    _complete() {
+    };
+    SequenceEqualSubscriber.prototype._complete = function () {
         if (this._oneComplete) {
             this.emit(this._a.length === 0 && this._b.length === 0);
         }
         else {
             this._oneComplete = true;
         }
-    }
-    checkValues() {
-        const { _a, _b, comparor } = this;
+    };
+    SequenceEqualSubscriber.prototype.checkValues = function () {
+        var _c = this, _a = _c._a, _b = _c._b, comparor = _c.comparor;
         while (_a.length > 0 && _b.length > 0) {
-            let a = _a.shift();
-            let b = _b.shift();
-            let areEqual = false;
+            var a = _a.shift();
+            var b = _b.shift();
+            var areEqual = false;
             if (comparor) {
                 areEqual = tryCatch_1.tryCatch(comparor)(a, b);
                 if (areEqual === errorObject_1.errorObject) {
@@ -120,13 +133,13 @@ class SequenceEqualSubscriber extends Subscriber_1.Subscriber {
                 this.emit(false);
             }
         }
-    }
-    emit(value) {
-        const { destination } = this;
+    };
+    SequenceEqualSubscriber.prototype.emit = function (value) {
+        var destination = this.destination;
         destination.next(value);
         destination.complete();
-    }
-    nextB(value) {
+    };
+    SequenceEqualSubscriber.prototype.nextB = function (value) {
         if (this._oneComplete && this._a.length === 0) {
             this.emit(false);
         }
@@ -134,22 +147,26 @@ class SequenceEqualSubscriber extends Subscriber_1.Subscriber {
             this._b.push(value);
             this.checkValues();
         }
-    }
-}
+    };
+    return SequenceEqualSubscriber;
+}(Subscriber_1.Subscriber));
 exports.SequenceEqualSubscriber = SequenceEqualSubscriber;
-class SequenceEqualCompareToSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, parent) {
-        super(destination);
-        this.parent = parent;
+var SequenceEqualCompareToSubscriber = /** @class */ (function (_super) {
+    __extends(SequenceEqualCompareToSubscriber, _super);
+    function SequenceEqualCompareToSubscriber(destination, parent) {
+        var _this = _super.call(this, destination) || this;
+        _this.parent = parent;
+        return _this;
     }
-    _next(value) {
+    SequenceEqualCompareToSubscriber.prototype._next = function (value) {
         this.parent.nextB(value);
-    }
-    _error(err) {
+    };
+    SequenceEqualCompareToSubscriber.prototype._error = function (err) {
         this.parent.error(err);
-    }
-    _complete() {
+    };
+    SequenceEqualCompareToSubscriber.prototype._complete = function () {
         this.parent._complete();
-    }
-}
+    };
+    return SequenceEqualCompareToSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=sequenceEqual.js.map

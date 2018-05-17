@@ -11,18 +11,18 @@
  * This is useful in tests. For example to see which tasks are preventing a test from completing
  * or an automated way of releasing all of the event listeners at the end of the test.
  */
-class TaskTrackingZoneSpec {
-    constructor() {
+var TaskTrackingZoneSpec = /** @class */ (function () {
+    function TaskTrackingZoneSpec() {
         this.name = 'TaskTrackingZone';
         this.microTasks = [];
         this.macroTasks = [];
         this.eventTasks = [];
         this.properties = { 'TaskTrackingZone': this };
     }
-    static get() {
+    TaskTrackingZoneSpec.get = function () {
         return Zone.current.get('TaskTrackingZone');
-    }
-    getTasksFor(type) {
+    };
+    TaskTrackingZoneSpec.prototype.getTasksFor = function (type) {
         switch (type) {
             case 'microTask':
                 return this.microTasks;
@@ -32,41 +32,42 @@ class TaskTrackingZoneSpec {
                 return this.eventTasks;
         }
         throw new Error('Unknown task format: ' + type);
-    }
-    onScheduleTask(parentZoneDelegate, currentZone, targetZone, task) {
-        task['creationLocation'] = new Error(`Task '${task.type}' from '${task.source}'.`);
-        const tasks = this.getTasksFor(task.type);
+    };
+    TaskTrackingZoneSpec.prototype.onScheduleTask = function (parentZoneDelegate, currentZone, targetZone, task) {
+        task['creationLocation'] = new Error("Task '" + task.type + "' from '" + task.source + "'.");
+        var tasks = this.getTasksFor(task.type);
         tasks.push(task);
         return parentZoneDelegate.scheduleTask(targetZone, task);
-    }
-    onCancelTask(parentZoneDelegate, currentZone, targetZone, task) {
-        const tasks = this.getTasksFor(task.type);
-        for (let i = 0; i < tasks.length; i++) {
+    };
+    TaskTrackingZoneSpec.prototype.onCancelTask = function (parentZoneDelegate, currentZone, targetZone, task) {
+        var tasks = this.getTasksFor(task.type);
+        for (var i = 0; i < tasks.length; i++) {
             if (tasks[i] == task) {
                 tasks.splice(i, 1);
                 break;
             }
         }
         return parentZoneDelegate.cancelTask(targetZone, task);
-    }
-    onInvokeTask(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
+    };
+    TaskTrackingZoneSpec.prototype.onInvokeTask = function (parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
         if (task.type === 'eventTask')
             return parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs);
-        const tasks = this.getTasksFor(task.type);
-        for (let i = 0; i < tasks.length; i++) {
+        var tasks = this.getTasksFor(task.type);
+        for (var i = 0; i < tasks.length; i++) {
             if (tasks[i] == task) {
                 tasks.splice(i, 1);
                 break;
             }
         }
         return parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs);
-    }
-    clearEvents() {
+    };
+    TaskTrackingZoneSpec.prototype.clearEvents = function () {
         while (this.eventTasks.length) {
             Zone.current.cancelTask(this.eventTasks[0]);
         }
-    }
-}
+    };
+    return TaskTrackingZoneSpec;
+}());
 // Export the class so that new instances can be created with proper
 // constructor params.
 Zone['TaskTrackingZoneSpec'] = TaskTrackingZoneSpec;

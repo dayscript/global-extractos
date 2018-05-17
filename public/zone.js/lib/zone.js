@@ -7,12 +7,12 @@
  */
 ;
 ;
-const Zone = (function (global) {
+var Zone = (function (global) {
     if (global.Zone) {
         throw new Error('Zone already loaded.');
     }
-    class Zone {
-        constructor(parent, zoneSpec) {
+    var Zone = /** @class */ (function () {
+        function Zone(parent, zoneSpec) {
             this._properties = null;
             this._parent = parent;
             this._name = zoneSpec ? zoneSpec.name || 'unnamed' : '<root>';
@@ -20,7 +20,7 @@ const Zone = (function (global) {
             this._zoneDelegate =
                 new ZoneDelegate(this, this._parent && this._parent._zoneDelegate, zoneSpec);
         }
-        static assertZonePatched() {
+        Zone.assertZonePatched = function () {
             if (global.Promise !== ZoneAwarePromise) {
                 throw new Error('Zone.js has detected that ZoneAwarePromise `(window|global).Promise` ' +
                     'has been overwritten.\n' +
@@ -28,30 +28,46 @@ const Zone = (function (global) {
                     'after Zone.js (Polyfilling Promise api is not necessary when zone.js is loaded. ' +
                     'If you must load one, do so before loading zone.js.)');
             }
-        }
-        static get current() {
-            return _currentZone;
-        }
+        };
+        Object.defineProperty(Zone, "current", {
+            get: function () {
+                return _currentZone;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ;
-        static get currentTask() {
-            return _currentTask;
-        }
+        Object.defineProperty(Zone, "currentTask", {
+            get: function () {
+                return _currentTask;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ;
-        get parent() {
-            return this._parent;
-        }
+        Object.defineProperty(Zone.prototype, "parent", {
+            get: function () {
+                return this._parent;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ;
-        get name() {
-            return this._name;
-        }
+        Object.defineProperty(Zone.prototype, "name", {
+            get: function () {
+                return this._name;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ;
-        get(key) {
-            const zone = this.getZoneWith(key);
+        Zone.prototype.get = function (key) {
+            var zone = this.getZoneWith(key);
             if (zone)
                 return zone._properties[key];
-        }
-        getZoneWith(key) {
-            let current = this;
+        };
+        Zone.prototype.getZoneWith = function (key) {
+            var current = this;
             while (current) {
                 if (current._properties.hasOwnProperty(key)) {
                     return current;
@@ -59,24 +75,27 @@ const Zone = (function (global) {
                 current = current._parent;
             }
             return null;
-        }
-        fork(zoneSpec) {
+        };
+        Zone.prototype.fork = function (zoneSpec) {
             if (!zoneSpec)
                 throw new Error('ZoneSpec required!');
             return this._zoneDelegate.fork(this, zoneSpec);
-        }
-        wrap(callback, source) {
+        };
+        Zone.prototype.wrap = function (callback, source) {
             if (typeof callback !== 'function') {
                 throw new Error('Expecting function got: ' + callback);
             }
-            const _callback = this._zoneDelegate.intercept(this, callback, source);
-            const zone = this;
+            var _callback = this._zoneDelegate.intercept(this, callback, source);
+            var zone = this;
             return function () {
                 return zone.runGuarded(_callback, this, arguments, source);
             };
-        }
-        run(callback, applyThis = null, applyArgs = null, source = null) {
-            const oldZone = _currentZone;
+        };
+        Zone.prototype.run = function (callback, applyThis, applyArgs, source) {
+            if (applyThis === void 0) { applyThis = null; }
+            if (applyArgs === void 0) { applyArgs = null; }
+            if (source === void 0) { source = null; }
+            var oldZone = _currentZone;
             _currentZone = this;
             try {
                 return this._zoneDelegate.invoke(this, callback, applyThis, applyArgs, source);
@@ -84,9 +103,12 @@ const Zone = (function (global) {
             finally {
                 _currentZone = oldZone;
             }
-        }
-        runGuarded(callback, applyThis = null, applyArgs = null, source = null) {
-            const oldZone = _currentZone;
+        };
+        Zone.prototype.runGuarded = function (callback, applyThis, applyArgs, source) {
+            if (applyThis === void 0) { applyThis = null; }
+            if (applyArgs === void 0) { applyArgs = null; }
+            if (source === void 0) { source = null; }
+            var oldZone = _currentZone;
             _currentZone = this;
             try {
                 try {
@@ -101,15 +123,15 @@ const Zone = (function (global) {
             finally {
                 _currentZone = oldZone;
             }
-        }
-        runTask(task, applyThis, applyArgs) {
+        };
+        Zone.prototype.runTask = function (task, applyThis, applyArgs) {
             task.runCount++;
             if (task.zone != this)
                 throw new Error('A task can only be run in the zone which created it! (Creation: ' + task.zone.name +
                     '; Execution: ' + this.name + ')');
-            const previousTask = _currentTask;
+            var previousTask = _currentTask;
             _currentTask = task;
-            const oldZone = _currentZone;
+            var oldZone = _currentZone;
             _currentZone = this;
             try {
                 if (task.type == 'macroTask' && task.data && !task.data.isPeriodic) {
@@ -128,27 +150,28 @@ const Zone = (function (global) {
                 _currentZone = oldZone;
                 _currentTask = previousTask;
             }
-        }
-        scheduleMicroTask(source, callback, data, customSchedule) {
+        };
+        Zone.prototype.scheduleMicroTask = function (source, callback, data, customSchedule) {
             return this._zoneDelegate.scheduleTask(this, new ZoneTask('microTask', this, source, callback, data, customSchedule, null));
-        }
-        scheduleMacroTask(source, callback, data, customSchedule, customCancel) {
+        };
+        Zone.prototype.scheduleMacroTask = function (source, callback, data, customSchedule, customCancel) {
             return this._zoneDelegate.scheduleTask(this, new ZoneTask('macroTask', this, source, callback, data, customSchedule, customCancel));
-        }
-        scheduleEventTask(source, callback, data, customSchedule, customCancel) {
+        };
+        Zone.prototype.scheduleEventTask = function (source, callback, data, customSchedule, customCancel) {
             return this._zoneDelegate.scheduleTask(this, new ZoneTask('eventTask', this, source, callback, data, customSchedule, customCancel));
-        }
-        cancelTask(task) {
-            const value = this._zoneDelegate.cancelTask(this, task);
+        };
+        Zone.prototype.cancelTask = function (task) {
+            var value = this._zoneDelegate.cancelTask(this, task);
             task.runCount = -1;
             task.cancelFn = null;
             return value;
-        }
-    }
-    Zone.__symbol__ = __symbol__;
+        };
+        Zone.__symbol__ = __symbol__;
+        return Zone;
+    }());
     ;
-    class ZoneDelegate {
-        constructor(zone, parentDelegate, zoneSpec) {
+    var ZoneDelegate = /** @class */ (function () {
+        function ZoneDelegate(zone, parentDelegate, zoneSpec) {
             this._taskCounts = { microTask: 0, macroTask: 0, eventTask: 0 };
             this.zone = zone;
             this._parentDelegate = parentDelegate;
@@ -181,26 +204,26 @@ const Zone = (function (global) {
             this._hasTaskDlgt =
                 zoneSpec && (zoneSpec.onHasTask ? parentDelegate : parentDelegate._hasTaskDlgt);
         }
-        fork(targetZone, zoneSpec) {
+        ZoneDelegate.prototype.fork = function (targetZone, zoneSpec) {
             return this._forkZS ? this._forkZS.onFork(this._forkDlgt, this.zone, targetZone, zoneSpec) :
                 new Zone(targetZone, zoneSpec);
-        }
-        intercept(targetZone, callback, source) {
+        };
+        ZoneDelegate.prototype.intercept = function (targetZone, callback, source) {
             return this._interceptZS ?
                 this._interceptZS.onIntercept(this._interceptDlgt, this.zone, targetZone, callback, source) :
                 callback;
-        }
-        invoke(targetZone, callback, applyThis, applyArgs, source) {
+        };
+        ZoneDelegate.prototype.invoke = function (targetZone, callback, applyThis, applyArgs, source) {
             return this._invokeZS ?
                 this._invokeZS.onInvoke(this._invokeDlgt, this.zone, targetZone, callback, applyThis, applyArgs, source) :
                 callback.apply(applyThis, applyArgs);
-        }
-        handleError(targetZone, error) {
+        };
+        ZoneDelegate.prototype.handleError = function (targetZone, error) {
             return this._handleErrorZS ?
                 this._handleErrorZS.onHandleError(this._handleErrorDlgt, this.zone, targetZone, error) :
                 true;
-        }
-        scheduleTask(targetZone, task) {
+        };
+        ZoneDelegate.prototype.scheduleTask = function (targetZone, task) {
             try {
                 if (this._scheduleTaskZS) {
                     return this._scheduleTaskZS.onScheduleTask(this._scheduleTaskDlgt, this.zone, targetZone, task);
@@ -221,8 +244,8 @@ const Zone = (function (global) {
                     this._updateTaskCount(task.type, 1);
                 }
             }
-        }
-        invokeTask(targetZone, task, applyThis, applyArgs) {
+        };
+        ZoneDelegate.prototype.invokeTask = function (targetZone, task, applyThis, applyArgs) {
             try {
                 return this._invokeTaskZS ?
                     this._invokeTaskZS.onInvokeTask(this._invokeTaskDlgt, this.zone, targetZone, task, applyThis, applyArgs) :
@@ -234,9 +257,9 @@ const Zone = (function (global) {
                     this._updateTaskCount(task.type, -1);
                 }
             }
-        }
-        cancelTask(targetZone, task) {
-            let value;
+        };
+        ZoneDelegate.prototype.cancelTask = function (targetZone, task) {
+            var value;
             if (this._cancelTaskZS) {
                 value = this._cancelTaskZS.onCancelTask(this._cancelTaskDlgt, this.zone, targetZone, task);
             }
@@ -251,20 +274,20 @@ const Zone = (function (global) {
                 this._updateTaskCount(task.type, -1);
             }
             return value;
-        }
-        hasTask(targetZone, isEmpty) {
+        };
+        ZoneDelegate.prototype.hasTask = function (targetZone, isEmpty) {
             return this._hasTaskZS &&
                 this._hasTaskZS.onHasTask(this._hasTaskDlgt, this.zone, targetZone, isEmpty);
-        }
-        _updateTaskCount(type, count) {
-            const counts = this._taskCounts;
-            const prev = counts[type];
-            const next = counts[type] = prev + count;
+        };
+        ZoneDelegate.prototype._updateTaskCount = function (type, count) {
+            var counts = this._taskCounts;
+            var prev = counts[type];
+            var next = counts[type] = prev + count;
             if (next < 0) {
                 throw new Error('More tasks executed then were scheduled.');
             }
             if (prev == 0 || next == 0) {
-                const isEmpty = {
+                var isEmpty = {
                     microTask: counts.microTask > 0,
                     macroTask: counts.macroTask > 0,
                     eventTask: counts.eventTask > 0,
@@ -279,10 +302,11 @@ const Zone = (function (global) {
                     }
                 }
             }
-        }
-    }
-    class ZoneTask {
-        constructor(type, zone, source, callback, options, scheduleFn, cancelFn) {
+        };
+        return ZoneDelegate;
+    }());
+    var ZoneTask = /** @class */ (function () {
+        function ZoneTask(type, zone, source, callback, options, scheduleFn, cancelFn) {
             this.runCount = 0;
             this.type = type;
             this.zone = zone;
@@ -291,7 +315,7 @@ const Zone = (function (global) {
             this.scheduleFn = scheduleFn;
             this.cancelFn = cancelFn;
             this.callback = callback;
-            const self = this;
+            var self = this;
             this.invoke = function () {
                 _numberOfNestedTaskFrames++;
                 try {
@@ -305,28 +329,29 @@ const Zone = (function (global) {
                 }
             };
         }
-        toString() {
+        ZoneTask.prototype.toString = function () {
             if (this.data && typeof this.data.handleId !== 'undefined') {
                 return this.data.handleId;
             }
             else {
                 return Object.prototype.toString.call(this);
             }
-        }
-    }
+        };
+        return ZoneTask;
+    }());
     function __symbol__(name) {
         return '__zone_symbol__' + name;
     }
     ;
-    const symbolSetTimeout = __symbol__('setTimeout');
-    const symbolPromise = __symbol__('Promise');
-    const symbolThen = __symbol__('then');
-    let _currentZone = new Zone(null, null);
-    let _currentTask = null;
-    let _microTaskQueue = [];
-    let _isDrainingMicrotaskQueue = false;
-    const _uncaughtPromiseErrors = [];
-    let _numberOfNestedTaskFrames = 0;
+    var symbolSetTimeout = __symbol__('setTimeout');
+    var symbolPromise = __symbol__('Promise');
+    var symbolThen = __symbol__('then');
+    var _currentZone = new Zone(null, null);
+    var _currentTask = null;
+    var _microTaskQueue = [];
+    var _isDrainingMicrotaskQueue = false;
+    var _uncaughtPromiseErrors = [];
+    var _numberOfNestedTaskFrames = 0;
     function scheduleQueueDrain() {
         // if we are not running in any task, and there has not been anything scheduled
         // we must bootstrap the initial task creation by manually scheduling the drain
@@ -345,7 +370,7 @@ const Zone = (function (global) {
         _microTaskQueue.push(task);
     }
     function consoleError(e) {
-        const rejection = e && e.rejection;
+        var rejection = e && e.rejection;
         if (rejection) {
             console.error('Unhandled Promise rejection:', rejection instanceof Error ? rejection.message : rejection, '; Zone:', e.zone.name, '; Task:', e.task && e.task.source, '; Value:', rejection, rejection instanceof Error ? rejection.stack : undefined);
         }
@@ -355,10 +380,10 @@ const Zone = (function (global) {
         if (!_isDrainingMicrotaskQueue) {
             _isDrainingMicrotaskQueue = true;
             while (_microTaskQueue.length) {
-                const queue = _microTaskQueue;
+                var queue = _microTaskQueue;
                 _microTaskQueue = [];
-                for (let i = 0; i < queue.length; i++) {
-                    const task = queue[i];
+                for (var i = 0; i < queue.length; i++) {
+                    var task = queue[i];
                     try {
                         task.zone.runTask(task, null, null);
                     }
@@ -368,16 +393,19 @@ const Zone = (function (global) {
                 }
             }
             while (_uncaughtPromiseErrors.length) {
-                while (_uncaughtPromiseErrors.length) {
-                    const uncaughtPromiseError = _uncaughtPromiseErrors.shift();
+                var _loop_1 = function () {
+                    var uncaughtPromiseError = _uncaughtPromiseErrors.shift();
                     try {
-                        uncaughtPromiseError.zone.runGuarded(() => {
+                        uncaughtPromiseError.zone.runGuarded(function () {
                             throw uncaughtPromiseError;
                         });
                     }
                     catch (e) {
                         consoleError(e);
                     }
+                };
+                while (_uncaughtPromiseErrors.length) {
+                    _loop_1();
                 }
             }
             _isDrainingMicrotaskQueue = false;
@@ -392,15 +420,15 @@ const Zone = (function (global) {
     function forwardRejection(rejection) {
         return ZoneAwarePromise.reject(rejection);
     }
-    const symbolState = __symbol__('state');
-    const symbolValue = __symbol__('value');
-    const source = 'Promise.then';
-    const UNRESOLVED = null;
-    const RESOLVED = true;
-    const REJECTED = false;
-    const REJECTED_NO_CATCH = 0;
+    var symbolState = __symbol__('state');
+    var symbolValue = __symbol__('value');
+    var source = 'Promise.then';
+    var UNRESOLVED = null;
+    var RESOLVED = true;
+    var REJECTED = false;
+    var REJECTED_NO_CATCH = 0;
     function makeResolver(promise, state) {
-        return (v) => {
+        return function (v) {
             resolvePromise(promise, state, v);
             // Do not return value or you will break the Promise spec.
         };
@@ -416,9 +444,9 @@ const Zone = (function (global) {
             }
             else {
                 promise[symbolState] = state;
-                const queue = promise[symbolValue];
+                var queue = promise[symbolValue];
                 promise[symbolValue] = value;
-                for (let i = 0; i < queue.length;) {
+                for (var i = 0; i < queue.length;) {
                     scheduleResolveOrReject(promise, queue[i++], queue[i++], queue[i++], queue[i++]);
                 }
                 if (queue.length == 0 && state == REJECTED) {
@@ -428,12 +456,12 @@ const Zone = (function (global) {
                             (value && value.stack ? '\n' + value.stack : ''));
                     }
                     catch (e) {
-                        const error = e;
-                        error.rejection = value;
-                        error.promise = promise;
-                        error.zone = Zone.current;
-                        error.task = Zone.currentTask;
-                        _uncaughtPromiseErrors.push(error);
+                        var error_1 = e;
+                        error_1.rejection = value;
+                        error_1.promise = promise;
+                        error_1.zone = Zone.current;
+                        error_1.task = Zone.currentTask;
+                        _uncaughtPromiseErrors.push(error_1);
                         scheduleQueueDrain();
                     }
                 }
@@ -445,7 +473,7 @@ const Zone = (function (global) {
     function clearRejectedNoCatch(promise) {
         if (promise[symbolState] === REJECTED_NO_CATCH) {
             promise[symbolState] = REJECTED;
-            for (let i = 0; i < _uncaughtPromiseErrors.length; i++) {
+            for (var i = 0; i < _uncaughtPromiseErrors.length; i++) {
                 if (promise === _uncaughtPromiseErrors[i].promise) {
                     _uncaughtPromiseErrors.splice(i, 1);
                     break;
@@ -455,8 +483,8 @@ const Zone = (function (global) {
     }
     function scheduleResolveOrReject(promise, zone, chainPromise, onFulfilled, onRejected) {
         clearRejectedNoCatch(promise);
-        const delegate = promise[symbolState] ? onFulfilled || forwardResolution : onRejected || forwardRejection;
-        zone.scheduleMicroTask(source, () => {
+        var delegate = promise[symbolState] ? onFulfilled || forwardResolution : onRejected || forwardRejection;
+        zone.scheduleMicroTask(source, function () {
             try {
                 resolvePromise(chainPromise, true, zone.run(delegate, null, [promise[symbolValue]]));
             }
@@ -465,9 +493,9 @@ const Zone = (function (global) {
             }
         });
     }
-    class ZoneAwarePromise {
-        constructor(executor) {
-            const promise = this;
+    var ZoneAwarePromise = /** @class */ (function () {
+        function ZoneAwarePromise(executor) {
+            var promise = this;
             if (!(promise instanceof ZoneAwarePromise)) {
                 throw new Error('Must be an instanceof Promise.');
             }
@@ -480,17 +508,18 @@ const Zone = (function (global) {
                 resolvePromise(promise, false, e);
             }
         }
-        static resolve(value) {
+        ZoneAwarePromise.resolve = function (value) {
             return resolvePromise(new this(null), RESOLVED, value);
-        }
-        static reject(error) {
+        };
+        ZoneAwarePromise.reject = function (error) {
             return resolvePromise(new this(null), REJECTED, error);
-        }
-        static race(values) {
-            let resolve;
-            let reject;
-            let promise = new this((res, rej) => {
-                [resolve, reject] = [res, rej];
+        };
+        ZoneAwarePromise.race = function (values) {
+            var resolve;
+            var reject;
+            var promise = new this(function (res, rej) {
+                _a = [res, rej], resolve = _a[0], reject = _a[1];
+                var _a;
             });
             function onResolve(value) {
                 promise && (promise = null || resolve(value));
@@ -498,43 +527,45 @@ const Zone = (function (global) {
             function onReject(error) {
                 promise && (promise = null || reject(error));
             }
-            for (let value of values) {
+            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+                var value = values_1[_i];
                 if (!isThenable(value)) {
                     value = this.resolve(value);
                 }
                 value.then(onResolve, onReject);
             }
             return promise;
-        }
-        static all(values) {
-            let resolve;
-            let reject;
-            let promise = new this((res, rej) => {
+        };
+        ZoneAwarePromise.all = function (values) {
+            var resolve;
+            var reject;
+            var promise = new this(function (res, rej) {
                 resolve = res;
                 reject = rej;
             });
-            let count = 0;
-            const resolvedValues = [];
-            for (let value of values) {
+            var count = 0;
+            var resolvedValues = [];
+            for (var _i = 0, values_2 = values; _i < values_2.length; _i++) {
+                var value = values_2[_i];
                 if (!isThenable(value)) {
                     value = this.resolve(value);
                 }
-                value.then(((index) => (value) => {
+                value.then((function (index) { return function (value) {
                     resolvedValues[index] = value;
                     count--;
                     if (!count) {
                         resolve(resolvedValues);
                     }
-                })(count), reject);
+                }; })(count), reject);
                 count++;
             }
             if (!count)
                 resolve(resolvedValues);
             return promise;
-        }
-        then(onFulfilled, onRejected) {
-            const chainPromise = new this.constructor(null);
-            const zone = Zone.current;
+        };
+        ZoneAwarePromise.prototype.then = function (onFulfilled, onRejected) {
+            var chainPromise = new this.constructor(null);
+            var zone = Zone.current;
             if (this[symbolState] == UNRESOLVED) {
                 this[symbolValue].push(zone, chainPromise, onFulfilled, onRejected);
             }
@@ -542,26 +573,27 @@ const Zone = (function (global) {
                 scheduleResolveOrReject(this, zone, chainPromise, onFulfilled, onRejected);
             }
             return chainPromise;
-        }
-        catch(onRejected) {
+        };
+        ZoneAwarePromise.prototype.catch = function (onRejected) {
             return this.then(null, onRejected);
-        }
-    }
+        };
+        return ZoneAwarePromise;
+    }());
     // Protect against aggressive optimizers dropping seemingly unused properties.
     // E.g. Closure Compiler in advanced mode.
     ZoneAwarePromise['resolve'] = ZoneAwarePromise.resolve;
     ZoneAwarePromise['reject'] = ZoneAwarePromise.reject;
     ZoneAwarePromise['race'] = ZoneAwarePromise.race;
     ZoneAwarePromise['all'] = ZoneAwarePromise.all;
-    const NativePromise = global[__symbol__('Promise')] = global.Promise;
+    var NativePromise = global[__symbol__('Promise')] = global.Promise;
     global.Promise = ZoneAwarePromise;
     function patchThen(NativePromise) {
-        const NativePromiseProtototype = NativePromise.prototype;
-        const NativePromiseThen = NativePromiseProtototype[__symbol__('then')] =
+        var NativePromiseProtototype = NativePromise.prototype;
+        var NativePromiseThen = NativePromiseProtototype[__symbol__('then')] =
             NativePromiseProtototype.then;
         NativePromiseProtototype.then = function (onResolve, onReject) {
-            const nativePromise = this;
-            return new ZoneAwarePromise((resolve, reject) => {
+            var nativePromise = this;
+            return new ZoneAwarePromise(function (resolve, reject) {
                 NativePromiseThen.call(nativePromise, resolve, reject);
             })
                 .then(onResolve, onReject);
@@ -570,7 +602,7 @@ const Zone = (function (global) {
     if (NativePromise) {
         patchThen(NativePromise);
         if (typeof global['fetch'] !== 'undefined') {
-            let fetchPromise;
+            var fetchPromise = void 0;
             try {
                 // In MS Edge this throws
                 fetchPromise = global['fetch']();
@@ -580,7 +612,7 @@ const Zone = (function (global) {
                 fetchPromise = global['fetch']('about:blank');
             }
             // ignore output to prevent error;
-            fetchPromise.then(() => null, () => null);
+            fetchPromise.then(function () { return null; }, function () { return null; });
             if (fetchPromise.constructor != NativePromise &&
                 fetchPromise.constructor != ZoneAwarePromise) {
                 patchThen(fetchPromise.constructor);

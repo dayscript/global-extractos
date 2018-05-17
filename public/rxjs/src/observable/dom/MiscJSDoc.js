@@ -7,8 +7,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @name AjaxRequest
  * @noimport true
  */
-class AjaxRequestDoc {
-    constructor() {
+var AjaxRequestDoc = /** @class */ (function () {
+    function AjaxRequestDoc() {
         /**
          * @type {string}
          */
@@ -61,16 +61,17 @@ class AjaxRequestDoc {
     /**
      * @return {XMLHttpRequest}
      */
-    createXHR() {
+    AjaxRequestDoc.prototype.createXHR = function () {
         return null;
-    }
+    };
     /**
      * @param {AjaxResponse} response
      * @return {T}
      */
-    resultSelector(response) {
+    AjaxRequestDoc.prototype.resultSelector = function (response) {
         return null;
-    }
-}
+    };
+    return AjaxRequestDoc;
+}());
 exports.AjaxRequestDoc = AjaxRequestDoc;
 //# sourceMappingURL=MiscJSDoc.js.map

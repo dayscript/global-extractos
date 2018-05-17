@@ -1,13 +1,23 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("../Observable");
+var Observable_1 = require("../Observable");
 function dispatch(state) {
-    const { obj, keys, length, index, subscriber } = state;
+    var obj = state.obj, keys = state.keys, length = state.length, index = state.index, subscriber = state.subscriber;
     if (index === length) {
         subscriber.complete();
         return;
     }
-    const key = keys[index];
+    var key = keys[index];
     subscriber.next([key, obj[key]]);
     state.index = index + 1;
     this.schedule(state);
@@ -17,12 +27,14 @@ function dispatch(state) {
  * @extends {Ignored}
  * @hide true
  */
-class PairsObservable extends Observable_1.Observable {
-    constructor(obj, scheduler) {
-        super();
-        this.obj = obj;
-        this.scheduler = scheduler;
-        this.keys = Object.keys(obj);
+var PairsObservable = /** @class */ (function (_super) {
+    __extends(PairsObservable, _super);
+    function PairsObservable(obj, scheduler) {
+        var _this = _super.call(this) || this;
+        _this.obj = obj;
+        _this.scheduler = scheduler;
+        _this.keys = Object.keys(obj);
+        return _this;
     }
     /**
      * Convert an object into an observable sequence of [key, value] pairs
@@ -55,25 +67,26 @@ class PairsObservable extends Observable_1.Observable {
      * @returns {(Observable<Array<string | T>>)} An observable sequence of
      * [key, value] pairs from the object.
      */
-    static create(obj, scheduler) {
+    PairsObservable.create = function (obj, scheduler) {
         return new PairsObservable(obj, scheduler);
-    }
-    _subscribe(subscriber) {
-        const { keys, scheduler } = this;
-        const length = keys.length;
+    };
+    PairsObservable.prototype._subscribe = function (subscriber) {
+        var _a = this, keys = _a.keys, scheduler = _a.scheduler;
+        var length = keys.length;
         if (scheduler) {
             return scheduler.schedule(dispatch, 0, {
-                obj: this.obj, keys, length, index: 0, subscriber
+                obj: this.obj, keys: keys, length: length, index: 0, subscriber: subscriber
             });
         }
         else {
-            for (let idx = 0; idx < length; idx++) {
-                const key = keys[idx];
+            for (var idx = 0; idx < length; idx++) {
+                var key = keys[idx];
                 subscriber.next([key, this.obj[key]]);
             }
             subscriber.complete();
         }
-    }
-}
+    };
+    return PairsObservable;
+}(Observable_1.Observable));
 exports.PairsObservable = PairsObservable;
 //# sourceMappingURL=PairsObservable.js.map

@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Filter items emitted by the source Observable by only emitting those that
  * satisfy a specified predicate.
@@ -45,32 +55,35 @@ function filter(predicate, thisArg) {
     return this.lift(new FilterOperator(predicate, thisArg));
 }
 exports.filter = filter;
-class FilterOperator {
-    constructor(predicate, thisArg) {
+var FilterOperator = /** @class */ (function () {
+    function FilterOperator(predicate, thisArg) {
         this.predicate = predicate;
         this.thisArg = thisArg;
     }
-    call(subscriber, source) {
+    FilterOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
-    }
-}
+    };
+    return FilterOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class FilterSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, thisArg) {
-        super(destination);
-        this.predicate = predicate;
-        this.thisArg = thisArg;
-        this.count = 0;
-        this.predicate = predicate;
+var FilterSubscriber = /** @class */ (function (_super) {
+    __extends(FilterSubscriber, _super);
+    function FilterSubscriber(destination, predicate, thisArg) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.thisArg = thisArg;
+        _this.count = 0;
+        _this.predicate = predicate;
+        return _this;
     }
     // the try catch block below is left specifically for
     // optimization and perf reasons. a tryCatcher is not necessary here.
-    _next(value) {
-        let result;
+    FilterSubscriber.prototype._next = function (value) {
+        var result;
         try {
             result = this.predicate.call(this.thisArg, value, this.count++);
         }
@@ -81,6 +94,7 @@ class FilterSubscriber extends Subscriber_1.Subscriber {
         if (result) {
             this.destination.next(value);
         }
-    }
-}
+    };
+    return FilterSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=filter.js.map

@@ -1,10 +1,20 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscription_1 = require("../Subscription");
-const tryCatch_1 = require("../util/tryCatch");
-const errorObject_1 = require("../util/errorObject");
-const OuterSubscriber_1 = require("../OuterSubscriber");
-const subscribeToResult_1 = require("../util/subscribeToResult");
+var Subscription_1 = require("../Subscription");
+var tryCatch_1 = require("../util/tryCatch");
+var errorObject_1 = require("../util/errorObject");
+var OuterSubscriber_1 = require("../OuterSubscriber");
+var subscribeToResult_1 = require("../util/subscribeToResult");
 /**
  * Buffers the source Observable values, using a factory function of closing
  * Observables to determine when to close, emit, and reset the buffer.
@@ -42,63 +52,66 @@ function bufferWhen(closingSelector) {
     return this.lift(new BufferWhenOperator(closingSelector));
 }
 exports.bufferWhen = bufferWhen;
-class BufferWhenOperator {
-    constructor(closingSelector) {
+var BufferWhenOperator = /** @class */ (function () {
+    function BufferWhenOperator(closingSelector) {
         this.closingSelector = closingSelector;
     }
-    call(subscriber, source) {
+    BufferWhenOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
-    }
-}
+    };
+    return BufferWhenOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class BufferWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
-    constructor(destination, closingSelector) {
-        super(destination);
-        this.closingSelector = closingSelector;
-        this.subscribing = false;
-        this.openBuffer();
+var BufferWhenSubscriber = /** @class */ (function (_super) {
+    __extends(BufferWhenSubscriber, _super);
+    function BufferWhenSubscriber(destination, closingSelector) {
+        var _this = _super.call(this, destination) || this;
+        _this.closingSelector = closingSelector;
+        _this.subscribing = false;
+        _this.openBuffer();
+        return _this;
     }
-    _next(value) {
+    BufferWhenSubscriber.prototype._next = function (value) {
         this.buffer.push(value);
-    }
-    _complete() {
-        const buffer = this.buffer;
+    };
+    BufferWhenSubscriber.prototype._complete = function () {
+        var buffer = this.buffer;
         if (buffer) {
             this.destination.next(buffer);
         }
-        super._complete();
-    }
-    _unsubscribe() {
+        _super.prototype._complete.call(this);
+    };
+    BufferWhenSubscriber.prototype._unsubscribe = function () {
         this.buffer = null;
         this.subscribing = false;
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    };
+    BufferWhenSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         this.openBuffer();
-    }
-    notifyComplete() {
+    };
+    BufferWhenSubscriber.prototype.notifyComplete = function () {
         if (this.subscribing) {
             this.complete();
         }
         else {
             this.openBuffer();
         }
-    }
-    openBuffer() {
-        let { closingSubscription } = this;
+    };
+    BufferWhenSubscriber.prototype.openBuffer = function () {
+        var closingSubscription = this.closingSubscription;
         if (closingSubscription) {
             this.remove(closingSubscription);
             closingSubscription.unsubscribe();
         }
-        const buffer = this.buffer;
+        var buffer = this.buffer;
         if (this.buffer) {
             this.destination.next(buffer);
         }
         this.buffer = [];
-        const closingNotifier = tryCatch_1.tryCatch(this.closingSelector)();
+        var closingNotifier = tryCatch_1.tryCatch(this.closingSelector)();
         if (closingNotifier === errorObject_1.errorObject) {
             this.error(errorObject_1.errorObject.e);
         }
@@ -110,6 +123,7 @@ class BufferWhenSubscriber extends OuterSubscriber_1.OuterSubscriber {
             closingSubscription.add(subscribeToResult_1.subscribeToResult(this, closingNotifier));
             this.subscribing = false;
         }
-    }
-}
+    };
+    return BufferWhenSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
 //# sourceMappingURL=bufferWhen.js.map

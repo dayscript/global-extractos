@@ -7,22 +7,22 @@
  * found in the LICENSE file at https://angular.io/license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../common/utils");
+var utils_1 = require("../common/utils");
 /*
  * This is necessary for Chrome and Chrome mobile, to enable
  * things like redefining `createdCallback` on an element.
  */
-const _defineProperty = Object[utils_1.zoneSymbol('defineProperty')] = Object.defineProperty;
-const _getOwnPropertyDescriptor = Object[utils_1.zoneSymbol('getOwnPropertyDescriptor')] =
+var _defineProperty = Object[utils_1.zoneSymbol('defineProperty')] = Object.defineProperty;
+var _getOwnPropertyDescriptor = Object[utils_1.zoneSymbol('getOwnPropertyDescriptor')] =
     Object.getOwnPropertyDescriptor;
-const _create = Object.create;
-const unconfigurablesKey = utils_1.zoneSymbol('unconfigurables');
+var _create = Object.create;
+var unconfigurablesKey = utils_1.zoneSymbol('unconfigurables');
 function propertyPatch() {
     Object.defineProperty = function (obj, prop, desc) {
         if (isUnconfigurable(obj, prop)) {
             throw new TypeError('Cannot assign to read only property \'' + prop + '\' of ' + obj);
         }
-        const originalConfigurableFlag = desc.configurable;
+        var originalConfigurableFlag = desc.configurable;
         if (prop !== 'prototype') {
             desc = rewriteDescriptor(obj, prop, desc);
         }
@@ -43,7 +43,7 @@ function propertyPatch() {
         return _create(obj, proto);
     };
     Object.getOwnPropertyDescriptor = function (obj, prop) {
-        const desc = _getOwnPropertyDescriptor(obj, prop);
+        var desc = _getOwnPropertyDescriptor(obj, prop);
         if (isUnconfigurable(obj, prop)) {
             desc.configurable = false;
         }
@@ -53,7 +53,7 @@ function propertyPatch() {
 exports.propertyPatch = propertyPatch;
 ;
 function _redefineProperty(obj, prop, desc) {
-    const originalConfigurableFlag = desc.configurable;
+    var originalConfigurableFlag = desc.configurable;
     desc = rewriteDescriptor(obj, prop, desc);
     return _tryDefineProperty(obj, prop, desc, originalConfigurableFlag);
 }
@@ -90,14 +90,14 @@ function _tryDefineProperty(obj, prop, desc, originalConfigurableFlag) {
                 return _defineProperty(obj, prop, desc);
             }
             catch (error) {
-                let descJson = null;
+                var descJson = null;
                 try {
                     descJson = JSON.stringify(desc);
                 }
                 catch (error) {
                     descJson = descJson.toString();
                 }
-                console.log(`Attempting to configure '${prop}' with descriptor '${descJson}' on object '${obj}' and got error, giving up: ${error}`);
+                console.log("Attempting to configure '" + prop + "' with descriptor '" + descJson + "' on object '" + obj + "' and got error, giving up: " + error);
             }
         }
         else {

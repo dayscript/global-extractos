@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -50,38 +60,41 @@ function count(predicate) {
     return this.lift(new CountOperator(predicate, this));
 }
 exports.count = count;
-class CountOperator {
-    constructor(predicate, source) {
+var CountOperator = /** @class */ (function () {
+    function CountOperator(predicate, source) {
         this.predicate = predicate;
         this.source = source;
     }
-    call(subscriber, source) {
+    CountOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
-    }
-}
+    };
+    return CountOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class CountSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, predicate, source) {
-        super(destination);
-        this.predicate = predicate;
-        this.source = source;
-        this.count = 0;
-        this.index = 0;
+var CountSubscriber = /** @class */ (function (_super) {
+    __extends(CountSubscriber, _super);
+    function CountSubscriber(destination, predicate, source) {
+        var _this = _super.call(this, destination) || this;
+        _this.predicate = predicate;
+        _this.source = source;
+        _this.count = 0;
+        _this.index = 0;
+        return _this;
     }
-    _next(value) {
+    CountSubscriber.prototype._next = function (value) {
         if (this.predicate) {
             this._tryPredicate(value);
         }
         else {
             this.count++;
         }
-    }
-    _tryPredicate(value) {
-        let result;
+    };
+    CountSubscriber.prototype._tryPredicate = function (value) {
+        var result;
         try {
             result = this.predicate(value, this.index++, this.source);
         }
@@ -92,10 +105,11 @@ class CountSubscriber extends Subscriber_1.Subscriber {
         if (result) {
             this.count++;
         }
-    }
-    _complete() {
+    };
+    CountSubscriber.prototype._complete = function () {
         this.destination.next(this.count);
         this.destination.complete();
-    }
-}
+    };
+    return CountSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=count.js.map

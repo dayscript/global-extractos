@@ -1,6 +1,16 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const Subscriber_1 = require("../Subscriber");
+var Subscriber_1 = require("../Subscriber");
 /**
  * Emits the given constant value on the output Observable every time the source
  * Observable emits a value.
@@ -31,26 +41,30 @@ function mapTo(value) {
     return this.lift(new MapToOperator(value));
 }
 exports.mapTo = mapTo;
-class MapToOperator {
-    constructor(value) {
+var MapToOperator = /** @class */ (function () {
+    function MapToOperator(value) {
         this.value = value;
     }
-    call(subscriber, source) {
+    MapToOperator.prototype.call = function (subscriber, source) {
         return source._subscribe(new MapToSubscriber(subscriber, this.value));
-    }
-}
+    };
+    return MapToOperator;
+}());
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-class MapToSubscriber extends Subscriber_1.Subscriber {
-    constructor(destination, value) {
-        super(destination);
-        this.value = value;
+var MapToSubscriber = /** @class */ (function (_super) {
+    __extends(MapToSubscriber, _super);
+    function MapToSubscriber(destination, value) {
+        var _this = _super.call(this, destination) || this;
+        _this.value = value;
+        return _this;
     }
-    _next(x) {
+    MapToSubscriber.prototype._next = function (x) {
         this.destination.next(this.value);
-    }
-}
+    };
+    return MapToSubscriber;
+}(Subscriber_1.Subscriber));
 //# sourceMappingURL=mapTo.js.map

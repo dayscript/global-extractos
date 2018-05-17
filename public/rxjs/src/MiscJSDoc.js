@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Observable_1 = require("./Observable");
+var Observable_1 = require("./Observable");
 require("./scheduler/MiscJSDoc");
 require("./observable/dom/MiscJSDoc");
 /**
@@ -8,7 +8,9 @@ require("./observable/dom/MiscJSDoc");
  * @extends {Ignored}
  * @hide true
  */
-class ObservableDoc {
+var ObservableDoc = /** @class */ (function () {
+    function ObservableDoc() {
+    }
     /**
      * Creates a new Observable that will execute the specified function when a
      * {@link Subscriber} subscribes to it.
@@ -55,11 +57,12 @@ class ObservableDoc {
      * @name create
      * @owner Observable
      */
-    static create(subscribe) {
+    ObservableDoc.create = function (subscribe) {
         return new Observable_1.Observable(subscribe);
-    }
+    };
     ;
-}
+    return ObservableDoc;
+}());
 exports.ObservableDoc = ObservableDoc;
 /**
  * An interface for a consumer of push-based notifications delivered by an
@@ -85,8 +88,8 @@ exports.ObservableDoc = ObservableDoc;
  * @name Observer
  * @noimport true
  */
-class ObserverDoc {
-    constructor() {
+var ObserverDoc = /** @class */ (function () {
+    function ObserverDoc() {
         /**
          * An optional flag to indicate whether this Observer, when used as a
          * subscriber, has already been unsubscribed from its Observable.
@@ -100,9 +103,9 @@ class ObserverDoc {
      * @param {T} value The `next` value.
      * @return {void}
      */
-    next(value) {
+    ObserverDoc.prototype.next = function (value) {
         return void 0;
-    }
+    };
     /**
      * The callback to receive notifications of type `error` from the Observable,
      * with an attached {@link Error}. Notifies the Observer that the Observable
@@ -110,18 +113,19 @@ class ObserverDoc {
      * @param {any} err The `error` exception.
      * @return {void}
      */
-    error(err) {
+    ObserverDoc.prototype.error = function (err) {
         return void 0;
-    }
+    };
     /**
      * The callback to receive a valueless notification of type `complete` from
      * the Observable. Notifies the Observer that the Observable has finished
      * sending push-based notifications.
      * @return {void}
      */
-    complete() {
+    ObserverDoc.prototype.complete = function () {
         return void 0;
-    }
-}
+    };
+    return ObserverDoc;
+}());
 exports.ObserverDoc = ObserverDoc;
 //# sourceMappingURL=MiscJSDoc.js.map

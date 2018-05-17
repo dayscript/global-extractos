@@ -9,19 +9,22 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-const common_1 = require("@angular/common");
-const forms_1 = require("@angular/forms");
-const core_1 = require("@angular/core");
-const datepicker_component_1 = require("./datepicker.component");
+var common_1 = require("@angular/common");
+var forms_1 = require("@angular/forms");
+var core_1 = require("@angular/core");
+var datepicker_component_1 = require("./datepicker.component");
 __export(require("./datepicker.component"));
-let DatepickerModule = class DatepickerModule {
-};
-DatepickerModule = __decorate([
-    core_1.NgModule({
-        declarations: [datepicker_component_1.DatepickerComponent],
-        exports: [datepicker_component_1.DatepickerComponent],
-        imports: [common_1.CommonModule, forms_1.FormsModule]
-    })
-], DatepickerModule);
+var DatepickerModule = /** @class */ (function () {
+    function DatepickerModule() {
+    }
+    DatepickerModule = __decorate([
+        core_1.NgModule({
+            declarations: [datepicker_component_1.DatepickerComponent],
+            exports: [datepicker_component_1.DatepickerComponent],
+            imports: [common_1.CommonModule, forms_1.FormsModule]
+        })
+    ], DatepickerModule);
+    return DatepickerModule;
+}());
 exports.DatepickerModule = DatepickerModule;
 //# sourceMappingURL=datepicker.module.js.map

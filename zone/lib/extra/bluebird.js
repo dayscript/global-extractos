@@ -5,15 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-((_global) => {
-    const __symbol__ = Zone['__symbol__'];
+(function (_global) {
+    var __symbol__ = Zone['__symbol__'];
     // TODO: @JiaLiPassion, we can automatically patch bluebird
     // if global.Promise = Bluebird, but sometimes in nodejs,
     // global.Promise is not Bluebird, and Bluebird is just be
     // used by other libraries such as sequelize, so I think it is
     // safe to just expose a method to patch Bluebird explicitly
     Zone[__symbol__('bluebird')] = function patchBluebird(Bluebird) {
-        Bluebird.setScheduler((fn) => {
+        Bluebird.setScheduler(function (fn) {
             Zone.current.scheduleMicroTask('bluebird', fn);
         });
     };

@@ -1,22 +1,34 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const isNumeric_1 = require("../util/isNumeric");
-const Observable_1 = require("../Observable");
-const async_1 = require("../scheduler/async");
-const isScheduler_1 = require("../util/isScheduler");
-const isDate_1 = require("../util/isDate");
+var isNumeric_1 = require("../util/isNumeric");
+var Observable_1 = require("../Observable");
+var async_1 = require("../scheduler/async");
+var isScheduler_1 = require("../util/isScheduler");
+var isDate_1 = require("../util/isDate");
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
-class TimerObservable extends Observable_1.Observable {
-    constructor(dueTime = 0, period, scheduler) {
-        super();
-        this.period = -1;
-        this.dueTime = 0;
+var TimerObservable = /** @class */ (function (_super) {
+    __extends(TimerObservable, _super);
+    function TimerObservable(dueTime, period, scheduler) {
+        if (dueTime === void 0) { dueTime = 0; }
+        var _this = _super.call(this) || this;
+        _this.period = -1;
+        _this.dueTime = 0;
         if (isNumeric_1.isNumeric(period)) {
-            this.period = Number(period) < 1 && 1 || Number(period);
+            _this.period = Number(period) < 1 && 1 || Number(period);
         }
         else if (isScheduler_1.isScheduler(period)) {
             scheduler = period;
@@ -24,10 +36,11 @@ class TimerObservable extends Observable_1.Observable {
         if (!isScheduler_1.isScheduler(scheduler)) {
             scheduler = async_1.async;
         }
-        this.scheduler = scheduler;
-        this.dueTime = isDate_1.isDate(dueTime) ?
-            (+dueTime - this.scheduler.now()) :
+        _this.scheduler = scheduler;
+        _this.dueTime = isDate_1.isDate(dueTime) ?
+            (+dueTime - _this.scheduler.now()) :
             dueTime;
+        return _this;
     }
     /**
      * Creates an Observable that starts emitting after an `initialDelay` and
@@ -71,12 +84,13 @@ class TimerObservable extends Observable_1.Observable {
      * @name timer
      * @owner Observable
      */
-    static create(initialDelay = 0, period, scheduler) {
+    TimerObservable.create = function (initialDelay, period, scheduler) {
+        if (initialDelay === void 0) { initialDelay = 0; }
         return new TimerObservable(initialDelay, period, scheduler);
-    }
-    static dispatch(state) {
-        const { index, period, subscriber } = state;
-        const action = this;
+    };
+    TimerObservable.dispatch = function (state) {
+        var index = state.index, period = state.period, subscriber = state.subscriber;
+        var action = this;
         subscriber.next(index);
         if (subscriber.closed) {
             return;
@@ -86,14 +100,15 @@ class TimerObservable extends Observable_1.Observable {
         }
         state.index = index + 1;
         action.schedule(state, period);
-    }
-    _subscribe(subscriber) {
-        const index = 0;
-        const { period, dueTime, scheduler } = this;
+    };
+    TimerObservable.prototype._subscribe = function (subscriber) {
+        var index = 0;
+        var _a = this, period = _a.period, dueTime = _a.dueTime, scheduler = _a.scheduler;
         return scheduler.schedule(TimerObservable.dispatch, dueTime, {
-            index, period, subscriber
+            index: index, period: period, subscriber: subscriber
         });
-    }
-}
+    };
+    return TimerObservable;
+}(Observable_1.Observable));
 exports.TimerObservable = TimerObservable;
 //# sourceMappingURL=TimerObservable.js.map
