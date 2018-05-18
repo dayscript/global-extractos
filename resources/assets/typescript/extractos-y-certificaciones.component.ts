@@ -126,8 +126,13 @@ export class ExtractosCertificaciones {
       $('#destinatario').css('border','1px solid rgb(255, 0, 0)');
       return false;
     }
+    var dateobj= new Date() ;
+    var month = ( ( dateobj.getMonth() + 1 ) <= 9) ? '0'+(dateobj.getMonth() + 1):dateobj.getMonth()+1;
+    var day = ( dateobj.getDate() <= 9) ? '0'+dateobj.getDate():dateobj.getDate();
+    var year = dateobj.getFullYear();
+    var date = year + '-' + month + '-' + day;
     this.user_info.codigo
-    window.location.replace('/api/certificado-tenencia/'+this.user_info.codigo+'/'+'2018-05-16'+'/'+'Roberto Gomez Bolaños');
+    window.location.replace('/api/certificado-tenencia/'+this.user_info.codigo+'/'+date+'/'+ destinatario);
 
   }
 

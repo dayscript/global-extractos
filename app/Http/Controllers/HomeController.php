@@ -564,8 +564,9 @@ function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
   $sxe->registerXPathNamespace('d', 'urn:schemas-microsoft-com:xml-diffgram-v1');
   $result = $sxe->xpath("//NewDataSet");
   $result = json_encode($result);
-  $result = json_decode($result)[0]->Table;
-  $pdf = PDF::loadView('certificadoTenencia', $result);
+  $data = json_decode($result,true)[0]['Table'];
+
+  $pdf = PDF::loadView('certificadoTenencia', $data);
 
   return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');
 
