@@ -51,7 +51,7 @@
 						<h2>NIT. 800.189.604-2</h2>
 						<h2>CERTIFICA QUE:</h2>
 						<br />
-						<p>El (La) señor(a) <span class="upper strong">{{ $Nombre }} </span>, identificado(a) con cédula de ciudadanía número {{ $NumeroId}},
+						<p>El (La) señor(a) <span class="upper strong">{{ $Nombre }}</span>, identificado(a) con cédula de ciudadanía número {{ $NumeroId}},
 							se encuentra vinculado(a) como cliente a nuestra compañía desde el {{ $FechaIngreso }},
 							así mismo certificamos que su portafolio se encuentra valorado al {{ Date('d-F') }} del presente año en
 							<span class="strong">
