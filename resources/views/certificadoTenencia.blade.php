@@ -51,10 +51,16 @@
 						<h2>NIT. 800.189.604-2</h2>
 						<h2>CERTIFICA QUE:</h2>
 						<br />
-						<p>El (La) señor(a) <span class="upper strong">NombreCliente</span>, identificado(a) con cédula de ciudadanía número NumeroDocumento, se encuentra vinculado(a) como cliente a nuestra compañía desde el FechaPortafolio, así mismo certificamos que su portafolio se encuentra valorado al fechaActual del presente año en <span class="strong">ValorProtafolioTexto (ValorPortafolio).</span></p>
+						<p>El (La) señor(a) <span class="upper strong">{{ $$result->Nombre }} </span>, identificado(a) con cédula de ciudadanía número {{ $result->NumeroId}},
+							se encuentra vinculado(a) como cliente a nuestra compañía desde el {{$result->FechaIngreso}},
+							así mismo certificamos que su portafolio se encuentra valorado al {{Date('d-F')}} del presente año en
+							<span class="strong">
+								{{$result->PortafolioTexto}} ({{$result->PortafolioValor}}).
+							</span></p>
 
-						<p>A la fecha el (la) señor(a) <span class="upper strong">NombreCliente</span>, se ha distinguido por su alto nivel de responsabilidad y cumplimiento en el desarrollo de sus operaciones.</p>
-						<p>La presente certificación se expide el día fechaActual, y está dirigida a Dirigida.</p>
+						<p>A la fecha el (la) señor(a) <span class="upper strong">{{ $$result->Nombre }}</span>,
+							se ha distinguido por su alto nivel de responsabilidad y cumplimiento en el desarrollo de sus operaciones.</p>
+						<p>La presente certificación se expide el día {{$result->FechaActual}}, y está dirigida a {{$result->DirigidoA}}.</p>
 						<p>Cualquier inquietud adicional con gusto será atendida en el número telefónico (4) 444 70 10 Ext. 258.</p>
 						<br /><br /><br />
 						<p>Cordialmente,</p>

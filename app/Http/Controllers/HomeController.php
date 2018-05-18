@@ -556,11 +556,18 @@ function verifyFileOperations($CodigoOyd){
 }
 
 function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
-  $data = ['title' => 'Welcome to HDTuto.com'];
 
-   $pdf = PDF::loadView('certificadoTenencia', $data);
+  $client = new \SoapClient('http://181.143.34.114:8090/?wsdl');
+  $identificacion = $client->CertificadoTenencia( array('CodigoOyd' => $CodigoOyd, 'FechaPortafolio'=> $Fecha, 'DirigidaA'=>$Dirigida) );
+  $response = $identificacion->CertificadoTenenciaResult->any;
+  $sxe = @new \SimpleXMLElement($response);
+  $sxe->registerXPathNamespace('d', 'urn:schemas-microsoft-com:xml-diffgram-v1');
+  $result = $sxe->xpath("//NewDataSet");
+  $result = json_encode($result);
+  $result = json_decode($result)[0]->Table;
+  $pdf = PDF::loadView('certificadoTenencia', $result);
 
-   return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');
+  return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');
 
 }
 
