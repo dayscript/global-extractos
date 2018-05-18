@@ -346,6 +346,10 @@ nav ul li a {
   text-align: left;
 }
 
+a {
+  cursor: pointer;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
