@@ -568,7 +568,6 @@ function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
   $result = $sxe->xpath("//NewDataSet");
   $result = json_encode($result);
   $data = json_decode($result,true)[0]['Table'];
-  $data['day_period'] = $day;
 
   $pdf = PDF::loadView('certificadoTenencia', $data);
 

@@ -111,13 +111,13 @@
 							<tbody>
 								<tr>
 									<td>
-										<h2>GLOBAL SECURITIES S.A. COMISIONISTA DE BOLSA</h2> 
+										<h2>GLOBAL SECURITIES S.A. COMISIONISTA DE BOLSA</h2>
 										<h2>NIT. 800.189.604-2</h2>
 										<h2>CERTIFICA QUE:</h2>
 										<br />
 										<p>El (La) señor(a) <span class="upper strong">{{ $Nombre }}</span>, identificado(a) con cédula de ciudadanía número {{ $NumeroId}},
 											se encuentra vinculado(a) como cliente a nuestra compañía desde el {{ $FechaIngreso }},
-											así mismo certificamos que su portafolio se encuentra valorado al {{ $day_period }} de {{date ( 'M')}} del presente año en
+											así mismo certificamos que su portafolio se encuentra valorado al {{ $FechaPortafolio }} del presente año en
 											<span class="strong">
 												{{$PortafolioTexto}} ({{$PortafolioValor}}).
 											</span></p>
