@@ -558,6 +558,10 @@ function verifyFileOperations($CodigoOyd){
 function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
 
   $client = new \SoapClient('http://181.143.34.114:8090/?wsdl');
+
+  $day = date('d',strtotime('- 1 days',strtotime(date('Y-m-d'))));
+  $Fecha = date('Y-m').'-'.$day;
+
   $identificacion = $client->CertificadoTenencia( array('CodigoOyd' => $CodigoOyd, 'FechaPortafolio'=> $Fecha, 'DirigidaA'=>$Dirigida) );
   $response = $identificacion->CertificadoTenenciaResult->any;
   $sxe = @new \SimpleXMLElement($response);
