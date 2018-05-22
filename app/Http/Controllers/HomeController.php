@@ -560,15 +560,15 @@ function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
   $client = new \SoapClient('http://181.143.34.114:8090/?wsdl');
 
   $day = date('d',strtotime('- 1 days',strtotime(date('Y-m-d'))));
-  $Fecha = date('Y-m').'-'.$day;
 
-  $identificacion = $client->CertificadoTenencia( array('CodigoOyd' => $CodigoOyd, 'FechaPortafolio'=> $Fecha, 'DirigidaA'=>$Dirigida) );
+  $identificacion = $client->CertificadoTenencia( array('CodigoOyd' => $CodigoOyd, 'FechaPortafolio'=> date('Y-m').'-'.$day, 'DirigidaA'=>$Dirigida) );
   $response = $identificacion->CertificadoTenenciaResult->any;
   $sxe = @new \SimpleXMLElement($response);
   $sxe->registerXPathNamespace('d', 'urn:schemas-microsoft-com:xml-diffgram-v1');
   $result = $sxe->xpath("//NewDataSet");
   $result = json_encode($result);
   $data = json_decode($result,true)[0]['Table'];
+  $data['day_period'] = $day;
 
   $pdf = PDF::loadView('certificadoTenencia', $data);
 
