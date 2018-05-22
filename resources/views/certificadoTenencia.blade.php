@@ -111,7 +111,7 @@
 							<tbody>
 								<tr>
 									<td>
-										<h2>GLOBAL SECURITIES S.A. COMISIONISTA DE BOLSA</h2>
+										<h2>GLOBAL SECURITIES S.A. COMISIONISTA DE BOLSA</h2> 
 										<h2>NIT. 800.189.604-2</h2>
 										<h2>CERTIFICA QUE:</h2>
 										<br />
