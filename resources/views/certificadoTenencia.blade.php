@@ -126,12 +126,14 @@
 											se ha distinguido por su alto nivel de responsabilidad y cumplimiento en el desarrollo de sus operaciones.</p>
 										<p>La presente certificación se expide el día {{ $FechaActual }}, y está dirigida a {{ $DirigidoA }}.</p>
 										<p>Cualquier inquietud adicional con gusto será atendida en el número telefónico (4) 444 70 10 Ext. 258.</p>
-										<br /><br /><br />
+										<br />
 										<p>Cordialmente,</p>
-										<br /><br />
-
-										<p><strong>JULIO CÉSAR ABAUNZA GÁMEZ</strong><br />
-										Director de operaciones</p>
+										<br />
+										<div class="firma">
+											<p><strong>JULIO CÉSAR ABAUNZA GÁMEZ</strong><br />
+											Director de operaciones</p>
+											<img src="images/firma.png">
+										</div>
 									</td>
 								</tr>
 							</tbody>
