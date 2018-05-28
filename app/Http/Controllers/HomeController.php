@@ -223,6 +223,7 @@ class HomeController extends Controller
             'E'     =>  20,
             'F'     =>  20,
           ));
+          dd($info);
           foreach ($info->data as $key => $value) {
             $temp = array(
                 'fecha'=>$value->fecha,
@@ -243,12 +244,12 @@ class HomeController extends Controller
      # Genera el archivo excel
 
     Excel::create('fondos-de-inversion',function($excel) use ($id_movimiento){
-      dd($id_movimiento);
       $excel->setTitle('Download test');
       $excel->setCreator('globalcdb.com');
       $excel->setCompany('Global CDB');
       $excel->sheet('Movimientos',function($sheet) use($id_movimiento){
         $movimiento = Movimientos::where('id',$id_movimiento)->get();
+
        })->download('xls');
     });
  }
