@@ -19,7 +19,9 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
 Route::get('/download/{id_movimientos}','HomeController@download');
-Route::get('/download-fics/{id_movimientos}','HomeController@download_fics');
+#Route::get('/download-fics/{id_movimientos}','HomeController@download_fics');
+Route::get('/download-fics/{id_movimientos}','HomeController@download');
+
 Route::get('/download-fics-extrac/{id}/{fondo}/{encargo}/{fecha}','HomeController@extract_fondos_inversion');
 Route::get('/download-firma-extrac/{id}/{fecha}','HomeController@extract_firma');
 Route::get('/download-renta/2016','HomeController@extract_renta');
