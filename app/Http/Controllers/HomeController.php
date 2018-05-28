@@ -238,9 +238,12 @@ class HomeController extends Controller
        });
      })->download('xls');
    }
+
    public function download_fics($id_movimiento){
      # Genera el archivo excel
-    Excel::create('fondos-de-inversion.xls',function($excel) use ($id_movimiento){
+       $movimiento = Movimientos::where('id',$id_movimiento)->get();
+       dd($movimiento);
+    Excel::create('fondos-de-inversion',function($excel) use ($id_movimiento){
       $excel->setTitle('Download test');
       $excel->setCreator('globalcdb.com');
       $excel->setCompany('Global CDB');
