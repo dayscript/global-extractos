@@ -240,7 +240,7 @@ class HomeController extends Controller
    }
    public function download_fics($id_movimiento){
      # Genera el archivo excel
-    Excel::create('prueba.xls',function($excel) use ($id_movimiento){
+    Excel::create('fondos-de-inversion.xls',function($excel) use ($id_movimiento){
       $excel->setTitle('Download test');
       $excel->setCreator('globalcdb.com');
       $excel->setCompany('Global CDB');
