@@ -3,18 +3,18 @@
 		<img src="{{$image}}" width="100%" height="100px" alt="" style="margin-bottom:10px">
 		<table 	cellspacing="0" style="" class="extracto"  width=100%;>
 			<tr>
-				<div style="width:70%;float:left">
+				<td style="width:70%">
 						<label style="font-size:11px;">{{$info->encabezado->nombre}}</label><br>
 						<label style="font-size:11px;">{{$info->encabezado->direccion}}</label><br>
 						<label style="font-size:11px;">{{$info->encabezado->ciudad}}</label><br>
 						<label style="font-size:11px;">{{$info->encabezado->asesor_comercial}}</label><br>
-				</div>
-				<div style="width:30%;float:right;text-aling:right">
+				</td>
+				<td style="width:30%;text-aling:right">
 						<label style="font-size:11px;">T {{$info->encabezado->identification}}</label><br>
 						<label style="font-size:11px;" >C&oacute;digo:</label><label style="font-size:11px">&nbsp;&nbsp;{{$info->encabezado->codeoyd}}</label><br>
 						<label style="font-size:11px;" >Per&iacute;odo: {{$fecha_inicio}} / {{$fecha_fin}}</label><br>
 						<label style="font-size:11px;" >Fecha de generaci&oacute;n:</label><label style="font-size:11px"> {{date('Y-m-d')}}</label>
-				</div>
+				</td>
 			</tr>
 		</table>
 
