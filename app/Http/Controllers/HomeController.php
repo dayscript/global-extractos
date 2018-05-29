@@ -249,8 +249,7 @@ class HomeController extends Controller
       $excel->setCompany('Global CDB');
       $excel->sheet('Movimientos',function($sheet) use($id_movimiento){
         $movimiento = Movimientos::where('id',$id_movimiento)->get();
-        $info = json_decode($movimiento[0]->info_json);
-        dd($info);
+        $info = json_decode($movimiento[0]->info_json, true);
         $sheet->fromArray( $info->data );
        })->download('xls');
     });
