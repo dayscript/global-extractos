@@ -3,17 +3,17 @@
 	<img src="{{$image}}" width="100%" height="100px" alt="" style="margin-bottom:5px">
 	<table style="margin-top:10px" class="extracto" width="width:100%" cellspacing="0">
 		<tr>
-			<div style="width:70%;float:left">
+			<td style="width:70%;">
 					<label style="font-size:11px;">{{$info['encabezado'][0]['Nombre']}}</label><br>
 					<label style="font-size:11px;">{{$info['encabezado'][0]['DIRECCION']}}</label><br>
 					<label style="font-size:11px;">{{$info['encabezado'][0]['Ciudad']}}</label><br>
 					<label style="font-size:11px;">Nit: {{$nit}}</label><br>
-			</div>
-			<div style="width:30%;float:right;text-aling:right">
+			</td>
+			<td style="width:30%;text-aling:right">
 					<label style="font-size:11px;">Fecha de Corte : {{$fecha}}</label><br>
 					<label style="font-size:11px;">Desde: {{$fecha_inicio}}</label><br>
 					<label style="font-size:11px;">Hasta: {{$fecha_fin}}</label><br>
-			</div>
+			</td>
 		</tr>
 	<table>
 	<table width="100%" cellspacing="0" style="margin-top:5px">
