@@ -67,8 +67,8 @@
 	<table cellspacing="0" style="margin-top:5px" width="100%">
 		<tr>
 			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">Resumen</td>
-			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333" colspan="3">Pesos</td>
-			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333" colspan="1">Unidades</td>
+			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">Pesos</td>
+			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="1">Unidades</td>
 		</tr>
 		@foreach ( $info['resumen'] as $key => $value )
 		<tr>
