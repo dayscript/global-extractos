@@ -1,7 +1,7 @@
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <div class="" style="">
 	<img src="{{$image}}" width="100%" height="100px" alt="" style="margin-bottom:5px">
-	<table style="margin-top:10px" class="extracto" width="width:100%" cellspacing="0">
+	<table style="margin-top:10px" class="extracto" width="100%" cellspacing="0">
 		<tr>
 			<td style="width:70%;">
 					<label style="font-size:11px;">{{$info['encabezado'][0]['Nombre']}}</label><br>
@@ -35,7 +35,7 @@
 	</table>
 	<table  width="100%" cellspacing="0" style="margin-top:5px">
 		<tr>
-			<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >MOVIMIENTO PERI&Oacute;DICO</td>
+			<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >MOVIMIENTO PERI&Oacute;DICO SIN RENDIMIENTOS</td>
 		</tr>
 		<tr>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Fecha</td>
@@ -57,10 +57,10 @@
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format($value['Saldo']) }}</td>
 			</tr>
 		@endforeach
-				<tr>
+				<!-- <tr>
 					<td style="font-size:11px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="6" >TOTAL</td>
 					<td style="font-size:11px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info['totales']['total_saldo'],2)}}</td>
-				</tr>
+				</tr> -->
 	</table>
 	<table cellspacing="0" style="margin-top:5px" width="100%">
 		<tr>
