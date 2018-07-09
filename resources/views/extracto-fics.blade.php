@@ -53,7 +53,7 @@
 				<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ str_replace('00:00:00.000','',$value['fecha']) }}</td>
 				<td style="border:solid 1px #efefef;text-align:left;font-size:11px"> {{$value['Transaccion']}}</td>
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format($value['Credito'],2) }}</td>
-				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ ( $value['Debito'] == '.00'  ) ? '0.00':$value['Debito'] }}</td>
+				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ ( $value['Debito'] == '.00'  ) ? '0.00':number_format($value['Debito'],2) }}</td>
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format($value['valor Unidad'],6) }}</td>
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">{{ $value['Unidades'] }}</td>
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format($value['Saldo']) }}</td>
@@ -66,9 +66,9 @@
 	</table>
 	<table cellspacing="0" style="margin-top:5px" width="100%">
 		<tr>
-			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">Resumen</td>
-			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">Pesos</td>
-			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="1">Unidades</td>
+			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">RESUMEN</td>
+			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">PESOS</td>
+			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="1">UNIDADES</td>
 		</tr>
 		@foreach ( $info['resumen'] as $key => $value )
 		<tr>
