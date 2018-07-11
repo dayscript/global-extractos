@@ -71,6 +71,7 @@ export class ResumenPortafolioComponent implements OnInit {
       let item = this.pieChartData[index].toString();
       this.pieChartLabels[index] = this.pieChartLabels[index].replace('$', item)
     })
+    this.show_pie();
   }
 
   // events

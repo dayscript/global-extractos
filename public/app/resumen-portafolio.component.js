@@ -60,6 +60,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
             var item = _this.pieChartData[index].toString();
             _this.pieChartLabels[index] = _this.pieChartLabels[index].replace('$', item);
         });
+        this.show_pie();
     };
     // events
     ResumenPortafolioComponent.prototype.chartClicked = function (e) {

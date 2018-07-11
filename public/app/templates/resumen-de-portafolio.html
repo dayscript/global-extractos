@@ -87,7 +87,7 @@
     </div>
   </section>
   <section class="diagram">
-    <div *ngIf="pieChartData != undefined && showPie == 1" style="display: block">
+    <div *ngIf="showPie == 1" style="display: block">
       <canvas class="diagram-pie" baseChart
               [data]="pieChartData"
               [labels]="pieChartLabels"
