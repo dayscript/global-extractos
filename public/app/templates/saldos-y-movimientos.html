@@ -21,7 +21,7 @@
       <thead>
         <th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
       </thead>
-      <tr *ngFor="let item of renta_variable?.data">
+      <tr *ngFor="let item of renta_variable">
         <td>{{item.strNombre}} </td>
         <td class="right-text">{{item.dblCantidad}}</td>
         <td class="right-text">{{item.FechaCompra }}</td>
@@ -49,7 +49,7 @@
   		<thead>
   			<th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
   		</thead>
-  		  <tr *ngFor="let item of renta_fija?.data">
+  		  <tr *ngFor="let item of renta_fija">
   		    <td class="left-text">{{item.strNombre}} </td>
   		    <td class="right-text">{{item.dblCantidad}}</td>
   		    <td class="right-text">{{item.FechaCompra }}</td>
@@ -81,7 +81,7 @@
         <th style="text-align:right">Cantidad</th>
         <th style="text-align:right">T. Liquidación</th>
   		</thead>
-  		  <tr *ngFor="let item of opc?.data">
+  		  <tr *ngFor="let item of opc">
   		    <td>{{item.Emision}} </td>
           <td>{{item.dtmCumplimiento }}</td>
   		    <td>{{item.dtmLiquidacion}} </td>
@@ -113,7 +113,7 @@
         <th style="text-align:right" >Total regreso</th>
         <th style="text-align:right" >Interés</th>
   		</thead>
-  		  <tr *ngFor="let item of opl?.data">
+  		  <tr *ngFor="let item of opl">
   		    <td>{{item.Emision}} </td>
           <td style="text-align:right">{{item.dblCantidad}}</td>
   		    <td style="text-align:right">{{item.dtmLiquidacion }}</td>
@@ -150,8 +150,8 @@
           <th>A. SU FAVOR</th>
           <th>SALDO</th>
         </thead>
-          <tr *ngFor="let item of info_movimientos?.data">
-            <td class="numero" >{{item.fecha}}</td>
+          <tr *ngFor="let item of info_movimientos">
+            <td class="numero" >{{item.dtmDocumento | date }}</td>
             <td class="numero" >{{item.strNumero}}</td>
             <td class="detalle" >{{item.strDetalle1}}</td>
             <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
@@ -160,9 +160,9 @@
           </tr>
           <tr>
             <td colspan="3"><strong>TOTAL</strong></td>
-            <td class="saldo"><strong>{{info_movimientos?.total.totalCargo | currency:'USD':true:'1.2-2'}}</strong></td>
+            <!-- <td class="saldo"><strong>{{info_movimientos?.total.totalCargo | currency:'USD':true:'1.2-2'}}</strong></td>
             <td class="saldo"><strong>{{info_movimientos?.total.totalFavor | currency:'USD':true:'1.2-2'}}</strong></td>
-            <td class="saldo"><strong>{{info_movimientos?.total.totalSaldo | currency:'USD':true:'1.2-2'}}</strong></td>
+            <td class="saldo"><strong>{{info_movimientos?.total.totalSaldo | currency:'USD':true:'1.2-2'}}</strong></td> -->
           </tr>
       </table>
 

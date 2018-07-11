@@ -23,6 +23,7 @@ elixir(mix => {
     .copy('node_modules/systemjs', 'public/systemjs')
     .copy('node_modules/rxjs', 'public/rxjs')
     .copy('node_modules/zone.js', 'public/zone.js')
+    .copy('resources/assets/templates', 'public/app/templates')
 
     .typescript(
         {
@@ -36,7 +37,9 @@ elixir(mix => {
           emitDecoratorMetadata: true,
           experimentalDecorators: true,
           removeComments: false,
-          noImplicitAny: false
+          noImplicitAny: false,
+          lib: ["es2017", "dom"],
+          noStrictGenericChecks:true
         }
     );
 });

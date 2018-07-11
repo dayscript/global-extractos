@@ -27,19 +27,19 @@
     </div>
     <div *ngIf="products != undefined" class="content-wrapper ">
         <div class="col">
-            <div class="text-left"><strong>Nombre:</strong><span>{{ products?.personal_data.name }}</span></div>
+            <div class="text-left"><strong>Nombre:</strong><span>{{ products?.Nombre }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Dirección:   </strong><span> {{ products?.personal_data.address }}</span></div>
+            <div class="text-left"><strong>Dirección:   </strong><span> {{ products?.Direccion }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Ciudad:   </strong><span>{{ products?.personal_data.city }}</span></div>
+            <div class="text-left"><strong>Ciudad:   </strong><span>{{ products?.Ciudad }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Asesor Comercial:   </strong><span>{{ products?.personal_data.comercial_adviser }}</span></div>
+            <div class="text-left"><strong>Asesor Comercial:   </strong><span>{{ products?.Comercial }}</span></div>
         </div>
         <div class="col">
-            <div class="text-left"><strong>Estado:   </strong><span> {{ products?.personal_data.state }}</span></div>
+            <div class="text-left"><strong>Estado:   </strong><span> {{ products?.Estado }}</span></div>
         </div>
     </div>
   </section>
@@ -54,35 +54,35 @@
     <div *ngIf="products != undefined" class="content-wrapper">
       <div class="col">
           <div class="text-left"><strong>Renta variable:</strong></div>
-          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.variable_rent  }} </span></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalRV  }} </span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Renta fija:</strong></div>
-          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.static_rent }}</span></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalRF }}</span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Operaciones de liquidez:</strong></div>
-          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.operation_liquidity }}</span></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalLiquidez }}</span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Operaciones por cumplir:</strong></div>
-          <div class="text-rigth"><span>$ {{ products?.composition_portfolio.operation_comply }}</span></div>
+          <div class="text-rigth"><span>$ {{ products?.TotalPorCumplir }}</span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Saldo disponible:</strong></div>
-          <div class="text-rigth"><span><strong> $ {{ products?.composition_portfolio.avaluable_balance }}</strong></span></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.Efectivo }}</strong></span></div>
       </div>
       <div class="col">
           <div class="text-left"><strong>Total Cuenta de Administración:</strong></div>
-          <div class="text-rigth"><span><strong> $ {{ products?.composition_portfolio.total_administration_account }}</strong></span></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.total_administration_account }}</strong></span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div>
-          <div class="text-rigth"><span> $ {{ products?.composition_portfolio.funds_investment_colective }}</span></div>
+          <div class="text-rigth"><span> $ {{ products?.funds_investment_colective }}</span></div>
       </div>
       <div class="col">
           <div class="text-left" ><strong class="text-medium">Gran Total:</strong></div>
-          <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.composition_portfolio.gran_total }}</strong></span></div>
+          <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.gran_total }}</strong></span></div>
       </div>
     </div>
   </section>

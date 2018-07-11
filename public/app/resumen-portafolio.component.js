@@ -15,19 +15,7 @@ var router_1 = require("@angular/router");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var ResumenPortafolioComponent = /** @class */ (function () {
-    /*public pieCharColors:Array<any> = [
-      {
-        backgroundColor: '#000000',
-      },
-      {
-        backgroundColor: 'rgba(0, 102, 255)',
-      },
-      {
-        backgroundColor: 'rgba(204, 153, 51)',
-      }
-    ]*/
     function ResumenPortafolioComponent(productsService, activatedRoute, http, Router) {
-        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -48,14 +36,15 @@ var ResumenPortafolioComponent = /** @class */ (function () {
                 bodyFontSize: 1,
             },
         };
+    }
+    ResumenPortafolioComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.activatedRoute.params.subscribe(function (params) {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        productsService.Data
-            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error("Error: " + error); }, function () { return _this.setParamsPie(); });
-        this.showPie = 1;
-        this.showExtrac = 0;
+        this.productsService.Data
+            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error(error); }, function () { _this.setParamsPie(); _this.showPie; });
         setTimeout(function () {
             $(function () {
                 $("#datepicker").datepicker({
@@ -63,33 +52,18 @@ var ResumenPortafolioComponent = /** @class */ (function () {
                 });
             });
         }, 1000);
-        productsService.user_info
-            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
-    }
+    };
     ResumenPortafolioComponent.prototype.setParamsPie = function () {
-        var PieData = [];
-        var cont = 0;
-        if (this.products['error']) {
-            alert('Servicio no disponible');
-        }
-        for (var item in this.products) {
-            for (var elem in this.products[item]) {
-                if (item == 'pie_porcents') {
-                    PieData.push(this.products[item][elem]);
-                    this.pieChartLabels[cont] = this.pieChartLabels[cont].replace('$', this.products[item][elem]);
-                    cont = cont + 1;
-                }
-            }
-        }
-        this.pieChartData = PieData;
-        if (this.products.hasOwnProperty('access')) {
-            console.log(this.products['access']);
-        }
+        var _this = this;
+        this.pieChartData = [this.products['RF'], this.products['RV'], this.products['FICS']];
+        this.pieChartLabels.forEach(function (val, index) {
+            var item = _this.pieChartData[index].toString();
+            _this.pieChartLabels[index] = _this.pieChartLabels[index].replace('$', item);
+        });
     };
     // events
     ResumenPortafolioComponent.prototype.chartClicked = function (e) {
-        //    console.log(e);
-        console.log(this.pieChartOptions);
+        //console.log(this.pieChartOptions);
     };
     ResumenPortafolioComponent.prototype.chartHovered = function (e) {
         //console.log(e);
@@ -97,11 +71,9 @@ var ResumenPortafolioComponent = /** @class */ (function () {
     ResumenPortafolioComponent.prototype.show_pie = function () {
         event.preventDefault();
         this.showPie = 1;
-        this.showExtrac = 0;
     };
     ResumenPortafolioComponent.prototype.show_extrac = function () {
         event.preventDefault();
-        this.showExtrac = 1;
         this.showPie = 0;
     };
     ResumenPortafolioComponent.prototype.search = function () {

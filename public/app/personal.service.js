@@ -36,7 +36,7 @@ var ProductsService = /** @class */ (function () {
     }
     Object.defineProperty(ProductsService.prototype, "user_info", {
         get: function () {
-            return this.http.get('/api/user-data/' + this.id)
+            return this.http.get('/users/' + this.id)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
@@ -44,26 +44,23 @@ var ProductsService = /** @class */ (function () {
     });
     Object.defineProperty(ProductsService.prototype, "Data", {
         get: function () {
-            console.log('/api/pie-report/' + this.id + '/' + this.date);
-            return this.http.get('/api/pie-report/' + this.id + '/' + this.date)
+            return this.http.get('/api/portafolio/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ProductsService.prototype, "DataRenta", {
+    Object.defineProperty(ProductsService.prototype, "getRentaVariable", {
         get: function () {
-            console.log('api/variable-report/' + this.id + '/' + this.date);
-            return this.http.get('api/variable-report/' + this.id + '/' + this.date)
+            return this.http.get('api/portafolio-renta-variable/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ProductsService.prototype, "DataRentaFija", {
+    Object.defineProperty(ProductsService.prototype, "getRetaFija", {
         get: function () {
-            console.log('api/fija-report/' + this.id + '/' + this.date);
-            return this.http.get('api/fija-report/' + this.id + '/' + this.date)
+            return this.http.get('api/portafolio-renta-fija/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
@@ -71,26 +68,23 @@ var ProductsService = /** @class */ (function () {
     });
     Object.defineProperty(ProductsService.prototype, "DataFics", {
         get: function () {
-            console.log('api/fics-report/' + this.id + '/' + this.date);
             return this.http.get('api/fics-report/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ProductsService.prototype, "DataOPC", {
+    Object.defineProperty(ProductsService.prototype, "getOperacionesPorCumplir", {
         get: function () {
-            console.log('api/opc-report/' + this.id + '/' + this.date);
-            return this.http.get('api/opc-report/' + this.id + '/' + this.date)
+            return this.http.get('api/portafolio-operaciones-por-cumplir/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ProductsService.prototype, "DataOPL", {
+    Object.defineProperty(ProductsService.prototype, "getOperacionesDeLiquidez", {
         get: function () {
-            console.log('api/opl-report/' + this.id + '/' + this.date);
-            return this.http.get('api/opl-report/' + this.id + '/' + this.date)
+            return this.http.get('api/portafolio-operaciones-de-liquidez/' + this.id + '/' + this.date)
                 .map(function (response) { return response.json(); });
         },
         enumerable: true,

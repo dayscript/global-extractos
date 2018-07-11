@@ -14,69 +14,11 @@ use \App\RentaVariable;
 use \App\RentaFics;
 use \App\User;
 
+use App\SoapService;
+
+
 class ServicesController extends Controller
 {
-  public function user_info($cc){
-  	$user = array('nombre'=>'','identification'=>'');
-    $user_load = User::where('identification',$cc)->get();
-    if(isset($user_load[0])){
-      $user['nombre'] = $user_load[0]->nombre;
-      $user['identification'] = $user_load[0]->identification;
-      $user['codigo'] = $user_load[0]->codeoyd;
-
-    }
-    return response()->json($user);
-  }
-
-  public function portafolio($CodigoOyd,$Fecha)
-  {
-    $cc = $CodigoOyd;
-    try{
-      #valida si $CodigoOyd existe en la base de datos de global
-      $CodigoOyd = DB::connection('sqlsrv')->select('SELECT [lngID]  FROM [DBOyD].[dbo].[tblClientes] where [strNroDocumento] = :cc',array('cc'=>$CodigoOyd) );
-      $CodigoOyd = trim($CodigoOyd[0]->lngID);
-    }catch(\Exception $e){
-      # si dectecta un error devuelve el mensaje $e
-      return response()->json(array('error'=>true,'description'=>'Usuario no existe','debug'=>''.$e));
-    }
-    # valida si la información ya existe en Laravel
-    if($CodigoOyd){
-      $user = User::where('identification',$cc)->get();
-      # si el usuario existe valida si existe información para la fecha
-      if(isset($user[0])){
-          $portafolio = Portafolio::where('user_id',$user[0]['attributes']['id'])
-                                  ->where('fecha',$Fecha)
-                                  ->get();
-          if( isset($portafolio[0]) ){
-              $output = $portafolio[0];
-          }else{
-            # consultar informacion en sqlsrv
-            $user = User::where('identification',$cc)->get();
-            $user = $user[0];
-
-            $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
-            if(isset($info_portafolio['error'])){
-              return response()->json($info_portafolio);
-            }
-            $portafolio = self::create_porfafolio($user,$info_portafolio,$Fecha,$CodigoOyd);
-            $output = $portafolio;
-          }
-      }else{
-        #crea el usuario y crea el portafolio para la fecha
-        $info_portafolio = self::exec_PieResumidoClienteDado($CodigoOyd,$Fecha);
-        if(isset($info_portafolio['error'])){
-          return response()->json($info_portafolio);
-        }
-        self::create_user($info_portafolio,$cc);
-        $user = User::where('identification',$cc)->get();
-        $user = $user[0];
-        $output = self:: create_porfafolio($user,$info_portafolio,$Fecha,$CodigoOyd);
-
-        }
-    }
-  $output = json_decode($output['attributes']['info_json']);
-  return response()->json($output->$CodigoOyd);
-}
 
 /**
 * Display the specified resource.
@@ -780,14 +722,229 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
   return $info;
 }
 
-function exec_ExtractoFondoyFideicomisoDados($Fondo,$Encargo,$Fecha_start,$Fecha_end){
-  try {
-    #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
-    $info = DB::connection('sqlsrv2')->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',array('Fondo'=>$Fondo,'Encargo'=>$Encargo,'FechaInicial'=>$Fecha_start,'FechaFinal'=>$Fecha_end) );
-  } catch (Exception $e) {
-    $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+  function exec_ExtractoFondoyFideicomisoDados($Fondo,$Encargo,$Fecha_start,$Fecha_end){
+    try {
+      #$info = DB::connection('sqlsrv2')->select('SET ANSI_WARNINGS ON;');
+      $info = DB::connection('sqlsrv2')->select('SET NOCOUNT ON;EXEC ExtractoFondoyFideicomisoDadosMovimiento :Fondo, :Encargo, :FechaInicial, :FechaFinal',array('Fondo'=>$Fondo,'Encargo'=>$Encargo,'FechaInicial'=>$Fecha_start,'FechaFinal'=>$Fecha_end) );
+    } catch (Exception $e) {
+      $info = array('error'=>true,'description'=>'Fecha no valalida','debug'=>''.$e);
+    }
+    return $info;
   }
-  return $info;
-}
+
+  /*------------------------------------------------------------*/
+
+  /**
+   * [getPortafolio description]
+   * @param  [type] $identification [CC indentification]
+   * @param  [type] $date           [date format yyyy-mm-dd]
+   * @return [type]                 [json]
+   */
+  public function getPortafolio($identification, $date){
+    $user = User::where('identification',$identification)->first();
+
+    $soapWrapper = new SoapService();
+    $data = [
+        'CodigoOyd' => $user->codeoyd,
+        'Fecha'   => $date,
+      ];
+
+    $soapWrapper->callMethod('PieResumidoClienteDado',$data);
+
+    $output = $soapWrapper->reponse_parse->NewDataSet->Table;
+
+    $tac = array_sum(
+      array(
+       trim($output->TotalRV),
+       trim($output->TotalRF),
+       trim($output->TotalLiquidez),
+       trim($output->TotalPorCumplir),
+       trim($output->Efectivo),
+     )
+    );
+
+   $piedata = array_sum(
+     array(
+       trim($output->TotalRV),
+       trim($output->TotalRF),
+       trim($output->TotalCarteras)
+      )
+    );
+
+    $found  = trim($output->TotalCarteras);
+
+    $output->{'total_administration_account'} = $tac;
+    $output->{'funds_investment_colective'} = $found;
+    $output->{'gran_total'} = $tac + $found;
+    $output->{'RV'} = substr(self::calcPorcent( $output->TotalRV,100,$piedata),0,5);
+    $output->{'RF'} = substr(self::calcPorcent( $output->TotalRF,100,$piedata ),0,5);
+    $output->{'FICS'} = substr(self::calcPorcent($found,100,$piedata ),0,5);
+
+    return json_encode($output);
+  }
+
+    /**
+     * [getPortafolioRentaVariable description]
+     * @param  [type] $identification [description]
+     * @param  [type] $date           [description]
+     * @return [type]                 [description]
+     */
+  public function getPortafolioRentaVariable($identification,$date){
+    $user = User::where('identification',$identification)->first();
+    $soapWrapper = new SoapService();
+    $data = [
+        'CodigoOyd' => $user->codeoyd,
+        'Fecha'   => $date,
+      ];
+
+    $soapWrapper->callMethod('PieRVClienteDado',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+
+    return json_encode($output);
+  }
+
+    /**
+     * [getPortafolioRentaFija description]
+     * @param  [type] $identification [description]
+     * @param  [type] $date           [description]
+     * @return [type]                 [description]
+     */
+  public function getPortafolioRentaFija($identification,$date){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+        'CodigoOyd' => $user->codeoyd,
+        'Fecha'   => $date,
+      ];
+
+    $soapWrapper->callMethod('PieRFClienteDado',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+
+    return json_encode($output);
+  }
+
+    /**
+     * [getPortafolioRentaFija description]
+     * @param  [type] $identification [description]
+     * @param  [type] $date           [description]
+     * @return [type]                 [description]
+     */
+  public function getPortafolioRentaFics($identification,$date){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+        'CodigoOyd' => $user->codeoyd,
+        'Fecha'   => $date,
+      ];
+
+    $soapWrapper->callMethod('PieCarterasClienteDado',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+
+    return json_encode($output);
+  }
+
+    /**
+     * [getReportFondosInversion description]
+     * @param  [type] $identification [description]
+     * @return [type]                 [description]
+     */
+  public function getReportFondosInversion($identification){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+        'Consecutivo' => $user->codeoyd,
+      ];
+
+    $soapWrapper->callMethod('FideicomisosVigentesClienteDado',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+    return json_encode($output);
+  }
+
+    /**
+     * [getOperacionesPorCumplir description]
+     * @param  [type] $CodigoOyd [description]
+     * @param  [type] $date      [description]
+     * @return [type]            [description]
+     */
+  public function getOperacionesPorCumplir($CodigoOyd,$date){
+
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+        'Fecha' => $date,
+        'CodigoOyd' => $user->codeoyd,
+      ];
+
+    $soapWrapper->callMethod('TraerOperacionesPorCumplirClienteDadoDayScript',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+    return json_encode($output);
+  }
+
+    /**
+     * [getOperacionesDeLiquidez description]
+     * @param  [type] $CodigoOyd [description]
+     * @param  [type] $date      [description]
+     * @return [type]            [description]
+     */
+  public function getOperacionesDeLiquidez($CodigoOyd,$date){
+
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+        'Fecha' => $date,
+        'CodigoOyd' => $user->codeoyd,
+      ];
+
+    $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
+
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      $output[] = $value->Table;
+    }
+    return json_encode($output);
+  }
+
+
+
+  public function getExtractoMovimientos($identification, $date_start, $date_end){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+      'CodigoOyd'    => $user->codeoyd,
+      'FechaInicial' => $date_start,
+      'FechaFinal'   => $date_end
+      ];
+    $soapWrapper->callMethod('ExtractoClienteDado',$data);
+    // dd($soapWrapper);
+    foreach ( $soapWrapper->reponse_parse->NewDataSet->Table as $key => $value) {
+      $output[] = $value;
+    }
+    return json_encode($output);
+  }
+
+
+
+
+
 
 }

@@ -32,45 +32,38 @@ export class ProductsService {
     }
   }
   get user_info():Observable<any>{
-    return this.http.get('/api/user-data/'+this.id)
+    return this.http.get('/users/'+this.id)
       .map( response => response.json() );
   }
 
   get Data(): Observable<any> {
-    console.log('/api/pie-report/'+this.id+'/'+this.date);
-    return this.http.get('/api/pie-report/'+this.id+'/'+this.date)
+    return this.http.get('/api/portafolio/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
-  get DataRenta(): Observable<any> {
-    console.log('api/variable-report/'+this.id+'/'+this.date);
-    return this.http.get('api/variable-report/'+this.id+'/'+this.date)
+  get getRentaVariable(): Observable<any> {
+    return this.http.get('api/portafolio-renta-variable/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
-  get DataRentaFija(): Observable<any> {
-    console.log('api/fija-report/'+this.id+'/'+this.date);
-    return this.http.get('api/fija-report/'+this.id+'/'+this.date)
+  get getRetaFija(): Observable<any> {
+    return this.http.get('api/portafolio-renta-fija/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
   get DataFics(): Observable<any> {
-    console.log('api/fics-report/'+this.id+'/'+this.date);
-
     return this.http.get('api/fics-report/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
-  get DataOPC(): Observable<any> {
-    console.log('api/opc-report/'+this.id+'/'+this.date);
-    return this.http.get('api/opc-report/'+this.id+'/'+this.date)
+  get getOperacionesPorCumplir(): Observable<any> {
+    return this.http.get('api/portafolio-operaciones-por-cumplir/'+this.id+'/'+this.date)
              .map( response => response.json() );
 
   }
 
-  get DataOPL(): Observable<any>{
-    console.log('api/opl-report/'+this.id+'/'+this.date)
-    return this.http.get('api/opl-report/'+this.id+'/'+this.date)
+  get getOperacionesDeLiquidez(): Observable<any>{
+    return this.http.get('api/portafolio-operaciones-de-liquidez/'+this.id+'/'+this.date)
              .map( response => response.json());
   }
 

@@ -19,7 +19,6 @@ var http_1 = require("@angular/http");
  */
 var SaldosMovimientosComponent = /** @class */ (function () {
     function SaldosMovimientosComponent(productsService, activatedRoute, http) {
-        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -27,6 +26,9 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.fecha = '';
         this.fecha_inicio = '';
         this.fecha_final = '';
+    }
+    SaldosMovimientosComponent.prototype.ngOnInit = function () {
+        var _this = this;
         setTimeout(function () {
             $(function () {
                 $("#datepicker_start").datepicker({
@@ -43,20 +45,16 @@ var SaldosMovimientosComponent = /** @class */ (function () {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        productsService.DataRenta.subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_variable); });
-        productsService.DataRentaFija.subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
-        productsService.DataOPL.subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
-        productsService.DataOPC.subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
-        productsService.user_info
-            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
-        /*Fin de componenete SaldosMovimientosComponent*/
-    }
+        this.productsService.getRentaVariable.subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_variable); });
+        this.productsService.getRetaFija.subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
+        this.productsService.getOperacionesPorCumplir.subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
+        this.productsService.getOperacionesDeLiquidez.subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
+    };
     SaldosMovimientosComponent.prototype.search = function () {
         var _this = this;
         this.fecha_inicio = $('#datepicker_start').val();
         this.fecha_final = $('#datepicker_end').val();
-        var url = 'api/client-report/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
-        console.log(url);
+        var url = 'api/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
         this.http.get(url)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });

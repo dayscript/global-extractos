@@ -336,3 +336,11 @@ nav{
 a{
   cursor: pointer;
 }
+
+.no-login{
+  display: none!important;
+}
+
+.checkbox input[type="checkbox"] {
+    position: relative!important;
+}

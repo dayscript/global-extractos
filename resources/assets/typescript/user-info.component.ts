@@ -12,15 +12,15 @@ declare var $: any
   providers: [ProductsService],
 })
 export class UserInfoComponent {
-  user_info:Observable<Array<string>>;
+  user: any;
   today:any;
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
     productsService.user_info
       .subscribe(
-        data => { this.user_info = data },
+        data => { this.user = data },
         error => console.log( 'Error: ${error}' ),
-        () => this.today = new Date(),
+        () => { this.today = new Date() }
       );
   }
 

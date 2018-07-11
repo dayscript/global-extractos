@@ -22,7 +22,7 @@ var UserInfoComponent = /** @class */ (function () {
         this.http = http;
         this.Router = Router;
         productsService.user_info
-            .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
+            .subscribe(function (data) { _this.user = data; }, function (error) { return console.log('Error: ${error}'); }, function () { _this.today = new Date(); });
     }
     UserInfoComponent = __decorate([
         core_1.Component({

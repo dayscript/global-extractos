@@ -61,6 +61,38 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="identification" class="col-md-4 control-label">No. identificacion</label>
+
+                            <div class="col-md-6">
+                                <input id="identification" type="text" class="form-control" name="identification" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codeoyd" class="col-md-4 control-label">Codigo</label>
+
+                            <div class="col-md-6">
+                                <input id="codeoyd" type="text" class="form-control" name="codeoyd" value="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ciudad" class="col-md-4 control-label">Ciudad</label>
+
+                            <div class="col-md-6">
+                                <input id="Ciudad" type="text" class="form-control" name="ciudad" value="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="direccion" class="col-md-4 control-label">Direccion</label>
+
+                            <div class="col-md-6">
+                                <input id="direccion" type="text" class="form-control" name="direccion" value="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     Register

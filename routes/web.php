@@ -14,8 +14,12 @@
 
 /*Laravel admin routes*/
 Auth::routes();
+
+Route::resource('users', 'UsersController');
+
 Route::get('/','HomeController@index')->middleware('auth');
 Route::get('/home', 'HomeController@home')->name('home');
+
 Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
 Route::get('/download/{id_movimientos}','HomeController@download');
@@ -41,10 +45,14 @@ Route::get('/ssl','HomeController@ssl');
 Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
 
 
+/*Devel Routes*/
+Route::get('/php/devel','DevelController@index')->name('devel.index');
+
+
+
 /*Laravel API routes*/
 Route::group(['prefix' => 'api'], function () {
-    Route::get('user-data/{CodigoOyd}', 'ServicesController@user_info');
-    Route::get('pie-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio');
+
     Route::get('variable-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_variable');
     Route::get('fija-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fija');
     Route::get('fics-report/{CodigoOyd}/{Fecha}', 'ServicesController@portafolio_renta_fics');
@@ -52,14 +60,32 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('extracto-fondos-de-inversion-report/{Fondo}/{Encargo}/{Fecha_start}/{Fecha_end}', 'ServicesController@portafolio_fondos_de_inversion');
     Route::get('opc-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPC');
     Route::get('opl-report/{CodigoOyd}/{Fecha}', 'ServicesController@OPL');
+
     Route::get('client-report/{CodigoOyd}/{Fecha_start}/{Fecha_end}', 'ServicesController@ClientReport');
+
     Route::get('cache/{CodigoOyd}', 'ServicesController@CACHE');
     Route::get('/query','HomeController@query');
     Route::get('/file-exist/{CodigoOyd}','HomeController@verifyFile');
     Route::get('/file-exist-operations/{CodigoOyd}','HomeController@verifyFileOperations');
     Route::get('/certificado-tenencia/{CodigoOyd}/{Fecha}/{Dirigida}','HomeController@downloadCertificadoTenencia');
 
+    Route::get('portafolio/{identification}/{date}', 'ServicesController@getPortafolio');
+    Route::get('portafolio-renta-variable/{identification}/{date}', 'ServicesController@getPortafolioRentaVariable');
+    Route::get('portafolio-renta-fija/{identification}/{date}', 'ServicesController@getPortafolioRentaFija');
+    Route::get('portafolio-renta-fics/{identification}/{date}', 'ServicesController@getPortafolioRentaFics');
+    Route::get('portafolio-operaciones-por-cumplir/{identification}/{date}', 'ServicesController@getReportFondosInversion');
+    Route::get('portafolio-operaciones-de-liquidez/{identification}/{date}', 'ServicesController@getReportFondosInversion');
 
+    Route::get('reporte-movimientos/{identification}/{date_start}/{date_end}', 'ServicesController@getExtractoMovimientos');
+    
+    Route::get('reporte-fondos-de-inversion/{identification}', 'ServicesController@getReportFondosInversion');
 
 
 });
+
+
+
+// api/variable-report/3002008/2018-04-15
+// personal.service.ts:52 api/fija-report/3002008/2018-04-15
+// personal.service.ts:72 api/opl-report/3002008/2018-04-15
+// personal.service.ts:65 api/opc-report/3002008/2018-04-15

@@ -43,10 +43,12 @@ class HomeController extends Controller
      */
     public function home()
     {
-      $CodigosOyd = DB::connection('sqlsrv')
-                        ->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]
-                                  FROM [DBOyD].[dbo].[tblClientes]
-                                  WHERE [lngID] > 20000');
+      // $CodigosOyd = DB::connection('sqlsrv')
+      //                   ->select('SELECT TOP 20 [strNombre],[strNroDocumento],[lngID]
+      //                             FROM [DBOyD].[dbo].[tblClientes]
+      //                             WHERE [lngID] > 20000');
+      //
+      return view('admin.dashboard');
     }
     /**
     * Display a listing of the resource.
