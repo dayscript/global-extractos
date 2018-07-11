@@ -1,0 +1,179 @@
+<div class="page-pie">
+  <div class=" wrapper-content">
+  <menu></menu>
+  <div class="container-title col-md-12">
+      <div class="title col-md-12 firma">
+       <h5 class="title-text " >SALDOS Y MOVIMIENTOS FIRMA COMISIONISTA</h5>
+      </div>
+  </div>
+  <div class="col-md-6"></div>
+  <user-info class="col-md-6"></user-info>
+
+  <section class="table" style="display:inline-block">
+    <h5>PORTAFOLIO DE RENTA VARIABLE</h5>
+
+    <table style="width:100%">
+      <div *ngIf="renta_variable == undefined" class="content-wrapper ">
+          <div>
+            <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+          </div>
+      </div>
+      <thead>
+        <th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
+      </thead>
+      <tr *ngFor="let item of renta_variable">
+        <td>{{item.strNombre}} </td>
+        <td class="right-text">{{item.dblCantidad}}</td>
+        <td class="right-text">{{item.FechaCompra }}</td>
+        <td class="right-text">$ {{item.Precio }}</td>
+        <td class="right-text">$ {{item.Valoracion }}</td>
+      </tr>
+      <tr>
+       <td colspan="4"><strong>Total Renta Variable</strong></td>
+       <td colspan="1" class="right-text">
+        <strong *ngIf="renta_variable?.description != 'No aplica' ">$ {{ renta_variable?.total}} </strong>
+      </td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="table">
+    <h5>PORTAFOLIO DE RENTA FIJA</h5>
+
+  	<table style="width:100%">
+      <div *ngIf="renta_fija == undefined" class="content-wrapper">
+          <div>
+            <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+          </div>
+      </div>
+  		<thead>
+  			<th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
+  		</thead>
+  		  <tr *ngFor="let item of renta_fija">
+  		    <td class="left-text">{{item.strNombre}} </td>
+  		    <td class="right-text">{{item.dblCantidad}}</td>
+  		    <td class="right-text">{{item.FechaCompra }}</td>
+  		    <td class="right-text">$ {{item.Precio}} </td>
+  		    <td class="right-text">$ {{item.Valoracion}} </td>
+  		  </tr>
+  		  <tr>
+  		   <td colspan="4"><strong>Total Renta Fija</strong></td>
+  		   <td colspan="1" class="right-text">
+          <strong *ngIf="renta_fija?.description != 'No aplica' ">$ {{ renta_fija?.total }} </strong>
+        </td>
+  		  </tr>
+  	</table>
+  </section>
+
+
+<section class="header">
+    <h5>OPERACIONES POR CUMPLIR</h5>
+  <table style="width:100%">
+      <div *ngIf="opc == undefined" class="content-wrapper border-container">
+          <div>
+            <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+          </div>
+      </div>
+  		<thead>
+  			<th>Emisión</th>
+        <th style="text-align:right">F. Cumplimiento</th>
+        <th style="text-align:right">F. Liquidaci&oacute;n</th>
+        <th style="text-align:right">Cantidad</th>
+        <th style="text-align:right">T. Liquidación</th>
+  		</thead>
+  		  <tr *ngFor="let item of opc">
+  		    <td>{{item.Emision}} </td>
+          <td>{{item.dtmCumplimiento }}</td>
+  		    <td>{{item.dtmLiquidacion}} </td>
+          <td>{{item.dblCantidad}}</td>
+  		    <td>$ {{item.curTotalLiq}} </td>
+  		  </tr>
+  		  <tr>
+  		   <td colspan="3"><strong>Total Operaciones</strong></td>
+         <td colspan="1"><strong *ngIf="opc?.description != 'No aplica'">$ {{ opc?.total_dblCantidad }} </strong></td>
+  		   <td colspan="1"><strong *ngIf="opc?.description != 'No aplica'">$ {{ opc?.total_curTotalLiq }} </strong></td>
+  		  </tr>
+  	</table>
+  </section>
+
+  <section class="header">
+    <h5>OPERACIONES DE LIQUIDEZ</h5>
+  	<table style="width:100%">
+      <div *ngIf="opl == undefined" class="content-wrapper border-container">
+          <div>
+            <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+          </div>
+      </div>
+  		<thead>
+  			<th>Emisión</th>
+        <th style="text-align:right" >Cantidad</th>
+        <th style="text-align:right" >F. Liquidación</th>
+        <th style="text-align:right" >F. cumplimiento</th>
+        <th style="text-align:right" >Total inicio</th>
+        <th style="text-align:right" >Total regreso</th>
+        <th style="text-align:right" >Interés</th>
+  		</thead>
+  		  <tr *ngFor="let item of opl">
+  		    <td>{{item.Emision}} </td>
+          <td style="text-align:right">{{item.dblCantidad}}</td>
+  		    <td style="text-align:right">{{item.dtmLiquidacion }}</td>
+  		    <td style="text-align:right">{{item.dtmCumplimiento_Regreso}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Inicio}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Regreso}} </td>
+          <td style="text-align:right">$ {{item.Interes}} </td>
+  		  </tr>
+  		  <tr>
+  		   <td colspan="6"><strong>Total Operaciones</strong></td>
+  		   <td style="text-align:right" colspan="1">
+          <strong *ngIf="opl?.description != 'No aplica'">$ {{ opl?.total}} </strong>
+         </td>
+  		  </tr>
+  	</table>
+  </section>
+
+  <section class="table">
+    <h5>MOVIMIENTOS</h5>
+    <form class="form-search">
+        <label for="name">Desde:</label>
+        <input  id="datepicker_start" type="text" [(ngModel)]="fecha_inicio" name="fecha_inicio" required>
+        <label for="name">Hasta:</label>
+        <input id="datepicker_end" type="text" [(ngModel)]="fecha_final" name="fecha_final" required>
+        <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+    </form>
+    <div style="display: block">
+      <table *ngIf="info_movimientos != undefined " style="width:100%" class="report-table">
+        <thead>
+          <th class="numero" >FECHA</th>
+          <th class="numero" >DOCUMENTO</th>
+          <th class="detalle">DETALLE</th>
+          <th>A. SU CARGO</th>
+          <th>A. SU FAVOR</th>
+          <th>SALDO</th>
+        </thead>
+          <tr *ngFor="let item of info_movimientos">
+            <td class="numero" >{{item.dtmDocumento | date }}</td>
+            <td class="numero" >{{item.strNumero}}</td>
+            <td class="detalle" >{{item.strDetalle1}}</td>
+            <td class="cargo">{{item.ACargo | currency:'USD':true:'1.2-2'}}</td>
+            <td class="favor" >{{item.AFavor | currency:'USD':true:'1.2-2'}}</td>
+            <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>TOTAL</strong></td>
+            <!-- <td class="saldo"><strong>{{info_movimientos?.total.totalCargo | currency:'USD':true:'1.2-2'}}</strong></td>
+            <td class="saldo"><strong>{{info_movimientos?.total.totalFavor | currency:'USD':true:'1.2-2'}}</strong></td>
+            <td class="saldo"><strong>{{info_movimientos?.total.totalSaldo | currency:'USD':true:'1.2-2'}}</strong></td> -->
+          </tr>
+      </table>
+
+      <div *ngIf="info_movimientos?.id != undefined" class="content-wrapper download-xls">
+          <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
+          <div style="text-align:left">
+            <a href="/download/{{info_movimientos?.id}}"><img style="width: 30px; height: 30px;" src="/images/excel.png" >   XLS</a>
+          </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>

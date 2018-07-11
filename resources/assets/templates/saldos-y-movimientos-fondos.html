@@ -1,0 +1,96 @@
+
+<div class="page-saldos-y-movimientos-fondos">
+  <div class=" wrapper-content">
+  <menu></menu>
+  <div class="container-title col-md-12">
+    <div class="title fondos">
+      <h5 class="title-text ">SALDOS Y MOVIMIENTOS FONDOS DE INVERSIÓN</h5>
+    </div>
+  </div>
+  <div class="col-md-6"></div>
+  <user-info class="col-md-6"></user-info>
+
+    <section class="table" style="display:inline-block">
+
+      <table style="width:100%">
+        <div *ngIf="renta_fics == undefined" class="content-wrapper">
+            <div>
+              <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+            </div>
+        </div>
+        <thead>
+          <th>fondo de inversión</th>
+          <th class="right-text" >encargo</th>
+          <th class="right-text" >f. Constitución</th>
+          <th class="right-text" >f. Vencimiento</th>
+          <th class="right-text" >vlr. Unidad</th>
+          <th class="right-text" >nro.Unidades</th>
+          <th class="right-text" >saldo pesos</th>
+        </thead>
+          <tr *ngFor="let item of renta_fics?.data">
+            <td>{{ item.FONDO }}</td>
+            <td class="right-text" >{{ item.Encargo }}</td>
+            <td class="right-text" >{{ item.Fecha_Const  }}</td>
+            <td class="right-text" >{{ item.Fecha_vto }}</td>
+            <td class="right-text" >$ {{ item.ValorUnidad  }}</td>
+            <td class="right-text" >{{ item.nro_unidades }}</td>
+            <td class="right-text" >$ {{ item.SaldoPesos  }}</td>
+          </tr>
+          <tr>
+           <td colspan="6"><strong>Total Fics</strong></td>
+           <td colspan="1" class="right-text"><strong>$ {{ renta_fics?.total }} </strong></td>
+          </tr>
+      </table>
+    </section>
+
+    <section class="table">
+        <h5>MOVIMIENTOS</h5>
+        <form class="form-search">
+          <div class="row">
+            <div class="col">
+              <label for="name">Fondos de Inversión:</label>
+              <select  style="width:371px;margin: 0 9px 0 0;" id="option_select" [(ngModel)]="option_select" name="option_select" class="wrapper-select">
+                <option value="NA">...</option>
+                <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
+              </select>
+              <label for="name">Desde:</label>
+              <input  id="datepicker_start" type="text" [(ngModel)]="fecha_inicio" name="fecha_inicio" required>
+              <label for="name">Hasta:</label>
+              <input id="datepicker_end" type="text" [(ngModel)]="fecha_final" name="fecha_final" required>
+              <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+            </div>
+          </div>
+        </form>
+      <div style="display: block">
+        <table *ngIf="info_movimientos != undefined " style="width:100%" class="report-table">
+          <thead>
+            <th class="numero" >FECHA</th>
+            <th class="detalle" >TRANSACCIÓN</th>
+            <th class="numero">DÉBITO</th>
+            <th>CRÉDITO</th>
+            <th>NRO. UNIDADES</th>
+            <th>VLR. UNIDAD</th>
+            <th>SALDO PESOS</th>
+          </thead>
+            <tr *ngFor="let item of info_movimientos?.data">
+              <td class="numero" >{{item.fecha | date: 'dd/MM/yyyy'}}</td>
+              <td class="detalle" >{{item.Transaccion}}</td>
+              <td class="cargo" >{{item.Debito}}</td>
+              <td class="cargo">{{item.Credito | currency:'USD':true:'1.2-2' }}</td>
+              <td class="favor" >{{item.Unidades }}</td>
+              <td class="favor" >{{item.ValorUnidad | currency:'USD':true:'1.2-2' }}</td>
+              <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
+            </tr>
+        </table>
+
+        <div *ngIf="info_movimientos?.id != undefined" class="content-wrapper download-xls">
+            <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
+            <div style="text-align:left">
+              <a href="/download-fics/{{info_movimientos?.id}}"><img style="width: 30px; height: 30px;" src="/images/excel.png" >   XLS</a>
+            </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>

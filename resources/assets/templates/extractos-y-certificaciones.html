@@ -1,0 +1,84 @@
+<div class="page-extractos-y-certificaciones">
+  <div class=" wrapper-content">
+  <menu></menu>
+  <div class="container-title col-md-12">
+    <div class="title extractos">
+      <h5 class="title-text">EXTRACTOS Y CERTIFICACIONES</h5>
+    </div>
+  </div>
+    <div class="col-md-6"></div>
+     <user-info class="col-md-6"></user-info>
+    <section class="header">
+      <label for="">EXTRACTOS</label>
+      <form class="">
+        <div class="left-aling-content">
+          <label style="width:145px" for="">Firma Comisionista</label>
+          <select  style="width:150px" class="" [(ngModel)]="fecha_select_firma" name="fecha_select_firma" id="fecha_select_firma" required>
+            <option value="NA">...</option>
+            <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
+          </select>
+          <button (click)=download_firma() type="button" name="button">Consultar</button>
+        </div>
+        <div class="left-aling-content">
+          <label style="width:145px" for="">Fondos de Inversión</label>
+          <select style="width:150px" class="" [(ngModel)]="fecha_select" name="fecha_select" id="fecha_select" required>
+            <option value="NA">...</option>
+            <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
+          </select>
+          <select style="width:400px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
+                <option value="NA">...</option>
+                <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
+          </select>
+          <button (click)=download_fics() type="button" name="button">Consultar</button>
+        </div>
+      </form>
+    </section>
+    <section class="header">
+      <label for="">CERTIFICACIONES</label>
+      <br>
+      <ul style="text-align:left;">
+        <li *ngIf="downloadCertificate" >
+            <a type="button" name="button" download href="{{downloadCertificate}}" > Descargar Certificado de Retención en la Fuente  </a>
+            <br>
+            <em>
+              <small>
+                Por su seguridad el archivo está  protegido. Para abrirlo debe digitar el número de su documento de identificación.
+              </small>
+            </em>
+        </li>
+        <li *ngIf="downloadOperations" >
+            <a type="button" name="button" download href="{{downloadOperations}}" > Descargar Resumen de Operaciones 2017</a>
+            <br>
+            <em>
+              <small>
+                Por su seguridad el archivo está  protegido. Para abrirlo debe digitar el número de su documento de identificación.
+              </small>
+            </em>
+        </li>
+      </ul>
+
+
+    <!--  <form class="" action="index.html" method="post">
+        <div class="left-aling-content">
+          <label  style="width:250px" for="">Certificado para declaración de renta</label>
+          <select style="width:100px" id="download_cert" class="download" name="download_cert">
+            <option value="NA">...</option>
+            <option value="option">2016</option>
+          </select>
+          <button type="button" name="button" (click)=download_renta()>Consultar</button>
+        </div>
+      </form>-->
+
+      <div>
+        <ul style="text-align:left;">
+          <li>
+             <a type="button" name="button" download (click)="downloadCertTenencia()"> Descargar Certificado de Tenencia</a>
+             <input style="width:auto" id="destinatario" type="text" placeholder="¿A quién va dirigido?">
+             <br>
+           </li>
+         </ul>
+      </div>
+
+    </section>
+  </div>
+</div>

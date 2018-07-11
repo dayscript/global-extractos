@@ -1,0 +1,100 @@
+  <div class="wrapper-content">
+    <menu></menu>
+    <div class="container-title col-md-12">
+      <div class="title col-md-12 resumen">
+       <h5 class="title-text" >RESUMEN DE PORTAFOLIO</h5>
+      </div>
+    </div>
+    <div class="date-selector">
+      <form class="form-search form-inline my-2 my-lg-0 col-md-6">
+          <input  class="form-control mr-sm-2" id="datepicker"
+                  type="text"
+                  [(ngModel)]="fecha"
+                  name="fecha"
+                  placeholder="Seleccione una fecha"
+                  required>
+          <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+      </form>
+      <user-info class="col-md-6"></user-info>
+      <div>
+    </div>
+  </div>
+  <section class="personal-data">
+    <div *ngIf="products == undefined" class="content-wrapper ">
+        <div>
+          <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+        </div>
+    </div>
+    <div *ngIf="products != undefined" class="content-wrapper ">
+        <div class="col">
+            <div class="text-left"><strong>Nombre:</strong><span>{{ products?.Nombre }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Dirección:   </strong><span> {{ products?.Direccion }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Ciudad:   </strong><span>{{ products?.Ciudad }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Asesor Comercial:   </strong><span>{{ products?.Comercial }}</span></div>
+        </div>
+        <div class="col">
+            <div class="text-left"><strong>Estado:   </strong><span> {{ products?.Estado }}</span></div>
+        </div>
+    </div>
+  </section>
+
+  <section class="header">
+    <h5> COMPOSICIÓN DEL PORTAFOLIO </h5>
+    <div *ngIf="products == undefined" class="content-wrapper">
+        <div>
+          <img style="width: 100px; height: 100px;" src="/images/loading_data.gif" >
+        </div>
+    </div>
+    <div *ngIf="products != undefined" class="content-wrapper">
+      <div class="col">
+          <div class="text-left"><strong>Renta variable:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalRV  }} </span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong>Renta fija:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalRF }}</span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong>Operaciones de liquidez:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.TotalLiquidez }}</span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong>Operaciones por cumplir:</strong></div>
+          <div class="text-rigth"><span>$ {{ products?.TotalPorCumplir }}</span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong>Saldo disponible:</strong></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.Efectivo }}</strong></span></div>
+      </div>
+      <div class="col">
+          <div class="text-left"><strong>Total Cuenta de Administración:</strong></div>
+          <div class="text-rigth"><span><strong> $ {{ products?.total_administration_account }}</strong></span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong>Fondos de Inversión Colectiva:</strong></div>
+          <div class="text-rigth"><span> $ {{ products?.funds_investment_colective }}</span></div>
+      </div>
+      <div class="col">
+          <div class="text-left" ><strong class="text-medium">Gran Total:</strong></div>
+          <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.gran_total }}</strong></span></div>
+      </div>
+    </div>
+  </section>
+  <section class="diagram">
+    <div *ngIf="pieChartData != undefined && showPie == 1" style="display: block">
+      <canvas class="diagram-pie" baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              [options]="pieChartOptions"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+  </section>
