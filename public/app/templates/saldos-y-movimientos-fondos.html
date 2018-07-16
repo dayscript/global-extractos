@@ -27,18 +27,18 @@
           <th class="right-text" >nro.Unidades</th>
           <th class="right-text" >saldo pesos</th>
         </thead>
-          <tr *ngFor="let item of renta_fics?.data">
+          <tr *ngFor="let item of renta_fics">
             <td>{{ item.FONDO }}</td>
             <td class="right-text" >{{ item.Encargo }}</td>
-            <td class="right-text" >{{ item.Fecha_Const  }}</td>
-            <td class="right-text" >{{ item.Fecha_vto }}</td>
-            <td class="right-text" >$ {{ item.ValorUnidad  }}</td>
-            <td class="right-text" >{{ item.nro_unidades }}</td>
-            <td class="right-text" >$ {{ item.SaldoPesos  }}</td>
+            <td class="right-text" >{{ item.Fecha_Const | date  }}</td>
+            <td class="right-text" >{{ item.Fecha_vto | date }}</td>
+            <td class="right-text" >$ {{ item.ValorUnidad  | number:'1.2-2'}}</td>
+            <td class="right-text" >{{ item.nro_unidades | number:'1.2-2'}}</td>
+            <td class="right-text" >$ {{ item.SaldoPesos | number:'1.2-2' }}</td>
           </tr>
           <tr>
            <td colspan="6"><strong>Total Fics</strong></td>
-           <td colspan="1" class="right-text"><strong>$ {{ renta_fics?.total }} </strong></td>
+           <td colspan="1" class="right-text"><strong innerHTML="$ {{ sumValues(renta_fics,'SaldoPesos') | number:'1.2-2'}}"></strong></td>
           </tr>
       </table>
     </section>
@@ -84,10 +84,10 @@
         </table>
         <div *ngIf="!info_movimientos">Sin resultados</div>
 
-        <div *ngIf="info_movimientos?.id != undefined" class="content-wrapper download-xls">
+        <div *ngIf="info_movimientos" class="content-wrapper download-xls">
             <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
             <div style="text-align:left">
-              <a href="/download-fics/{{info_movimientos?.id}}"><img style="width: 30px; height: 30px;" src="/images/excel.png" >   XLS</a>
+              <a href="{{url_download}}"><img style="width: 30px; height: 30px;" src="/images/excel.png" >   XLS</a>
             </div>
         </div>
 

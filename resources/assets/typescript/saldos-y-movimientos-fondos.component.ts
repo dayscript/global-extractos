@@ -19,15 +19,12 @@ export class SaldosMovimientosFondosComponent {
   fecha:string = ''
   fecha_inicio = ''
   fecha_final = ''
-  renta_fics:Observable<Array<string>>;
+  renta_fics:any
   info_movimientos:any = false;
-  access:any;
-  user_info:Observable<Array<string>>;
-  today:any;
   fics_filter: any = false;
-  fondo:any;
-  encargo:any;
   option_select = 'NA'
+  url_download: string;
+
   constructor(
               private productsService:ProductsService,
               private activatedRoute:ActivatedRoute,
@@ -90,7 +87,8 @@ export class SaldosMovimientosFondosComponent {
       $('#option_select').css('border','1px solid rgb(198, 198, 198)');
     }
     var url = 'api/reporte-fondos-de-inversion-por-fondo/'+splice[0]+'/'+splice[2 ]+'/'+this.fecha_inicio+'/'+this.fecha_final
-    console.log(url)
+    this.url_download = 'download/reporte-movimientos-fics/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final
+
     this.http.get(url)
                 .map( response => response.json() )
                 .subscribe(
@@ -98,5 +96,15 @@ export class SaldosMovimientosFondosComponent {
                   error => console.error(`Error: ${error}`),
                   () => console.log(this.info_movimientos)
                 );
+  }
+
+  private sumValues(values=[], field:string):any {
+    let total = 0;
+    values.forEach( (val) => {
+      if(typeof val[field] != 'undefined'){
+        total += parseFloat(val[field])
+       }
+     })
+    return total
   }
 }

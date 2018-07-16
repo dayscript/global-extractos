@@ -70,10 +70,20 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
             $('#option_select').css('border', '1px solid rgb(198, 198, 198)');
         }
         var url = 'api/reporte-fondos-de-inversion-por-fondo/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
-        console.log(url);
+        this.url_download = 'download/reporte-movimientos-fics/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
         this.http.get(url)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });
+    };
+    SaldosMovimientosFondosComponent.prototype.sumValues = function (values, field) {
+        if (values === void 0) { values = []; }
+        var total = 0;
+        values.forEach(function (val) {
+            if (typeof val[field] != 'undefined') {
+                total += parseFloat(val[field]);
+            }
+        });
+        return total;
     };
     SaldosMovimientosFondosComponent = __decorate([
         core_1.Component({

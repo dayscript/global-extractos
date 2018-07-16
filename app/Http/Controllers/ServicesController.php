@@ -973,7 +973,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
 
     if(isset($soapWrapper->reponse_parse->NewDataSet->Table)){
-      foreach ( $soapWrapper->reponse_parse->NewDataSet->Table as $key => $value) {
+      foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
         foreach ($value as $key => $val) {
             $output[] = $val;
           }
@@ -1083,10 +1083,43 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
          // $sheet->fromArray( $info->data[0]->Saldo );
       });
     })->download('xls');
-
-
     // return json_encode($output);
   }
 
+  public function downloadExtractoMovimientosFics($Fondo,$Encargo,$Fecha_start,$Fecha_end){
+
+   $output = array();
+   $soapWrapper = new SoapService();
+   $file_name = 'reporte-movimientos-fics.xls'.$Fecha_start.'-'.$Fecha_end;
+
+   $data = [
+     'Fondo'    => $Fondo,
+     'Encargo' => $Encargo,
+     'FechaInicial'   => $Fecha_start,
+     'FechaFinal' => $Fecha_end
+     ];
+
+   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
+   if(isset($soapWrapper->reponse_parse->NewDataSet->Table)){
+     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+       foreach ($value as $key => $val) {
+           $output[] = $val;
+         }
+     }
+   }else{
+     $output = null;
+   }
+
+   Excel::create($file_name,function($excel) use ($file_name,$output){
+     $excel->setTitle($file_name);
+     $excel->setCreator('globalcdb.com');
+     $excel->setCompany('Global CDB');
+     $excel->sheet('Movimientos',function($sheet) use($output){
+
+       $sheet->fromArray( json_decode(json_encode($output),true) );
+
+      })->download('xls');
+   });
+ }
 
 }
