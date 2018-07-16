@@ -938,7 +938,13 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
   }
 
 
-
+    /**
+     * [getExtractoMovimientos description]
+     * @param  [type] $identification [description]
+     * @param  [type] $date_start     [description]
+     * @param  [type] $date_end       [description]
+     * @return [type]                 [description]
+     */
   public function getExtractoMovimientos($identification, $date_start, $date_end){
     $user = User::where('identification',$identification)->first();
     $output = array();
@@ -949,7 +955,6 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
       'FechaFinal'   => $date_end
       ];
     $soapWrapper->callMethod('ExtractoClienteDado',$data);
-    // dd($soapWrapper);
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
       foreach ($value as $key => $val) {
           $output[] = $val;
@@ -958,7 +963,14 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     return json_encode($output);
   }
 
-
+    /**
+     * [getExtractoFondoyFideicomisoDadosMovimiento description]
+     * @param  [type] $Fondo       [description]
+     * @param  [type] $Encargo     [description]
+     * @param  [type] $Fecha_start [description]
+     * @param  [type] $Fecha_end   [description]
+     * @return [type]              [description]
+     */
   public function getExtractoFondoyFideicomisoDadosMovimiento($Fondo,$Encargo,$Fecha_start,$Fecha_end){
     // $user = User::where('identification',$identification)->first();
     $output = array();
@@ -984,7 +996,13 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     return json_encode($output);
   }
 
-
+    /**
+     * [downloadExtractoMovimientos description]
+     * @param  [type] $identification [description]
+     * @param  [type] $date_start     [description]
+     * @param  [type] $date_end       [description]
+     * @return [type]                 [description]
+     */
   public function downloadExtractoMovimientos($identification, $date_start, $date_end){
     $user = User::where('identification',$identification)->first();
     $output = array();
@@ -995,7 +1013,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
       'FechaFinal'   => $date_end
       ];
     $soapWrapper->callMethod('ExtractoClienteDado',$data);
-    // dd($soapWrapper);
+
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
       foreach ($value as $key => $val) {
           $output[] = $val;
@@ -1003,7 +1021,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     }
 
     $file_name = 'reporte-movimientos.xls'.$date_start.'-'.$date_end;
-        # Genera el archivo excel
+
     Excel::create($file_name,function($excel) use ($identification,$user,$output,$file_name){
       $excel->setTitle($file_name);
       $excel->setCreator('globalcdb.com');
@@ -1048,9 +1066,8 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
         $sheet->mergeCells('D3:F3');
         $sheet->mergeCells('A4:C4');
         $sheet->mergeCells('D4:F4');
-        #titlulo
         $sheet->mergeCells('A5:F5');
-        #headers
+
         foreach($headers as $cel => $value){
           $sheet->cell($cel, function($cell) use($value) {
            $cell->setValue($value);
@@ -1079,13 +1096,18 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
            );
            $sheet->rows(array($temp));
          }
-
-         // $sheet->fromArray( $info->data[0]->Saldo );
       });
     })->download('xls');
-    // return json_encode($output);
   }
 
+    /**
+     * [downloadExtractoMovimientosFics description]
+     * @param  [type] $Fondo       [description]
+     * @param  [type] $Encargo     [description]
+     * @param  [type] $Fecha_start [description]
+     * @param  [type] $Fecha_end   [description]
+     * @return [type]              [description]
+     */
   public function downloadExtractoMovimientosFics($Fondo,$Encargo,$Fecha_start,$Fecha_end){
 
    $output = array();
@@ -1115,11 +1137,142 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
      $excel->setCreator('globalcdb.com');
      $excel->setCompany('Global CDB');
      $excel->sheet('Movimientos',function($sheet) use($output){
-
        $sheet->fromArray( json_decode(json_encode($output),true) );
-
       })->download('xls');
    });
  }
+
+
+ /**
+  * [extract_firma description]
+  * @param  [type] $id    [description]
+  * @param  [type] $fecha [description]
+  * @return [type]        [description]
+  */
+ public function getExtractFirmaComisionista($identification,$date){
+    $output = array();
+    $fecha_actual = new \DateTime($date);
+    $fecha_actual->modify('first day of this month');
+    $fecha_inicio = $fecha_actual->format('Y-m-d');
+    $fecha_actual->modify('last day of this month');
+    $fecha_fin = $fecha_actual->format('Y-m-d');
+    $image_header = public_path().'/images/header-extracto2.jpg';
+    $image_fotter = public_path().'/images/vigilante.jpg';
+    $user = User::where('identification',$identification)->first();
+    $data = [
+     'CodigoOyd' =>  $user->codeoyd,
+     'Fecha'     =>  $fecha_fin
+     ];
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('PieRVClienteDado',$data);
+    $output['rv'] = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('PieRFClienteDado',$data);
+    $output['rf'] = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('TraerOperacionesPorCumplirClienteDadoDayScript',$data);
+    $output['opc'] = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
+    $output['odl'] = $soapWrapper->reponse_parse;
+
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('ExtractoClienteDado',[
+       'CodigoOyd'=>$user->codeoyd,
+       'FechaInicial'=>$fecha_inicio,
+       'FechaFinal'=>$fecha_fin,
+      ]
+    );
+    $output['mes'] = $soapWrapper->reponse_parse;
+
+    $total_valoracion   = 0;
+    if(isset($output['rf']->NewDataSet)){
+      foreach( $output['rf']->NewDataSet as $key => $movimiento_rf ){
+        foreach ($movimiento_rf as $key => $val) {
+         $total_valoracion += $val->Valoracion;
+         // $val->Valoracion = ( $val->Valoracion == null ) ? '':'$ '.number_format($val->Valoracion,2);
+        }
+      }
+    }
+
+   $output['totales_rf'] = array(
+                           'total_valoracion' => $total_valoracion,
+                         );
+
+
+   $total_precio   = 0;
+   if(isset($output['rv']->NewDataSet)){
+     foreach( $output['rv']->NewDataSet as $key => $movimiento_rv ){
+       foreach ($movimiento_rv as $key => $val) {
+         $total_precio += $val->Valoracion;
+         // $val->Precio = ( $val->Precio == null ) ? '':'$ '.number_format($val->Precio,2);
+       }
+     }
+   }
+   $output['totales_rv'] = array(
+                           'total_precio' => $total_precio,
+                         );
+
+
+
+   $total_inicio = 0;
+   $total_regreso = 0;
+   $total_interes   = 0;
+   if(isset($output['odl']->NewDataSet)){
+     foreach( $output['odl']->NewDataSet as $key => $movimiento_odl){
+       foreach ($movimiento_odl as $key => $val) {
+         $total_inicio += $val->CurTotalliq_Inicio;
+         $total_regreso += $val->CurTotalliq_Regreso;
+         $total_interes   += $val->Interes;
+         // $val->CurTotalliq_Inicio = ( $val->CurTotalliq_Inicio == null ) ? '':'$ '.number_format($val->CurTotalliq_Inicio,2);
+         // $val->CurTotalliq_Regreso = ( $val->CurTotalliq_Regreso == null ) ? '':'$ '.number_format($val->CurTotalliq_Regreso,2);
+         // $val->Interes  = ( $val->Interes  == null ) ? '':'$ '.number_format($val->Interes,2);
+       }
+     }
+   }
+   $output['totales_odl'] = array(
+                           'total_inicio' => $total_inicio,
+                           'total_regreso' => $total_regreso,
+                           'total_interes'   => $total_interes,
+                         );
+
+
+   $total_a_cargo = 0;
+   $total_a_favor = 0;
+   $total_saldo   = 0;
+   if(isset($output['mes']->NewDataSet)){
+     foreach( $output['mes']->NewDataSet as $key => $movimiento){
+       foreach ($movimiento as $key => $val) {
+         $total_a_cargo += $val->ACargo;
+         $total_a_favor += $val->AFavor;
+         $total_saldo   += $val->Saldo;
+         // $val->ACargo = ( $val->ACargo == null ) ? '':'$ '.number_format($val->ACargo,2);
+         // $val->AFavor = ( $val->AFavor == null ) ? '':'$ '.number_format($val->AFavor,2);
+         // $val->Saldo  = ( $val->Saldo  == null ) ? '':'$ '.number_format($val->Saldo,2);
+       }
+     }
+   }
+   $output['totales'] = array(
+                           'total_a_cargo' => $total_a_cargo,
+                           'total_a_favor' => $total_a_favor,
+                           'total_saldo'   => $total_a_cargo - $total_a_favor,
+                         );
+   $data  = array(
+                  'info' => $output,
+                  'user' => $user,
+                  'fecha' => $date,
+                  'image' => $image_header,
+                  'image_fotter'=>$image_fotter,
+                  'fecha_inicio'=>$fecha_inicio,
+                  'fecha_fin'=>$fecha_fin,
+                );
+   //return view('extracto-firma',$data);
+   return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
+}
 
 }

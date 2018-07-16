@@ -58,7 +58,6 @@ export class ProductsService {
   }
 
   FicsFilter(id:string, date:string):Observable<any>{
-    console.log('api/fondos-de-inversion-report/'+id);
     return this.http.get('api/reporte-fondos-de-inversion/'+id)
              .map( response => response.json() );
   }

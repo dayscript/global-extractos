@@ -91,6 +91,7 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.fecha_inicio = $('#datepicker_start').val();
         this.fecha_final = $('#datepicker_end').val();
         var url = 'api/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
+        this.url_download = 'download/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
         this.http.get(url)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });

@@ -19,7 +19,6 @@ var http_1 = require("@angular/http");
  */
 var ExtractosCertificaciones = /** @class */ (function () {
     function ExtractosCertificaciones(productsService, activatedRoute, http) {
-        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
@@ -30,31 +29,34 @@ var ExtractosCertificaciones = /** @class */ (function () {
         this.fecha_select = 'NA';
         this.download = 'NA';
         this.fechas = [];
+    }
+    ExtractosCertificaciones.prototype.ngOnInit = function () {
+        var _this = this;
         this.activatedRoute.params.subscribe(function (params) {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        productsService.user_info
+        this.productsService.getUserInfo(this.id_identificacion, this.fecha)
             .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () {
             _this.today = new Date();
-            productsService.verifyFile(_this.user_info.codigo).subscribe(function (response) {
+            _this.productsService.verifyFile(_this.user_info.codigo).subscribe(function (response) {
                 if (response.response) {
                     _this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_' + _this.user_info.codigo + '.pdf';
                 }
             });
-            productsService.verifyFileOperations(_this.user_info.codigo).subscribe(function (response) {
+            _this.productsService.verifyFileOperations(_this.user_info.codigo).subscribe(function (response) {
                 if (response.response) {
                     _this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_' + _this.user_info.codigo + '.pdf';
                 }
             });
         });
-        productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
+        this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
             date.setMonth(date.getMonth() - i);
             this.fechas.push(date);
         }
-    }
+    };
     ExtractosCertificaciones.prototype.download_firma = function () {
         this.fecha_select_firma = $('#fecha_select_firma').val();
         if (this.fecha_select_firma == 'NA') {

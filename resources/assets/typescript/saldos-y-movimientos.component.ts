@@ -24,6 +24,7 @@ export class SaldosMovimientosComponent implements OnInit{
   private renta_fija:any = false;
   private opl:any = false;
   private opc:any = false;
+  private url_download: any;
 
   constructor(private productsService:ProductsService, private activatedRoute:ActivatedRoute, private http: Http){}
 
@@ -112,7 +113,7 @@ export class SaldosMovimientosComponent implements OnInit{
     this.fecha_inicio = $('#datepicker_start').val()
     this.fecha_final = $('#datepicker_end').val()
     var url = 'api/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
-
+    this.url_download = 'download/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
     this.http.get(url)
                 .map( response => response.json() )
                 .subscribe(

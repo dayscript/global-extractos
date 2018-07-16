@@ -51,7 +51,6 @@ var ProductsService = /** @class */ (function () {
             .map(function (response) { return response.json(); });
     };
     ProductsService.prototype.FicsFilter = function (id, date) {
-        console.log('api/fondos-de-inversion-report/' + id);
         return this.http.get('api/reporte-fondos-de-inversion/' + id)
             .map(function (response) { return response.json(); });
     };

@@ -27,7 +27,7 @@
           </select>
           <select style="width:400px" id="option_select" [(ngModel)]="option_select" name="option_select" class="">
                 <option value="NA">...</option>
-                <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
+                <option *ngFor="let item of fics_filter" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
           </select>
           <button (click)=download_fics() type="button" name="button">Consultar</button>
         </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
 import { ActivatedRoute  } from '@angular/router';
@@ -14,7 +14,7 @@ declare var $: any
   templateUrl: '/app/templates/extractos-y-certificaciones.html',
   providers: [ProductsService],
 })
-export class ExtractosCertificaciones {
+export class ExtractosCertificaciones implements OnInit {
   id_identificacion:string = ''
   fecha:string = ''
   user_info:any;
@@ -37,27 +37,29 @@ export class ExtractosCertificaciones {
     private activatedRoute:ActivatedRoute,
     private http: Http,
   )
-  {
+  {}
+
+  ngOnInit():void{
     this.activatedRoute.params.subscribe(
       params => {
         this.id_identificacion = params['id'],
         this.fecha = params['date']
       }
     )
-    productsService.user_info
+    this.productsService.getUserInfo(this.id_identificacion,this.fecha)
       .subscribe(
         data => { this.user_info = data },
         error => console.log( 'Error: ${error}' ),
         () => {
             this.today = new Date()
-            productsService.verifyFile(this.user_info.codigo).subscribe(
+            this.productsService.verifyFile(this.user_info.codigo).subscribe(
               response => {
                   if(response.response){
                     this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_'+ this.user_info.codigo +'.pdf'
                   }
               }
             )
-            productsService.verifyFileOperations(this.user_info.codigo).subscribe(
+            this.productsService.verifyFileOperations(this.user_info.codigo).subscribe(
               response => {
                   if(response.response){
                     this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_'+ this.user_info.codigo +'.pdf'
@@ -69,7 +71,7 @@ export class ExtractosCertificaciones {
         }
       );
 
-    productsService.FicsFilter.subscribe(
+    this.productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
       () => { console.log( 'FicsFilter=> ', this.fics_filter); }
@@ -81,6 +83,8 @@ export class ExtractosCertificaciones {
       this.fechas.push(date);
     }
   }
+
+
   download_firma(){
      this.fecha_select_firma = $('#fecha_select_firma').val()
      if(this.fecha_select_firma == 'NA'){
@@ -90,6 +94,7 @@ export class ExtractosCertificaciones {
      window.location.replace('/download-firma-extrac/'+this.id_identificacion+'/'+this.fecha_select_firma)
 
   }
+
   download_fics(){
     this.fecha_select = $('#fecha_select').val()
     this.option_select = $('#option_select').val()
@@ -104,6 +109,7 @@ export class ExtractosCertificaciones {
     window.location.replace(url)
 
   }
+
   download_renta(){
     this.download = $('#download_cert').val()
     if(this.download == 'NA'){
