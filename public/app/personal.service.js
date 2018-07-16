@@ -15,98 +15,46 @@ require("rxjs/add/operator/map");
 var router_1 = require("@angular/router");
 var ProductsService = /** @class */ (function () {
     function ProductsService(http, activatedRoute) {
-        var _this = this;
         this.http = http;
         this.activatedRoute = activatedRoute;
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id = params['id'],
-                _this.date = params['date'];
-        });
-        var regex = /^[0-9]+$/g;
-        var date = /^[0-9]+-+[0-9]+-+[0-9]+$/g;
-        if (date.exec(this.date) == null) {
-            alert('La fecha no es valida');
-        }
-        /*if(regex.exec(this.id) == null){
-          alert('El codigo no es valido');
-        }*/
-        if (this.id == 0) {
-            alert('Codigo no valido');
-        }
     }
-    Object.defineProperty(ProductsService.prototype, "user_info", {
-        get: function () {
-            return this.http.get('/users/' + this.id)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "Data", {
-        get: function () {
-            return this.http.get('/api/portafolio/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "getRentaVariable", {
-        get: function () {
-            return this.http.get('api/portafolio-renta-variable/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "getRetaFija", {
-        get: function () {
-            return this.http.get('api/portafolio-renta-fija/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "DataFics", {
-        get: function () {
-            return this.http.get('api/fics-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "getOperacionesPorCumplir", {
-        get: function () {
-            return this.http.get('api/portafolio-operaciones-por-cumplir/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "getOperacionesDeLiquidez", {
-        get: function () {
-            return this.http.get('api/portafolio-operaciones-de-liquidez/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "Cache", {
-        get: function () {
-            return this.http.get('api/cache/' + this.id)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProductsService.prototype, "FicsFilter", {
-        get: function () {
-            console.log('api/fondos-de-inversion-report/' + this.id + '/' + this.date);
-            return this.http.get('api/fondos-de-inversion-report/' + this.id + '/' + this.date)
-                .map(function (response) { return response.json(); });
-        },
-        enumerable: true,
-        configurable: true
-    });
+    ProductsService.prototype.getUserInfo = function (id, date) {
+        return this.http.get('/users/' + id)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getData = function (id, date) {
+        return this.http.get('/api/portafolio/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getRentaVariable = function (id, date) {
+        return this.http.get('api/portafolio-renta-variable/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getRetaFija = function (id, date) {
+        return this.http.get('api/portafolio-renta-fija/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.DataFics = function (id, date) {
+        return this.http.get('api/portafolio-renta-fics/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getOperacionesPorCumplir = function (id, date) {
+        return this.http.get('api/portafolio-operaciones-por-cumplir/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getOperacionesDeLiquidez = function (id, date) {
+        return this.http.get('api/portafolio-operaciones-de-liquidez/' + id + '/' + date)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.Cache = function () {
+        return this.http.get('api/cache/' + this.id)
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.FicsFilter = function (id, date) {
+        console.log('api/fondos-de-inversion-report/' + id);
+        return this.http.get('api/reporte-fondos-de-inversion/' + id)
+            .map(function (response) { return response.json(); });
+    };
     ProductsService.prototype.verifyFile = function (codeoyd) {
         return this.http.get('/api/file-exist/' + codeoyd)
             .map(function (response) { return response.json(); });

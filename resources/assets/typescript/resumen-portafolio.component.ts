@@ -14,8 +14,8 @@ declare var $: any
 export class ResumenPortafolioComponent implements OnInit {
   private id_identificacion:string;
   private fecha:string;
-  private products:any;
-  private showPie : number;
+  private products:any = false;
+  private showPie : number = 0;
   private pieChartLabels:string[] = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
   private pieChartData:number[];
   private pieChartType:string = 'pie';
@@ -36,32 +36,35 @@ export class ResumenPortafolioComponent implements OnInit {
                   },
         }
 
-  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {}
+  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute) {}
 
-  ngOnInit():void{
-
+  ngOnInit(){
+    this.products = false;
     this.activatedRoute.params.subscribe(
       params=>{ this.id_identificacion = params['id'],
                 this.fecha = params['date']
               }
     )
+    setTimeout( () => { this.getData(); },1 );
 
-    this.productsService.Data
+  }
+
+  public getData():void{
+    this.productsService.getData(this.id_identificacion, this.fecha)
       .subscribe(
         data => { this.products = data},
         error => console.error(error),
-        () => { this.setParamsPie(); this.showPie },
+        () => {
+           this.setParamsPie()
+           setTimeout(function() {
+             $(function() {
+               $( "#datepicker" ).datepicker({
+                 dateFormat: "yy-mm-dd"
+               });
+             });
+           },1000);
+        },
       );
-
-
-    setTimeout(function() {
-      $(function() {
-        $( "#datepicker" ).datepicker({
-          dateFormat: "yy-mm-dd"
-        });
-      });
-    },1000);
-
   }
 
   public setParamsPie(){

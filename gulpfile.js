@@ -39,7 +39,11 @@ elixir(mix => {
           removeComments: false,
           noImplicitAny: false,
           lib: ["es2017", "dom"],
-          noStrictGenericChecks:true
+          noStrictGenericChecks:true,
+              compilerOptions: {
+              experimentalDecorators: true,
+              allowJs: true
+          }
         }
     );
 });

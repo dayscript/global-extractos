@@ -21,7 +21,7 @@ import { AyudaComponet }   from './ayuda.component';
 import { SalirComponet }   from './salir.component';
 
 const appRoutes: Routes = [
-    { path: 'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
+    { path:'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
     { path:'report/:id/:date/resumen-de-portafolio', component:ResumenPortafolioComponent },
     { path:'report/:id/:date/saldos-y-movimientos-de-la-firma', component:SaldosMovimientosComponent },
     { path:'report/:id/:date/saldos-y-movimientos-fondos-de-inversion', component:SaldosMovimientosFondosComponent },

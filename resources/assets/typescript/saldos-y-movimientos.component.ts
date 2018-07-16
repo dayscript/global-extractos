@@ -15,41 +15,19 @@ declare var $: any
   providers: [ProductsService],
 })
 export class SaldosMovimientosComponent implements OnInit{
-  id_identificacion:string = '';
-  fecha:string = ''
-  fecha_inicio = ''
-  fecha_final = ''
-  info_movimientos:Observable<Array<string>>;
+  private id_identificacion:string = '';
+  private fecha:string = ''
+  private fecha_inicio = ''
+  private fecha_final = ''
+  private renta_variable:any = false;
+  private info_movimientos:any = false;
+  private renta_fija:any = false;
+  private opl:any = false;
+  private opc:any = false;
 
-  renta_fija:Observable<Array<string>>;
-  opl:Observable<Array<string>>;
-  opc:Observable<Array<string>>;
-  today:any;
-  user_info:Observable<Array<string>>;
-  access:any;
-
-  private renta_variable:any;
-
-  constructor(
-              private productsService:ProductsService,
-              private activatedRoute:ActivatedRoute,
-              private http: Http,
-              ){}
+  constructor(private productsService:ProductsService, private activatedRoute:ActivatedRoute, private http: Http){}
 
   ngOnInit():void{
-    setTimeout(function() {
-      $(function() {
-        $( "#datepicker_start" ).datepicker({
-          dateFormat: "yy-mm-dd"
-        });
-      });
-      $(function() {
-        $( "#datepicker_end" ).datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-      });
-    },1000);
-
     this.activatedRoute.params.subscribe(
       params => {
         this.id_identificacion = params['id'],
@@ -57,37 +35,84 @@ export class SaldosMovimientosComponent implements OnInit{
       }
     );
 
-    this.productsService.getRentaVariable.subscribe(
-      data  => { this.renta_variable = data },
-      error => console.log('error: ${error}'),
-      ()    => console.log(this.renta_variable)
-    );
-
-    this.productsService.getRetaFija.subscribe(
-      data  => {this.renta_fija = data},
-      error => console.log('error: ${error}'),
-      ()    => console.log(this.renta_fija)
-    );
-
-    this.productsService.getOperacionesPorCumplir.subscribe(
-      data  => {this.opc = data},
-      error => console.log('error:${error}'),
-      ()    => console.log(this.opc)
-    );
-
-    this.productsService.getOperacionesDeLiquidez.subscribe(
-      data  => {this.opl = data},
-      error => console.log('error: ${error}'),
-      ()    => console.log(this.opl)
-    );
-
+    setTimeout( () =>{ this.getData()},1);
   }
 
 
-  search():void{
+   getData():void{
+     setTimeout(function() {
+       $(function() {
+         $( "#datepicker_start" ).datepicker({
+           dateFormat: "yy-mm-dd"
+         });
+       });
+       $(function() {
+         $( "#datepicker_end" ).datepicker({
+             dateFormat: "yy-mm-dd"
+         });
+       });
+     },1000);
+
+
+     this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(
+       data  => { this.renta_variable = data },
+       error => console.log(error),
+       ()    => { console.log( this.renta_variable) }
+     );
+
+     this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(
+       data  => {this.renta_fija = data},
+       error => console.log('error: ${error}'),
+       ()    => console.log(this.renta_fija)
+     );
+
+     this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(
+       data  => {this.opc = data},
+       error => console.log('error:${error}'),
+       ()    => console.log(this.opc)
+     );
+
+     this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(
+       data  => {this.opl = data},
+       error => console.log('error: ${error}'),
+       ()    => console.log(this.opl)
+     );
+   }
+
+   private sumValues(values=[], field:string):any {
+     let total = 0;
+     values.forEach( (val) => {
+       if(typeof val[field] != 'undefined'){
+         total += parseFloat(val[field])
+        }
+      })
+     return total
+   }
+
+   private restValues(values=[], field:string,field2:string):any{
+     let minuendo = 0;
+     let sustranedo = 0;
+     let resultado = 0;
+
+     values.forEach( (val) => {
+       if(typeof val[field] != 'undefined'){
+         minuendo += parseFloat(val[field])
+        }
+      });
+
+      values.forEach( (val) => {
+        if(typeof val[field2] != 'undefined'){
+          sustranedo += parseFloat(val[field2])
+         }
+       })
+    return minuendo - sustranedo;
+   }
+
+  private search():void{
     this.fecha_inicio = $('#datepicker_start').val()
     this.fecha_final = $('#datepicker_end').val()
     var url = 'api/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
+
     this.http.get(url)
                 .map( response => response.json() )
                 .subscribe(

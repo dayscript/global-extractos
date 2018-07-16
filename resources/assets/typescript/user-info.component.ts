@@ -1,4 +1,4 @@
-import { Component,Directive } from '@angular/core';
+import { Component,Directive, OnInit } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
 import { ActivatedRoute,Router  } from '@angular/router';
@@ -12,11 +12,23 @@ declare var $: any
   providers: [ProductsService],
 })
 export class UserInfoComponent {
-  user: any;
-  today:any;
+  private user: any;
+  private today:any;
+  private id: any;
+  private date: any;
 
-  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
-    productsService.user_info
+  constructor(private productsService: ProductsService,
+              private activatedRoute:ActivatedRoute,
+              private http: Http,
+              private Router:Router) {}
+
+  ngOnInit():void{
+    this.activatedRoute.params.subscribe(
+      params=>{ this.id = params['id'],
+                this.date = params['date']
+              }
+    );
+    this.productsService.getUserInfo(this.id, this.date)
       .subscribe(
         data => { this.user = data },
         error => console.log( 'Error: ${error}' ),

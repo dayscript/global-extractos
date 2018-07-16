@@ -26,8 +26,21 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.fecha = '';
         this.fecha_inicio = '';
         this.fecha_final = '';
+        this.renta_variable = false;
+        this.info_movimientos = false;
+        this.renta_fija = false;
+        this.opl = false;
+        this.opc = false;
     }
     SaldosMovimientosComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id_identificacion = params['id'],
+                _this.fecha = params['date'];
+        });
+        setTimeout(function () { _this.getData(); }, 1);
+    };
+    SaldosMovimientosComponent.prototype.getData = function () {
         var _this = this;
         setTimeout(function () {
             $(function () {
@@ -41,14 +54,37 @@ var SaldosMovimientosComponent = /** @class */ (function () {
                 });
             });
         }, 1000);
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.id_identificacion = params['id'],
-                _this.fecha = params['date'];
+        this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log(error); }, function () { console.log(_this.renta_variable); });
+        this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
+        this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
+        this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
+    };
+    SaldosMovimientosComponent.prototype.sumValues = function (values, field) {
+        if (values === void 0) { values = []; }
+        var total = 0;
+        values.forEach(function (val) {
+            if (typeof val[field] != 'undefined') {
+                total += parseFloat(val[field]);
+            }
         });
-        this.productsService.getRentaVariable.subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_variable); });
-        this.productsService.getRetaFija.subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
-        this.productsService.getOperacionesPorCumplir.subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
-        this.productsService.getOperacionesDeLiquidez.subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
+        return total;
+    };
+    SaldosMovimientosComponent.prototype.restValues = function (values, field, field2) {
+        if (values === void 0) { values = []; }
+        var minuendo = 0;
+        var sustranedo = 0;
+        var resultado = 0;
+        values.forEach(function (val) {
+            if (typeof val[field] != 'undefined') {
+                minuendo += parseFloat(val[field]);
+            }
+        });
+        values.forEach(function (val) {
+            if (typeof val[field2] != 'undefined') {
+                sustranedo += parseFloat(val[field2]);
+            }
+        });
+        return minuendo - sustranedo;
     };
     SaldosMovimientosComponent.prototype.search = function () {
         var _this = this;
@@ -65,9 +101,7 @@ var SaldosMovimientosComponent = /** @class */ (function () {
             templateUrl: '/app/templates/saldos-y-movimientos.html',
             providers: [personal_service_1.ProductsService],
         }),
-        __metadata("design:paramtypes", [personal_service_1.ProductsService,
-            router_1.ActivatedRoute,
-            http_1.Http])
+        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http])
     ], SaldosMovimientosComponent);
     return SaldosMovimientosComponent;
 }());

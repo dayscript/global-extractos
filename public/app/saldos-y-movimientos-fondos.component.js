@@ -27,6 +27,8 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
         this.fecha = '';
         this.fecha_inicio = '';
         this.fecha_final = '';
+        this.info_movimientos = false;
+        this.fics_filter = false;
         this.option_select = 'NA';
         setTimeout(function () {
             $(function () {
@@ -44,9 +46,14 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        productsService.DataFics.subscribe(function (data) { _this.renta_fics = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fics); });
-        productsService.user_info.subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.today = new Date(); });
-        productsService.FicsFilter.subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return console.log(_this.fics_filter); });
+        productsService.DataFics(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fics = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fics); });
+        // productsService.user_info.subscribe(
+        //   data => { this.user_info = data },
+        //   error => console.log( 'Error: ${error}' ),
+        //   () => this.today = new Date(),
+        // );
+        //
+        productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return console.log(_this.fics_filter); });
         /*Fin de componenete SaldosMovimientosComponent*/
     }
     SaldosMovimientosFondosComponent.prototype.search = function () {
@@ -62,7 +69,7 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
         else {
             $('#option_select').css('border', '1px solid rgb(198, 198, 198)');
         }
-        var url = 'api/extracto-fondos-de-inversion-report/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
+        var url = 'api/reporte-fondos-de-inversion-por-fondo/' + splice[0] + '/' + splice[2] + '/' + this.fecha_inicio + '/' + this.fecha_final;
         console.log(url);
         this.http.get(url)
             .map(function (response) { return response.json(); })

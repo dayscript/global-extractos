@@ -20,11 +20,11 @@ export class SaldosMovimientosFondosComponent {
   fecha_inicio = ''
   fecha_final = ''
   renta_fics:Observable<Array<string>>;
-  info_movimientos:Observable<Array<string>>;
+  info_movimientos:any = false;
   access:any;
   user_info:Observable<Array<string>>;
   today:any;
-  fics_filter:Observable<Array<string>>;
+  fics_filter: any = false;
   fondo:any;
   encargo:any;
   option_select = 'NA'
@@ -55,17 +55,20 @@ export class SaldosMovimientosFondosComponent {
         this.fecha = params['date']
       }
     );
-    productsService.DataFics.subscribe(
+
+    productsService.DataFics(this.id_identificacion,this.fecha).subscribe(
       data  => {this.renta_fics = data},
       error => console.log('error: ${error}'),
       ()    =>console.log(this.renta_fics)
     );
-    productsService.user_info.subscribe(
-      data => { this.user_info = data },
-      error => console.log( 'Error: ${error}' ),
-      () => this.today = new Date(),
-    );
-    productsService.FicsFilter.subscribe(
+
+    // productsService.user_info.subscribe(
+    //   data => { this.user_info = data },
+    //   error => console.log( 'Error: ${error}' ),
+    //   () => this.today = new Date(),
+    // );
+    //
+    productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
       () => console.log(this.fics_filter)
@@ -86,7 +89,7 @@ export class SaldosMovimientosFondosComponent {
     }else{
       $('#option_select').css('border','1px solid rgb(198, 198, 198)');
     }
-    var url = 'api/extracto-fondos-de-inversion-report/'+splice[0]+'/'+splice[2 ]+'/'+this.fecha_inicio+'/'+this.fecha_final
+    var url = 'api/reporte-fondos-de-inversion-por-fondo/'+splice[0]+'/'+splice[2 ]+'/'+this.fecha_inicio+'/'+this.fecha_final
     console.log(url)
     this.http.get(url)
                 .map( response => response.json() )

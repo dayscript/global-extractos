@@ -1,4 +1,4 @@
-import { Component,Directive } from '@angular/core';
+import { Component,Directive, OnInit } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { ProductsService } from './personal.service';
 import { ActivatedRoute,Router  } from '@angular/router';
@@ -16,12 +16,19 @@ export class MenuComponent {
   id_identificacion:string;
   fecha:string;
 
-  constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute,private http: Http,private Router:Router) {
-    this.activatedRoute.params.subscribe(
-      params=>{ this.id_identificacion = params['id'],
-                this.fecha = params['date']
-              }
-    )
-  }
+  constructor(
+     private productsService: ProductsService,
+     private activatedRoute:ActivatedRoute,
+     private http: Http,
+     private Router:Router) { }
+
+     ngOnInit():void{
+       this.activatedRoute.params.subscribe(
+         params=>{
+              this.id_identificacion = params['id'],
+              this.fecha = params['date']
+            }
+       )
+     }
 
 }

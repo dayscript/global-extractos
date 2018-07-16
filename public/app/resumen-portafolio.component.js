@@ -12,14 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var personal_service_1 = require("./personal.service");
 var router_1 = require("@angular/router");
-var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var ResumenPortafolioComponent = /** @class */ (function () {
-    function ResumenPortafolioComponent(productsService, activatedRoute, http, Router) {
+    function ResumenPortafolioComponent(productsService, activatedRoute) {
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
-        this.http = http;
-        this.Router = Router;
+        this.products = false;
+        this.showPie = 0;
         this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
         this.pieChartType = 'pie';
         this.pieChartOptions = {
@@ -39,19 +38,26 @@ var ResumenPortafolioComponent = /** @class */ (function () {
     }
     ResumenPortafolioComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.products = false;
         this.activatedRoute.params.subscribe(function (params) {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        this.productsService.Data
-            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error(error); }, function () { _this.setParamsPie(); _this.showPie; });
-        setTimeout(function () {
-            $(function () {
-                $("#datepicker").datepicker({
-                    dateFormat: "yy-mm-dd"
+        setTimeout(function () { _this.getData(); }, 1);
+    };
+    ResumenPortafolioComponent.prototype.getData = function () {
+        var _this = this;
+        this.productsService.getData(this.id_identificacion, this.fecha)
+            .subscribe(function (data) { _this.products = data; }, function (error) { return console.error(error); }, function () {
+            _this.setParamsPie();
+            setTimeout(function () {
+                $(function () {
+                    $("#datepicker").datepicker({
+                        dateFormat: "yy-mm-dd"
+                    });
                 });
-            });
-        }, 1000);
+            }, 1000);
+        });
     };
     ResumenPortafolioComponent.prototype.setParamsPie = function () {
         var _this = this;
@@ -87,7 +93,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
             templateUrl: '/app/templates/resumen-de-portafolio.html',
             providers: [personal_service_1.ProductsService],
         }),
-        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute])
     ], ResumenPortafolioComponent);
     return ResumenPortafolioComponent;
 }());

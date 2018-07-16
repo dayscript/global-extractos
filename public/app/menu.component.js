@@ -16,23 +16,28 @@ var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var MenuComponent = /** @class */ (function () {
     function MenuComponent(productsService, activatedRoute, http, Router) {
-        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.Router = Router;
+    }
+    MenuComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.activatedRoute.params.subscribe(function (params) {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-    }
+    };
     MenuComponent = __decorate([
         core_1.Component({
             selector: 'menu',
             templateUrl: '/app/templates/menu.html',
             providers: [personal_service_1.ProductsService],
         }),
-        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+        __metadata("design:paramtypes", [personal_service_1.ProductsService,
+            router_1.ActivatedRoute,
+            http_1.Http,
+            router_1.Router])
     ], MenuComponent);
     return MenuComponent;
 }());

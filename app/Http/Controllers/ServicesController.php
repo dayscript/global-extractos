@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use File;
 use App\Movimientos;
 use App\OperacionesLiquidez;
 use App\OperacionesCumplir;
@@ -13,8 +12,12 @@ use \App\Portafolio;
 use \App\RentaVariable;
 use \App\RentaFics;
 use \App\User;
-
 use App\SoapService;
+
+use Excel;
+use Storage;
+use PDF;
+use File;
 
 
 class ServicesController extends Controller
@@ -800,7 +803,9 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('PieRVClienteDado',$data);
 
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
 
     return json_encode($output);
@@ -824,7 +829,9 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('PieRFClienteDado',$data);
 
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
 
     return json_encode($output);
@@ -848,7 +855,9 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('PieCarterasClienteDado',$data);
 
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
 
     return json_encode($output);
@@ -870,7 +879,9 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('FideicomisosVigentesClienteDado',$data);
 
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
     return json_encode($output);
   }
@@ -881,7 +892,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
      * @param  [type] $date      [description]
      * @return [type]            [description]
      */
-  public function getOperacionesPorCumplir($CodigoOyd,$date){
+  public function getOperacionesPorCumplir($identification,$date){
 
     $user = User::where('identification',$identification)->first();
     $output = array();
@@ -894,7 +905,9 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
     $soapWrapper->callMethod('TraerOperacionesPorCumplirClienteDadoDayScript',$data);
 
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
     return json_encode($output);
   }
@@ -905,7 +918,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
      * @param  [type] $date      [description]
      * @return [type]            [description]
      */
-  public function getOperacionesDeLiquidez($CodigoOyd,$date){
+  public function getOperacionesDeLiquidez($identification,$date){
 
     $user = User::where('identification',$identification)->first();
     $output = array();
@@ -916,9 +929,10 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
       ];
 
     $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
-
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
-      $output[] = $value->Table;
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
     return json_encode($output);
   }
@@ -936,15 +950,143 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
       ];
     $soapWrapper->callMethod('ExtractoClienteDado',$data);
     // dd($soapWrapper);
-    foreach ( $soapWrapper->reponse_parse->NewDataSet->Table as $key => $value) {
-      $output[] = $value;
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
     }
     return json_encode($output);
   }
 
 
+  public function getExtractoFondoyFideicomisoDadosMovimiento($Fondo,$Encargo,$Fecha_start,$Fecha_end){
+    // $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+      'Fondo'    => $Fondo,
+      'Encargo' => $Encargo,
+      'FechaInicial'   => $Fecha_start,
+      'FechaFinal' => $Fecha_end
+      ];
+
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
+
+    if(isset($soapWrapper->reponse_parse->NewDataSet->Table)){
+      foreach ( $soapWrapper->reponse_parse->NewDataSet->Table as $key => $value) {
+        foreach ($value as $key => $val) {
+            $output[] = $val;
+          }
+      }
+    }else{
+      $output = null;
+    }
+    return json_encode($output);
+  }
 
 
+  public function downloadExtractoMovimientos($identification, $date_start, $date_end){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
+      'CodigoOyd'    => $user->codeoyd,
+      'FechaInicial' => $date_start,
+      'FechaFinal'   => $date_end
+      ];
+    $soapWrapper->callMethod('ExtractoClienteDado',$data);
+    // dd($soapWrapper);
+    foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
+      foreach ($value as $key => $val) {
+          $output[] = $val;
+        }
+    }
+
+    $file_name = 'reporte-movimientos.xls'.$date_start.'-'.$date_end;
+        # Genera el archivo excel
+    Excel::create($file_name,function($excel) use ($identification,$user,$output,$file_name){
+      $excel->setTitle($file_name);
+      $excel->setCreator('globalcdb.com');
+      $excel->setCompany('Global CDB');
+      $excel->sheet('Movimientos',function($sheet) use($identification,$user,$output){
+        $headers = ['A6'=>'FECHA','B6'=>'DOCUMENTO','C6'=>'DETALLE','D6'=>'A SU CARGO','E6'=>'A SU FAVOR','F6'=>'SALDO'];
+
+        $sheet->cell('A1', function($cell) use($user) {
+         $cell->setValue($user['name']);
+        });
+        $sheet->cell('D1', function($cell) use($user) {
+         $cell->setValue($user['identificacion']);
+        });
+        $sheet->cell('A2', function($cell) use($user) {
+         $cell->setValue($user['direccion']);
+        });
+        $sheet->cell('D2', function($cell) use($user) {
+         // $cell->setValue($user['telefono']);
+        });
+        $sheet->cell('A3', function($cell) use($user) {
+         $cell->setValue($user['ciudad']);
+        });
+        $sheet->cell('D3', function($cell) use($user) {
+         $cell->setValue($user['codeoyd']);
+        });
+        $sheet->cell('A4', function($cell) use($user) {
+         $cell->setValue($user['asesor_comercial']);
+        });
+        $sheet->cell('D4', function($cell) use($user) {
+         $cell->setValue(date('Y-m-d'));
+        });
+        $sheet->cell('A5', function($cell) use($user) {
+         $cell->setAlignment('center');
+         $cell->setValue('MOVIMIENTO DEL PERIODO');
+        });
+        #encabezado
+        $sheet->mergeCells('A1:C1');
+        $sheet->mergeCells('D1:F1');
+        $sheet->mergeCells('A2:C2');
+        $sheet->mergeCells('D2:F2');
+        $sheet->mergeCells('A3:C3');
+        $sheet->mergeCells('D3:F3');
+        $sheet->mergeCells('A4:C4');
+        $sheet->mergeCells('D4:F4');
+        #titlulo
+        $sheet->mergeCells('A5:F5');
+        #headers
+        foreach($headers as $cel => $value){
+          $sheet->cell($cel, function($cell) use($value) {
+           $cell->setValue($value);
+           $cell->setBackground('#898989');
+           $cell->setFontWeight('bold');
+           $cell->setBorder('solid', 'solid', 'solid', 'solid');
+          });
+        }
+        $sheet->setWidth(array(
+           'A'     =>  20,
+           'B'     =>  20,
+           'C'     =>  20,
+           'D'     =>  20,
+           'E'     =>  20,
+           'F'     =>  20,
+         ));
+
+         foreach ($output as $key => $value) {
+           $temp = array(
+               'fecha'=>$value->dtmDocumento,
+               'strNumero'=>$value->strNumero,
+               'strDetalle1'=>$value->strDetalle1,
+               'ACargo'=>$value->ACargo,
+               'AFavor'=>$value->AFavor,
+               'Saldo'=>$value->Saldo
+           );
+           $sheet->rows(array($temp));
+         }
+
+         // $sheet->fromArray( $info->data[0]->Saldo );
+      });
+    })->download('xls');
+
+
+    // return json_encode($output);
+  }
 
 
 }

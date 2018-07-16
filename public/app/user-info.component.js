@@ -16,21 +16,30 @@ var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var UserInfoComponent = /** @class */ (function () {
     function UserInfoComponent(productsService, activatedRoute, http, Router) {
-        var _this = this;
         this.productsService = productsService;
         this.activatedRoute = activatedRoute;
         this.http = http;
         this.Router = Router;
-        productsService.user_info
-            .subscribe(function (data) { _this.user = data; }, function (error) { return console.log('Error: ${error}'); }, function () { _this.today = new Date(); });
     }
+    UserInfoComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id = params['id'],
+                _this.date = params['date'];
+        });
+        this.productsService.getUserInfo(this.id, this.date)
+            .subscribe(function (data) { _this.user = data; }, function (error) { return console.log('Error: ${error}'); }, function () { _this.today = new Date(); });
+    };
     UserInfoComponent = __decorate([
         core_1.Component({
             selector: 'user-info',
             templateUrl: '/app/templates/info-usuario.html',
             providers: [personal_service_1.ProductsService],
         }),
-        __metadata("design:paramtypes", [personal_service_1.ProductsService, router_1.ActivatedRoute, http_1.Http, router_1.Router])
+        __metadata("design:paramtypes", [personal_service_1.ProductsService,
+            router_1.ActivatedRoute,
+            http_1.Http,
+            router_1.Router])
     ], UserInfoComponent);
     return UserInfoComponent;
 }());

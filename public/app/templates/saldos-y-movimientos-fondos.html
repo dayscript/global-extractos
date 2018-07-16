@@ -51,7 +51,7 @@
               <label for="name">Fondos de Inversión:</label>
               <select  style="width:371px;margin: 0 9px 0 0;" id="option_select" [(ngModel)]="option_select" name="option_select" class="wrapper-select">
                 <option value="NA">...</option>
-                <option *ngFor="let item of fics_filter?.fics" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
+                <option *ngFor="let item of fics_filter" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
               </select>
               <label for="name">Desde:</label>
               <input  id="datepicker_start" type="text" [(ngModel)]="fecha_inicio" name="fecha_inicio" required>
@@ -62,8 +62,8 @@
           </div>
         </form>
       <div style="display: block">
-        <table *ngIf="info_movimientos != undefined " style="width:100%" class="report-table">
-          <thead>
+        <table *ngIf="info_movimientos" style="width:100%" class="report-table">
+          <thead  *ngIf="info_movimientos != 'null' ">
             <th class="numero" >FECHA</th>
             <th class="detalle" >TRANSACCIÓN</th>
             <th class="numero">DÉBITO</th>
@@ -72,7 +72,7 @@
             <th>VLR. UNIDAD</th>
             <th>SALDO PESOS</th>
           </thead>
-            <tr *ngFor="let item of info_movimientos?.data">
+            <tr *ngFor="let item of info_movimientos" >
               <td class="numero" >{{item.fecha | date: 'dd/MM/yyyy'}}</td>
               <td class="detalle" >{{item.Transaccion}}</td>
               <td class="cargo" >{{item.Debito}}</td>
@@ -82,6 +82,7 @@
               <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
             </tr>
         </table>
+        <div *ngIf="!info_movimientos">Sin resultados</div>
 
         <div *ngIf="info_movimientos?.id != undefined" class="content-wrapper download-xls">
             <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
