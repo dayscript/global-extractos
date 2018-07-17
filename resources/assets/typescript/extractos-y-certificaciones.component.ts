@@ -91,8 +91,7 @@ export class ExtractosCertificaciones implements OnInit {
        $('#fecha_select_firma').css('border','1px solid rgb(255, 0, 0)');
         return;
      }
-     window.location.replace('/download-firma-extrac/'+this.id_identificacion+'/'+this.fecha_select_firma)
-
+     window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma)
   }
 
   download_fics(){
@@ -105,7 +104,7 @@ export class ExtractosCertificaciones implements OnInit {
     }
     var fecha  = this.fecha_select
     var split = this.option_select.split('|')
-    var url = '/download-fics-extrac/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
+    var url = '/download/reporte-fondos-de-inversion/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
     window.location.replace(url)
 
   }

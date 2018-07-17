@@ -69,9 +69,9 @@
 			<tr>
 				<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
 				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',$value->FechaCompra)[0]}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{$value->Precio}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format($value->Valoracion,2) }} </td>
+				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode(' ',$value->FechaCompra)[0]}}</td>
+				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ number_format((float)$value->Precio,2) }}</td>
+				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }} </td>
 			</tr>
 			@endforeach
 			<tr>
@@ -100,10 +100,10 @@
 				@foreach($items as $key => $value)
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:9px">{{$value->Emision}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{str_replace(' 00:00:00','',$value->dtmCumplimiento)}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{str_replace(' 00:00:00','',$value->dtmLiquidacion)}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{ $value->dblCantidad }}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{ $value->curTotalLiq }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{ Carbon\Carbon::parse($value->dtmCumplimiento)->format('d-m-Y') }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{ Carbon\Carbon::parse( $value->dtmLiquidacion )->format('d-m-Y')}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{ number_format((float)$value->dblCantidad,2) }}   </td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{ number_format((float)$value->curTotalLiq,2) }} </td>
 				</tr>
 				@endforeach
 			@endforeach
@@ -131,22 +131,22 @@
 					@foreach($items as $key => $value)
 					<tr>
 						<td style="border:solid 1px #efefef;font-size:9px;text-align: left">{{$value->Emision}}</td>
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  $value->dblCantidad }} </td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  number_format((float)$value->dblCantidad,2) }} </td>
 
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  str_replace(' 00:00:00','',$value->dtmLiquidacion)}} </td>
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  str_replace(' 00:00:00','',$value->dtmCumplimiento_Regreso)}} </td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  Carbon\Carbon::parse($value->dtmLiquidacion)->format('d-m-Y') }} </td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">{{  Carbon\Carbon::parse($value->dtmCumplimiento_Regreso)->format('d-m-Y') }} </td>
 
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right"> {{ $value->CurTotalliq_Inicio  }}</td>
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right"> {{ $value->CurTotalliq_Regreso }}</td>
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right"> {{ $value->Interes}}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{ number_format((float)$value->CurTotalliq_Inicio,2 )  }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{ number_format((float)$value->CurTotalliq_Regreso,2) }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right">$ {{ number_format((float)$value->Interes,2)}}</td>
 					</tr>
 					@endforeach
 				@endforeach
 				<tr>
 					<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
-					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{ $info['totales_odl']['total_inicio'] }}</td>
-					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{ $info['totales_odl']['total_regreso'] }}</td>
-					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >${{ $info['totales_odl']['total_interes'] }} </td>
+					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales_odl']['total_inicio'],2) }}</td>
+					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales_odl']['total_regreso'],2) }}</td>
+					<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales_odl']['total_interes'],2) }} </td>
 				</tr>
 			</table>
 		@endif
@@ -167,20 +167,20 @@
 	@foreach($info['mes']->NewDataSet as $key => $items)
 		@foreach($items as $key => $value)
 		<tr>
-			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ trim(str_replace('00:00:00.000','',$value->dtmDocumento))}}</td>
-			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{$value->strNumero}}</td>
-			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{$value->strDetalle1}}</td>
-			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{$value->ACargo}}</td>
-			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{$value->AFavor}}</td>
-			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{$value->Saldo}}</td>
+			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ Carbon\Carbon::parse($value->dtmDocumento)->format('d-m-Y') }}</td>
+			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ number_format((float)$value->strNumero,2)}}</td>
+			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ $value->strDetalle1 }}</td>
+			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->ACargo,2)}}</td>
+			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->AFavor,2)}}</td>
+			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->Saldo,2)}}</td>
 		</tr>
 		@endforeach
 	@endforeach
 	<tr>
 		<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="3" >TOTAL</td>
-		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ $info['totales']['total_a_cargo'] }}</td>
-		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ $info['totales']['total_a_favor'] }}</td>
-		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ $info['totales']['total_saldo'] }}</td>
+		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_a_cargo'],2) }}</td>
+		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_a_favor'],2) }}</td>
+		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_saldo'],2) }}</td>
 	</tr>
 
 </table>

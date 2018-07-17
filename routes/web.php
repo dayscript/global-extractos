@@ -89,6 +89,7 @@ Route::group(['prefix' => 'download'], function () {
   Route::get('/reporte-movimientos/{identification}/{date_start}/{date_end}','ServicesController@downloadExtractoMovimientos');
   Route::get('/reporte-movimientos-fics/{Fondo}/{Encargo}/{Fecha_start}/{Fecha_end}','ServicesController@downloadExtractoMovimientosFics');
   Route::get('/reporte-firma-comisionista/{identification}/{date}','ServicesController@getExtractFirmaComisionista');
+  Route::get('/reporte-fondos-de-inversion/{identification}/{fondo}/{encargo}/{fecha}','ServicesController@getExtractFondosInversion');
 
 
   #Route::get('/download-fics/{id_movimientos}','HomeController@download_fics');

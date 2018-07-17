@@ -47,7 +47,7 @@ class UserVerificationService
             'email' => $user_cc.'@sincorreo.com',
             'name'=> $soapWrapper->reponse_parse->NewDataSet->Table->strNombre,
             'ciudad'=>'Indefinida',
-            'direccion'=>$soapWrapper->reponse_parse->NewDataSet->Table->strNombre,
+            'direccion'=>$soapWrapper->reponse_parse->NewDataSet->Table->Direccion,
             'asesor_comercial'=>'Indefinido',
             'estado'=>'1',
             'password' => bcrypt($user_cc),

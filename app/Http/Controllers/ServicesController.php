@@ -1275,4 +1275,67 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
 }
 
+public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
+   $user = User::where('identification',$identification)->first();
+   $fecha_actual = new \DateTime($fecha);
+   $fecha_actual->modify('first day of this month');
+   $fecha_inicio = $fecha_actual->format('Y-m-d');
+   $fecha_actual->modify('last day of this month');
+   $fecha_fin = $fecha_actual->format('Y-m-d');
+   $image_fotter = public_path().'/images/vigilante.jpg';
+   $data = [
+     'Fondo'       => $fondo,
+     'Encargo'     => $encargo ,
+     'FechaInicial'=> $fecha_inicio ,
+     'FechaFinal'  => $fecha_fin ,
+   ];
+
+   $soapWrapper = new SoapService();
+   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosEncabezado',$data);
+   $info_encabezado = $soapWrapper->reponse_parse;
+
+   $soapWrapper = new SoapService();
+   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosInformacionBasica',$data);
+   $info_informacion_basica = $soapWrapper->reponse_parse;
+
+   $soapWrapper = new SoapService();
+   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
+   $info_informacion_movimientos = $soapWrapper->reponse_parse;
+
+   $soapWrapper = new SoapService();
+   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosResumen',$data);
+   $info_informacion_resumen = $soapWrapper->reponse_parse;
+
+
+   $data = array();
+   $data['encabezado']   =  $info_encabezado;
+   $data['basica']       =  $info_informacion_basica ;
+   $data['movimientos']  =  $info_informacion_movimientos;
+   $data['resumen']      =  $info_informacion_resumen;
+   $total_saldo   = 0;
+
+   foreach( $info_informacion_movimientos as $key => $movimiento){
+       $total_saldo += $movimiento->Saldo;
+       $movimiento->Saldo = ( $movimiento->Saldo == null ) ? '':'$ '.number_format((float)$movimiento->Saldo,2);
+     }
+   $data['totales'] = array(
+                           'total_saldo' => $total_saldo,
+                      );
+
+
+ $image_header = public_path().'/images/header-extracto2.jpg';
+ $info = array(
+   'fecha_inicio'  => $fecha_inicio,
+   'fecha_fin'     => $fecha_fin,
+   'image'         => $image_header,
+   'info'          => $data,
+   'fecha'         => $fecha,
+   'nit'           => $identification,
+   'image_fotter'=>$image_fotter,
+ );
+ #dd($info);
+ // return view('extracto-fics',$info);
+ return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+}
+
 }
