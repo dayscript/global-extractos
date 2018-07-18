@@ -52,17 +52,17 @@ export class ExtractosCertificaciones implements OnInit {
         error => console.log( 'Error: ${error}' ),
         () => {
             this.today = new Date()
-            this.productsService.verifyFile(this.user_info.codigo).subscribe(
+            this.productsService.verifyFile(this.user_info.codeoyd).subscribe(
               response => {
                   if(response.response){
-                    this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_'+ this.user_info.codigo +'.pdf'
+                    this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_'+ this.user_info.codeoyd +'.pdf'
                   }
               }
             )
-            this.productsService.verifyFileOperations(this.user_info.codigo).subscribe(
+            this.productsService.verifyFileOperations(this.user_info.codeoyd).subscribe(
               response => {
                   if(response.response){
-                    this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_'+ this.user_info.codigo +'.pdf'
+                    this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_'+ this.user_info.codeoyd +'.pdf'
                   }
               }
             )
@@ -136,8 +136,8 @@ export class ExtractosCertificaciones implements OnInit {
     var day = ( dateobj.getDate() <= 9) ? '0'+dateobj.getDate():dateobj.getDate();
     var year = dateobj.getFullYear();
     var date = year + '-' + month + '-' + day;
-    this.user_info.codigo
-    window.location.replace('/api/certificado-tenencia/'+this.user_info.codigo+'/'+date+'/'+ destinatario);
+    this.user_info.codeoyd
+    window.location.replace('/api/certificado-tenencia/'+this.user_info.codeoyd+'/'+date+'/'+ destinatario);
 
   }
 

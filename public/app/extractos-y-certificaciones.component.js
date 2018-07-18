@@ -39,14 +39,14 @@ var ExtractosCertificaciones = /** @class */ (function () {
         this.productsService.getUserInfo(this.id_identificacion, this.fecha)
             .subscribe(function (data) { _this.user_info = data; }, function (error) { return console.log('Error: ${error}'); }, function () {
             _this.today = new Date();
-            _this.productsService.verifyFile(_this.user_info.codigo).subscribe(function (response) {
+            _this.productsService.verifyFile(_this.user_info.codeoyd).subscribe(function (response) {
                 if (response.response) {
-                    _this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_' + _this.user_info.codigo + '.pdf';
+                    _this.downloadCertificate = '/storage/documentos_ayuda/certificados_cartera/CertificadoCarteras_' + _this.user_info.codeoyd + '.pdf';
                 }
             });
-            _this.productsService.verifyFileOperations(_this.user_info.codigo).subscribe(function (response) {
+            _this.productsService.verifyFileOperations(_this.user_info.codeoyd).subscribe(function (response) {
                 if (response.response) {
-                    _this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_' + _this.user_info.codigo + '.pdf';
+                    _this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_' + _this.user_info.codeoyd + '.pdf';
                 }
             });
         });
@@ -103,8 +103,8 @@ var ExtractosCertificaciones = /** @class */ (function () {
         var day = (dateobj.getDate() <= 9) ? '0' + dateobj.getDate() : dateobj.getDate();
         var year = dateobj.getFullYear();
         var date = year + '-' + month + '-' + day;
-        this.user_info.codigo;
-        window.location.replace('/api/certificado-tenencia/' + this.user_info.codigo + '/' + date + '/' + destinatario);
+        this.user_info.codeoyd;
+        window.location.replace('/api/certificado-tenencia/' + this.user_info.codeoyd + '/' + date + '/' + destinatario);
     };
     ExtractosCertificaciones.prototype.validateCodeFics = function (value, code) {
         var validate;
