@@ -74,7 +74,7 @@ export class ExtractosCertificaciones implements OnInit {
     this.productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
-      () => { console.log( 'FicsFilter=> ', this.fics_filter); }
+      () => { /**/ }
     )
 
     for (var i = 1; i <= 6; i++) {

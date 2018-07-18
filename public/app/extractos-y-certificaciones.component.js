@@ -50,7 +50,7 @@ var ExtractosCertificaciones = /** @class */ (function () {
                 }
             });
         });
-        this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { console.log('FicsFilter=> ', _this.fics_filter); });
+        this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
             date.setMonth(date.getMonth() - i);
