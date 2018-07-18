@@ -633,4 +633,10 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
  return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
 }
 
+function calcPorcent($a,$b,$c){
+  $c = ( $c != 0 )? $c:'1';
+  return $a*$b/$c;
+}
+
+
 }
