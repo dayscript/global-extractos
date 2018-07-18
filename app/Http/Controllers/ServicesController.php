@@ -23,6 +23,12 @@ use File;
 class ServicesController extends Controller
 {
 
+  public function __construct(){
+     $this->middleware('user.verification.service',['only' =>
+       ['getPortafolio']
+     ]);
+  }
+
 /**
 * Display the specified resource.
 *
@@ -744,6 +750,7 @@ function exec_FideicomisosVigentesClienteDado($CodigoOyd){
    * @return [type]                 [json]
    */
   public function getPortafolio($identification, $date){
+
     $user = User::where('identification',$identification)->first();
 
     $soapWrapper = new SoapService();

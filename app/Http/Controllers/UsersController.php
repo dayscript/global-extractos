@@ -12,9 +12,9 @@ class UsersController extends Controller
     * Instantiate a new UserController instance.
     */
    public function __construct(){
-      $this->middleware('user.verification.service',['only' =>
-        ['show']
-      ]);
+      // $this->middleware('user.verification.service',['only' =>
+      //   ['show']
+      // ]);
    }
 
     /**

@@ -19,7 +19,7 @@ class UserVerificationService
      */
     public function handle($request, Closure $next)
     {
-      $user_cc = $request->route('user');
+      $user_cc = $request->route('identification');
       $user = User::where('identification',$user_cc)->first();
       if( $user ){
         return $next($request);
