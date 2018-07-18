@@ -54,10 +54,10 @@ var SaldosMovimientosComponent = /** @class */ (function () {
                 });
             });
         }, 1000);
-        this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log(error); }, function () { console.log(_this.renta_variable); });
-        this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.renta_fija); });
-        this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { return console.log(_this.opc); });
-        this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { return console.log(_this.opl); });
+        this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log(error); }, function () { });
+        this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { });
+        this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { });
+        this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { });
     };
     SaldosMovimientosComponent.prototype.sumValues = function (values, field) {
         if (values === void 0) { values = []; }
@@ -94,7 +94,7 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.url_download = 'download/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
         this.http.get(url)
             .map(function (response) { return response.json(); })
-            .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { return console.log(_this.info_movimientos); });
+            .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { });
     };
     SaldosMovimientosComponent = __decorate([
         core_1.Component({

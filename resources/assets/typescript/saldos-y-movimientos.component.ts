@@ -58,25 +58,25 @@ export class SaldosMovimientosComponent implements OnInit{
      this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(
        data  => { this.renta_variable = data },
        error => console.log(error),
-       ()    => { console.log( this.renta_variable) }
+       ()    => { /**/ }
      );
 
      this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(
        data  => {this.renta_fija = data},
        error => console.log('error: ${error}'),
-       ()    => console.log(this.renta_fija)
+       ()    => {/**/}
      );
 
      this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(
        data  => {this.opc = data},
        error => console.log('error:${error}'),
-       ()    => console.log(this.opc)
+       ()    => {/**/}
      );
 
      this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(
        data  => {this.opl = data},
        error => console.log('error: ${error}'),
-       ()    => console.log(this.opl)
+       ()    => {/**/}
      );
    }
 
@@ -119,7 +119,7 @@ export class SaldosMovimientosComponent implements OnInit{
                 .subscribe(
                   data => { this.info_movimientos = data},
                   error => console.error(`Error: ${error}`),
-                  () => console.log(this.info_movimientos)
+                  () => {/**/}
                 );
 
   }

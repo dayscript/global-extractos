@@ -56,7 +56,7 @@ export class SaldosMovimientosFondosComponent {
     productsService.DataFics(this.id_identificacion,this.fecha).subscribe(
       data  => {this.renta_fics = data},
       error => console.log('error: ${error}'),
-      ()    =>console.log(this.renta_fics)
+      ()    =>{/**/}
     );
 
     // productsService.user_info.subscribe(
@@ -68,7 +68,7 @@ export class SaldosMovimientosFondosComponent {
     productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
-      () => console.log(this.fics_filter)
+      () => {/**/}
     )
 
   /*Fin de componenete SaldosMovimientosComponent*/
@@ -94,7 +94,7 @@ export class SaldosMovimientosFondosComponent {
                 .subscribe(
                   data => { this.info_movimientos = data},
                   error => console.error(`Error: ${error}`),
-                  () => console.log(this.info_movimientos)
+                  () => {/**/}
                 );
   }
 
