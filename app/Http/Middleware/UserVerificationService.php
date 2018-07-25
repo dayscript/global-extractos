@@ -40,16 +40,26 @@ class UserVerificationService
         $index ++;
       } while (trim($code) == 0 && $index <= 11);
 
+
+
       if( trim($code) != 0) {
+            $soapWrapper2 = new SoapService();
+            $soapWrapper2->callMethod('PieResumidoClienteDado',
+              [
+                'CodigoOyd' => trim($soapWrapper->reponse_parse->NewDataSet->Table->CodigoOyd),
+                'Fecha'   => date('Y-m-d'),
+              ]
+            );
+
           $data = [
             'identification' => $user_cc,
-            'codeoyd' => trim($soapWrapper->reponse_parse->NewDataSet->Table->CodigoOyd),
+            'codeoyd' => trim($soapWrapper2->reponse_parse->NewDataSet->Table->Codigo),
             'email' => $user_cc.'@sincorreo.com',
-            'name'=> $soapWrapper->reponse_parse->NewDataSet->Table->strNombre,
-            'ciudad'=>'Indefinida',
-            'direccion'=>$soapWrapper->reponse_parse->NewDataSet->Table->Direccion,
-            'asesor_comercial'=>'Indefinido',
-            'estado'=>'1',
+            'name'=> $soapWrapper2->reponse_parse->NewDataSet->Table->Nombre,
+            'ciudad'=>$soapWrapper2->reponse_parse->NewDataSet->Table->Ciudad,
+            'direccion'=>$soapWrapper2->reponse_parse->NewDataSet->Table->Direccion,
+            'asesor_comercial'=>$soapWrapper2->reponse_parse->NewDataSet->Table->Comercial,
+            'estado'=> ( $soapWrapper2->reponse_parse->NewDataSet->Table->Estado == 'Activo' ) ? 1:0,
             'password' => bcrypt($user_cc),
           ];
           $user = User::create($data);
