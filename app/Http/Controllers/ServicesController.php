@@ -489,7 +489,7 @@ class ServicesController extends Controller
     if(isset($output['rf']->NewDataSet)){
       foreach( $output['rf']->NewDataSet as $key => $movimiento_rf ){
         foreach ($movimiento_rf as $key => $val) {
-         $total_valoracion += $val->Valoracion;
+         $total_valoracion += (float)$val->Valoracion;
          // $val->Valoracion = ( $val->Valoracion == null ) ? '':'$ '.number_format($val->Valoracion,2);
         }
       }
@@ -504,7 +504,7 @@ class ServicesController extends Controller
    if(isset($output['rv']->NewDataSet)){
      foreach( $output['rv']->NewDataSet as $key => $movimiento_rv ){
        foreach ($movimiento_rv as $key => $val) {
-         $total_precio += $val->Valoracion;
+         $total_precio += (float)$val->Valoracion;
          // $val->Precio = ( $val->Precio == null ) ? '':'$ '.number_format($val->Precio,2);
        }
      }
@@ -521,9 +521,9 @@ class ServicesController extends Controller
    if(isset($output['odl']->NewDataSet)){
      foreach( $output['odl']->NewDataSet as $key => $movimiento_odl){
        foreach ($movimiento_odl as $key => $val) {
-         $total_inicio += $val->CurTotalliq_Inicio;
-         $total_regreso += $val->CurTotalliq_Regreso;
-         $total_interes   += $val->Interes;
+         $total_inicio  += (float)$val->CurTotalliq_Inicio;
+         $total_regreso += (float)$val->CurTotalliq_Regreso;
+         $total_interes += (float)$val->Interes;
          // $val->CurTotalliq_Inicio = ( $val->CurTotalliq_Inicio == null ) ? '':'$ '.number_format($val->CurTotalliq_Inicio,2);
          // $val->CurTotalliq_Regreso = ( $val->CurTotalliq_Regreso == null ) ? '':'$ '.number_format($val->CurTotalliq_Regreso,2);
          // $val->Interes  = ( $val->Interes  == null ) ? '':'$ '.number_format($val->Interes,2);
@@ -543,9 +543,9 @@ class ServicesController extends Controller
    if(isset($output['mes']->NewDataSet)){
      foreach( $output['mes']->NewDataSet as $key => $movimiento){
        foreach ($movimiento as $key => $val) {
-         $total_a_cargo += $val->ACargo;
-         $total_a_favor += $val->AFavor;
-         $total_saldo   += $val->Saldo;
+         $total_a_cargo += (float)$val->ACargo;
+         $total_a_favor += (float)$val->AFavor;
+         $total_saldo   += (float)$val->Saldo;
          // $val->ACargo = ( $val->ACargo == null ) ? '':'$ '.number_format($val->ACargo,2);
          // $val->AFavor = ( $val->AFavor == null ) ? '':'$ '.number_format($val->AFavor,2);
          // $val->Saldo  = ( $val->Saldo  == null ) ? '':'$ '.number_format($val->Saldo,2);
@@ -555,7 +555,7 @@ class ServicesController extends Controller
    $output['totales'] = array(
                            'total_a_cargo' => $total_a_cargo,
                            'total_a_favor' => $total_a_favor,
-                           'total_saldo'   => $total_a_cargo - $total_a_favor,
+                           'total_saldo'   => $total_a_favor - $total_a_cargo,
                          );
    $data  = array(
                   'info' => $output,
@@ -566,6 +566,7 @@ class ServicesController extends Controller
                   'fecha_inicio'=>$fecha_inicio,
                   'fecha_fin'=>$fecha_fin,
                 );
+
    //return view('extracto-firma',$data);
    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
 }

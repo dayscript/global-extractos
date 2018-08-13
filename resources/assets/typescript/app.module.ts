@@ -4,6 +4,7 @@ import { HttpModule }    from '@angular/http';
 import { Component, Pipe , PipeTransform } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {FormsModule} from "@angular/forms";
+import { LOCALE_ID } from '@angular/core';
 
 import { AppComponent }   from './app.component';
 import { MenuComponent }   from './menu.component';
@@ -67,6 +68,9 @@ export class KeysPipe implements PipeTransform {
                   AyudaComponet,
                   SalirComponet
                 ],
-  bootstrap:    [ AppComponent ]
+  bootstrap:    [ AppComponent ],
+  providers: [
+    { provide: LOCALE_ID, useValue: "es-CO" }, //replace "en-US" with your locale
+  ]
 })
 export class AppModule { }

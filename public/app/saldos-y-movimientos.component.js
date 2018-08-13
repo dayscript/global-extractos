@@ -61,6 +61,7 @@ var SaldosMovimientosComponent = /** @class */ (function () {
     };
     SaldosMovimientosComponent.prototype.sumValues = function (values, field) {
         if (values === void 0) { values = []; }
+        console.log(field, '->', this.opl);
         var total = 0;
         values.forEach(function (val) {
             if (typeof val[field] != 'undefined') {

@@ -12,6 +12,7 @@ var http_1 = require("@angular/http");
 var core_2 = require("@angular/core");
 var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
+var core_3 = require("@angular/core");
 var app_component_1 = require("./app.component");
 var menu_component_1 = require("./menu.component");
 var user_info_component_1 = require("./user-info.component");
@@ -83,7 +84,10 @@ var AppModule = /** @class */ (function () {
                 ayuda_component_1.AyudaComponet,
                 salir_component_1.SalirComponet
             ],
-            bootstrap: [app_component_1.AppComponent]
+            bootstrap: [app_component_1.AppComponent],
+            providers: [
+                { provide: core_3.LOCALE_ID, useValue: "es-CO" },
+            ]
         })
     ], AppModule);
     return AppModule;

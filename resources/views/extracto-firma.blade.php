@@ -65,14 +65,16 @@
 				<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio</td>
 				<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
 			</tr>
-			@foreach($info['rv']->NewDataSet as $key => $value)
-			<tr>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode(' ',$value->FechaCompra)[0]}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ number_format((float)$value->Precio,2) }}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }} </td>
-			</tr>
+			@foreach($info['rv']->NewDataSet as $key => $items)
+				@foreach($items as $key => $value)
+				<tr>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format((float)$value->dblCantidad,2):''}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode(' ',$value->FechaCompra)[0]}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ number_format((float)$value->Precio,2) }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }} </td>
+				</tr>
+				@endforeach
 			@endforeach
 			<tr>
 		    <td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
@@ -180,9 +182,14 @@
 		<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="3" >TOTAL</td>
 		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_a_cargo'],2) }}</td>
 		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_a_favor'],2) }}</td>
-		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{ number_format((float)$info['totales']['total_saldo'],2) }}</td>
 	</tr>
-
+	<tr>
+		<td style="font-size:9px;text-align: left;border:solid 1px #efefef;" colspan="3" >Este extracto incluye los movimientos desde  el {{$fecha_inicio}} hasta {{$fecha_fin}}
+			<br>Extracto por fecha de Cumplimiento Efectivo
+		</td>
+		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" > {{ $info['totales']['total_saldo'] < 0 ? '$'.number_format((float)$info['totales']['total_saldo'],2): '' }}</td>
+		<td style="font-size:9px;text-align: right;border:solid 1px #efefef;" colspan="" > {{ $info['totales']['total_saldo'] > 1 ? '$'.number_format((float)$info['totales']['total_saldo'],2): '' }}</td>
+	</tr>
 </table>
 @endif
 <div id="fotter">
