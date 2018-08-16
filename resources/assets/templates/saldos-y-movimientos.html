@@ -23,8 +23,8 @@
       </thead>
       <tr *ngFor="let item of renta_variable">
         <td>{{item.strNombre}} </td>
-        <td class="right-text">{{item.dblCantidad| number:'1.2-2'}}</td>
-        <td class="right-text">{{item.dtmDocumento | date }}</td>
+        <td class="right-text">{{item.dblCantidad| number}}</td>
+        <td class="right-text">{{item.FechaCompra | date }}</td>
         <td class="right-text">$ {{item.Precio | number:'1.2-2' }}</td>
         <td class="right-text">$ {{item.Valoracion | number:'1.2-2'}}</td>
       </tr>
@@ -47,24 +47,28 @@
           </div>
       </div>
   		<thead>
-  			<th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
+  			<th>Emisión</th><th class="right-text">Cantidad</th><th class="right-text">Fecha Compra</th><th class="right-text">F. Emision</th><th class="right-text">F.Vencimiento</th><th class="right-text">Tasa</th><th class="right-text">Precio</th><th class="right-text">Valoración</th>
   		</thead>
   		  <tr *ngFor="let item of renta_fija">
   		    <td class="left-text">{{item.strNombre}} </td>
-  		    <td class="right-text">{{item.dblCantidad | number:'1.2-2'}}</td>
-  		    <td class="right-text">{{item.dtmDocumento | date }}</td>
+  		    <td class="right-text">{{item.dblCantidad | number}}</td>
+  		    <td class="right-text">{{item.FechaCompra | date }}</td>
+
+          <td class="right-text">{{item.dtmEmision | date }}</td>
+          <td class="right-text">{{item.dtmVencimiento | date }}</td>
+          <td class="right-text">{{item.Tasa }}</td>
+
   		    <td class="right-text">$ {{item.Precio | number:'1.2-2'}} </td>
   		    <td class="right-text">$ {{item.Valoracion | number:'1.2-2'}} </td>
   		  </tr>
   		  <tr>
-  		   <td colspan="4"><strong>Total Renta Fija</strong></td>
+  		   <td colspan="7"><strong>Total Renta Fija</strong></td>
   		   <td colspan="1" class="right-text">
           <strong *ngIf="renta_fija"  innerHTML="$ {{ sumValues(renta_fija,'Valoracion') | number:'1.2-2' }}"></strong>
         </td>
   		  </tr>
   	</table>
   </section>
-
 
 <section class="header">
     <h5>OPERACIONES POR CUMPLIR</h5>
@@ -85,12 +89,12 @@
   		    <td>{{item.Emision}} </td>
           <td>{{item.dtmCumplimiento | date}}</td>
   		    <td>{{item.dtmLiquidacion | date}} </td>
-          <td>{{item.dblCantidad | number:'1.2-2'}}</td>
+          <td>{{item.dblCantidad | number}}</td>
   		    <td>$ {{item.curTotalLiq | number:'1.2-2'}} </td>
   		  </tr>
   		  <tr>
   		   <td colspan="3"><strong>Total Operaciones</strong></td>
-         <td colspan="1"><strong *ngIf="opc" innerHTML="{{sumValues(opc,'total_dblCantidad') | number:'1.2-2'}}"></strong></td>
+         <td colspan="1"><strong *ngIf="opc" innerHTML="{{sumValues(opc,'total_dblCantidad') | number}}"></strong></td>
          <td colspan="1"><strong *ngIf="opc" innerHTML="$ {{ sumValues(opc,'total_curTotalLiq') | number:'1.2-2' }} "></strong></td>
 
 
@@ -117,7 +121,7 @@
   		</thead>
   		  <tr *ngFor="let item of opl">
   		    <td>{{item.Emision}} </td>
-          <td style="text-align:right">{{item.dblCantidad | number:'1.2-2'}}</td>
+          <td style="text-align:right">{{item.dblCantidad}}</td>
   		    <td style="text-align:right">{{item.dtmLiquidacion | date }}</td>
   		    <td style="text-align:right">{{item.dtmCumplimiento_Regreso | date}} </td>
           <td style="text-align:right">$ {{item.CurTotalliq_Inicio | number:'1.2-2' }} </td>
@@ -160,7 +164,7 @@
             <td class="detalle" >{{item.strDetalle1}}</td>
             <td class="cargo">{{item.ACargo | number:'1.2-2'}}</td>
             <td class="favor" >{{item.AFavor | number:'1.2-2'}}</td>
-            <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
+            <td class="saldo">$ {{item.Saldo | number:'.2-2'}}</td>
           </tr>
           <tr>
             <td colspan="3"><strong>TOTAL</strong></td>
