@@ -81,7 +81,6 @@ export class SaldosMovimientosComponent implements OnInit{
    }
 
    private sumValues(values=[], field:string):any {
-     console.log(field,'->',this.opl);
      let total = 0;
      values.forEach( (val) => {
        if(typeof val[field] != 'undefined'){

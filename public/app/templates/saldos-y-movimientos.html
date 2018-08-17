@@ -80,22 +80,22 @@
       </div>
   		<thead>
   			<th>Emisión</th>
-        <th style="text-align:right">Cantidad</th>
         <th style="text-align:right">F. Cumplimiento</th>
         <th style="text-align:right">F. Liquidaci&oacute;n</th>
+        <th style="text-align:right">Cantidad</th>
         <th style="text-align:right">T. Liquidación</th>
   		</thead>
   		  <tr *ngFor="let item of opc">
   		    <td>{{item.Emision}} </td>
-          <td>{{item.dblCantidad | number}}</td>
-          <td>{{item.dtmCumplimiento | date}}</td>
-  		    <td>{{item.dtmLiquidacion | date}} </td>
-  		    <td>$ {{item.curTotalLiq | number:'1.2-2'}} </td>
+          <td style="text-align:right">{{item.dtmCumplimiento | date}}</td>
+  		    <td style="text-align:right">{{item.dtmLiquidacion | date}} </td>
+          <td style="text-align:right">{{item.dblCantidad | number}}</td>
+          <td style="text-align:right">$ {{item.curTotalLiq | number:'1.2-2'}} </td>
   		  </tr>
   		  <tr>
   		   <td colspan="3"><strong>Total Operaciones</strong></td>
-         <td colspan="1"><strong *ngIf="opc" innerHTML="{{sumValues(opc,'total_dblCantidad') | number}}"></strong></td>
-         <td colspan="1"><strong *ngIf="opc" innerHTML="$ {{ sumValues(opc,'total_curTotalLiq') | number:'1.2-2' }} "></strong></td>
+         <td style="text-align:right" colspan="1"><strong style="text-align:right" *ngIf="opc" innerHTML="{{sumValues(opc,'dblCantidad') | number}}"></strong></td>
+         <td style="text-align:right" colspan="1"><strong style="text-align:right" *ngIf="opc" innerHTML="$ {{ sumValues(opc,'curTotalLiq') | number:'1.2-2' }} "></strong></td>
 
 
   		  </tr>
@@ -130,8 +130,8 @@
   		  </tr>
   		  <tr *ngIf="opl">
   		   <td colspan="4"><strong>Total Operaciones</strong></td>
-         <td style="text-align:right" innerHTML="$ {{ sumValues(opl,'CurTotalliq_Inicio') | number:'1.2-2' }}">a</td>
-         <td style="text-align:right" innerHTML="$ {{ sumValues(opl,'CurTotalliq_Regreso') | number:'1.2-2' }}">a</td>
+         <td style="text-align:right"><strong innerHTML="$ {{ sumValues(opl,'CurTotalliq_Inicio') | number:'1.2-2' }}" ></strong></td>
+         <td style="text-align:right"><strong innerHTML="$ {{ sumValues(opl,'CurTotalliq_Regreso') | number:'1.2-2' }}"></strong></td>
   		   <td style="text-align:right">
           <strong  innerHTML="$ {{ sumValues(opl,'Interes') | number:'1.2-2' }} "></strong>
          </td>
