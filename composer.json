@@ -9,7 +9,7 @@
         "artisaninweb/laravel-soap": "0.3.0.9",
         "barryvdh/laravel-dompdf": "^0.8.2",
         "barryvdh/laravel-snappy": "^0.3.3",
-        "doctrine/dbal": "^2.7",
+        "doctrine/dbal": "^2.5.13",
         "dompdf/dompdf": "~0.8.0",
         "illuminate/html": "^5.0",
         "laravel/framework": "5.4.*",
