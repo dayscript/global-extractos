@@ -34,14 +34,16 @@
 				<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio</td>
 				<td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
 			</tr>
-			@foreach( $info['rf']->NewDataSet as $key => $value )
-			<tr>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format($value->dblCantidad,2):''}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{explode(' ',explode(' ',$value->FechaCompra)[0])[0] }}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{$value->Precio}}</td>
-				<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{$value->Valoracion}}</td>
-			</tr>
+			@foreach( $info['rf']->NewDataSet as $key => $items )
+				@foreach($items as $key => $value)
+					<tr>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ $value->dblCantidad }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode('T',$value->FechaCompra)[0] }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Precio,2) }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }}</td>
+					</tr>
+				@endforeach
 			@endforeach
 			<tr>
 				<td style="font-size:9px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="4" >TOTAL</td>
@@ -69,9 +71,9 @@
 				@foreach($items as $key => $value)
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format((float)$value->dblCantidad,2):''}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode(' ',$value->FechaCompra)[0]}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ number_format((float)$value->Precio,2) }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? $value->dblCantidad:'' }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode('T',$value->FechaCompra)[0]}}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Precio,2) }}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }} </td>
 				</tr>
 				@endforeach
@@ -164,17 +166,29 @@
 		<td style="font-size:11px;border:solid 1px #efefef;text-align: center;width:50%">Detalle</td>
 		<td style="font-size:11px;border:solid 1px #efefef;text-align: center">A su cargo</td>
 		<td style="font-size:11px;border:solid 1px #efefef;text-align: center">A su favor</td>
-		<td style="font-size:11px;border:solid 1px #efefef;text-align: center">Saldo</td>
+		{{-- <td style="font-size:11px;border:solid 1px #efefef;text-align: center">Saldo</td> --}}
 	</tr>
 	@foreach($info['mes']->NewDataSet as $key => $items)
 		@foreach($items as $key => $value)
 		<tr>
-			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ Carbon\Carbon::parse($value->dtmDocumento)->format('d-m-Y') }}</td>
-			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ number_format((float)$value->strNumero,2)}}</td>
+			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">
+			@if( $value->dtmDocumento )
+			{{ 
+				Carbon\Carbon::parse($value->dtmDocumento)->format('d-m-Y') 
+			}}
+			@endif
+			</td>
+			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">
+			@if( $value->strNumero )
+			{{ 
+				$value->strNumero
+			}}
+			@endif
+			</td>
 			<td style="font-size:9px;text-align: left; border:solid 1px #efefef; ">{{ $value->strDetalle1 }}</td>
 			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->ACargo,2)}}</td>
 			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->AFavor,2)}}</td>
-			<td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->Saldo,2)}}</td>
+			{{-- <td style="font-size:9px;text-align: right; border:solid 1px #efefef;">{{ number_format((float)$value->Saldo,2)}}</td> --}}
 		</tr>
 		@endforeach
 	@endforeach

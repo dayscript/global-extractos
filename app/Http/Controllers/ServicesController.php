@@ -566,7 +566,7 @@ class ServicesController extends Controller
                   'fecha_inicio'=>$fecha_inicio,
                   'fecha_fin'=>$fecha_fin,
                 );
-
+    
    //return view('extracto-firma',$data);
    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
 }
