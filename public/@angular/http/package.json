@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/home/ariel/projects/global-extractos"
+      "/home/forge/globalextractos.demodayscript.com"
     ]
   ],
   "_from": "@angular/http@2.4.1",
@@ -44,7 +44,7 @@
   "_shasum": "f06067e370c44d025ed00a03ef704f6c46ea59ac",
   "_shrinkwrap": null,
   "_spec": "@angular/http@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/forge/globalextractos.demodayscript.com",
   "author": {
     "name": "angular"
   },
@@ -52,6 +52,7 @@
     "url": "https://github.com/angular/angular/issues"
   },
   "dependencies": {},
+  "deprecated": "Switch to @angular/common/http - see https://angular.io/guide/http",
   "description": "Angular - the http service",
   "devDependencies": {},
   "directories": {},

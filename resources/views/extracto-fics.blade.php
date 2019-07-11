@@ -45,21 +45,21 @@
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Cr&eacute;dito</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">D&eacute;bito</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Valor de la unidad</td>
-			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
-			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td>
+			<td colspan="2" style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
+			{{-- <td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td> --}}
 		</tr>
-		@foreach ( $info['movimientos']->NewDataSet as $key => $item )
-			@foreach ( $item as $key => $value )
+		@foreach ( $info['movimientos']->NewDataSet->Table as $key => $value )
+			{{-- @foreach ( $item as $key => $value ) --}}
 				<tr>
-					<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ Carbon\Carbon::parse($value['fecha'])->format('d-m-Y') }}</td>
-					<td style="border:solid 1px #efefef;text-align:left;font-size:11px"> {{ $value->Transaccion }}</td>
+					<td style="border:solid 1px #efefef;text-align:left;font-size:11px">   {{ explode('T',$value->fecha)[0] }}</td>
+					<td style="border:solid 1px #efefef;text-align:left;font-size:11px">   {{ $value->Transaccion }}</td>
 					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Credito,2) }}</td>
 					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Debito,2) }}</td>
 					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->valor_x0020_Unidad,6) }}</td>
-					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,2) }}</td>
-					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Saldo,2) }}</td>
+					<td colspan="2" style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,2) }}</td>
+					{{-- <td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Saldo,2) }}</td> --}}
 				</tr>
-			@endforeach
+			{{-- @endforeach --}}
 		@endforeach
 				<!-- <tr>
 					<td style="font-size:11px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="6" >TOTAL</td>

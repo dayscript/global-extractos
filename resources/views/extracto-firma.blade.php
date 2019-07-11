@@ -38,7 +38,7 @@
 				@foreach($items as $key => $value)
 					<tr>
 						<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ $value->dblCantidad }}</td>
+						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format((float)$value->dblCantidad):'' }}</td>
 						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode('T',$value->FechaCompra)[0] }}</td>
 						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Precio,2) }}</td>
 						<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }}</td>
@@ -71,7 +71,7 @@
 				@foreach($items as $key => $value)
 				<tr>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: left;">{{$value->strNombre}}</td>
-					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? $value->dblCantidad:'' }}</td>
+					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{( $value->dblCantidad != "") ? number_format((float)$value->dblCantidad):'' }}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">{{ explode('T',$value->FechaCompra)[0]}}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Precio,2) }}</td>
 					<td style="border:solid 1px #efefef;font-size:9px;text-align: right;">$ {{ number_format((float)$value->Valoracion,2) }} </td>

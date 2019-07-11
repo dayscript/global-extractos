@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/home/ariel/projects/global-extractos"
+      "/home/forge/globalextractos.demodayscript.com"
     ]
   ],
   "_from": "@angular/forms@2.4.1",
@@ -44,7 +44,7 @@
   "_shasum": "440ff9b864b3b79c55423c9ce5863030a25767ce",
   "_shrinkwrap": null,
   "_spec": "@angular/forms@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/forge/globalextractos.demodayscript.com",
   "author": {
     "name": "angular"
   },

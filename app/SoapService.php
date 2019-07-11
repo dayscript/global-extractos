@@ -28,7 +28,7 @@ class SoapService
        $this->end_point = 'http://181.143.34.114:8090/?wsdl';
        $this->alias = 'Globalcdb';
        $this->trace = true;
-       $this->params = [];
+       $this->params = ['connection_timeout' => 180];
        $this->method = '';
      }
 

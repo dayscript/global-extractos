@@ -88,6 +88,7 @@ class ServicesController extends Controller
      * @return [type]                 [description]
      */
   public function getPortafolioRentaVariable($identification,$date){
+    $output = [];
     $user = User::where('identification',$identification)->first();
     $soapWrapper = new SoapService();
     $data = [
@@ -96,7 +97,6 @@ class ServicesController extends Controller
       ];
 
     $soapWrapper->callMethod('PieRVClienteDado',$data);
-
     foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
       foreach ($value as $key => $val) {
           $output[] = $val;
@@ -629,7 +629,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
    'nit'           => $identification,
    'image_fotter'=>$image_fotter,
  );
- #dd($info);
+// dd($data);
  // return view('extracto-fics',$info);
  return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
 }

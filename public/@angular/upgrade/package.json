@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/home/ariel/projects/global-extractos"
+      "/home/forge/globalextractos.demodayscript.com"
     ]
   ],
   "_from": "@angular/upgrade@2.4.1",
@@ -44,7 +44,7 @@
   "_shasum": "f13a61551c0616fdb765e34e0ebdeeadfebb5f6a",
   "_shrinkwrap": null,
   "_spec": "@angular/upgrade@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/forge/globalextractos.demodayscript.com",
   "author": {
     "name": "angular"
   },

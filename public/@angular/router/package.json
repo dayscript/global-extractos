@@ -10,7 +10,7 @@
         "spec": "3.0.0",
         "type": "version"
       },
-      "/home/ariel/projects/global-extractos"
+      "/home/forge/globalextractos.demodayscript.com"
     ]
   ],
   "_from": "@angular/router@3.0.0",
@@ -44,7 +44,7 @@
   "_shasum": "cdf91b3a5d85ad39aff4fd882455c9b8c3129cd9",
   "_shrinkwrap": null,
   "_spec": "@angular/router@3.0.0",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/forge/globalextractos.demodayscript.com",
   "author": {
     "name": "angular"
   },
