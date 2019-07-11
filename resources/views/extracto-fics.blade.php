@@ -48,7 +48,7 @@
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td>
 		</tr>
-		@if( isset($info['movimientos']->NewDataSet) )
+		@if( isset($info['movimientos']->NewDataSet->Table) )
 			@foreach ( $info['movimientos']->NewDataSet as $key => $item )
 				@foreach ( $item as $key => $value )
 					<tr>
