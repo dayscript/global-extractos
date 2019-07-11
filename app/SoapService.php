@@ -27,6 +27,8 @@ class SoapService
        $this->soap_wrapper = new SoapWrapper;
        $this->end_point = 'http://181.143.34.114:8090/?wsdl';
        $this->alias = 'Globalcdb';
+       $this->end_point = 'http://190.85.44.218:8090/?wsdl';
+       $this->alias = 'WSGlobal';
        $this->trace = true;
        $this->params = [];
        $this->method = '';
