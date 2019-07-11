@@ -629,7 +629,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
    'nit'           => $identification,
    'image_fotter'=>$image_fotter,
  );
- #dd($info);
+ dd($info);
  // return view('extracto-fics',$info);
  return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
 }
