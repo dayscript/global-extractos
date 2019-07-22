@@ -76,10 +76,10 @@
               <td class="numero" >{{item.fecha | date: 'dd/MM/yyyy'}}</td>
               <td class="detalle" >{{item.Transaccion}}</td>
               <td class="cargo" >{{item.Debito}}</td>
-              <td class="cargo">{{item.Credito | currency:'USD':true:'1.2-2' }}</td>
+              <td class="cargo">{{item.Credito | currency:'COP':true:'1.2-2' }}</td>
               <td class="favor" >{{item.Unidades }}</td>
-              <td class="favor" >{{item.ValorUnidad | currency:'USD':true:'1.2-2' }}</td>
-              <td class="saldo">{{item.Saldo | currency:'USD':true:'1.2-2'}}</td>
+              <td class="favor" >{{item.ValorUnidad | currency:'COP':true:'1.2-2' }}</td>
+              <td class="saldo">{{item.Saldo | currency:'COP':true:'1.2-2'}}</td>
             </tr>
         </table>
         <div *ngIf="!info_movimientos">Sin resultados</div>
