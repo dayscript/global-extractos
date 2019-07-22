@@ -48,22 +48,7 @@
 			<td colspan="2" style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
 			{{-- <td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td> --}}
 		</tr>
-<<<<<<< HEAD
-		@foreach ( $info['movimientos']->NewDataSet->Table as $key => $value )
-			{{-- @foreach ( $item as $key => $value ) --}}
-				<tr>
-					<td style="border:solid 1px #efefef;text-align:left;font-size:11px">   {{ explode('T',$value->fecha)[0] }}</td>
-					<td style="border:solid 1px #efefef;text-align:left;font-size:11px">   {{ $value->Transaccion }}</td>
-					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Credito,2) }}</td>
-					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Debito,2) }}</td>
-					<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->valor_x0020_Unidad,6) }}</td>
-					<td colspan="2" style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,2) }}</td>
-					{{-- <td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Saldo,2) }}</td> --}}
-				</tr>
-			{{-- @endforeach --}}
-		@endforeach
-=======
-		@if( isset($info['movimientos']->NewDataSet) )
+		@if( isset($info['movimientos']->NewDataSet->Table) )
 			@foreach ( $info['movimientos']->NewDataSet as $key => $item )
 				@foreach ( $item as $key => $value )
 					<tr>
@@ -78,7 +63,6 @@
 				@endforeach
 			@endforeach
 		@endif
->>>>>>> 2d376e9a590d2a77c593b0be1e75a6a97a60ef51
 				<!-- <tr>
 					<td style="font-size:11px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="6" >TOTAL</td>
 					<td style="font-size:11px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info['totales']['total_saldo'],2)}}</td>
