@@ -568,7 +568,7 @@ class ServicesController extends Controller
                 );
     
    //return view('extracto-firma',$data);
-   return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
+   return $pdf = \PDF::loadView('extracto-firma', $data)->setEncryption($identification)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
 }
 
 public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
@@ -630,7 +630,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
    'image_fotter'=>$image_fotter,
  );
  // return view('extracto-fics',$info);
- return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+ return $pdf = \PDF::loadView('extracto-fics', $info)->setEncryption($identification)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
 }
 
 function calcPorcent($a,$b,$c){

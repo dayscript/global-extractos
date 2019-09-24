@@ -364,7 +364,7 @@ class HomeController extends Controller
     'image_fotter'=>$image_fotter,
   );
   //return view('extracto-fics',$data);
-  return $pdf = \PDF::loadView('extracto-fics', $data)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+  return $pdf = \PDF::loadView('extracto-fics', $data)->setEncryption($id)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  /*
  *  Function return data to PDF
@@ -518,7 +518,7 @@ class HomeController extends Controller
     }
     //dd($info);
     //return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+    return $pdf = \PDF::loadView('extracto-firma', $data)->setEncryption($id)->download('FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  function array_to_utf($array = array()){
   $temp = array();
