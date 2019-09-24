@@ -570,9 +570,14 @@ class ServicesController extends Controller
     
    //return view('extracto-firma',$data);
    $pdf = \PDF::loadView('extracto-firma', $data);
-   $pdf->setEncryption($identification);
+   self::setEncryption($identification);
    return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
+
+  public function setEncryption($password) {
+    $this->render();
+    $this->dompdf->get_canvas()->get_cpdf()->setEncryption($password, $password);
+    }
 
 public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
    $user = User::where('identification',$identification)->first();
