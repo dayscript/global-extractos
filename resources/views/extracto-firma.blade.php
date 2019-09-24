@@ -223,15 +223,16 @@
       </div>
       <div class="text-content">
               <div style="margin-top: 10px;
-                                      margin-left: 25px;
-                                    font-size: 10px;
-                                    padding-bottom: 10px;
-                                    border-bottom: 1px solid #b1b1b1;
-                                      text-align: justify">
-                      Cualquier inconformidad con la informaci&oacute;n presentada agradecemos comunicarla a la revisor&iacute;a KPMG en la Carrera 43 A No. 16A Sur 38 P3 -
-                      Contacto Elvia Mar&iacute;a Bol&iacute;var Puerta <span style="color:blue">embolivar@kpmg.com</span> Tel&eacute;fono (4) 355 60 60 Ext: 4119.
-                      Defensor del consumidor financiero: Pablo Tomas Silva en la Carrera 6 No. 14-74
-                      Oficina 1205 Bogot&aacute; - <span style="color:blue">ptsilvadefensor@hotmail.com </span>Tel&eacute;fonos 2823570 – 3133644105.
+					margin-left: 25px;
+					font-size: 10px;
+					padding-bottom: 10px;
+					border-bottom: 1px solid #b1b1b1;
+					text-align: justify">
+                    Cualquier inconformidad con la informaci&oacute;n presentada agradecemos comunicarla a la 
+                    revisor&iacute;a fiscal BDO Audit S.A en la Transversal 21 No. 98 – 05 en Bogot&aacute; D.C - Contacto Víctor 
+                    Ramirez Vargas vramirez@bdo.com.co Tel&eacute;fono (1) 623 01 99.
+                    Defensor del consumidor financiero: Pablo Tomas Silva en la Carrera 6 No. 14-74
+                    Oficina 1205 Bogot&aacute; - <span style="color:blue">ptsilvadefensor@hotmail.com </span>Tel&eacute;fonos 2823570 – 3133644105.
               </div>
 
               <div style="margin-left: 25px;
