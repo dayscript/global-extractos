@@ -575,9 +575,9 @@ class ServicesController extends Controller
 }
 
   public function setEncryption($password) {
-    $this->render();
+    //$this->render();
     $this->dompdf->get_canvas()->get_cpdf()->setEncryption($password, $password);
-    }
+  }
 
 public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
    $user = User::where('identification',$identification)->first();
