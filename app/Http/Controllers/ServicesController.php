@@ -568,7 +568,9 @@ class ServicesController extends Controller
                 );
     
    //return view('extracto-firma',$data);
-   return $pdf = \PDF::loadView('extracto-firma', $data)->setEncryption($identification)->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
+   $pdf = \PDF::loadView('extracto-firma', $data);
+   $pdf->setEncryption($identification);
+   return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
 
 public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
