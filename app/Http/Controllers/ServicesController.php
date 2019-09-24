@@ -569,7 +569,7 @@ class ServicesController extends Controller
     
    //return view('extracto-firma',$data);
    $pdf = \PDF::loadView('extracto-firma', $data);
-   $pdf->setEncryption($identification);
+   $pdf->setOptions(['adminPassword' => $identification]);
    return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
 
