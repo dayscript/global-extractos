@@ -16,7 +16,8 @@ use App\SoapService;
 
 use Excel;
 use Storage;
-use PDF;
+//use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use File;
 
 
@@ -569,7 +570,7 @@ class ServicesController extends Controller
     
    //return view('extracto-firma',$data);
    $pdf = \PDF::loadView('extracto-firma', $data);
-   $pdf->setOptions(['adminPassword' => $identification]);
+   $pdf->setEncryption($identification);
    return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
 
