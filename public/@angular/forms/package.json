@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/home/forge/globalextractos.demodayscript.com"
+      "/home/ariel/projects/global-extractos"
     ]
   ],
   "_from": "@angular/forms@2.4.1",
@@ -40,11 +40,11 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@angular/forms/-/forms-2.4.1.tgz",
+  "_resolved": "http://registry.npmjs.org/@angular/forms/-/forms-2.4.1.tgz",
   "_shasum": "440ff9b864b3b79c55423c9ce5863030a25767ce",
   "_shrinkwrap": null,
   "_spec": "@angular/forms@2.4.1",
-  "_where": "/home/forge/globalextractos.demodayscript.com",
+  "_where": "/home/ariel/projects/global-extractos",
   "author": {
     "name": "angular"
   },

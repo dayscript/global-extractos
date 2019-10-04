@@ -52,7 +52,7 @@
 			@foreach ( $info['movimientos']->NewDataSet as $key => $item )
 				@foreach ( $item as $key => $value )
 					<tr>
-						<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ Carbon\Carbon::parse($value['fecha'])->format('d-m-Y') }}</td>
+						<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ \Carbon\Carbon::parse($value->fecha)->format('d-m-Y') }}</td>
 						<td style="border:solid 1px #efefef;text-align:left;font-size:11px"> {{ $value->Transaccion }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Credito,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Debito,2) }}</td>

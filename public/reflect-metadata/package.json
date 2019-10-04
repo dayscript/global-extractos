@@ -10,7 +10,7 @@
         "spec": ">=0.1.3 <0.2.0",
         "type": "range"
       },
-      "/home/forge/globalextractos.demodayscript.com"
+      "/home/ariel/projects/global-extractos"
     ]
   ],
   "_from": "reflect-metadata@>=0.1.3 <0.2.0",
@@ -41,11 +41,11 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/reflect-metadata/-/reflect-metadata-0.1.13.tgz",
+  "_resolved": "http://registry.npmjs.org/reflect-metadata/-/reflect-metadata-0.1.13.tgz",
   "_shasum": "67ae3ca57c972a2aa1642b10fe363fe32d49dc08",
   "_shrinkwrap": null,
   "_spec": "reflect-metadata@^0.1.3",
-  "_where": "/home/forge/globalextractos.demodayscript.com",
+  "_where": "/home/ariel/projects/global-extractos",
   "author": {
     "name": "Ron Buckton",
     "email": "ron.buckton@microsoft.com",

@@ -601,7 +601,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
    $soapWrapper = new SoapService();
    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
    $info_informacion_movimientos = $soapWrapper->reponse_parse;
-
+   
    $soapWrapper = new SoapService();
    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosResumen',$data);
    $info_informacion_resumen = $soapWrapper->reponse_parse;

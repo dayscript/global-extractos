@@ -10,7 +10,7 @@
         "spec": "5.0.0-beta.12",
         "type": "version"
       },
-      "/home/forge/globalextractos.demodayscript.com"
+      "/home/ariel/projects/global-extractos"
     ]
   ],
   "_from": "rxjs@5.0.0-beta.12",
@@ -40,11 +40,11 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/rxjs/-/rxjs-5.0.0-beta.12.tgz",
+  "_resolved": "http://registry.npmjs.org/rxjs/-/rxjs-5.0.0-beta.12.tgz",
   "_shasum": "cdfde2d8c4639d20ae7794bff8fddf32da7ad337",
   "_shrinkwrap": null,
   "_spec": "rxjs@5.0.0-beta.12",
-  "_where": "/home/forge/globalextractos.demodayscript.com",
+  "_where": "/home/ariel/projects/global-extractos",
   "author": {
     "name": "Ben Lesh",
     "email": "blesh@netflix.com"

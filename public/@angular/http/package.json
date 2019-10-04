@@ -10,7 +10,7 @@
         "spec": "2.4.1",
         "type": "version"
       },
-      "/home/forge/globalextractos.demodayscript.com"
+      "/home/ariel/projects/global-extractos"
     ]
   ],
   "_from": "@angular/http@2.4.1",
@@ -40,11 +40,11 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@angular/http/-/http-2.4.1.tgz",
+  "_resolved": "http://registry.npmjs.org/@angular/http/-/http-2.4.1.tgz",
   "_shasum": "f06067e370c44d025ed00a03ef704f6c46ea59ac",
   "_shrinkwrap": null,
   "_spec": "@angular/http@2.4.1",
-  "_where": "/home/forge/globalextractos.demodayscript.com",
+  "_where": "/home/ariel/projects/global-extractos",
   "author": {
     "name": "angular"
   },

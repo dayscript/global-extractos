@@ -10,7 +10,7 @@
         "spec": ">=0.7.2 <0.8.0",
         "type": "range"
       },
-      "/home/forge/globalextractos.demodayscript.com"
+      "/home/ariel/projects/global-extractos"
     ]
   ],
   "_from": "zone.js@>=0.7.2 <0.8.0",
@@ -40,11 +40,11 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/zone.js/-/zone.js-0.7.8.tgz",
+  "_resolved": "http://registry.npmjs.org/zone.js/-/zone.js-0.7.8.tgz",
   "_shasum": "4f3fe8834d44597f2639053a0fa438df34fffded",
   "_shrinkwrap": null,
   "_spec": "zone.js@^0.7.2",
-  "_where": "/home/forge/globalextractos.demodayscript.com",
+  "_where": "/home/ariel/projects/global-extractos",
   "author": {
     "name": "Brian Ford"
   },
