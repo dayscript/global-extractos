@@ -3,7 +3,7 @@
   <menu></menu>
   <div class="container-title col-md-12">
       <div class="title col-md-12 firma">
-       <h5 class="title-text " >SALDOS Y MOVIMIENTOS FIRMA COMISIONISTA</h5>
+       <h5 class="title-text ">SALDOS Y MOVIMIENTOS FIRMA COMISIONISTA</h5>
       </div>
   </div>
   <div class="col-md-6"></div>
@@ -15,7 +15,7 @@
     <table style="width:100%">
       <div *ngIf="!renta_variable" class="content-wrapper ">
           <div>
-            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif" >
+            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif">
           </div>
       </div>
       <thead>
@@ -24,14 +24,14 @@
       <tr *ngFor="let item of renta_variable">
         <td>{{item.strNombre}} </td>
         <td class="right-text">{{item.dblCantidad| number}}</td>
-        <td class="right-text">{{item.FechaCompra | date }}</td>
-        <td class="right-text">$ {{item.Precio | number:'1.2-2' }}</td>
+        <td class="right-text">{{item.FechaCompra | date: 'dd/MM/yyyy'}}</td>
+        <td class="right-text">$ {{item.Precio | number:'1.2-2'}}</td>
         <td class="right-text">$ {{item.Valoracion | number:'1.2-2'}}</td>
       </tr>
       <tr>
        <td colspan="4"><strong>Total Renta Variable</strong></td>
        <td colspan="1" class="right-text">
-        <strong *ngIf="renta_variable" innerHTML="$ {{sumValues(renta_variable,'Valoracion') | number:'1.2-2'}}" ></strong>
+        <strong *ngIf="renta_variable" innerHTML="$ {{sumValues(renta_variable,'Valoracion') | number:'1.2-2'}}"></strong>
       </td>
       </tr>
     </table>
@@ -43,7 +43,7 @@
   	<table style="width:100%">
       <div *ngIf="!renta_fija" class="content-wrapper">
           <div>
-            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif" >
+            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif">
           </div>
       </div>
   		<thead>
@@ -52,10 +52,10 @@
   		  <tr *ngFor="let item of renta_fija">
   		    <td class="left-text">{{item.strNombre}} </td>
   		    <td class="right-text">{{item.dblCantidad | number}}</td>
-  		    <td class="right-text">{{item.FechaCompra | date }}</td>
+  		    <td class="right-text">{{item.FechaCompra | date: 'dd/MM/yyyy'}}</td>
 
-          <td class="right-text">{{item.dtmEmision | date }}</td>
-          <td class="right-text">{{item.dtmVencimiento | date }}</td>
+          <td class="right-text">{{item.dtmEmision | date: 'dd/MM/yyyy'}}</td>
+          <td class="right-text">{{item.dtmVencimiento | date: 'dd/MM/yyyy'}}</td>
           <td class="right-text">{{item.Tasa }}</td>
 
   		    <td class="right-text">$ {{item.Precio | number:'1.2-2'}} </td>
@@ -64,7 +64,7 @@
   		  <tr>
   		   <td colspan="7"><strong>Total Renta Fija</strong></td>
   		   <td colspan="1" class="right-text">
-          <strong *ngIf="renta_fija"  innerHTML="$ {{ sumValues(renta_fija,'Valoracion') | number:'1.2-2' }}"></strong>
+          <strong *ngIf="renta_fija"  innerHTML="$ {{sumValues(renta_fija,'Valoracion') | number:'1.2-2'}}"></strong>
         </td>
   		  </tr>
   	</table>
@@ -75,7 +75,7 @@
   <table style="width:100%">
       <div *ngIf="!opc" class="content-wrapper">
           <div>
-            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif" >
+            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif">
           </div>
       </div>
   		<thead>
@@ -87,15 +87,15 @@
   		</thead>
   		  <tr *ngFor="let item of opc">
   		    <td>{{item.Emision}} </td>
-          <td style="text-align:right">{{item.dtmCumplimiento | date}}</td>
-  		    <td style="text-align:right">{{item.dtmLiquidacion | date}} </td>
+          <td style="text-align:right">{{item.dtmCumplimiento | date: 'dd/MM/yyyy'}}</td>
+  		    <td style="text-align:right">{{item.dtmLiquidacion | date: 'dd/MM/yyyy'}} </td>
           <td style="text-align:right">{{item.dblCantidad | number}}</td>
           <td style="text-align:right">$ {{item.curTotalLiq | number:'1.2-2'}} </td>
   		  </tr>
   		  <tr>
   		   <td colspan="3"><strong>Total Operaciones</strong></td>
          <td style="text-align:right" colspan="1"><strong style="text-align:right" *ngIf="opc" innerHTML="{{sumValues(opc,'dblCantidad') | number}}"></strong></td>
-         <td style="text-align:right" colspan="1"><strong style="text-align:right" *ngIf="opc" innerHTML="$ {{ sumValues(opc,'curTotalLiq') | number:'1.2-2' }} "></strong></td>
+         <td style="text-align:right" colspan="1"><strong style="text-align:right" *ngIf="opc" innerHTML="$ {{sumValues(opc,'curTotalLiq') | number:'1.2-2'}} "></strong></td>
 
 
   		  </tr>
@@ -107,33 +107,33 @@
   	<table style="width:100%">
       <div *ngIf="!opl" class="content-wrapper">
           <div>
-            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif" >
+            <img style="width: 100px; height: 100px;" src="/images/loading-data.gif">
           </div>
       </div>
   		<thead>
   			<th>Emisión</th>
-        <th style="text-align:right" >Cantidad</th>
-        <th style="text-align:right" >F. Liquidación</th>
-        <th style="text-align:right" >F. cumplimiento</th>
-        <th style="text-align:right" >Total inicio</th>
-        <th style="text-align:right" >Total regreso</th>
-        <th style="text-align:right" >Interés</th>
+        <th style="text-align:right">Cantidad</th>
+        <th style="text-align:right">F. Liquidación</th>
+        <th style="text-align:right">F. cumplimiento</th>
+        <th style="text-align:right">Total inicio</th>
+        <th style="text-align:right">Total regreso</th>
+        <th style="text-align:right">Interés</th>
   		</thead>
   		  <tr *ngFor="let item of opl">
   		    <td>{{item.Emision}} </td>
           <td style="text-align:right">{{item.dblCantidad}}</td>
-  		    <td style="text-align:right">{{item.dtmLiquidacion | date }}</td>
-  		    <td style="text-align:right">{{item.dtmCumplimiento_Regreso | date}} </td>
-          <td style="text-align:right">$ {{item.CurTotalliq_Inicio | number:'1.2-2' }} </td>
-          <td style="text-align:right">$ {{item.CurTotalliq_Regreso | number:'1.2-2' }} </td>
-          <td style="text-align:right">$ {{item.Interes | number:'1.2-2' }} </td>
+  		    <td style="text-align:right">{{item.dtmLiquidacion | date: 'dd/MM/yyyy'}}</td>
+  		    <td style="text-align:right">{{item.dtmCumplimiento_Regreso | date: 'dd/MM/yyyy'}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Inicio | number:'1.2-2'}} </td>
+          <td style="text-align:right">$ {{item.CurTotalliq_Regreso | number:'1.2-2'}} </td>
+          <td style="text-align:right">$ {{item.Interes | number:'1.2-2'}} </td>
   		  </tr>
   		  <tr *ngIf="opl">
   		   <td colspan="4"><strong>Total Operaciones</strong></td>
-         <td style="text-align:right"><strong innerHTML="$ {{ sumValues(opl,'CurTotalliq_Inicio') | number:'1.2-2' }}" ></strong></td>
-         <td style="text-align:right"><strong innerHTML="$ {{ sumValues(opl,'CurTotalliq_Regreso') | number:'1.2-2' }}"></strong></td>
+         <td style="text-align:right"><strong innerHTML="$ {{sumValues(opl,'CurTotalliq_Inicio') | number:'1.2-2'}}"></strong></td>
+         <td style="text-align:right"><strong innerHTML="$ {{sumValues(opl,'CurTotalliq_Regreso') | number:'1.2-2'}}"></strong></td>
   		   <td style="text-align:right">
-          <strong  innerHTML="$ {{ sumValues(opl,'Interes') | number:'1.2-2' }} "></strong>
+          <strong  innerHTML="$ {{sumValues(opl,'Interes') | number:'1.2-2'}} "></strong>
          </td>
   		  </tr>
   	</table>
@@ -151,31 +151,31 @@
     <div style="display: block">
       <table *ngIf="info_movimientos" style="width:100%" class="report-table">
         <thead>
-          <th class="numero" >FECHA</th>
-          <th class="numero" >DOCUMENTO</th>
+          <th class="numero">FECHA</th>
+          <th class="numero">DOCUMENTO</th>
           <th class="detalle">DETALLE</th>
           <th>A. SU CARGO</th>
           <th>A. SU FAVOR</th>
           <th>SALDO</th>
         </thead>
           <tr *ngFor="let item of info_movimientos">
-            <td class="numero" >{{item.dtmDocumento | date }}</td>
-            <td class="numero" >{{item.strNumero}}</td>
-            <td class="detalle" >{{item.strDetalle1}}</td>
-            <td class="cargo">{{item.ACargo | number:'1.2-2'}}</td>
-            <td class="favor" >{{item.AFavor | number:'1.2-2'}}</td>
+            <td class="numero">{{item.dtmDocumento  | date: 'dd/MM/yyyy'}}</td>
+            <td class="numero">{{item.strNumero}}</td>
+            <td class="detalle">{{item.strDetalle1}}</td>
+            <td class="cargo">${{item.ACargo | number:'1.2-2'}}</td>
+            <td class="favor">${{item.AFavor | number:'1.2-2'}}</td>
             <td class="saldo">$ {{item.Saldo | number:'.2-2'}}</td>
           </tr>
           <tr>
             <td colspan="3"><strong>TOTAL</strong></td>
             <td class="saldo" *ngIf="info_movimientos">
-              <strong innerHTML="{{ sumValues(info_movimientos,'ACargo') | number:'1.2-2' }}"></strong>
+              <strong innerHTML="{{sumValues(info_movimientos,'ACargo') | number:'1.2-2'}}"></strong>
             </td>
             <td class="saldo" *ngIf="info_movimientos">
-              <strong innerHTML="{{ sumValues(info_movimientos,'AFavor') | number:'1.2-2' }}"></strong>
+              <strong innerHTML="{{sumValues(info_movimientos,'AFavor') | number:'1.2-2'}}"></strong>
             </td>
             <td class="saldo" *ngIf="info_movimientos">
-              <strong innerHTML="$ {{ restValues(info_movimientos,'AFavor','ACargo') | number:'1.2-2' }}"></strong>
+              <strong innerHTML="$ {{restValues(info_movimientos,'AFavor','ACargo') | number:'1.2-2'}}"></strong>
             </td>
           </tr>
       </table>
@@ -183,7 +183,7 @@
       <div *ngIf="info_movimientos" class="content-wrapper download-xls">
           <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
           <div style="text-align:left">
-            <a href="{{url_download}}"><img style="width: 30px; height: 30px;" src="/images/excel.png" >   XLS</a>
+            <a href="{{url_download}}"><img style="width: 30px; height: 30px;" src="/images/excel.png">   XLS</a>
           </div>
       </div>
     </div>

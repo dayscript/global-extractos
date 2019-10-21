@@ -49,6 +49,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
         var _this = this;
         this.productsService.getData(this.id_identificacion, this.fecha)
             .subscribe(function (data) { _this.products = data; }, function (error) { return console.error(error); }, function () {
+            _this.totals();
             _this.setParamsPie();
             setTimeout(function () {
                 $(function () {
@@ -86,6 +87,11 @@ var ResumenPortafolioComponent = /** @class */ (function () {
     ResumenPortafolioComponent.prototype.search = function () {
         this.fecha = $('#datepicker').val();
         window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
+    };
+    ResumenPortafolioComponent.prototype.totals = function () {
+        this.products.CantidadRVBloqueado = Number(this.products.CantidadRVBloqueado);
+        this.products.TotalDisponible = Number(this.products.TotalRV) + Number(this.products.TotalRF) + Number(this.products.Efectivo) + Number(this.products.funds_investment_colective);
+        this.products.TotalPortafolio = Number(this.products.TotalDisponible) + Number(this.products.TotalLiquidez) + Number(this.products.TotalRVBloqueado);
     };
     ResumenPortafolioComponent = __decorate([
         core_1.Component({

@@ -1,21 +1,14 @@
 {
   "_args": [
     [
-      {
-        "raw": "@angular/platform-browser@2.4.1",
-        "scope": "@angular",
-        "escapedName": "@angular%2fplatform-browser",
-        "name": "@angular/platform-browser",
-        "rawSpec": "2.4.1",
-        "spec": "2.4.1",
-        "type": "version"
-      },
-      "/home/ariel/projects/global-extractos"
+      "@angular/platform-browser@2.4.1",
+      "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/platform-browser@2.4.1",
   "_id": "@angular/platform-browser@2.4.1",
   "_inCache": true,
+  "_installable": true,
   "_location": "/@angular/platform-browser",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -23,28 +16,27 @@
     "tmp": "tmp/platform-browser-2.4.1.tgz_1482365951567_0.47007400426082313"
   },
   "_npmUser": {
-    "name": "angular",
-    "email": "angular-core+npm@google.com"
+    "email": "angular-core+npm@google.com",
+    "name": "angular"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@angular/platform-browser@2.4.1",
-    "scope": "@angular",
-    "escapedName": "@angular%2fplatform-browser",
     "name": "@angular/platform-browser",
+    "raw": "@angular/platform-browser@2.4.1",
     "rawSpec": "2.4.1",
+    "scope": "@angular",
     "spec": "2.4.1",
     "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "http://registry.npmjs.org/@angular/platform-browser/-/platform-browser-2.4.1.tgz",
+  "_resolved": "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-2.4.1.tgz",
   "_shasum": "4eaa829b450be34f0029796b6c3b99e27d3d5740",
   "_shrinkwrap": null,
   "_spec": "@angular/platform-browser@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/dayscript/projects/global-extractos",
   "author": {
     "name": "angular"
   },
@@ -72,8 +64,8 @@
   "name": "@angular/platform-browser",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/core": "2.4.1",
-    "@angular/common": "2.4.1"
+    "@angular/common": "2.4.1",
+    "@angular/core": "2.4.1"
   },
   "readme": "ERROR: No README data found!",
   "repository": {

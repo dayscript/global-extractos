@@ -1,21 +1,14 @@
 {
   "_args": [
     [
-      {
-        "raw": "@angular/platform-browser-dynamic@2.4.1",
-        "scope": "@angular",
-        "escapedName": "@angular%2fplatform-browser-dynamic",
-        "name": "@angular/platform-browser-dynamic",
-        "rawSpec": "2.4.1",
-        "spec": "2.4.1",
-        "type": "version"
-      },
-      "/home/ariel/projects/global-extractos"
+      "@angular/platform-browser-dynamic@2.4.1",
+      "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/platform-browser-dynamic@2.4.1",
   "_id": "@angular/platform-browser-dynamic@2.4.1",
   "_inCache": true,
+  "_installable": true,
   "_location": "/@angular/platform-browser-dynamic",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -23,28 +16,27 @@
     "tmp": "tmp/platform-browser-dynamic-2.4.1.tgz_1482365952849_0.1560553873423487"
   },
   "_npmUser": {
-    "name": "angular",
-    "email": "angular-core+npm@google.com"
+    "email": "angular-core+npm@google.com",
+    "name": "angular"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@angular/platform-browser-dynamic@2.4.1",
-    "scope": "@angular",
-    "escapedName": "@angular%2fplatform-browser-dynamic",
     "name": "@angular/platform-browser-dynamic",
+    "raw": "@angular/platform-browser-dynamic@2.4.1",
     "rawSpec": "2.4.1",
+    "scope": "@angular",
     "spec": "2.4.1",
     "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "http://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.4.1.tgz",
+  "_resolved": "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.4.1.tgz",
   "_shasum": "5fb72038f76c1e3646cea95f5b4722d67a4419dd",
   "_shrinkwrap": null,
   "_spec": "@angular/platform-browser-dynamic@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/dayscript/projects/global-extractos",
   "author": {
     "name": "angular"
   },
@@ -72,9 +64,9 @@
   "name": "@angular/platform-browser-dynamic",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/core": "2.4.1",
     "@angular/common": "2.4.1",
     "@angular/compiler": "2.4.1",
+    "@angular/core": "2.4.1",
     "@angular/platform-browser": "2.4.1"
   },
   "readme": "ERROR: No README data found!",

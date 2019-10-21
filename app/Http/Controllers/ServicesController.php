@@ -452,7 +452,7 @@ class ServicesController extends Controller
     $fecha_inicio = $fecha_actual->format('Y-m-d');
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
-    $image_header = public_path().'/images/header-extracto2.jpg';
+    $image_header = public_path().'/images/header-2019.jpg';
     $image_fotter = public_path().'/images/vigilante.jpg';
     $user = User::where('identification',$identification)->first();
     $data = [
@@ -570,7 +570,7 @@ class ServicesController extends Controller
     
    //return view('extracto-firma',$data);
    $pdf = \PDF::loadView('extracto-firma', $data);
-   return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
+   return $pdf->SetProtection(['copy', 'print'], 'UserPassword', '1073427700')->download('Service_FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
 
 
@@ -623,7 +623,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
                       );
 
 
- $image_header = public_path().'/images/header-extracto2.jpg';
+ $image_header = public_path().'/images/header-2019.jpg';
  $info = array(
    'fecha_inicio'  => $fecha_inicio,
    'fecha_fin'     => $fecha_fin,

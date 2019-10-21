@@ -55,6 +55,7 @@ export class ResumenPortafolioComponent implements OnInit {
         data => { this.products = data},
         error => console.error(error),
         () => {
+            this.totals();
            this.setParamsPie()
            setTimeout(function() {
              $(function() {
@@ -100,4 +101,9 @@ export class ResumenPortafolioComponent implements OnInit {
     window.location.replace('/report/'+this.id_identificacion+'/'+this.fecha);
   }
 
+  totals(){
+    this.products.CantidadRVBloqueado = Number(this.products.CantidadRVBloqueado);
+    this.products.TotalDisponible = Number(this.products.TotalRV) + Number(this.products.TotalRF) + Number(this.products.Efectivo) + Number(this.products.funds_investment_colective);
+    this.products.TotalPortafolio = Number(this.products.TotalDisponible) + Number(this.products.TotalLiquidez) + Number(this.products.TotalRVBloqueado);
+  }
 }

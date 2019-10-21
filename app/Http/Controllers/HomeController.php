@@ -352,7 +352,7 @@ class HomeController extends Controller
       $Extractos_fics->save();
       $info = $Extractos_fics->info_json;
   }
-  $image_header = public_path().'/images/header-extracto2.jpg';
+  $image_header = public_path().'/images/header-2019.jpg';
   $info         = self::array_to_utf(json_decode($info));
   $data = array(
     'fecha_inicio'  => $fecha_inicio,
@@ -377,7 +377,7 @@ class HomeController extends Controller
     $fecha_inicio = $fecha_actual->format('Y-m-d');
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
-    $image_header = public_path().'/images/header-extracto2.jpg';
+    $image_header = public_path().'/images/header-2019.jpg';
     $image_fotter = public_path().'/images/vigilante.jpg';
     $user = User::where('identification',$id)->get();
     #Valida si el usuario ya existe
@@ -518,7 +518,7 @@ class HomeController extends Controller
     }
     //dd($info);
     //return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+    return $pdf = \PDF::loadView('extracto-firma', $data)->SetProtection(['copy', 'print'], '', '1073427700')->download('Home_FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  function array_to_utf($array = array()){
   $temp = array();

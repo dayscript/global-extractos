@@ -56,29 +56,40 @@
         <div class="text-rigth"><span> $ {{ products?.TotalRF | number:'.2'}}</span></div>
       </div>
       <div class="col">
-        <div class="text-left"><strong>Operaciones de liquidez:</strong></div>
-        <div class="text-rigth"><span> $ {{ products?.TotalLiquidez| number:'.2' }}</span></div>
-      </div>
-      <div class="col">
-        <div class="text-left"><strong>Operaciones por cumplir:</strong></div>
-        <div class="text-rigth"><span>$ {{ products?.TotalPorCumplir| number:'.2' }}</span></div>
-      </div>
-      <div class="col">
-        <div class="text-left"><strong>Saldo disponible:</strong></div>
-        <div class="text-rigth"><span><strong> $ {{ products?.Efectivo| number:'.2' }}</strong></span></div>
-      </div>
-      <div class="col">
-        <div class="text-left"><strong>Total Cuenta de Administración:</strong></div>
-        <div class="text-rigth"><span><strong> $ {{ products?.total_administration_account| number:'.2' }}</strong></span></div>
+        <div class="text-left"><strong>Saldo en caja:</strong></div>
+        <div class="text-rigth"><span><strong> $ {{ products?.Efectivo | number:'.2' }}</strong></span></div>
       </div>
       <div class="col">
         <div class="text-left"><strong>Fondos de Inversión Colectiva:</strong></div>
         <div class="text-rigth"><span> $ {{ products?.funds_investment_colective | number:'.2'}}</span></div>
       </div>
+
       <div class="col">
-        <div class="text-left"><strong class="text-medium">Gran Total:</strong></div>
-        <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.gran_total| number:'.2' }}</strong></span></div>
+        <div class="text-left"><strong class="text-medium">Total Disponible:</strong></div>
+        <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.TotalDisponible | number:'.2' }}</strong></span></div>
       </div>
+
+      <div class="col">
+        <div class="text-left"><strong>Operaciones de liquidez:</strong></div>
+        <div class="text-rigth"><span> $ {{ products?.TotalLiquidez | number:'.2' }}</span></div>
+      </div>
+
+      <div class="col" *ngIf="products?.CantidadRVBloqueado > 0">
+        <div class="text-left"><strong>Portafolio No Disponible:</strong></div>
+        <div class="text-rigth"><span> $ {{ products?.TotalRVBloqueado | number:'.2' }}</span></div>
+      </div>
+
+      <div class="col">
+        <div class="text-left"><strong class="text-medium">Total portafolio:</strong></div>
+        <div class="text-rigth"><span><strong class="text-medium"> $ {{ products?.TotalPortafolio | number:'.2' }}</strong></span></div>
+      </div>
+
+      <div class="col">
+        <div class="text-left"><strong>Operaciones por cumplir:</strong></div>
+        <div class="text-rigth"><span>$ {{ products?.TotalPorCumplir| number:'.2' }}</span></div>
+      </div>
+
+
     </div>
   </section>
   <section class="diagram">

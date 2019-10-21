@@ -1,21 +1,14 @@
 {
   "_args": [
     [
-      {
-        "raw": "@angular/compiler@2.4.1",
-        "scope": "@angular",
-        "escapedName": "@angular%2fcompiler",
-        "name": "@angular/compiler",
-        "rawSpec": "2.4.1",
-        "spec": "2.4.1",
-        "type": "version"
-      },
-      "/home/ariel/projects/global-extractos"
+      "@angular/compiler@2.4.1",
+      "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/compiler@2.4.1",
   "_id": "@angular/compiler@2.4.1",
   "_inCache": true,
+  "_installable": true,
   "_location": "/@angular/compiler",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -23,28 +16,27 @@
     "tmp": "tmp/compiler-2.4.1.tgz_1482365928985_0.1783718471415341"
   },
   "_npmUser": {
-    "name": "angular",
-    "email": "angular-core+npm@google.com"
+    "email": "angular-core+npm@google.com",
+    "name": "angular"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@angular/compiler@2.4.1",
-    "scope": "@angular",
-    "escapedName": "@angular%2fcompiler",
     "name": "@angular/compiler",
+    "raw": "@angular/compiler@2.4.1",
     "rawSpec": "2.4.1",
+    "scope": "@angular",
     "spec": "2.4.1",
     "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "http://registry.npmjs.org/@angular/compiler/-/compiler-2.4.1.tgz",
+  "_resolved": "https://registry.npmjs.org/@angular/compiler/-/compiler-2.4.1.tgz",
   "_shasum": "62b4fbfc53c934bd5def78db594cbf245b3f446a",
   "_shrinkwrap": null,
   "_spec": "@angular/compiler@2.4.1",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/dayscript/projects/global-extractos",
   "author": {
     "name": "angular"
   },

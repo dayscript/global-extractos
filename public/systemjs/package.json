@@ -1,21 +1,14 @@
 {
   "_args": [
     [
-      {
-        "raw": "systemjs@0.19.27",
-        "scope": null,
-        "escapedName": "systemjs",
-        "name": "systemjs",
-        "rawSpec": "0.19.27",
-        "spec": "0.19.27",
-        "type": "version"
-      },
-      "/home/ariel/projects/global-extractos"
+      "systemjs@0.19.27",
+      "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "systemjs@0.19.27",
   "_id": "systemjs@0.19.27",
   "_inCache": true,
+  "_installable": true,
   "_location": "/systemjs",
   "_nodeVersion": "4.4.1",
   "_npmOperationalInternal": {
@@ -23,28 +16,27 @@
     "tmp": "tmp/systemjs-0.19.27.tgz_1461935365619_0.16924894507974386"
   },
   "_npmUser": {
-    "name": "guybedford",
-    "email": "guybedford@gmail.com"
+    "email": "guybedford@gmail.com",
+    "name": "guybedford"
   },
   "_npmVersion": "2.14.20",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "systemjs@0.19.27",
-    "scope": null,
-    "escapedName": "systemjs",
     "name": "systemjs",
+    "raw": "systemjs@0.19.27",
     "rawSpec": "0.19.27",
+    "scope": null,
     "spec": "0.19.27",
     "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "http://registry.npmjs.org/systemjs/-/systemjs-0.19.27.tgz",
+  "_resolved": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.27.tgz",
   "_shasum": "f1740d565ce64371ac0de7072a4d1e5471ba7ba2",
   "_shrinkwrap": null,
   "_spec": "systemjs@0.19.27",
-  "_where": "/home/ariel/projects/global-extractos",
+  "_where": "/home/dayscript/projects/global-extractos",
   "author": {
     "name": "Guy Bedford"
   },
@@ -69,8 +61,8 @@
     "tarball": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.27.tgz"
   },
   "files": [
-    "index.js",
-    "dist"
+    "dist",
+    "index.js"
   ],
   "gitHead": "596b751b531d960acc73ff41678c4681d137ae75",
   "homepage": "https://github.com/systemjs/systemjs#readme",
