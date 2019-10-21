@@ -518,7 +518,7 @@ class HomeController extends Controller
     }
     //dd($info);
     //return view('extracto-firma',$data);
-    return $pdf = \PDF::loadView('extracto-firma', $data)->SetProtection(['copy', 'print'], '', '1073427700')->download('Home_FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+    return $pdf = \PDF::loadView('extracto-firma', $data)->download('FC_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
  }
  function array_to_utf($array = array()){
   $temp = array();

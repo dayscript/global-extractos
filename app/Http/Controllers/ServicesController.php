@@ -570,7 +570,7 @@ class ServicesController extends Controller
     
    //return view('extracto-firma',$data);
    $pdf = \PDF::loadView('extracto-firma', $data);
-   return $pdf->SetProtection(['copy', 'print'], 'UserPassword', '1073427700')->download('Service_FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
+   return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
 }
 
 

@@ -631,11 +631,7 @@ public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha
  );
  dd($info);
  // return view('extracto-fics',$info);
- $pdf = \PDF::loadView('extracto-fics', $info);
- //$pdf->setEncryption('1073427700');
- $pdf->SetProtection(['copy', 'print'], '', 'pass');
- $pdf->download('Service2_FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
- return $pdf;
+ return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
 }
 
 function calcPorcent($a,$b,$c){
