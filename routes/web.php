@@ -74,6 +74,6 @@ Route::group(['prefix' => 'download'], function () {
   Route::get('/download-renta/2016','HomeController@extract_renta');
   Route::get('/resumen-portafolio/{identification}/{fecha}','ServicesController@getExtractResumenPortafolio');
   Route::post('/diagram-portafolio/{identification}', function(Request $request, $identification){
-      Storage::disk('local')->put('public/file-'.$identification.'.txt', $request->all()['file']); 
+      Storage::disk('public')->put('file-'.$identification.'.txt', $request->all()['file']); 
   });
 });

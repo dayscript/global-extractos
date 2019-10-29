@@ -122,7 +122,7 @@ export class ResumenPortafolioComponent implements OnInit {
         //console.log(this.responseText);
       }
     });
-    xhr.open('POST', 'http://localhost:8000/download/diagram-portafolio/'+this.id_identificacion);
+    xhr.open('POST', 'https://globalextractos.demodayscript.com/download/diagram-portafolio/'+this.id_identificacion);
     var t = xhr.send(data);
 
     window.location.replace('/download/resumen-portafolio/'+this.id_identificacion+'/'+this.fecha);
