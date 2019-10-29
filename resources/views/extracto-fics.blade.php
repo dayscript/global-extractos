@@ -9,12 +9,12 @@
 					<label style="font-size:11px;">{{ $info['encabezado']->NewDataSet->Table->Nombre }}</label><br>
 					<label style="font-size:11px;">{{ $info['encabezado']->NewDataSet->Table->DIRECCION }}</label><br>
 					<label style="font-size:11px;">{{ $info['encabezado']->NewDataSet->Table->Ciudad }}</label><br>
-					<label style="font-size:11px;">Nit: {{$nit}}</label><br>
+					<label style="font-size:11px;">Asesor: {{ $info['basica']->NewDataSet->Table->Asesor}}</label><br>
 			</td>
 			<td style="width:30%;text-align:right">
-					<label style="font-size:11px;">Fecha de Corte : {{$fecha}}</label><br>
-					<label style="font-size:11px;">Desde: {{$fecha_inicio}}</label><br>
-					<label style="font-size:11px;">Hasta: {{$fecha_fin}}</label><br>
+					<label style="font-size:11px;">{{$nit}}</label><br>
+					<label style="font-size:11px;">Per&iacute;odo: {{$fecha_inicio}} / {{$fecha_fin}}</label><br>
+					<label style="font-size:11px;">Fecha de generaci&oacute;n: {{$fecha}}</label><br>
 			</td>
 		</tr>
     </table>
@@ -29,7 +29,7 @@
 			<td style="border:solid 1px #efefef;text-align:left;font-size:11px">F. Constituci&oacute;n:<br>{{ Carbon\Carbon::parse($info['basica']->NewDataSet->Table->Fecha_x0020_Constitucion )->format('Y-m-d')}}</td>
 		</tr>
 		<tr>
-			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Retabilidad peri&oacute;dica del fondo:<br>{{   $info['basica']->NewDataSet->Table->RentaPeriodicaFondo }}</td>
+			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Rentabilidad peri&oacute;dica del fondo:<br>{{   $info['basica']->NewDataSet->Table->RentaPeriodicaFondo }}</td>
 			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Comisi&oacute;n de administraci&oacute;n:<br>{{ $info['basica']->NewDataSet->Table->ComisionAdministracion }}</td>
 			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Comisi&oacute;n de &eacute;xito:<br>{{ $info['basica']->NewDataSet->Table->ComisionExito }}</td>
 			<td style="border:solid 1px #efefef;text-align:left;font-size:11px">F. Vencimiento:<br>{{$info['basica'][0]['Fecha_vto']}}<span>&nbsp;</span></td>
@@ -37,7 +37,7 @@
 	</table>
 	<table  width="100%" cellspacing="0" style="margin-top:5px">
 		<tr>
-			<td colspan="7" style="background-color:#b1b1b1;text-align: center;" >MOVIMIENTO PERI&Oacute;DICO SIN RENDIMIENTOS</td>
+			<td colspan="7" style="background-color:#b1b1b1;text-align: center;" > TRANSACCIONES DEL PERIODO</td>
 		</tr>
 		<tr>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Fecha</td>
@@ -45,21 +45,23 @@
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Cr&eacute;dito</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">D&eacute;bito</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Valor de la unidad</td>
-			<td colspan="2" style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
-			{{-- <td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td> --}}
+			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
+			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td>
 		</tr>
 		@if( isset($info['movimientos']->NewDataSet->Table) )
 			@foreach ( $info['movimientos']->NewDataSet as $key => $item )
 				@foreach ( $item as $key => $value )
+					@if( isset($value->Saldo) && !empty($value->Saldo) )
 					<tr>
 						<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ \Carbon\Carbon::parse($value->fecha)->format('d-m-Y') }}</td>
 						<td style="border:solid 1px #efefef;text-align:left;font-size:11px"> {{ $value->Transaccion }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Credito,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Debito,2) }}</td>
-						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->valor_x0020_Unidad,6) }}</td>
+						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->valor_x0020_Unidad,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Saldo,2) }}</td>
 					</tr>
+					@endif
 				@endforeach
 			@endforeach
 		@endif
@@ -93,7 +95,7 @@
         <img style="max-width: 30px; max-height: 655px;" src="{{$image_fotter}}" />
     </div>
     <div class="text-content">
-        <div style="margin-top: 10px; margin-left: 25px; font-size: 10px; padding-bottom: 10px; border-bottom: 1px solid #b1b1b1; text-align: justify">
+        <div style="margin-top: 10px; margin-left: 40px; font-size: 10px; padding-bottom: 10px; border-bottom: 1px solid #b1b1b1; text-align: justify">
 			Cualquier inconformidad con la informaci&oacute;n presentada agradecemos comunicarla a la 
 			revisor&iacute;a fiscal BDO Audit S.A en la Transversal 21 No. 98 – 05 en Bogot&aacute; D.C - Contacto Víctor 
 			Ramirez Vargas vramirez@bdo.com.co Tel&eacute;fono (1) 623 01 99.
@@ -101,7 +103,7 @@
 			Oficina 1205 Bogot&aacute; - <span style="color:blue">ptsilvadefensor@hotmail.com </span>Tel&eacute;fonos 2823570 – 3133644105.
         </div>
 
-        <div style="margin-left: 25px; font-size: 10px; margin-top: 10px; text-align: justify">
+        <div style="margin-left: 40px; font-size: 10px; margin-top: 10px; text-align: justify">
             Las obligaciones de Global Securities S.A. comisionista de bolsa como administrador del fondo de Inversi&oacute;n Colectiva en relaci&oacute;n con el portafolio, son de medios
             y no de resultado. Los dineros entregados por los inversionistas del Fondo no son dep&oacute;sitos ni generan para Global Securities S.A. las obligaciones propias de una
             instituci&oacute;n de dep&oacute;sito y no est&aacute;n amparados por el seguro de dep&oacute;sitos del fondo de garant&iacute;as de instituciones financieras (FOGAFIN) ni por ning&uacute;n otro esquema

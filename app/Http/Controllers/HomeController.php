@@ -16,6 +16,9 @@ use \App\Extractos_firma;
 use Excel;
 use Storage;
 use PDF;
+use Dompdf\Dompdf as Dompdf;
+use Illuminate\Support\Facades\View;
+
 class HomeController extends Controller
 {
     /**
@@ -563,11 +566,8 @@ function verifyFileOperations($CodigoOyd){
 }
 
 function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
-
   $client = new \SoapClient('http://181.143.34.114:8090/?wsdl');
-
   $day = date('d',strtotime('- 1 days',strtotime(date('Y-m-d'))));
-
   $identificacion = $client->CertificadoTenencia( array('CodigoOyd' => $CodigoOyd, 'FechaPortafolio'=> date('Y-m').'-'.$day, 'DirigidaA'=>$Dirigida) );
   $response = $identificacion->CertificadoTenenciaResult->any;
   $sxe = @new \SimpleXMLElement($response);
@@ -575,11 +575,16 @@ function downloadCertificadoTenencia($CodigoOyd, $Fecha, $Dirigida){
   $result = $sxe->xpath("//NewDataSet");
   $result = json_encode($result);
   $data = json_decode($result,true)[0]['Table'];
-
-  $pdf = PDF::loadView('certificadoTenencia', $data);
-
-  return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');
-
+  $data['imageHeader'] = public_path().'/images/header-2019.jpg';
+  $id = isset($data['NumeroId']) && !empty($data['NumeroId']) ? $data['NumeroId'] : '';
+  /*$pdf = PDF::loadView('certificadoTenencia', $data);
+  return $pdf->download('certificadoTenencia-'.date('Y-m-d').'.pdf');*/
+  $dompdf = new Dompdf();
+  $dompdf->loadHtml( View::make('certificadoTenencia', $data) );
+  $dompdf->setPaper('8.5x11');
+  $dompdf->render();
+  $dompdf->get_canvas()->get_cpdf()->setEncryption($id, $id, array('print', 'copy'));
+  return $dompdf->stream('Certificado-Tenencia-'.date('Y-m-d').'.pdf');
 }
 
 }

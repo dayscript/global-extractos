@@ -40,7 +40,7 @@
 			font-weight: bold;
 		}
 
-		.encabezado {
+		/*.encabezado {
 			font-family: "Times New Roman", serif;
 			font-weight: bold;
 		}
@@ -59,7 +59,7 @@
 
 		.encabezado p {
 			margin: 0;
-		}
+		}*/
 
 		.firma {
 			position: relative;
@@ -91,18 +91,8 @@
 		<table cellpadding="0" cellspacing="0" border="0" width="100%">
 			<tbody>
 				<tr>
-					<td class="encabezado">
-						<table cellpadding="0" cellspacing="0" border="0" border="0" width="100%;">
-							<tbody>
-								<tr>
-									<td align="right" width="45%"><img src="images/logo-global.png"></td>
-									<td align="left" width="55%">
-										<p>Global Securities S.A. Comisionista de Bolsa</p>
-										<p>Miembro de la Bolsa de Valores de Colombia</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<td>
+						<img src="{{$imageHeader}}" width="725px" height="100px" alt="" style="margin-bottom:10px">
 					</td>
 				</tr>
 				<tr>
@@ -110,7 +100,7 @@
 						<table cellpadding="0" cellspacing="0" border="0" width="100%">
 							<tbody>
 								<tr>
-									<td>
+									<td><br>
 										<h2>GLOBAL SECURITIES S.A. COMISIONISTA DE BOLSA</h2>
 										<h2>NIT. 800.189.604-2</h2>
 										<h2>CERTIFICA QUE:</h2>

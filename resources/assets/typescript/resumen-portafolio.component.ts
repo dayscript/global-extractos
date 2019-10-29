@@ -106,4 +106,25 @@ export class ResumenPortafolioComponent implements OnInit {
     this.products.TotalDisponible = Number(this.products.TotalRV) + Number(this.products.TotalRF) + Number(this.products.Efectivo) + Number(this.products.funds_investment_colective);
     this.products.TotalPortafolio = Number(this.products.TotalDisponible) + Number(this.products.TotalLiquidez) + Number(this.products.TotalRVBloqueado);
   }
+
+  downloadCanvas(event){
+    var anchor = event.target;
+    anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
+    //anchor.download = "test.png";
+
+    var data = new FormData();
+    data.append('file', anchor.href);
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        //console.log(this.responseText);
+      }
+    });
+    xhr.open('POST', 'http://localhost:8000/download/diagram-portafolio/'+this.id_identificacion);
+    var t = xhr.send(data);
+
+    window.location.replace('/download/resumen-portafolio/'+this.id_identificacion+'/'+this.fecha);
+  }
 }

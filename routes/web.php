@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,7 @@ Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
 
 Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
+Route::get('/report/{CodigoOyd}/{Fecha}/resumen-de-portafolio-pdf','HomeController@angular');
 
 
 /*Devel Routes*/
@@ -67,8 +69,11 @@ Route::group(['prefix' => 'download'], function () {
   Route::get('/reporte-movimientos-fics/{Fondo}/{Encargo}/{Fecha_start}/{Fecha_end}','ServicesController@downloadExtractoMovimientosFics');
   Route::get('/reporte-firma-comisionista/{identification}/{date}','ServicesController@getExtractFirmaComisionista');
   Route::get('/reporte-fondos-de-inversion/{identification}/{fondo}/{encargo}/{fecha}','ServicesController@getExtractFondosInversion');
-
   Route::get('/download-fics-extrac/{id}/{fondo}/{encargo}/{fecha}','HomeController@extract_fondos_inversion');
   Route::get('/download-firma-extrac/{id}/{fecha}','HomeController@extract_firma');
   Route::get('/download-renta/2016','HomeController@extract_renta');
+  Route::get('/resumen-portafolio/{identification}/{fecha}','ServicesController@getExtractResumenPortafolio');
+  Route::post('/diagram-portafolio/{identification}', function(Request $request, $identification){
+      Storage::disk('local')->put('public/file-'.$identification.'.txt', $request->all()['file']); 
+  });
 });

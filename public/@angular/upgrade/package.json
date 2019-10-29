@@ -1,14 +1,21 @@
 {
   "_args": [
     [
-      "@angular/upgrade@2.4.1",
+      {
+        "raw": "@angular/upgrade@2.4.1",
+        "scope": "@angular",
+        "escapedName": "@angular%2fupgrade",
+        "name": "@angular/upgrade",
+        "rawSpec": "2.4.1",
+        "spec": "2.4.1",
+        "type": "version"
+      },
       "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/upgrade@2.4.1",
   "_id": "@angular/upgrade@2.4.1",
   "_inCache": true,
-  "_installable": true,
   "_location": "/@angular/upgrade",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -16,16 +23,17 @@
     "tmp": "tmp/upgrade-2.4.1.tgz_1482365965363_0.7568612019531429"
   },
   "_npmUser": {
-    "email": "angular-core+npm@google.com",
-    "name": "angular"
+    "name": "angular",
+    "email": "angular-core+npm@google.com"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "name": "@angular/upgrade",
     "raw": "@angular/upgrade@2.4.1",
-    "rawSpec": "2.4.1",
     "scope": "@angular",
+    "escapedName": "@angular%2fupgrade",
+    "name": "@angular/upgrade",
+    "rawSpec": "2.4.1",
     "spec": "2.4.1",
     "type": "version"
   },
@@ -64,8 +72,8 @@
   "name": "@angular/upgrade",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/compiler": "2.4.1",
     "@angular/core": "2.4.1",
+    "@angular/compiler": "2.4.1",
     "@angular/platform-browser": "2.4.1",
     "@angular/platform-browser-dynamic": "2.4.1"
   },

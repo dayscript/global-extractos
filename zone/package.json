@@ -1,14 +1,21 @@
 {
   "_args": [
     [
-      "zone.js@^0.7.2",
+      {
+        "raw": "zone.js@^0.7.2",
+        "scope": null,
+        "escapedName": "zone.js",
+        "name": "zone.js",
+        "rawSpec": "^0.7.2",
+        "spec": ">=0.7.2 <0.8.0",
+        "type": "range"
+      },
       "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "zone.js@>=0.7.2 <0.8.0",
   "_id": "zone.js@0.7.8",
   "_inCache": true,
-  "_installable": true,
   "_location": "/zone.js",
   "_nodeVersion": "6.9.5",
   "_npmOperationalInternal": {
@@ -16,16 +23,17 @@
     "tmp": "tmp/zone.js-0.7.8.tgz_1489112713537_0.5392253624740988"
   },
   "_npmUser": {
-    "email": "angular-core+npm@google.com",
-    "name": "angular"
+    "name": "angular",
+    "email": "angular-core+npm@google.com"
   },
   "_npmVersion": "3.10.10",
   "_phantomChildren": {},
   "_requested": {
-    "name": "zone.js",
     "raw": "zone.js@^0.7.2",
-    "rawSpec": "^0.7.2",
     "scope": null,
+    "escapedName": "zone.js",
+    "name": "zone.js",
+    "rawSpec": "^0.7.2",
     "spec": ">=0.7.2 <0.8.0",
     "type": "range"
   },
@@ -94,8 +102,8 @@
     "tarball": "https://registry.npmjs.org/zone.js/-/zone.js-0.7.8.tgz"
   },
   "files": [
-    "dist",
-    "lib"
+    "lib",
+    "dist"
   ],
   "gitHead": "ce47cfbae27f8dff1e6db1c098229e25d3d088f0",
   "homepage": "https://github.com/angular/zone.js#readme",

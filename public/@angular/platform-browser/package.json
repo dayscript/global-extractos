@@ -1,14 +1,21 @@
 {
   "_args": [
     [
-      "@angular/platform-browser@2.4.1",
+      {
+        "raw": "@angular/platform-browser@2.4.1",
+        "scope": "@angular",
+        "escapedName": "@angular%2fplatform-browser",
+        "name": "@angular/platform-browser",
+        "rawSpec": "2.4.1",
+        "spec": "2.4.1",
+        "type": "version"
+      },
       "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/platform-browser@2.4.1",
   "_id": "@angular/platform-browser@2.4.1",
   "_inCache": true,
-  "_installable": true,
   "_location": "/@angular/platform-browser",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -16,16 +23,17 @@
     "tmp": "tmp/platform-browser-2.4.1.tgz_1482365951567_0.47007400426082313"
   },
   "_npmUser": {
-    "email": "angular-core+npm@google.com",
-    "name": "angular"
+    "name": "angular",
+    "email": "angular-core+npm@google.com"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "name": "@angular/platform-browser",
     "raw": "@angular/platform-browser@2.4.1",
-    "rawSpec": "2.4.1",
     "scope": "@angular",
+    "escapedName": "@angular%2fplatform-browser",
+    "name": "@angular/platform-browser",
+    "rawSpec": "2.4.1",
     "spec": "2.4.1",
     "type": "version"
   },
@@ -64,8 +72,8 @@
   "name": "@angular/platform-browser",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/common": "2.4.1",
-    "@angular/core": "2.4.1"
+    "@angular/core": "2.4.1",
+    "@angular/common": "2.4.1"
   },
   "readme": "ERROR: No README data found!",
   "repository": {

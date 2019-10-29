@@ -18,8 +18,11 @@ use Excel;
 use Storage;
 //use PDF;
 use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\Snappy\Facade as SNAPPYPDF;
+use Barryvdh\Snappy\Facade as SnappyImage;
 use File;
-
+use Dompdf\Dompdf as Dompdf;
+use Illuminate\Support\Facades\View;
 
 class ServicesController extends Controller
 {
@@ -436,7 +439,7 @@ class ServicesController extends Controller
        $sheet->fromArray( json_decode(json_encode($output),true) );
       })->download('xls');
    });
- }
+  }
 
 
  /**
@@ -445,202 +448,238 @@ class ServicesController extends Controller
   * @param  [type] $fecha [description]
   * @return [type]        [description]
   */
- public function getExtractFirmaComisionista($identification,$date){
+  public function getExtractFirmaComisionista($identification,$date){
+      $output = array();
+      $fecha_actual = new \DateTime($date);
+      $fecha_actual->modify('first day of this month');
+      $fecha_inicio = $fecha_actual->format('Y-m-d');
+      $fecha_actual->modify('last day of this month');
+      $fecha_fin = $fecha_actual->format('Y-m-d');
+      $image_header = public_path().'/images/header-2019.jpg';
+      $image_fotter = public_path().'/images/vigilante.jpg';
+      $user = User::where('identification',$identification)->first();
+      $data = [
+        'CodigoOyd' =>  $user->codeoyd,
+        'Fecha'     =>  $fecha_fin
+       ];
+
+      $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('PieRVClienteDado',$data);
+      $output['rv'] = $soapWrapper->reponse_parse;
+
+      $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('PieRFClienteDado',$data);
+      $output['rf'] = $soapWrapper->reponse_parse;
+
+      $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('TraerOperacionesPorCumplirClienteDadoDayScript',$data);
+      $output['opc'] = $soapWrapper->reponse_parse;
+
+      $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
+      $output['odl'] = $soapWrapper->reponse_parse;
+
+
+      $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('ExtractoClienteDado',[
+        'CodigoOyd'=>$user->codeoyd,
+        'FechaInicial'=>$fecha_inicio,
+        'FechaFinal'=>$fecha_fin,
+        ]
+      );
+      $output['mes'] = $soapWrapper->reponse_parse;
+
+      $total_valoracion   = 0;
+      if(isset($output['rf']->NewDataSet)){
+        foreach( $output['rf']->NewDataSet as $key => $movimiento_rf ){
+          foreach ($movimiento_rf as $key => $val) {
+           $total_valoracion += (float)$val->Valoracion;
+          }
+        }
+      }
+
+    $output['totales_rf'] = array(
+      'total_valoracion' => $total_valoracion,
+    );
+
+     $total_precio   = 0;
+     if(isset($output['rv']->NewDataSet)){
+       foreach( $output['rv']->NewDataSet as $key => $movimiento_rv ){
+         foreach ($movimiento_rv as $key => $val) {
+           $total_precio += (float)$val->Valoracion;
+         }
+       }
+     }
+    $output['totales_rv'] = array(
+      'total_precio' => $total_precio,
+    );
+
+     $total_inicio = 0;
+     $total_regreso = 0;
+     $total_interes   = 0;
+     if(isset($output['odl']->NewDataSet)){
+       foreach( $output['odl']->NewDataSet as $key => $movimiento_odl){
+         foreach ($movimiento_odl as $key => $val) {
+           $total_inicio  += (float)$val->CurTotalliq_Inicio;
+           $total_regreso += (float)$val->CurTotalliq_Regreso;
+           $total_interes += (float)$val->Interes;
+         }
+       }
+     }
+     $output['totales_odl'] = array(
+       'total_inicio' => $total_inicio,
+       'total_regreso' => $total_regreso,
+       'total_interes'   => $total_interes,
+     );
+
+     $total_a_cargo = 0;
+     $total_a_favor = 0;
+     $total_saldo   = 0;
+     if(isset($output['mes']->NewDataSet)){
+       foreach( $output['mes']->NewDataSet as $key => $movimiento){
+         foreach ($movimiento as $key => $val) {
+           $total_a_cargo += (float)$val->ACargo;
+           $total_a_favor += (float)$val->AFavor;
+           $total_saldo   += (float)$val->Saldo;
+         }
+       }
+     }
+     $output['totales'] = array(
+       'total_a_cargo' => $total_a_cargo,
+       'total_a_favor' => $total_a_favor,
+       'total_saldo'   => $total_a_favor - $total_a_cargo,
+     );
+     $data  = array(
+        'info' => $output,
+        'user' => $user,
+        'fecha' => $date,
+        'image' => $image_header,
+        'image_fotter'=>$image_fotter,
+        'fecha_inicio'=>$fecha_inicio,
+        'fecha_fin'=>$fecha_fin,
+      );
+      
+    //$pdf = \PDF::loadView('extracto-firma', $data);
+    //return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
+
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml( View::make('extracto-firma', $data) );
+    $dompdf->setPaper('8.5x11');
+    $dompdf->render();
+    $dompdf->get_canvas()->get_cpdf()->setEncryption($identification, $identification, array('print', 'copy'));
+    return $dompdf->stream('FC-Extracto-'.date('F-Y',strtotime($date)).'.pdf');
+  }
+
+  public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
+    $user = User::where('identification',$identification)->first();
+    $fecha_actual = new \DateTime($fecha);
+    $fecha_actual->modify('first day of this month');
+    $fecha_inicio = $fecha_actual->format('Y-m-d');
+    $fecha_actual->modify('last day of this month');
+    $fecha_fin = $fecha_actual->format('Y-m-d');
+    $image_fotter = public_path().'/images/vigilante.jpg';
+    $data = [
+     'Fondo'       => $fondo,
+     'Encargo'     => $encargo ,
+     'FechaInicial'=> $fecha_inicio ,
+     'FechaFinal'  => $fecha_fin ,
+    ];
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosEncabezado',$data);
+    $info_encabezado = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosInformacionBasica',$data);
+    $info_informacion_basica = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
+    $info_informacion_movimientos = $soapWrapper->reponse_parse;
+
+    $soapWrapper = new SoapService();
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosResumen',$data);
+    $info_informacion_resumen = $soapWrapper->reponse_parse;
+
+    $data = array();
+    $data['encabezado']   =  $info_encabezado;
+    $data['basica']       =  $info_informacion_basica ;
+    $data['movimientos']  =  $info_informacion_movimientos;
+    $data['resumen']      =  $info_informacion_resumen;
+    $total_saldo   = 0;
+
+    foreach( $info_informacion_movimientos as $key => $movimiento){
+      $total_saldo += $movimiento->Saldo;
+      $movimiento->Saldo = ( $movimiento->Saldo == null ) ? '':'$ '.number_format((float)$movimiento->Saldo,2);
+     }
+    $data['totales'] = array(
+      'total_saldo' => $total_saldo,
+    );
+
+
+    $image_header = public_path().'/images/header-2019.jpg';
+    $info = array(
+      'fecha_inicio'  => $fecha_inicio,
+      'fecha_fin'     => $fecha_fin,
+      'image'         => $image_header,
+      'info'          => $data,
+      'fecha'         => $fecha,
+      'nit'           => $identification,
+      'image_fotter'=>$image_fotter,
+    );
+    //return view('extracto-fics',$info);
+    //return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
+
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml( View::make('extracto-fics', $info) );
+    $dompdf->setPaper('8.5x11');
+    $dompdf->render();
+    $dompdf->get_canvas()->get_cpdf()->setEncryption($identification, $identification,array('print', 'copy'));
+    return $dompdf->stream('FI-Extracto-'.date('F-Y',strtotime($fecha)).'.pdf');
+  }
+
+  function calcPorcent($a,$b,$c){
+    $c = ( $c != 0 )? $c:'1';
+    return $a*$b/$c;
+  }
+
+  public function getExtractResumenPortafolio($identification,$fecha){
     $output = array();
-    $fecha_actual = new \DateTime($date);
+    $fecha_actual = new \DateTime($fecha);
     $fecha_actual->modify('first day of this month');
     $fecha_inicio = $fecha_actual->format('Y-m-d');
     $fecha_actual->modify('last day of this month');
     $fecha_fin = $fecha_actual->format('Y-m-d');
     $image_header = public_path().'/images/header-2019.jpg';
     $image_fotter = public_path().'/images/vigilante.jpg';
-    $user = User::where('identification',$identification)->first();
-    $data = [
-     'CodigoOyd' =>  $user->codeoyd,
-     'Fecha'     =>  $fecha_fin
-     ];
-
-    $soapWrapper = new SoapService();
-    $soapWrapper->callMethod('PieRVClienteDado',$data);
-    $output['rv'] = $soapWrapper->reponse_parse;
-
-    $soapWrapper = new SoapService();
-    $soapWrapper->callMethod('PieRFClienteDado',$data);
-    $output['rf'] = $soapWrapper->reponse_parse;
-
-    $soapWrapper = new SoapService();
-    $soapWrapper->callMethod('TraerOperacionesPorCumplirClienteDadoDayScript',$data);
-    $output['opc'] = $soapWrapper->reponse_parse;
-
-    $soapWrapper = new SoapService();
-    $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
-    $output['odl'] = $soapWrapper->reponse_parse;
-
-
-    $soapWrapper = new SoapService();
-    $soapWrapper->callMethod('ExtractoClienteDado',[
-       'CodigoOyd'=>$user->codeoyd,
-       'FechaInicial'=>$fecha_inicio,
-       'FechaFinal'=>$fecha_fin,
-      ]
-    );
-    $output['mes'] = $soapWrapper->reponse_parse;
-
-    $total_valoracion   = 0;
-    if(isset($output['rf']->NewDataSet)){
-      foreach( $output['rf']->NewDataSet as $key => $movimiento_rf ){
-        foreach ($movimiento_rf as $key => $val) {
-         $total_valoracion += (float)$val->Valoracion;
-         // $val->Valoracion = ( $val->Valoracion == null ) ? '':'$ '.number_format($val->Valoracion,2);
-        }
-      }
-    }
-
-   $output['totales_rf'] = array(
-                           'total_valoracion' => $total_valoracion,
-                         );
-
-
-   $total_precio   = 0;
-   if(isset($output['rv']->NewDataSet)){
-     foreach( $output['rv']->NewDataSet as $key => $movimiento_rv ){
-       foreach ($movimiento_rv as $key => $val) {
-         $total_precio += (float)$val->Valoracion;
-         // $val->Precio = ( $val->Precio == null ) ? '':'$ '.number_format($val->Precio,2);
-       }
-     }
-   }
-   $output['totales_rv'] = array(
-                           'total_precio' => $total_precio,
-                         );
-
-
-
-   $total_inicio = 0;
-   $total_regreso = 0;
-   $total_interes   = 0;
-   if(isset($output['odl']->NewDataSet)){
-     foreach( $output['odl']->NewDataSet as $key => $movimiento_odl){
-       foreach ($movimiento_odl as $key => $val) {
-         $total_inicio  += (float)$val->CurTotalliq_Inicio;
-         $total_regreso += (float)$val->CurTotalliq_Regreso;
-         $total_interes += (float)$val->Interes;
-         // $val->CurTotalliq_Inicio = ( $val->CurTotalliq_Inicio == null ) ? '':'$ '.number_format($val->CurTotalliq_Inicio,2);
-         // $val->CurTotalliq_Regreso = ( $val->CurTotalliq_Regreso == null ) ? '':'$ '.number_format($val->CurTotalliq_Regreso,2);
-         // $val->Interes  = ( $val->Interes  == null ) ? '':'$ '.number_format($val->Interes,2);
-       }
-     }
-   }
-   $output['totales_odl'] = array(
-                           'total_inicio' => $total_inicio,
-                           'total_regreso' => $total_regreso,
-                           'total_interes'   => $total_interes,
-                         );
-
-
-   $total_a_cargo = 0;
-   $total_a_favor = 0;
-   $total_saldo   = 0;
-   if(isset($output['mes']->NewDataSet)){
-     foreach( $output['mes']->NewDataSet as $key => $movimiento){
-       foreach ($movimiento as $key => $val) {
-         $total_a_cargo += (float)$val->ACargo;
-         $total_a_favor += (float)$val->AFavor;
-         $total_saldo   += (float)$val->Saldo;
-         // $val->ACargo = ( $val->ACargo == null ) ? '':'$ '.number_format($val->ACargo,2);
-         // $val->AFavor = ( $val->AFavor == null ) ? '':'$ '.number_format($val->AFavor,2);
-         // $val->Saldo  = ( $val->Saldo  == null ) ? '':'$ '.number_format($val->Saldo,2);
-       }
-     }
-   }
-   $output['totales'] = array(
-                           'total_a_cargo' => $total_a_cargo,
-                           'total_a_favor' => $total_a_favor,
-                           'total_saldo'   => $total_a_favor - $total_a_cargo,
-                         );
-   $data  = array(
-                  'info' => $output,
-                  'user' => $user,
-                  'fecha' => $date,
-                  'image' => $image_header,
-                  'image_fotter'=>$image_fotter,
-                  'fecha_inicio'=>$fecha_inicio,
-                  'fecha_fin'=>$fecha_fin,
-                );
-    
-   //return view('extracto-firma',$data);
-   $pdf = \PDF::loadView('extracto-firma', $data);
-   return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');                
-}
-
-
-
-public function getExtractFondosInversion($identification,$fondo,$encargo,$fecha){
-   $user = User::where('identification',$identification)->first();
-   $fecha_actual = new \DateTime($fecha);
-   $fecha_actual->modify('first day of this month');
-   $fecha_inicio = $fecha_actual->format('Y-m-d');
-   $fecha_actual->modify('last day of this month');
-   $fecha_fin = $fecha_actual->format('Y-m-d');
-   $image_fotter = public_path().'/images/vigilante.jpg';
-   $data = [
-     'Fondo'       => $fondo,
-     'Encargo'     => $encargo ,
-     'FechaInicial'=> $fecha_inicio ,
-     'FechaFinal'  => $fecha_fin ,
-   ];
-
-   $soapWrapper = new SoapService();
-   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosEncabezado',$data);
-   $info_encabezado = $soapWrapper->reponse_parse;
-
-   $soapWrapper = new SoapService();
-   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosInformacionBasica',$data);
-   $info_informacion_basica = $soapWrapper->reponse_parse;
-
-   $soapWrapper = new SoapService();
-   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
-   $info_informacion_movimientos = $soapWrapper->reponse_parse;
    
-   $soapWrapper = new SoapService();
-   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosResumen',$data);
-   $info_informacion_resumen = $soapWrapper->reponse_parse;
+    $data  = array(
+      'info' => $output,
+      'portafolio' => json_decode(self::getPortafolio($identification,$fecha)),
+      'image' => $image_header,
+      'image_fotter' => $image_fotter,
+      'fecha' => $fecha,
+      'fecha_inicio' => $fecha_inicio,
+      'fecha_fin' => $fecha_fin,
+    );
+    $data['portafolio']->TotalDisponible = $data['portafolio']->TotalRV + $data['portafolio']->TotalRF + $data['portafolio']->Efectivo + $data['portafolio']->funds_investment_colective;
+    $data['portafolio']->TotalPortafolio = $data['portafolio']->TotalDisponible + $data['portafolio']->TotalLiquidez + $data['portafolio']->TotalRVBloqueado;
+  
+    /*$pdf = \SNAPPYPDF::loadView('resumen-portafolio-chart', $data);
+    $pdf->setOption('enable-javascript', true);
+    $pdf->setOption('javascript-delay', 5000);
+    $pdf->setOption('enable-smart-shrinking', true);
+    $pdf->setOption('no-stop-slow-scripts', true);
+    return $pdf->download('Resumen-Portafolio-'.date('F-Y',strtotime($fecha)).'.pdf');*/
 
-
-   $data = array();
-   $data['encabezado']   =  $info_encabezado;
-   $data['basica']       =  $info_informacion_basica ;
-   $data['movimientos']  =  $info_informacion_movimientos;
-   $data['resumen']      =  $info_informacion_resumen;
-   $total_saldo   = 0;
-
-   foreach( $info_informacion_movimientos as $key => $movimiento){
-       $total_saldo += $movimiento->Saldo;
-       $movimiento->Saldo = ( $movimiento->Saldo == null ) ? '':'$ '.number_format((float)$movimiento->Saldo,2);
-     }
-   $data['totales'] = array(
-                           'total_saldo' => $total_saldo,
-                      );
-
-
- $image_header = public_path().'/images/header-2019.jpg';
- $info = array(
-   'fecha_inicio'  => $fecha_inicio,
-   'fecha_fin'     => $fecha_fin,
-   'image'         => $image_header,
-   'info'          => $data,
-   'fecha'         => $fecha,
-   'nit'           => $identification,
-   'image_fotter'=>$image_fotter,
- );
- // return view('extracto-fics',$info);
- return $pdf = \PDF::loadView('extracto-fics', $info)->download('FI_Extracto_'.date('F-Y',strtotime($fecha)).'.pdf');
-}
-
-function calcPorcent($a,$b,$c){
-  $c = ( $c != 0 )? $c:'1';
-  return $a*$b/$c;
-}
-
-
+    $contents = Storage::disk('local')->get('public/file-'.$identification.'.txt');
+    $data['diagram'] = $contents;
+    Storage::disk('local')->delete('public/file-'.$identification.'.txt');
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml(View::make('resumen-portafolio', $data));
+    $dompdf->setPaper('8.5x11');
+    $dompdf->render();
+    $dompdf->get_canvas()->get_cpdf()->setEncryption($identification, $identification,array('print', 'copy'));
+    return $dompdf->stream('Resumen-Portafolio-'.date('F-Y',strtotime($fecha)).'.pdf');
+  }
 }

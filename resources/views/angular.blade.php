@@ -51,7 +51,6 @@
             System.import('app').catch(function(err){ console.error(err); });
         </script>
 
-
     </head>
     <!-- 3. Display the application -->
 

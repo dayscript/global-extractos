@@ -1,14 +1,21 @@
 {
   "_args": [
     [
-      "@angular/forms@2.4.1",
+      {
+        "raw": "@angular/forms@2.4.1",
+        "scope": "@angular",
+        "escapedName": "@angular%2fforms",
+        "name": "@angular/forms",
+        "rawSpec": "2.4.1",
+        "spec": "2.4.1",
+        "type": "version"
+      },
       "/home/dayscript/projects/global-extractos"
     ]
   ],
   "_from": "@angular/forms@2.4.1",
   "_id": "@angular/forms@2.4.1",
   "_inCache": true,
-  "_installable": true,
   "_location": "/@angular/forms",
   "_nodeVersion": "6.9.1",
   "_npmOperationalInternal": {
@@ -16,16 +23,17 @@
     "tmp": "tmp/forms-2.4.1.tgz_1482365941380_0.7498090371955186"
   },
   "_npmUser": {
-    "email": "angular-core+npm@google.com",
-    "name": "angular"
+    "name": "angular",
+    "email": "angular-core+npm@google.com"
   },
   "_npmVersion": "3.5.3",
   "_phantomChildren": {},
   "_requested": {
-    "name": "@angular/forms",
     "raw": "@angular/forms@2.4.1",
-    "rawSpec": "2.4.1",
     "scope": "@angular",
+    "escapedName": "@angular%2fforms",
+    "name": "@angular/forms",
+    "rawSpec": "2.4.1",
     "spec": "2.4.1",
     "type": "version"
   },
@@ -64,8 +72,8 @@
   "name": "@angular/forms",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/common": "2.4.1",
-    "@angular/core": "2.4.1"
+    "@angular/core": "2.4.1",
+    "@angular/common": "2.4.1"
   },
   "readme": "ERROR: No README data found!",
   "repository": {

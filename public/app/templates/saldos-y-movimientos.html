@@ -169,10 +169,10 @@
           <tr>
             <td colspan="3"><strong>TOTAL</strong></td>
             <td class="saldo" *ngIf="info_movimientos">
-              <strong innerHTML="{{sumValues(info_movimientos,'ACargo') | number:'1.2-2'}}"></strong>
+              <strong innerHTML="${{sumValues(info_movimientos,'ACargo') | number:'1.2-2'}}"></strong>
             </td>
             <td class="saldo" *ngIf="info_movimientos">
-              <strong innerHTML="{{sumValues(info_movimientos,'AFavor') | number:'1.2-2'}}"></strong>
+              <strong innerHTML="${{sumValues(info_movimientos,'AFavor') | number:'1.2-2'}}"></strong>
             </td>
             <td class="saldo" *ngIf="info_movimientos">
               <strong innerHTML="$ {{restValues(info_movimientos,'AFavor','ACargo') | number:'1.2-2'}}"></strong>
