@@ -79,8 +79,9 @@ export class ExtractosCertificaciones implements OnInit {
 
     for (var i = 1; i <= 6; i++) {
       var date = new Date()
-      date.setMonth(date.getMonth()-i)
-      this.fechas.push(date);
+      //date.setMonth(date.getMonth()-i)
+      var new_date = new Date(date.getFullYear(), date.getMonth()-i, 1)
+      this.fechas.push(new_date);
     }
   }
 

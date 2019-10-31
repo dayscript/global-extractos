@@ -53,8 +53,9 @@ var ExtractosCertificaciones = /** @class */ (function () {
         this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
-            date.setMonth(date.getMonth() - i);
-            this.fechas.push(date);
+            //date.setMonth(date.getMonth()-i)
+            var new_date = new Date(date.getFullYear(), date.getMonth() - i, 1);
+            this.fechas.push(new_date);
         }
     };
     ExtractosCertificaciones.prototype.download_firma = function () {
