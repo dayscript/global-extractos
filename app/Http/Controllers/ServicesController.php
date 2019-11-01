@@ -464,6 +464,10 @@ class ServicesController extends Controller
        ];
 
       $soapWrapper = new SoapService();
+      $soapWrapper->callMethod('PieResumidoClienteDado',$data);
+      $encabezado = $soapWrapper->reponse_parse->NewDataSet->Table;
+
+      $soapWrapper = new SoapService();
       $soapWrapper->callMethod('PieRVClienteDado',$data);
       $output['rv'] = $soapWrapper->reponse_parse;
 
@@ -478,7 +482,6 @@ class ServicesController extends Controller
       $soapWrapper = new SoapService();
       $soapWrapper->callMethod('TraerOperacionesLiquidezClienteDadoDayScript',$data);
       $output['odl'] = $soapWrapper->reponse_parse;
-
 
       $soapWrapper = new SoapService();
       $soapWrapper->callMethod('ExtractoClienteDado',[
@@ -552,13 +555,14 @@ class ServicesController extends Controller
      $data  = array(
         'info' => $output,
         'user' => $user,
-        'fecha' => $date,
+        'fecha' => date('Y-m-d'),
         'image' => $image_header,
-        'image_fotter'=>$image_fotter,
-        'fecha_inicio'=>$fecha_inicio,
-        'fecha_fin'=>$fecha_fin,
+        'image_fotter' => $image_fotter,
+        'fecha_inicio' => $fecha_inicio,
+        'fecha_fin' => $fecha_fin,
+        'encabezado' => $encabezado
       );
-      
+
     //$pdf = \PDF::loadView('extracto-firma', $data);
     //return $pdf->download('FC_Extracto_'.date('F-Y',strtotime($date)).'.pdf');
 
@@ -623,7 +627,7 @@ class ServicesController extends Controller
       'fecha_fin'     => $fecha_fin,
       'image'         => $image_header,
       'info'          => $data,
-      'fecha'         => $fecha,
+      'fecha'         => date('Y-m-d'),
       'nit'           => $identification,
       'image_fotter'=>$image_fotter,
     );
@@ -658,7 +662,7 @@ class ServicesController extends Controller
       'portafolio' => json_decode(self::getPortafolio($identification,$fecha)),
       'image' => $image_header,
       'image_fotter' => $image_fotter,
-      'fecha' => $fecha,
+      'fecha' => date('Y-m-d'),
       'fecha_inicio' => $fecha_inicio,
       'fecha_fin' => $fecha_fin,
     );
@@ -674,7 +678,7 @@ class ServicesController extends Controller
 
     $contents = Storage::disk('local')->get('public/file-'.$identification.'.txt');
     $data['diagram'] = $contents;
-    Storage::disk('local')->delete('public/file-'.$identification.'.txt');
+    //Storage::disk('local')->delete('public/file-'.$identification.'.txt');
     $dompdf = new Dompdf();
     $dompdf->loadHtml(View::make('resumen-portafolio', $data));
     $dompdf->setPaper('8.5x11');

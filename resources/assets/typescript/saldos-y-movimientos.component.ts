@@ -25,6 +25,10 @@ export class SaldosMovimientosComponent implements OnInit{
   private opl:any = false;
   private opc:any = false;
   private url_download: any;
+  private showPie1 : number = 0;
+  private showPie2 : number = 0;
+  private showPie3 : number = 0;
+  private showPie4 : number = 0;
 
   constructor(private productsService:ProductsService, private activatedRoute:ActivatedRoute, private http: Http){}
 
@@ -44,12 +48,16 @@ export class SaldosMovimientosComponent implements OnInit{
      setTimeout(function() {
        $(function() {
          $( "#datepicker_start" ).datepicker({
-           dateFormat: "yy-mm-dd"
+          dateFormat: "yy-mm-dd",
+          minDate: '-6m',
+          maxDate: '-1d'
          });
        });
        $(function() {
          $( "#datepicker_end" ).datepicker({
-             dateFormat: "yy-mm-dd"
+          dateFormat: "yy-mm-dd",
+          minDate: '-6m',
+          maxDate: '-1d'
          });
        });
      },1000);
@@ -58,25 +66,25 @@ export class SaldosMovimientosComponent implements OnInit{
      this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(
        data  => { this.renta_variable = data },
        error => console.log(error),
-       ()    => { /**/ }
+       ()    => { this.showPie1 = 1; }
      );
 
      this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(
        data  => {this.renta_fija = data},
        error => console.log('error: ${error}'),
-       ()    => {/**/}
+       ()    => { this.showPie2 = 1; }
      );
 
      this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(
        data  => {this.opc = data},
        error => console.log('error:${error}'),
-       ()    => {/**/}
+       ()    => { this.showPie3 = 1; }
      );
 
      this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(
        data  => {this.opl = data},
        error => console.log('error: ${error}'),
-       ()    => {/**/}
+       ()    => { this.showPie4 = 1; }
      );
    }
 

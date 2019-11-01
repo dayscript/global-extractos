@@ -146,7 +146,8 @@
         <input  id="datepicker_start" type="text" [(ngModel)]="fecha_inicio" name="fecha_inicio" required>
         <label for="name">Hasta:</label>
         <input id="datepicker_end" type="text" [(ngModel)]="fecha_final" name="fecha_final" required>
-        <button  (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+        <button  (click)="search()" [disabled]="!showPie1 && !showPie2 && !showPie3 && !showPie4" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+         <a href="{{url_download}}" style="color: rgb(99, 107, 111)"><button class="btn btn-sm align-middle btn-outline-secondary" [disabled]="!showPie1 && !showPie2 && !showPie3 && !showPie4">Descargar Excel</button></a>
     </form>
     <div style="display: block">
       <table *ngIf="info_movimientos" style="width:100%" class="report-table">
@@ -180,12 +181,12 @@
           </tr>
       </table>
 
-      <div *ngIf="info_movimientos" class="content-wrapper download-xls">
-          <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
+      <!--<div *ngIf="info_movimientos" class="content-wrapper download-xls" style="text-align: left;">
+        <div style="text-align:left" for="Opciones de descarga">Opciones de descarga</div>
           <div style="text-align:left">
             <a href="{{url_download}}"><img style="width: 30px; height: 30px;" src="/images/excel.png">   XLS</a>
           </div>
-      </div>
+      </div>-->
     </div>
   </section>
 

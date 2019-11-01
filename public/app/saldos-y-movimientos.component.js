@@ -31,6 +31,10 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.renta_fija = false;
         this.opl = false;
         this.opc = false;
+        this.showPie1 = 0;
+        this.showPie2 = 0;
+        this.showPie3 = 0;
+        this.showPie4 = 0;
     }
     SaldosMovimientosComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -45,19 +49,23 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         setTimeout(function () {
             $(function () {
                 $("#datepicker_start").datepicker({
-                    dateFormat: "yy-mm-dd"
+                    dateFormat: "yy-mm-dd",
+                    minDate: '-6m',
+                    maxDate: '-1d'
                 });
             });
             $(function () {
                 $("#datepicker_end").datepicker({
-                    dateFormat: "yy-mm-dd"
+                    dateFormat: "yy-mm-dd",
+                    minDate: '-6m',
+                    maxDate: '-1d'
                 });
             });
         }, 1000);
-        this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log(error); }, function () { });
-        this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { });
-        this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { });
-        this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { });
+        this.productsService.getRentaVariable(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_variable = data; }, function (error) { return console.log(error); }, function () { _this.showPie1 = 1; });
+        this.productsService.getRetaFija(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fija = data; }, function (error) { return console.log('error: ${error}'); }, function () { _this.showPie2 = 1; });
+        this.productsService.getOperacionesPorCumplir(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opc = data; }, function (error) { return console.log('error:${error}'); }, function () { _this.showPie3 = 1; });
+        this.productsService.getOperacionesDeLiquidez(this.id_identificacion, this.fecha).subscribe(function (data) { _this.opl = data; }, function (error) { return console.log('error: ${error}'); }, function () { _this.showPie4 = 1; });
     };
     SaldosMovimientosComponent.prototype.sumValues = function (values, field) {
         if (values === void 0) { values = []; }

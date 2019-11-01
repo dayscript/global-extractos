@@ -19,6 +19,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
         this.activatedRoute = activatedRoute;
         this.products = false;
         this.showPie = 0;
+        this.showForm = 0;
         this.pieChartLabels = ['Renta Fija $ %', 'Renta Variable $ %', 'Fic\'s $ %'];
         this.pieChartType = 'pie';
         this.pieChartOptions = {
@@ -35,6 +36,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
                 bodyFontSize: 1,
             },
         };
+        this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Augosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     }
     ResumenPortafolioComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -54,7 +56,9 @@ var ResumenPortafolioComponent = /** @class */ (function () {
             setTimeout(function () {
                 $(function () {
                     $("#datepicker").datepicker({
-                        dateFormat: "yy-mm-dd"
+                        dateFormat: "yy-mm-dd",
+                        minDate: '-6m',
+                        maxDate: '-1d'
                     });
                 });
             }, 1000);
@@ -79,6 +83,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
     ResumenPortafolioComponent.prototype.show_pie = function () {
         event.preventDefault();
         this.showPie = 1;
+        this.showForm = 1;
     };
     ResumenPortafolioComponent.prototype.show_extrac = function () {
         event.preventDefault();
@@ -94,21 +99,31 @@ var ResumenPortafolioComponent = /** @class */ (function () {
         this.products.TotalPortafolio = Number(this.products.TotalDisponible) + Number(this.products.TotalLiquidez) + Number(this.products.TotalRVBloqueado);
     };
     ResumenPortafolioComponent.prototype.downloadCanvas = function (event) {
+        var _this = this;
+        this.showForm = 0;
         var anchor = event.target;
         anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
         //anchor.download = "test.png";
         var data = new FormData();
         data.append('file', anchor.href);
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                //console.log(this.responseText);
-            }
+        this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(function (data) { console.log(data); }, function (error) { console.log(error); }, function () {
+            _this.productsService.getCanvas(_this.id_identificacion, _this.fecha).subscribe(function (data) {
+                console.log(data.blob());
+                var blob = new Blob([data.blob()], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.href = url;
+                var date = new Date(_this.fecha);
+                var monthIndex = date.getMonth();
+                var year = date.getFullYear();
+                a.setAttribute("download", 'Resumen-Portafolio-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
+                a.click();
+                window.URL.revokeObjectURL(a.href);
+                document.body.removeChild(a);
+            }, function (error) { }, function () { _this.showForm = 1; });
         });
-        xhr.open('POST', 'https://globalextractos.demodayscript.com/download/diagram-portafolio/' + this.id_identificacion);
-        var t = xhr.send(data);
-        window.location.replace('/download/resumen-portafolio/' + this.id_identificacion + '/' + this.fecha);
     };
     ResumenPortafolioComponent = __decorate([
         core_1.Component({

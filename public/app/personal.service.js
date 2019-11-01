@@ -62,6 +62,17 @@ var ProductsService = /** @class */ (function () {
         return this.http.get('/api/file-exist-operations/' + codeoyd)
             .map(function (response) { return response.json(); });
     };
+    ProductsService.prototype.sendCanvas = function (image, identification) {
+        return this.http.post('/download/diagram-portafolio/' + identification, { 'file': image })
+            .map(function (response) { return response.json(); });
+    };
+    ProductsService.prototype.getCanvas = function (identification, date) {
+        var options = new http_1.RequestOptions({
+            responseType: http_1.ResponseContentType.Blob
+        });
+        //var req = new Request(options);
+        return this.http.request('/download/resumen-portafolio/' + identification + '/' + date, options);
+    };
     ProductsService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])

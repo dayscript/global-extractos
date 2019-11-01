@@ -24,6 +24,8 @@ export class SaldosMovimientosFondosComponent {
   fics_filter: any = false;
   option_select = 'NA'
   url_download: string;
+  private showPie1 : number = 0;
+  private showPie2 : number = 0;
 
   constructor(
               private productsService:ProductsService,
@@ -36,12 +38,16 @@ export class SaldosMovimientosFondosComponent {
 
       $(function() {
         $( "#datepicker_start" ).datepicker({
-          dateFormat: "yy-mm-dd"
+          dateFormat: "yy-mm-dd",
+          minDate: '-6m',
+          maxDate: '-1d'
         });
       });
       $(function() {
         $( "#datepicker_end" ).datepicker({
-            dateFormat: "yy-mm-dd"
+          dateFormat: "yy-mm-dd",
+          minDate: '-6m',
+          maxDate: '-1d'
         });
       });
     },1000);
@@ -54,9 +60,9 @@ export class SaldosMovimientosFondosComponent {
     );
 
     productsService.DataFics(this.id_identificacion,this.fecha).subscribe(
-      data  => {this.renta_fics = data},
+      data  => this.renta_fics = data,
       error => console.log('error: ${error}'),
-      ()    =>{/**/}
+      ()    =>this.showPie1 = 1
     );
 
     // productsService.user_info.subscribe(
@@ -66,9 +72,9 @@ export class SaldosMovimientosFondosComponent {
     // );
     //
     productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
-      data => { this.fics_filter = data },
+      data => this.fics_filter = data,
       error => console.log( 'Error: ${error}' ),
-      () => {/**/}
+      () => this.showPie2 = 1
     )
 
   /*Fin de componenete SaldosMovimientosComponent*/

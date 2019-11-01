@@ -8,8 +8,8 @@
   <div class="date-selector">
     <form class="form-search form-inline my-2 my-lg-0 col-md-6">
       <input class="form-control mr-sm-2" id="datepicker" type="text" [(ngModel)]="fecha" name="fecha" placeholder="Seleccione una fecha" required>
-      <button (click)="search()" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
-      <button (click)="downloadCanvas($event)" [disabled]="!showPie" class="btn btn-sm align-middle btn-outline-secondary" type="button">Descargar</button>
+      <button (click)="search()" [disabled]="!showForm" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
+      <button (click)="downloadCanvas($event)" [disabled]="!showForm" class="btn btn-sm align-middle btn-outline-secondary" type="button">Descargar PDF</button>
     </form>
     <user-info class="col-md-6"></user-info>
     <div>

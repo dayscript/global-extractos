@@ -30,15 +30,21 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
         this.info_movimientos = false;
         this.fics_filter = false;
         this.option_select = 'NA';
+        this.showPie1 = 0;
+        this.showPie2 = 0;
         setTimeout(function () {
             $(function () {
                 $("#datepicker_start").datepicker({
-                    dateFormat: "yy-mm-dd"
+                    dateFormat: "yy-mm-dd",
+                    minDate: '-6m',
+                    maxDate: '-1d'
                 });
             });
             $(function () {
                 $("#datepicker_end").datepicker({
-                    dateFormat: "yy-mm-dd"
+                    dateFormat: "yy-mm-dd",
+                    minDate: '-6m',
+                    maxDate: '-1d'
                 });
             });
         }, 1000);
@@ -46,14 +52,14 @@ var SaldosMovimientosFondosComponent = /** @class */ (function () {
             _this.id_identificacion = params['id'],
                 _this.fecha = params['date'];
         });
-        productsService.DataFics(this.id_identificacion, this.fecha).subscribe(function (data) { _this.renta_fics = data; }, function (error) { return console.log('error: ${error}'); }, function () { });
+        productsService.DataFics(this.id_identificacion, this.fecha).subscribe(function (data) { return _this.renta_fics = data; }, function (error) { return console.log('error: ${error}'); }, function () { return _this.showPie1 = 1; });
         // productsService.user_info.subscribe(
         //   data => { this.user_info = data },
         //   error => console.log( 'Error: ${error}' ),
         //   () => this.today = new Date(),
         // );
         //
-        productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { });
+        productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { return _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { return _this.showPie2 = 1; });
         /*Fin de componenete SaldosMovimientosComponent*/
     }
     SaldosMovimientosFondosComponent.prototype.search = function () {

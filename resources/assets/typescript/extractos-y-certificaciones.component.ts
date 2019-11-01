@@ -30,7 +30,8 @@ export class ExtractosCertificaciones implements OnInit {
   encargo:any;
   downloadCertificate: string;
   downloadOperations: string;
-
+  private showPie1 : number = 0;
+  private showPie2 : number = 0;
 
   constructor(
     private productsService:ProductsService,
@@ -66,21 +67,22 @@ export class ExtractosCertificaciones implements OnInit {
                   }
               }
             )
-
-
+            this.showPie1 = 1;
         }
       );
 
     this.productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
-      () => { /**/ }
+      () => { this.showPie2 = 1; }
     )
 
     for (var i = 1; i <= 6; i++) {
-      var date = new Date()
-      //date.setMonth(date.getMonth()-i)
-      var new_date = new Date(date.getFullYear(), date.getMonth()-i, 1)
+      var date = new Date();
+      if(date.getDate() == 1) {
+        date = new Date(date.getFullYear(), date.getMonth()-1, 1);
+      }
+      var new_date = new Date(date.getFullYear(), date.getMonth()-i, 1);
       this.fechas.push(new_date);
     }
   }

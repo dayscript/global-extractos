@@ -25,7 +25,7 @@
 		<tr>
 			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Identificaci&oacute;n:<br>{{$info['basica']->NewDataSet->Table->FIDEICOMITENTE}}</td>
 			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Cuenta N&uacute;mero:<br>{{$info['basica']->NewDataSet->Table->Fideicomiso}}</td>
-			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Valor Unidad:<br>$ {{number_format( (float)$info['basica']->NewDataSet->Table->Valor_x0020_Unidad,6 )}}</td>
+			<td colspan="2" style=" border:solid 1px #efefef;text-align:left;font-size:11px">Valor Unidad:<br>$ {{number_format( (float)$info['basica']->NewDataSet->Table->Valor_x0020_Unidad,2 )}}</td>
 			<td style="border:solid 1px #efefef;text-align:left;font-size:11px">F. Constituci&oacute;n:<br>{{ Carbon\Carbon::parse($info['basica']->NewDataSet->Table->Fecha_x0020_Constitucion )->format('Y-m-d')}}</td>
 		</tr>
 		<tr>
@@ -35,6 +35,7 @@
 			<td style="border:solid 1px #efefef;text-align:left;font-size:11px">F. Vencimiento:<br>{{$info['basica'][0]['Fecha_vto']}}<span>&nbsp;</span></td>
 		</tr>
 	</table>
+	@if( isset($info['movimientos']->NewDataSet->Table) )
 	<table  width="100%" cellspacing="0" style="margin-top:5px">
 		<tr>
 			<td colspan="7" style="background-color:#b1b1b1;text-align: center;" > TRANSACCIONES DEL PERIODO</td>
@@ -48,28 +49,28 @@
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">N&uacute;mero de unidades</td>
 			<td style="border:solid 1px #efefef;text-align:center;font-size:11px">Saldo</td>
 		</tr>
-		@if( isset($info['movimientos']->NewDataSet->Table) )
 			@foreach ( $info['movimientos']->NewDataSet as $key => $item )
 				@foreach ( $item as $key => $value )
 					@if( isset($value->Saldo) && !empty($value->Saldo) )
 					<tr>
-						<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ \Carbon\Carbon::parse($value->fecha)->format('d-m-Y') }}</td>
+						<td style="border:solid 1px #efefef;text-align:left;font-size:11px">{{ \Carbon\Carbon::parse($value->fecha)->format('Y-m-d') }}</td>
 						<td style="border:solid 1px #efefef;text-align:left;font-size:11px"> {{ $value->Transaccion }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Credito,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Debito,2) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->valor_x0020_Unidad,2) }}</td>
-						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,2) }}</td>
+						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">  {{ number_format( (float)$value->Unidades,6) }}</td>
 						<td style="border:solid 1px #efefef;text-align:right;font-size:11px">$ {{ number_format( (float)$value->Saldo,2) }}</td>
 					</tr>
 					@endif
 				@endforeach
 			@endforeach
-		@endif
+
 				<!-- <tr>
 					<td style="font-size:11px;text-align: center;border:solid 1px #efefef;text-align: left" colspan="6" >TOTAL</td>
 					<td style="font-size:11px;text-align: right;border:solid 1px #efefef;" colspan="" >$ {{number_format($info['totales']['total_saldo'],2)}}</td>
 				</tr> -->
 	</table>
+	@endif
 	<table cellspacing="0" style="margin-top:5px" width="100%">
 		<tr>
 			<td style="background-color:#b1b1b1; text-align:center;font-size:11px;width:33.33333%" colspan="3">RESUMEN</td>
@@ -81,7 +82,7 @@
 			<tr>
 				<td style="border:solid 1px #efefef;text-align:left;font-size:11px" colspan="3">{{ $value->Tipo }}</td>
 				<td style="border:solid 1px #efefef;text-align:right;font-size:11px" colspan="3">$ {{ number_format( (float)$value->Valor,2) }}</td>
-				<td style="border:solid 1px #efefef;text-align:right;font-size:11px" colspan="1">{{ number_format( (float)$value->Nro_Unidades,2)  }}</td>
+				<td style="border:solid 1px #efefef;text-align:right;font-size:11px" colspan="1">{{ number_format( (float)$value->Unidades,6)  }}</td>
 			</tr>
 			@endforeach
 		@endforeach

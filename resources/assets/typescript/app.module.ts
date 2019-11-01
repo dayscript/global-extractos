@@ -21,6 +21,8 @@ import { ChartsModule } from 'ng2-charts';
 import { AyudaComponet }   from './ayuda.component';
 import { SalirComponet }   from './salir.component';
 
+
+
 const appRoutes: Routes = [
     { path:'report/:id/:date',   redirectTo: 'report/:id/:date/resumen-de-portafolio', pathMatch: 'full' },
     { path:'report/:id/:date/resumen-de-portafolio', component:ResumenPortafolioComponent },

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response, ResponseContentType } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { ActivatedRoute  } from '@angular/router';
@@ -70,4 +70,22 @@ export class ProductsService {
     return this.http.get('/api/file-exist-operations/'+ codeoyd)
              .map( response => response.json() );
   }
+
+  sendCanvas( image:string, identification:string ):Observable<any>{
+    return this.http.post('/download/diagram-portafolio/'+ identification, { 'file': image } )
+             .map( response => response.json() );
+  }
+
+  getCanvas( identification:string, date:string ):Observable<Response>{
+    
+    var options = new RequestOptions({
+      responseType: ResponseContentType.Blob
+    });
+
+    //var req = new Request(options);
+
+    return this.http.request('/download/resumen-portafolio/' + identification + '/' + date, options );
+    
+  }
+
 }

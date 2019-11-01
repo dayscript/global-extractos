@@ -16,7 +16,7 @@
          </td>
          <td style="width:30%;text-align:right">
             <label style="font-size:11px;" >Per&iacute;odo: {{$fecha_inicio}} / {{$fecha_fin}}</label><br>
-            <label style="font-size:11px;" >Fecha de generaci&oacute;n:</label><label style="font-size:11px"> {{date('Y-m-d')}}</label>
+            <label style="font-size:11px;" >Fecha de generaci&oacute;n:</label><label style="font-size:11px"> {{$fecha}}</label>
          </td>
       </tr>
    </table>

@@ -29,6 +29,8 @@ var ExtractosCertificaciones = /** @class */ (function () {
         this.fecha_select = 'NA';
         this.download = 'NA';
         this.fechas = [];
+        this.showPie1 = 0;
+        this.showPie2 = 0;
     }
     ExtractosCertificaciones.prototype.ngOnInit = function () {
         var _this = this;
@@ -49,11 +51,14 @@ var ExtractosCertificaciones = /** @class */ (function () {
                     _this.downloadOperations = '/storage/documentos_ayuda/resumen_operaciones_anual/Certificado_' + _this.user_info.codeoyd + '.pdf';
                 }
             });
+            _this.showPie1 = 1;
         });
-        this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { });
+        this.productsService.FicsFilter(this.id_identificacion, this.fecha).subscribe(function (data) { _this.fics_filter = data; }, function (error) { return console.log('Error: ${error}'); }, function () { _this.showPie2 = 1; });
         for (var i = 1; i <= 6; i++) {
             var date = new Date();
-            //date.setMonth(date.getMonth()-i)
+            if (date.getDate() == 1) {
+                date = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+            }
             var new_date = new Date(date.getFullYear(), date.getMonth() - i, 1);
             this.fechas.push(new_date);
         }
