@@ -70,8 +70,19 @@ var ProductsService = /** @class */ (function () {
         var options = new http_1.RequestOptions({
             responseType: http_1.ResponseContentType.Blob
         });
-        //var req = new Request(options);
         return this.http.request('/download/resumen-portafolio/' + identification + '/' + date, options);
+    };
+    ProductsService.prototype.getFirma = function (identification, date) {
+        var options = new http_1.RequestOptions({
+            responseType: http_1.ResponseContentType.Blob
+        });
+        return this.http.request('/download/reporte-firma-comisionista/' + identification + '/' + date, options);
+    };
+    ProductsService.prototype.getFics = function (identification, split0, split2, date) {
+        var options = new http_1.RequestOptions({
+            responseType: http_1.ResponseContentType.Blob
+        });
+        return this.http.request('/download/reporte-fondos-de-inversion/' + identification + '/' + split0 + '/' + split2 + '/' + date, options);
     };
     ProductsService = __decorate([
         core_1.Injectable(),

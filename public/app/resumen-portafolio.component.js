@@ -36,7 +36,7 @@ var ResumenPortafolioComponent = /** @class */ (function () {
                 bodyFontSize: 1,
             },
         };
-        this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Augosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        this.monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     }
     ResumenPortafolioComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -108,7 +108,6 @@ var ResumenPortafolioComponent = /** @class */ (function () {
         data.append('file', anchor.href);
         this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(function (data) { console.log(data); }, function (error) { console.log(error); }, function () {
             _this.productsService.getCanvas(_this.id_identificacion, _this.fecha).subscribe(function (data) {
-                console.log(data.blob());
                 var blob = new Blob([data.blob()], { type: 'application/pdf' });
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement("a");

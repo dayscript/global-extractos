@@ -77,15 +77,24 @@ export class ProductsService {
   }
 
   getCanvas( identification:string, date:string ):Observable<Response>{
-    
     var options = new RequestOptions({
       responseType: ResponseContentType.Blob
     });
+    return this.http.request('/download/resumen-portafolio/' + identification + '/' + date, options );    
+  }
 
-    //var req = new Request(options);
+  getFirma( identification:string, date:string ):Observable<Response>{
+    var options = new RequestOptions({
+      responseType: ResponseContentType.Blob
+    });
+    return this.http.request('/download/reporte-firma-comisionista/' + identification + '/' + date, options );    
+  }
 
-    return this.http.request('/download/resumen-portafolio/' + identification + '/' + date, options );
-    
+  getFics( identification:string, split0: string, split2: string, date:string ):Observable<Response>{
+    var options = new RequestOptions({
+      responseType: ResponseContentType.Blob
+    });
+    return this.http.request('/download/reporte-fondos-de-inversion/' + identification + '/' + split0 + '/' + split2 + '/' + date, options );    
   }
 
 }

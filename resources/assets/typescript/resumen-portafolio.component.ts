@@ -37,7 +37,7 @@ export class ResumenPortafolioComponent implements OnInit {
                     bodyFontSize: 1,
                   },
         }
-    public monthNames = ["Enero", "Febrero", "Marzo","Abril", "Mayo", "Junio", "Julio", "Augosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    public monthNames = ["Enero", "Febrero", "Marzo","Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   constructor(private productsService: ProductsService, private activatedRoute:ActivatedRoute) {}
 
@@ -49,7 +49,6 @@ export class ResumenPortafolioComponent implements OnInit {
               }
     )
     setTimeout( () => { this.getData(); },1 );
-
   }
 
   public getData():void{
@@ -128,7 +127,6 @@ export class ResumenPortafolioComponent implements OnInit {
       ()   => { 
         this.productsService.getCanvas(this.id_identificacion, this.fecha).subscribe(
           data => { 
-            console.log(data.blob())
             let blob = new Blob([data.blob()], { type: 'application/pdf'});
             let url = window.URL.createObjectURL(blob);
             let a = document.createElement("a");

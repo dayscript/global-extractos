@@ -17,7 +17,8 @@
             <option value="NA">...</option>
             <option *ngFor="let item of fechas" value="{{item | date: 'yyyy-MM-dd'}}">{{item | date:'MMM y'}}</option>
           </select>
-          <button (click)=download_firma() [disabled]="!showPie1 && !showPie2" type="button" name="button">Consultar</button>
+          <button (click)=download_firma() [disabled]="!showForm1" type="button" name="button" class="btn btn-sm align-middle btn-outline-secondary">Consultar</button>
+          <img  style="width: 50px; height: 50px;"  [hidden]="showForm1" src="/images/loading-data.gif">
         </div>
         <div class="left-aling-content">
           <label style="width:145px" for="">Fondos de Inversión</label>
@@ -29,7 +30,8 @@
                 <option value="NA">...</option>
                 <option *ngFor="let item of fics_filter" value="{{item['Fondo']}}|{{item['Nombre']}}|{{item['Fideicomiso']}}">{{item['Nombre']}} - {{item['Fideicomiso']}}</option>
           </select>
-          <button (click)=download_fics() [disabled]="!showPie1 && !showPie2" type="button" name="button">Consultar</button>
+          <button (click)=download_fics() [disabled]="!showForm2" type="button" name="button" class="btn btn-sm align-middle btn-outline-secondary">Consultar</button>
+          <img  style="width: 50px; height: 50px;"  [hidden]="showForm2" src="/images/loading-data.gif">
         </div>
       </form>
     </section>

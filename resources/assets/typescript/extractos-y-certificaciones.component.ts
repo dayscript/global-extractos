@@ -30,8 +30,9 @@ export class ExtractosCertificaciones implements OnInit {
   encargo:any;
   downloadCertificate: string;
   downloadOperations: string;
-  private showPie1 : number = 0;
-  private showPie2 : number = 0;
+  public showForm1 : number = 0;
+  public showForm2 : number = 0;
+  public monthNames = ["Enero", "Febrero", "Marzo","Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   constructor(
     private productsService:ProductsService,
@@ -67,14 +68,14 @@ export class ExtractosCertificaciones implements OnInit {
                   }
               }
             )
-            this.showPie1 = 1;
+            this.showForm1 = 1;
         }
       );
 
     this.productsService.FicsFilter(this.id_identificacion,this.fecha).subscribe(
       data => { this.fics_filter = data },
       error => console.log( 'Error: ${error}' ),
-      () => { this.showPie2 = 1; }
+      () => { this.showForm2 = 1; }
     )
 
     for (var i = 1; i <= 6; i++) {
@@ -89,15 +90,36 @@ export class ExtractosCertificaciones implements OnInit {
 
 
   download_firma(){
+    this.showForm1 = 0;
      this.fecha_select_firma = $('#fecha_select_firma').val()
      if(this.fecha_select_firma == 'NA'){
        $('#fecha_select_firma').css('border','1px solid rgb(255, 0, 0)');
         return;
      }
-     window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma)
+     //window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma)
+      this.productsService.getFirma(this.id_identificacion, this.fecha_select_firma).subscribe(
+        data => { 
+          let blob = new Blob([data.blob()], { type: 'application/pdf'});
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.style.display = "none";
+          document.body.appendChild(a);
+          a.href = url;
+          var date = new Date(this.fecha);
+          var monthIndex = date.getMonth();
+          var year = date.getFullYear();
+          a.setAttribute("download", 'FC-Extracto-'+this.monthNames[monthIndex] + '-' + year + '.pdf');
+          a.click();
+          window.URL.revokeObjectURL(a.href);
+          document.body.removeChild(a);
+         },
+        error => {},
+        () => { this.showForm1  = 1 } 
+      )
   }
 
   download_fics(){
+    this.showForm2 = 0;
     this.fecha_select = $('#fecha_select').val()
     this.option_select = $('#option_select').val()
     if(this.fecha_select == 'NA' || this.option_select == 'NA'){
@@ -107,8 +129,29 @@ export class ExtractosCertificaciones implements OnInit {
     }
     var fecha  = this.fecha_select
     var split = this.option_select.split('|')
-    var url = '/download/reporte-fondos-de-inversion/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
-    window.location.replace(url)
+    //var url = '/download/reporte-fondos-de-inversion/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
+    //window.location.replace(url)
+  
+      this.productsService.getFics(this.id_identificacion, split[0], split[2], fecha).subscribe(
+        data => { 
+          console.log(data.blob())
+          let blob = new Blob([data.blob()], { type: 'application/pdf'});
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.style.display = "none";
+          document.body.appendChild(a);
+          a.href = url;
+          var date = new Date(this.fecha);
+          var monthIndex = date.getMonth();
+          var year = date.getFullYear();
+          a.setAttribute("download", 'FI-Extracto-'+this.monthNames[monthIndex] + '-' + year + '.pdf');
+          a.click();
+          window.URL.revokeObjectURL(a.href);
+          document.body.removeChild(a);
+         },
+        error => {},
+        () => { this.showForm2  = 1 } 
+      )
 
   }
 
