@@ -66,59 +66,61 @@ var ExtractosCertificaciones = /** @class */ (function () {
     };
     ExtractosCertificaciones.prototype.download_firma = function () {
         var _this = this;
-        this.showForm1 = 0;
         this.fecha_select_firma = $('#fecha_select_firma').val();
         if (this.fecha_select_firma == 'NA') {
             $('#fecha_select_firma').css('border', '1px solid rgb(255, 0, 0)');
-            return;
+            return false;
         }
-        //window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma)
-        this.productsService.getFirma(this.id_identificacion, this.fecha_select_firma).subscribe(function (data) {
-            var blob = new Blob([data.blob()], { type: 'application/pdf' });
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = url;
-            var date = new Date(_this.fecha);
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            a.setAttribute("download", 'FC-Extracto-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
-            a.click();
-            window.URL.revokeObjectURL(a.href);
-            document.body.removeChild(a);
-        }, function (error) { }, function () { _this.showForm1 = 1; });
+        else {
+            this.showForm1 = 0;
+            /*window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma);*/
+            this.productsService.getFirma(this.id_identificacion, this.fecha_select_firma).subscribe(function (data) {
+                var blob = new Blob([data.blob()], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.href = url;
+                var date = new Date(_this.fecha);
+                var monthIndex = date.getMonth();
+                var year = date.getFullYear();
+                a.setAttribute("download", 'FC-Extracto-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
+                a.click();
+                window.URL.revokeObjectURL(a.href);
+                document.body.removeChild(a);
+            }, function (error) { return console.log(error); }, function () { return _this.showForm1 = 1; });
+        }
     };
     ExtractosCertificaciones.prototype.download_fics = function () {
         var _this = this;
-        this.showForm2 = 0;
         this.fecha_select = $('#fecha_select').val();
         this.option_select = $('#option_select').val();
         if (this.fecha_select == 'NA' || this.option_select == 'NA') {
             $('#option_select').css('border', '1px solid rgb(255, 0, 0)');
             $('#fecha_select').css('border', '1px solid rgb(255, 0, 0)');
-            return;
+            return false;
         }
-        var fecha = this.fecha_select;
-        var split = this.option_select.split('|');
-        //var url = '/download/reporte-fondos-de-inversion/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha
-        //window.location.replace(url)
-        this.productsService.getFics(this.id_identificacion, split[0], split[2], fecha).subscribe(function (data) {
-            console.log(data.blob());
-            var blob = new Blob([data.blob()], { type: 'application/pdf' });
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = url;
-            var date = new Date(_this.fecha);
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            a.setAttribute("download", 'FI-Extracto-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
-            a.click();
-            window.URL.revokeObjectURL(a.href);
-            document.body.removeChild(a);
-        }, function (error) { }, function () { _this.showForm2 = 1; });
+        else {
+            this.showForm2 = 0;
+            var fecha = this.fecha_select;
+            var split = this.option_select.split('|');
+            /*window.location.replace('/download/reporte-fondos-de-inversion/'+this.id_identificacion+'/'+split[0]+'/'+split[2]+'/'+fecha);*/
+            this.productsService.getFics(this.id_identificacion, split[0], split[2], fecha).subscribe(function (data) {
+                var blob = new Blob([data.blob()], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.href = url;
+                var date = new Date(_this.fecha);
+                var monthIndex = date.getMonth();
+                var year = date.getFullYear();
+                a.setAttribute("download", 'FI-Extracto-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
+                a.click();
+                window.URL.revokeObjectURL(a.href);
+                document.body.removeChild(a);
+            }, function (error) { return console.log(error); }, function () { return _this.showForm2 = 1; });
+        }
     };
     ExtractosCertificaciones.prototype.download_renta = function () {
         this.download = $('#download_cert').val();
