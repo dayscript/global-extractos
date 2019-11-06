@@ -25,7 +25,7 @@ Route::get('/query','HomeController@query');
 Route::get('/not-found','HomeController@NotFound');
 
 Route::get('/report/{CodigoOyd}/{Fecha}','HomeController@angular');
-Route::get('/report/{CodigoOyd}/{Fecha}/resumen-de-portafolio-pdf','HomeController@angular');
+Route::get('/report/{CodigoOyd}/{Fecha}/resumen-de-portafolio','HomeController@angular');
 Route::get('/report/{CodigoOyd}/{Fecha}/saldos-y-movimientos-de-la-firma','HomeController@angular');
 Route::get('/report/{CodigoOyd}/{Fecha}/saldos-y-movimientos-fondos-de-inversion','HomeController@angular');
 Route::get('/report/{CodigoOyd}/{Fecha}/extractos-y-certificaciones','HomeController@angular');
