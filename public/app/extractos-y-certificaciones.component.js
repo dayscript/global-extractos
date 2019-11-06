@@ -72,6 +72,7 @@ var ExtractosCertificaciones = /** @class */ (function () {
             return false;
         }
         else {
+            $('#fecha_select_firma').css('border', '1px solid rgb(198, 198, 198)');
             this.showForm1 = 0;
             /*window.location.replace('/download/reporte-firma-comisionista/'+this.id_identificacion+'/'+this.fecha_select_firma);*/
             this.productsService.getFirma(this.id_identificacion, this.fecha_select_firma).subscribe(function (data) {
@@ -101,6 +102,8 @@ var ExtractosCertificaciones = /** @class */ (function () {
             return false;
         }
         else {
+            $('#option_select').css('border', '1px solid rgb(198, 198, 198)');
+            $('#fecha_select').css('border', '1px solid rgb(198, 198, 198)');
             this.showForm2 = 0;
             var fecha = this.fecha_select;
             var split = this.option_select.split('|');

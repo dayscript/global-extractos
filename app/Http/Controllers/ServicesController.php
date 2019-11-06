@@ -319,7 +319,7 @@ class ServicesController extends Controller
         }
     }
 
-    $file_name = 'reporte-movimientos.xls'.$date_start.'-'.$date_end;
+    $file_name = 'reporte-movimientos-'.$date_start.'-'.$date_end.'.xls';
 
     Excel::create($file_name,function($excel) use ($identification,$user,$output,$file_name){
       $excel->setTitle($file_name);
@@ -389,9 +389,9 @@ class ServicesController extends Controller
                'fecha'=>$value->dtmDocumento,
                'strNumero'=>$value->strNumero,
                'strDetalle1'=>$value->strDetalle1,
-               'ACargo'=>$value->ACargo,
-               'AFavor'=>$value->AFavor,
-               'Saldo'=>$value->Saldo
+               'ACargo'=>'$'.$value->ACargo,
+               'AFavor'=>'$'.$value->AFavor,
+               'Saldo'=>'$'.$value->Saldo
            );
            $sheet->rows(array($temp));
          }
@@ -407,38 +407,110 @@ class ServicesController extends Controller
      * @param  [type] $Fecha_end   [description]
      * @return [type]              [description]
      */
-  public function downloadExtractoMovimientosFics($Fondo,$Encargo,$Fecha_start,$Fecha_end){
-
-   $output = array();
-   $soapWrapper = new SoapService();
-   $file_name = 'reporte-movimientos-fics.xls'.$Fecha_start.'-'.$Fecha_end;
-
-   $data = [
+  public function downloadExtractoMovimientosFics($identification, $Fondo,$Encargo,$Fecha_start,$Fecha_end){
+    $user = User::where('identification',$identification)->first();
+    $output = array();
+    $soapWrapper = new SoapService();
+    $data = [
      'Fondo'    => $Fondo,
      'Encargo' => $Encargo,
      'FechaInicial'   => $Fecha_start,
      'FechaFinal' => $Fecha_end
      ];
 
-   $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
-   if(isset($soapWrapper->reponse_parse->NewDataSet->Table)){
+    $soapWrapper->callMethod('ExtractoFondoyFideicomisoDadosMovimiento',$data);
+    if(isset($soapWrapper->reponse_parse->NewDataSet->Table)){
      foreach ( $soapWrapper->reponse_parse->NewDataSet as $key => $value) {
        foreach ($value as $key => $val) {
            $output[] = $val;
          }
      }
-   }else{
+    }else{
      $output = null;
-   }
+    }
 
-   Excel::create($file_name,function($excel) use ($file_name,$output){
-     $excel->setTitle($file_name);
-     $excel->setCreator('globalcdb.com');
-     $excel->setCompany('Global CDB');
-     $excel->sheet('Movimientos',function($sheet) use($output){
-       $sheet->fromArray( json_decode(json_encode($output),true) );
-      })->download('xls');
-   });
+    $file_name = 'reporte-movimientos-fics-'.$Fecha_start.'-'.$Fecha_end.'.xls';
+
+    Excel::create($file_name,function($excel) use ($identification,$user,$output,$file_name){
+      $excel->setTitle($file_name);
+      $excel->setCreator('globalcdb.com');
+      $excel->setCompany('Global CDB');
+      $excel->sheet('Movimientos',function($sheet) use($identification,$user,$output){
+        $headers = ['A6'=>'FECHA','B6'=>'TRANSACCIÓN','C6'=>'DÉBITO','D6'=>'CRÉDITO','E6'=>'NRO. UNIDADES','F6'=>'VLR. UNIDAD','G6'=>'SALDO PESOS'];
+
+        $sheet->cell('A1', function($cell) use($user) {
+         $cell->setValue($user['name']);
+        });
+        $sheet->cell('E1', function($cell) use($user) {
+         $cell->setValue($user['identificacion']);
+        });
+        $sheet->cell('A2', function($cell) use($user) {
+         $cell->setValue($user['direccion']);
+        });
+        $sheet->cell('E2', function($cell) use($user) {
+         // $cell->setValue($user['telefono']);
+        });
+        $sheet->cell('A3', function($cell) use($user) {
+         $cell->setValue($user['ciudad']);
+        });
+        $sheet->cell('E3', function($cell) use($user) {
+         $cell->setValue($user['codeoyd']);
+        });
+        $sheet->cell('A4', function($cell) use($user) {
+         $cell->setValue($user['asesor_comercial']);
+        });
+        $sheet->cell('E4', function($cell) use($user) {
+         $cell->setValue(date('Y-m-d'));
+        });
+        $sheet->cell('A5', function($cell) use($user) {
+         $cell->setAlignment('center');
+         $cell->setValue('MOVIMIENTO DEL PERIODO');
+        });
+        #encabezado
+        $sheet->mergeCells('A1:D1');
+        $sheet->mergeCells('E1:G1');
+        $sheet->mergeCells('A2:D2');
+        $sheet->mergeCells('E2:G2');
+        $sheet->mergeCells('A3:D3');
+        $sheet->mergeCells('E3:G3');
+        $sheet->mergeCells('A4:D4');
+        $sheet->mergeCells('E4:G4');
+        $sheet->mergeCells('A5:G5');
+
+        foreach($headers as $cel => $value){
+          $sheet->cell($cel, function($cell) use($value) {
+           $cell->setValue($value);
+           $cell->setBackground('#898989');
+           $cell->setFontWeight('bold');
+           $cell->setBorder('solid', 'solid', 'solid', 'solid');
+          });
+        }
+        $sheet->setWidth(array(
+           'A'     =>  20,
+           'B'     =>  20,
+           'C'     =>  20,
+           'D'     =>  20,
+           'E'     =>  20,
+           'F'     =>  20,
+           'G'     =>  20,
+         ));
+
+         foreach ($output as $key => $value) {
+          $date_process = new \DateTime($value->fecha); 
+          $date_process = $date_process->format('Y-m-d');
+           $temp = array(
+               'fecha'=> $date_process,
+               'Transaccion'=>$value->Transaccion,
+               'Debito'=> '$'.$value->Debito,
+               'Credito'=> '$'.$value->Credito,
+               'Unidades'=>$value->Unidades,
+               'valor_x0020_Unidad' => $value->valor_x0020_Unidad,
+               'Saldo' => '$'.$value->Saldo
+           );
+           $sheet->rows(array($temp));
+         }
+      });
+    })->download('xls');
   }
 
 

@@ -84,6 +84,18 @@ var ProductsService = /** @class */ (function () {
         });
         return this.http.request('/download/reporte-fondos-de-inversion/' + identification + '/' + split0 + '/' + split2 + '/' + date, options);
     };
+    ProductsService.prototype.getMovimientosFirma = function (identification, fecha_inicio, fecha_final) {
+        var options = new http_1.RequestOptions({
+            responseType: http_1.ResponseContentType.Blob
+        });
+        return this.http.request('/download/reporte-movimientos/' + identification + '/' + fecha_inicio + '/' + fecha_final, options);
+    };
+    ProductsService.prototype.getMovimientosFics = function (identification, splice0, splice2, fecha_inicio, fecha_final) {
+        var options = new http_1.RequestOptions({
+            responseType: http_1.ResponseContentType.Blob
+        });
+        return this.http.request('/download/reporte-movimientos-fics/' + identification + '/' + splice0 + '/' + splice2 + '/' + fecha_inicio + '/' + fecha_final, options);
+    };
     ProductsService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.Http, router_1.ActivatedRoute])

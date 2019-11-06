@@ -51,7 +51,7 @@ export class ResumenPortafolioComponent implements OnInit {
     setTimeout( () => { this.getData(); },1 );
   }
 
-  public getData():void{
+  public getData(){
     this.productsService.getData(this.id_identificacion, this.fecha)
       .subscribe(
         data => { this.products = data},
@@ -83,11 +83,11 @@ export class ResumenPortafolioComponent implements OnInit {
   }
 
   // events
-  public chartClicked(e:any):void {
+  public chartClicked(e:any) {
     //console.log(this.pieChartOptions);
   }
 
-  public chartHovered(e:any):void {
+  public chartHovered(e:any) {
     //console.log(e);
   }
 
@@ -102,8 +102,14 @@ export class ResumenPortafolioComponent implements OnInit {
   }
 
   search(){
-    this.fecha = $('#datepicker').val()
-    window.location.replace('/report/'+this.id_identificacion+'/'+this.fecha);
+    if($('#datepicker').val() == ''){
+      $('#datepicker').css('border','solid 1px #ff0202');
+      return false;
+    }else{
+      $('#datepicker').css('border','1px solid rgb(198, 198, 198)');
+      this.fecha = $('#datepicker').val()
+      window.location.replace('/report/'+this.id_identificacion+'/'+this.fecha);
+    }
   }
 
   totals(){
@@ -113,38 +119,45 @@ export class ResumenPortafolioComponent implements OnInit {
   }
 
   downloadCanvas(event){
-    this.showForm = 0;
-    var anchor = event.target;
-    anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
-    //anchor.download = "test.png";
+    if($('#datepicker').val() == ''){
+      $('#datepicker').css('border','solid 1px #ff0202');
+      return false;
+    }else{
+      $('#datepicker').css('border','1px solid rgb(198, 198, 198)');
 
-    var data = new FormData();
-    data.append('file', anchor.href);
+      this.showForm = 0;
+      var anchor = event.target;
+      anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
+      //anchor.download = "test.png";
 
-    this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(
-      data  => { console.log(data) },
-      error => { console.log(error) },
-      ()   => { 
-        this.productsService.getCanvas(this.id_identificacion, this.fecha).subscribe(
-          data => { 
-            let blob = new Blob([data.blob()], { type: 'application/pdf'});
-            let url = window.URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = url;
-            var date = new Date(this.fecha);
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            a.setAttribute("download", 'Resumen-Portafolio-'+this.monthNames[monthIndex] + '-' + year + '.pdf');
-            a.click();
-            window.URL.revokeObjectURL(a.href);
-            document.body.removeChild(a);
-           },
-          error => {},
-          () => { this.showForm  = 1 } 
-        )
-       }
-      );
-  }  
+      var data = new FormData();
+      data.append('file', anchor.href);
+
+      this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(
+        data  => { console.log(data) },
+        error => { console.log(error) },
+        ()   => { 
+          this.productsService.getCanvas(this.id_identificacion, this.fecha).subscribe(
+            data => { 
+              let blob = new Blob([data.blob()], { type: 'application/pdf'});
+              let url = window.URL.createObjectURL(blob);
+              let a = document.createElement("a");
+              a.style.display = "none";
+              document.body.appendChild(a);
+              a.href = url;
+              var date = new Date(this.fecha);
+              var monthIndex = date.getMonth();
+              var year = date.getFullYear();
+              a.setAttribute("download", 'Resumen-Portafolio-'+this.monthNames[monthIndex] + '-' + year + '.pdf');
+              a.click();
+              window.URL.revokeObjectURL(a.href);
+              document.body.removeChild(a);
+             },
+            error => {},
+            () => { this.showForm  = 1 } 
+          )
+         }
+        );
+    }
+  }
 }

@@ -90,8 +90,15 @@ var ResumenPortafolioComponent = /** @class */ (function () {
         this.showPie = 0;
     };
     ResumenPortafolioComponent.prototype.search = function () {
-        this.fecha = $('#datepicker').val();
-        window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
+        if ($('#datepicker').val() == '') {
+            $('#datepicker').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else {
+            $('#datepicker').css('border', '1px solid rgb(198, 198, 198)');
+            this.fecha = $('#datepicker').val();
+            window.location.replace('/report/' + this.id_identificacion + '/' + this.fecha);
+        }
     };
     ResumenPortafolioComponent.prototype.totals = function () {
         this.products.CantidadRVBloqueado = Number(this.products.CantidadRVBloqueado);
@@ -100,29 +107,36 @@ var ResumenPortafolioComponent = /** @class */ (function () {
     };
     ResumenPortafolioComponent.prototype.downloadCanvas = function (event) {
         var _this = this;
-        this.showForm = 0;
-        var anchor = event.target;
-        anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
-        //anchor.download = "test.png";
-        var data = new FormData();
-        data.append('file', anchor.href);
-        this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(function (data) { console.log(data); }, function (error) { console.log(error); }, function () {
-            _this.productsService.getCanvas(_this.id_identificacion, _this.fecha).subscribe(function (data) {
-                var blob = new Blob([data.blob()], { type: 'application/pdf' });
-                var url = window.URL.createObjectURL(blob);
-                var a = document.createElement("a");
-                a.style.display = "none";
-                document.body.appendChild(a);
-                a.href = url;
-                var date = new Date(_this.fecha);
-                var monthIndex = date.getMonth();
-                var year = date.getFullYear();
-                a.setAttribute("download", 'Resumen-Portafolio-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
-                a.click();
-                window.URL.revokeObjectURL(a.href);
-                document.body.removeChild(a);
-            }, function (error) { }, function () { _this.showForm = 1; });
-        });
+        if ($('#datepicker').val() == '') {
+            $('#datepicker').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else {
+            $('#datepicker').css('border', '1px solid rgb(198, 198, 198)');
+            this.showForm = 0;
+            var anchor = event.target;
+            anchor.href = document.getElementsByTagName('canvas')[0].toDataURL();
+            //anchor.download = "test.png";
+            var data = new FormData();
+            data.append('file', anchor.href);
+            this.productsService.sendCanvas(anchor.href, this.id_identificacion).subscribe(function (data) { console.log(data); }, function (error) { console.log(error); }, function () {
+                _this.productsService.getCanvas(_this.id_identificacion, _this.fecha).subscribe(function (data) {
+                    var blob = new Blob([data.blob()], { type: 'application/pdf' });
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement("a");
+                    a.style.display = "none";
+                    document.body.appendChild(a);
+                    a.href = url;
+                    var date = new Date(_this.fecha);
+                    var monthIndex = date.getMonth();
+                    var year = date.getFullYear();
+                    a.setAttribute("download", 'Resumen-Portafolio-' + _this.monthNames[monthIndex] + '-' + year + '.pdf');
+                    a.click();
+                    window.URL.revokeObjectURL(a.href);
+                    document.body.removeChild(a);
+                }, function (error) { }, function () { _this.showForm = 1; });
+            });
+        }
     };
     ResumenPortafolioComponent = __decorate([
         core_1.Component({

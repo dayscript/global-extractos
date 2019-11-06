@@ -29,6 +29,7 @@ export class SaldosMovimientosComponent implements OnInit{
   private showPie2 : number = 0;
   private showPie3 : number = 0;
   private showPie4 : number = 0;
+  private showForm : number = 1;
 
   constructor(private productsService:ProductsService, private activatedRoute:ActivatedRoute, private http: Http){}
 
@@ -117,18 +118,67 @@ export class SaldosMovimientosComponent implements OnInit{
     return minuendo - sustranedo;
    }
 
-  private search():void{
-    this.fecha_inicio = $('#datepicker_start').val()
-    this.fecha_final = $('#datepicker_end').val()
-    var url = 'api/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
-    this.url_download = 'download/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
-    this.http.get(url)
-                .map( response => response.json() )
-                .subscribe(
-                  data => { this.info_movimientos = data},
-                  error => console.error(`Error: ${error}`),
-                  () => {/**/}
-                );
+  search(){
+    if($('#datepicker_start').val() == ''){
+      $('#datepicker_start').css('border','solid 1px #ff0202');
+      return false;
+    }else if($('#datepicker_end').val() == ''){
+      $('#datepicker_end').css('border','solid 1px #ff0202');
+      return false;
+    }else {
+      $('#datepicker_start').css('border','1px solid rgb(198, 198, 198)');
+      $('#datepicker_end').css('border','1px solid rgb(198, 198, 198)');
+      
+      this.fecha_inicio = $('#datepicker_start').val()
+      this.fecha_final = $('#datepicker_end').val()
 
+      var url = 'api/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
+      this.url_download = 'download/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final
+      this.http.get(url)
+          .map( response => response.json() )
+          .subscribe(
+            data => { this.info_movimientos = data},
+            error => console.error(`Error: ${error}`),
+            () => {/**/}
+          );
+    }
+  }
+
+  download(){
+    if($('#datepicker_start').val() == ''){
+      $('#datepicker_start').css('border','solid 1px #ff0202');
+      return false;
+    }else if($('#datepicker_end').val() == ''){
+      $('#datepicker_end').css('border','solid 1px #ff0202');
+      return false;
+    }else {
+      $('#datepicker_start').css('border','1px solid rgb(198, 198, 198)');
+      $('#datepicker_end').css('border','1px solid rgb(198, 198, 198)');
+      
+      this.fecha_inicio = $('#datepicker_start').val()
+      this.fecha_final = $('#datepicker_end').val()
+      this.showForm = 0;
+      this.url_download = 'download/reporte-movimientos/'+this.id_identificacion+'/'+this.fecha_inicio+'/'+this.fecha_final;
+
+      this.productsService.getMovimientosFirma(this.id_identificacion, this.fecha_inicio, this.fecha_final).subscribe(
+          data => { 
+            let blob = new Blob([data.blob()], { type: 'application/vnd.ms-excel'});
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.href = url;
+            var date = new Date(this.fecha);
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            a.setAttribute("download", 'reporte-movimientos-'+this.fecha_inicio+'_'+this.fecha_final+'.xls');
+            a.click();
+            window.URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+           },
+          error => console.log(error),
+          () => this.showForm  = 1 
+        )
+    }
   }
 }

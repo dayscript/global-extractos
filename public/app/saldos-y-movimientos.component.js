@@ -35,6 +35,7 @@ var SaldosMovimientosComponent = /** @class */ (function () {
         this.showPie2 = 0;
         this.showPie3 = 0;
         this.showPie4 = 0;
+        this.showForm = 1;
     }
     SaldosMovimientosComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -96,13 +97,59 @@ var SaldosMovimientosComponent = /** @class */ (function () {
     };
     SaldosMovimientosComponent.prototype.search = function () {
         var _this = this;
-        this.fecha_inicio = $('#datepicker_start').val();
-        this.fecha_final = $('#datepicker_end').val();
-        var url = 'api/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
-        this.url_download = 'download/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
-        this.http.get(url)
-            .map(function (response) { return response.json(); })
-            .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { });
+        if ($('#datepicker_start').val() == '') {
+            $('#datepicker_start').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else if ($('#datepicker_end').val() == '') {
+            $('#datepicker_end').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else {
+            $('#datepicker_start').css('border', '1px solid rgb(198, 198, 198)');
+            $('#datepicker_end').css('border', '1px solid rgb(198, 198, 198)');
+            this.fecha_inicio = $('#datepicker_start').val();
+            this.fecha_final = $('#datepicker_end').val();
+            var url = 'api/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
+            this.url_download = 'download/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
+            this.http.get(url)
+                .map(function (response) { return response.json(); })
+                .subscribe(function (data) { _this.info_movimientos = data; }, function (error) { return console.error("Error: " + error); }, function () { });
+        }
+    };
+    SaldosMovimientosComponent.prototype.download = function () {
+        var _this = this;
+        if ($('#datepicker_start').val() == '') {
+            $('#datepicker_start').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else if ($('#datepicker_end').val() == '') {
+            $('#datepicker_end').css('border', 'solid 1px #ff0202');
+            return false;
+        }
+        else {
+            $('#datepicker_start').css('border', '1px solid rgb(198, 198, 198)');
+            $('#datepicker_end').css('border', '1px solid rgb(198, 198, 198)');
+            this.fecha_inicio = $('#datepicker_start').val();
+            this.fecha_final = $('#datepicker_end').val();
+            this.showForm = 0;
+            this.url_download = 'download/reporte-movimientos/' + this.id_identificacion + '/' + this.fecha_inicio + '/' + this.fecha_final;
+            this.productsService.getMovimientosFirma(this.id_identificacion, this.fecha_inicio, this.fecha_final).subscribe(function (data) {
+                var blob = new Blob([data.blob()], { type: 'application/vnd.ms-excel' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.href = url;
+                var date = new Date(_this.fecha);
+                var monthIndex = date.getMonth();
+                var year = date.getFullYear();
+                a.setAttribute("download", 'reporte-movimientos-' + _this.fecha_inicio + '_' + _this.fecha_final + '.xls');
+                a.click();
+                window.URL.revokeObjectURL(a.href);
+                document.body.removeChild(a);
+            }, function (error) { return console.log(error); }, function () { return _this.showForm = 1; });
+        }
     };
     SaldosMovimientosComponent = __decorate([
         core_1.Component({

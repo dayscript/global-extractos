@@ -58,7 +58,8 @@
               <label for="name">Hasta:</label>
               <input id="datepicker_end" type="text" [(ngModel)]="fecha_final" name="fecha_final" required>
               <button  (click)="search()" [disabled]="!showPie1 && !showPie2" class="btn btn-sm align-middle btn-outline-secondary" type="button">Consultar</button>
-              <a href="{{url_download}}" style="color: rgb(99, 107, 111);"><button class="btn btn-sm align-middle btn-outline-secondary" [disabled]="!showPie1 && !showPie2">Descargar Excel</button></a>
+              <button  (click)="download()" [disabled]="!showPie1 && !showPie2" class="btn btn-sm align-middle btn-outline-secondary" type="button">Descargar Excel</button>
+              <img  style="width: 50px; height: 50px;"  [hidden]="showForm" src="/images/loading-data.gif">
             </div>
           </div>
         </form>
