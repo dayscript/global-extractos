@@ -71,7 +71,7 @@
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Emisi&oacute;n</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Cantidad</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Compra</td>
-         <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio</td>
+         <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Precio Valoraci&oacute;n</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
       </tr>
       @foreach($info['rv']->NewDataSet as $key => $items)
