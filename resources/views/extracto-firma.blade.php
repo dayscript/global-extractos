@@ -30,8 +30,8 @@
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Emisi&oacute;n</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Nominal</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Emisi&oacute;n</td>
-         <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Vcto</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Compra</td>
+         <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Fecha Vcto</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Tasa</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Valoraci&oacute;n</td>
          <td style="border:solid 1px #efefef;font-size:11px;text-align: center;">Ind</td>
